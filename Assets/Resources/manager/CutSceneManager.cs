@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CutSceneMgr:IMgr
+public class CutSceneManager:IManager
 {
     private LoadingSceneLogic m_loadSceneLogic;
 
@@ -32,9 +32,9 @@ public class LoadingSceneLogic
     private Action<float> m_progressChangeCall;
     private float m_minTime = 1f;
     private float m_startTime = 0;
-    private IMgr m_owner;
+    private IManager m_owner;
 
-    public LoadingSceneLogic(IMgr mgr)
+    public LoadingSceneLogic(IManager mgr)
     {
         m_owner = mgr;
     }

@@ -15,7 +15,7 @@ namespace AssetBundles
 
         internal event Action unload;
 
-        internal void OnUnload()
+        internal void Unload()
         {
             m_AB.Unload(false);
             if (unload != null)
@@ -131,7 +131,8 @@ namespace AssetBundles
                 absolutePath += "/";
             }
 
-            BaseDownloadingURL = absolutePath + Utility.GetPlatformName() + "/";
+            //BaseDownloadingURL = absolutePath + Utility.GetPlatformName() + "/";
+            BaseDownloadingURL = ABManager.CfgServerLoadPath;
         }
 
         public static void SetDevelopmentAssetBundleServer()
@@ -191,7 +192,8 @@ namespace AssetBundles
 
         static public ABLoadManifestOperation Initialize()
         {
-            return Initialize(Utility.GetPlatformName());
+            ABManager.Init();
+            return Initialize(ABManager.CfgManifestName);
         }
 
         static public ABLoadManifestOperation Initialize(string manifestAssetBundleName)
@@ -439,7 +441,7 @@ namespace AssetBundles
 
             if (--bundle.m_referencedCount == 0)
             {
-                bundle.OnUnload();
+                bundle.Unload();
                 m_loadedABs.Remove(assetBundleName);
 
                 Log(LogType.Info, assetBundleName + " has been unloaded successfully");

@@ -4,20 +4,20 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public LuaMgr m_luaMgr;
-    public ABMgr m_abMgr;
-    public CutSceneMgr m_cutSceneMgr;
-    private List<IMgr> m_mgrs;
+    public LuaManager m_luaMgr;
+    public ABManager m_abMgr;
+    public CutSceneManager m_cutSceneMgr;
+    private List<IManager> m_mgrs;
 
     private void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        m_mgrs = new List<IMgr>();
+        m_mgrs = new List<IManager>();
 
-        m_luaMgr = new LuaMgr();
-        m_abMgr = new ABMgr();
-        m_cutSceneMgr = new CutSceneMgr();
+        m_luaMgr = new LuaManager();
+        m_abMgr = new ABManager();
+        m_cutSceneMgr = new CutSceneManager();
         m_mgrs.Add(m_luaMgr);
         m_mgrs.Add(m_abMgr);
         m_mgrs.Add(m_cutSceneMgr);
@@ -63,4 +63,13 @@ public class GameManager : MonoBehaviour
             m_abMgr.testAb?.Unload(true);
         }
     }
+}
+
+public class IManager
+{
+    public GameManager GameMgr { get { return GameManager.Instance; } }
+    public virtual void Awake() { }
+    public virtual void Start() { }
+    public virtual void Update() { }
+    public virtual void OnDestroy() { }
 }

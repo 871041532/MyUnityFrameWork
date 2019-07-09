@@ -17,7 +17,7 @@ public interface Cfgs
     Dictionary<int, ItemCfg> itemCfgs { get; set; }
 }
 
-public class LuaMgr : IMgr
+public class LuaManager : IManager
 {
     private LuaEnv m_luaEnv;
     public Cfgs m_cfgs;
