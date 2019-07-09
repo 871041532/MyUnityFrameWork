@@ -1,1 +1,11 @@
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+MyUnityFrameWork.sln
+
 /Library
+/Assets/AssetBundles
+/Assets/AssetBundles.meta
+/obj
+/AssetBundles
+/.vs
+/Temp
