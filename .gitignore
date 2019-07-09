@@ -1,7 +1,8 @@
 Assembly-CSharp.csproj
 Assembly-CSharp-Editor.csproj
 MyUnityFrameWork.sln
-
+!*.exe
+!*.dll
 /Library
 /Assets/AssetBundles
 /Assets/AssetBundles.meta
