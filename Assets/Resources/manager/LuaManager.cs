@@ -25,14 +25,14 @@ public class LuaManager : IManager
     public override void Awake() {
         m_luaEnv = new LuaEnv();
         m_luaEnv.AddLoader(MyLuaLoader);
-        m_luaEnv.DoString("require 'main.lua'");
-        m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
+        //m_luaEnv.DoString("require 'main.lua'");
+        //m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
     }
 
     // 自定义lua加载
     byte[] MyLuaLoader(ref string filepath)
     {
-        string path = Path.Combine(Application.streamingAssetsPath, "Scripts", filepath);
+        string path = Path.Combine(ABManager.CfgstreamingAssets, "Scripts", filepath);
         byte[] data = File.ReadAllBytes(path);
         return data;
     }

@@ -40,6 +40,7 @@ public class ABManager:IManager
     public static string CfgServerLoadPath = "127.0.0.1:7888/Windows/";
     public static string CfgAssetBundleRelativePath = "AssetBundles/Windows/";
     public static string CfgAssetBundleLoadAbsolutePath = "";
+    public static string CfgstreamingAssets = "";
     static LogMode CfgLogMode = LogMode.All;
     public static LoadModeEnum CfgLoadMode = LoadModeEnum.DeviceStandaloneAB;
 
@@ -125,7 +126,9 @@ public class ABManager:IManager
         }
         else
         {
-            AssetBundle ab = AssetBundle.LoadFromFile(CfgAssetBundleLoadAbsolutePath + abName);
+            string abPath = CfgAssetBundleLoadAbsolutePath + abName;
+            Log(LogType.Info, "Path：" + abPath);
+            AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             abItem = new AssetBundleItem(ab);
             m_loadedABs[abName] = abItem;
         }
@@ -141,6 +144,7 @@ public class ABManager:IManager
 private static void setAssetBundlePath()
     {
         string platformPath = "Default";
+        CfgstreamingAssets = Application.streamingAssetsPath;
 #if UNITY_EDITOR
         var target = UnityEditor.EditorUserBuildSettings.activeBuildTarget;
         if (target == UnityEditor.BuildTarget.Android)
@@ -152,25 +156,24 @@ private static void setAssetBundlePath()
 #else
         var target2 = Application.platform;
         if (target2 == RuntimePlatform.Android)
+        {
             platformPath = "Android";
+            CfgstreamingAssets = Application.dataPath + "!assets";
+        }  
         else if (target2== RuntimePlatform.IPhonePlayer)
+        {
             platformPath = "iOS";
+        }
         else if (target2 == RuntimePlatform.WindowsPlayer)
+        {
             platformPath = "Windows";
+        }
         CfgLoadMode = LoadModeEnum.DeviceStandaloneAB;
 #endif
         CfgManifestAndPlatformName = platformPath;
         CfgAssetBundleRelativePath = "AssetBundles/" + platformPath + "/";
         CfgServerLoadPath = string.Format("{0}:{1}/{2}/", CfgServerURL, CfgServerPort, platformPath);
-        if (CfgLoadMode == LoadModeEnum.EditorAB || CfgLoadMode == LoadModeEnum.EditorOrigin)
-        {
-            CfgAssetBundleLoadAbsolutePath = Path.Combine(Environment.CurrentDirectory, CfgAssetBundleRelativePath);
-        }
-        else if (CfgLoadMode == LoadModeEnum.DeviceStandaloneAB)
-        {
-            CfgAssetBundleLoadAbsolutePath = Path.Combine(Application.streamingAssetsPath, CfgAssetBundleRelativePath);
-        }
-
+        CfgAssetBundleLoadAbsolutePath = Path.Combine(CfgstreamingAssets, CfgAssetBundleRelativePath);
     }
 
     // 自定义Altas加载
@@ -193,6 +196,7 @@ private static void setAssetBundlePath()
             Debug.LogWarning("[ABMgr] " + text);
         else if (CfgLogMode == LogMode.All)
             Debug.Log("[ABMgr] " + text);
+        GameManager.Instance.Log(text);
     }
 
     public override void OnDestroy() { }

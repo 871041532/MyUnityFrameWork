@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,13 @@ public class GameManager : MonoBehaviour
     public ABManager m_abMgr;
     public CutSceneManager m_cutSceneMgr;
     private List<IManager> m_mgrs;
+    public Text m_log_object;
 
+    public void Log(string line)
+    {
+        string text = m_log_object.text;
+        m_log_object.text = text + "\n" + line;
+    }
     private void Awake()
     {
         Instance = this;
