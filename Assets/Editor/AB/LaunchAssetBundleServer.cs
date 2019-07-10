@@ -1,15 +1,8 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System;
-using System.Net;
-using System.Threading;
-using UnityEditor.Utils;
-using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace AssetBundles
 {
@@ -93,14 +86,12 @@ namespace AssetBundles
 
         static void Run()
         {
-            string pathToAssetServer = Path.GetFullPath("Assets/AssetBundleManager/Editor/AssetBundleServer.exe");
-            string assetBundlesDirectory = Path.Combine(Environment.CurrentDirectory, "AssetBundles");
+            string assetBundlesDirectory = Path.Combine(Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath);
 
             KillRunningAssetBundleServer();
 
             BuildScript.CreateAssetBundleDirectory();
-            BuildScript.WriteServerURL();
-            int id = LaunchAssetBundleServer.RunCmd(assetBundlesDirectory, BuildScript.port);
+            int id = LaunchAssetBundleServer.RunCmd(assetBundlesDirectory, ABManager.CfgServerPort);
             instance.m_ServerPID = id;
         }
     }

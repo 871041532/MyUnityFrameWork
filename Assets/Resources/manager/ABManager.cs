@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.U2D;
 
 public class AssetBundleItem
@@ -24,30 +23,122 @@ public class AssetBundleItem
     }
 }
 
+public enum LoadModeEnum
+{  
+    EditorOrigin,  // Editor下直接加载原始资源
+    EditorAB,  // Editor下直接加载AB包
+    EditorFullAotAB,  // Editor下预下载到PresentData再加载
+    DeviceStandaloneAB,  // 设备上直接使用AB包
+    DeviceFullAotAB,  // 设备上预下载到PrensentData再加载
+}
+
 public class ABManager:IManager
  {
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
-    public static string CfgManifestName = "Windows";
+    public static string CfgManifestAndPlatformName = "Windows";
     public static string CfgServerLoadPath = "127.0.0.1:7888/Windows/";
-    public static string CfgAssetBundleBuildPath = "AssetBundles/Windows/";
+    public static string CfgAssetBundleRelativePath = "AssetBundles/Windows/";
+    public static string CfgAssetBundleLoadAbsolutePath = "";
+    static LogMode CfgLogMode = LogMode.All;
+    public static LoadModeEnum CfgLoadMode = LoadModeEnum.DeviceStandaloneAB;
 
-    //public static string Cfg
-    public AssetBundle testAb;
+    private AssetBundleManifest m_manifest;
+    Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
+    Dictionary<string, string> m_assetToABNames = new Dictionary<string, string> {
+        { "Assets/Charactar/c1.prefab", "prefabs"},
+    };
 
     public override void Awake() {
-        Init();
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
+        Init();
+
+        // 测试
+        var asset = LoadAsset<GameObject>("Assets/Charactar/c1.prefab");
+        GameObject.Instantiate(asset);
     }
 
-    // 初始化
-    public static void Init()
+    private void Init()
+    {
+        if (CfgLoadMode != LoadModeEnum.EditorOrigin)
+        {
+            AssetBundleItem mainAB = LoadAssetBundle(CfgManifestAndPlatformName);
+            AssetBundleManifest manifest = mainAB.m_assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+            m_manifest = manifest;
+        }
+    }
+
+    static ABManager()
     {
         setAssetBundlePath();
     }
 
-    // 设置AB包名
-    private static void setAssetBundlePath()
+    public T LoadAsset<T>(string fullPath) where T : UnityEngine.Object
+    {
+        switch (CfgLoadMode)
+        {
+# if UNITY_EDITOR
+            case LoadModeEnum.EditorOrigin:
+                return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
+            case LoadModeEnum.EditorAB:
+#endif
+            case LoadModeEnum.DeviceStandaloneAB:
+                AssetBundleItem ABItem = LoadAssetBundleByAssetName(fullPath);
+                return ABItem.m_assetBundle.LoadAsset<T>(fullPath);
+            default:
+                return null;
+        }
+    }
+
+    public void LoadAssetAsync<T>(string path, Action<T> successCall, Action failCall = null) where T: UnityEngine.Object
+    {
+    }
+
+    public bool LoadScene(string sceneName)
+    {
+        return false;
+    }
+
+    public void LoadSceneAsync(string sceneName, Action successCall, Action failCall)
+    {
+    }
+
+    public AssetBundleItem LoadAssetBundleByAssetName(string assetFullPath)
+    {
+        string abName = m_assetToABNames[assetFullPath];
+        AssetBundleItem abItem = LoadAssetBundle(abName);
+        return abItem;
+    }
+
+    public void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
+    {
+    }
+
+    public AssetBundleItem LoadAssetBundle(string abName)
+    {
+        Log(LogType.Info, "Loading Asset Bundle: " + abName);
+        AssetBundleItem abItem = null;
+        m_loadedABs.TryGetValue(abName, out abItem);
+        if(abItem != null)
+        {
+            abItem.m_referencedCount++;
+        }
+        else
+        {
+            AssetBundle ab = AssetBundle.LoadFromFile(CfgAssetBundleLoadAbsolutePath + abName);
+            abItem = new AssetBundleItem(ab);
+            m_loadedABs[abName] = abItem;
+        }
+        return abItem;
+    }
+
+    public void LoadAssetBundleAsync(Action<AssetBundleItem> successCall, Action failCall = null)
+    {
+
+    }
+
+// 设置AB包名
+private static void setAssetBundlePath()
     {
         string platformPath = "Default";
 #if UNITY_EDITOR
@@ -66,21 +157,42 @@ public class ABManager:IManager
             platformPath = "iOS";
         else if (target2 == RuntimePlatform.WindowsPlayer)
             platformPath = "Windows";
+        CfgLoadMode = LoadModeEnum.DeviceStandaloneAB;
 #endif
-        CfgManifestName = platformPath;
+        CfgManifestAndPlatformName = platformPath;
+        CfgAssetBundleRelativePath = "AssetBundles/" + platformPath + "/";
         CfgServerLoadPath = string.Format("{0}:{1}/{2}/", CfgServerURL, CfgServerPort, platformPath);
-        CfgAssetBundleBuildPath = "AssetBundles/" + platformPath;
+        if (CfgLoadMode == LoadModeEnum.EditorAB || CfgLoadMode == LoadModeEnum.EditorOrigin)
+        {
+            CfgAssetBundleLoadAbsolutePath = Path.Combine(Environment.CurrentDirectory, CfgAssetBundleRelativePath);
+        }
+        else if (CfgLoadMode == LoadModeEnum.DeviceStandaloneAB)
+        {
+            CfgAssetBundleLoadAbsolutePath = Path.Combine(Application.streamingAssetsPath, CfgAssetBundleRelativePath);
+        }
+
     }
 
     // 自定义Altas加载
     void OnAtlasRequested(string tag, Action<SpriteAtlas> action)
     {
         Debug.Log("加载Altas：" + tag);
-        string path = Path.Combine("Assets/UI/res", tag + "_sd.spriteatlas");
+        string path = Path.Combine("Assets/UI/res", tag + ".spriteatlas");
 #if UNITY_EDITOR
         SpriteAtlas sa = UnityEditor.AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
         action(sa);
 #endif
+    }
+
+    // 日志
+    public static void Log(LogType logType, string text)
+    {
+        if (logType == LogType.Error)
+            Debug.LogError("[ABMgr] " + text);
+        else if (CfgLogMode == LogMode.All && logType == LogType.Warning)
+            Debug.LogWarning("[ABMgr] " + text);
+        else if (CfgLogMode == LogMode.All)
+            Debug.Log("[ABMgr] " + text);
     }
 
     public override void OnDestroy() { }

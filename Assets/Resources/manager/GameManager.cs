@@ -58,10 +58,6 @@ public class GameManager : MonoBehaviour
 
     public void OnGUI()
     {
-        if (GUI.Button(new Rect(0f, 0f, 100f, 100f), "咳咳"))
-        {
-            m_abMgr.testAb?.Unload(true);
-        }
     }
 }
 
@@ -73,3 +69,6 @@ public class IManager
     public virtual void Update() { }
     public virtual void OnDestroy() { }
 }
+
+public enum LogMode { All, JustErrors };
+public enum LogType { Info, Warning, Error };

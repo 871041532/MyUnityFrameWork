@@ -36,7 +36,7 @@ namespace AssetBundles
         bool m_done;
 
         public string m_ABName { get; private set; }
-        public ABItem m_ABItem { get; protected set; }
+        public AssetBundleItem m_ABItem { get; protected set; }
         public string error { get; protected set; }
 
         protected abstract bool m_isDownloaded { get; }
@@ -93,7 +93,7 @@ namespace AssetBundles
             if (bundle == null)
                 error = string.Format("{0} is not a valid asset bundle.", m_ABName);
             else
-                m_ABItem = new ABItem(m_WWW.assetBundle);
+                m_ABItem = new AssetBundleItem(m_WWW.assetBundle);
 
             m_WWW.Dispose();
             m_WWW = null;
@@ -160,7 +160,7 @@ namespace AssetBundles
             if (m_asyncOperation != null)
                 return false;
 
-            ABItem bundleItem = AssetBundleManager.GetLoadedAssetBundle(m_ABName, out m_downloadingError);
+            AssetBundleItem bundleItem = AssetBundleManager.GetLoadedAssetBundle(m_ABName, out m_downloadingError);
             if (bundleItem != null)
             {
                 m_asyncOperation = SceneManager.LoadSceneAsync(m_sceneName, m_isAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single);
@@ -244,11 +244,11 @@ namespace AssetBundles
             if (m_request != null)
                 return false;
 
-            ABItem bundle = AssetBundleManager.GetLoadedAssetBundle(m_ABName, out m_downloadingError);
+            AssetBundleItem bundle = AssetBundleManager.GetLoadedAssetBundle(m_ABName, out m_downloadingError);
             if (bundle != null)
             {
                 ///@TODO: When asset bundle download fails this throws an exception...
-                m_request = bundle.m_AB.LoadAssetAsync(m_assetName, m_type);
+                m_request = bundle.m_assetBundle.LoadAssetAsync(m_assetName, m_type);
                 return false;
             }
             else

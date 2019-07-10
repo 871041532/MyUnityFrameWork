@@ -11,13 +11,10 @@ namespace AssetBundles
 {
     public class BuildScript
     {
-        public static string overloadedDevelopmentServerURL = "http://127.0.0.1:7888/";
-        public static string port = "7888";
-
         static public string CreateAssetBundleDirectory()
         {
             // Choose the output path according to the build target.
-            string outputPath = Path.Combine(Utility.AssetBundlesOutputPath, Utility.GetPlatformName());
+            string outputPath = ABManager.CfgAssetBundleRelativePath;
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
@@ -62,36 +59,6 @@ namespace AssetBundles
             }
         }
 
-        public static void WriteServerURL()
-        {
-            string downloadURL;
-            if (string.IsNullOrEmpty(overloadedDevelopmentServerURL) == false)
-            {
-                downloadURL = overloadedDevelopmentServerURL;
-            }
-            else
-            {
-                IPHostEntry host;
-                string localIP = "";
-                host = Dns.GetHostEntry(Dns.GetHostName());
-                foreach (IPAddress ip in host.AddressList)
-                {
-                    if (ip.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        localIP = ip.ToString();
-                        break;
-                    }
-                }
-                downloadURL = "http://" + localIP + ":7888/";
-            }
-
-            string assetBundleManagerResourcesDirectory = "Assets/AssetBundleManager/Resources";
-            string assetBundleUrlPath = Path.Combine(assetBundleManagerResourcesDirectory, "AssetBundleServerURL.bytes");
-            Directory.CreateDirectory(assetBundleManagerResourcesDirectory);
-            File.WriteAllText(assetBundleUrlPath, downloadURL);
-            AssetDatabase.Refresh();
-        }
-
         public static void BuildPlayer()
         {
             var outputPath = EditorUtility.SaveFolderPanel("Choose Location of the Built Game", "", "");
@@ -111,7 +78,6 @@ namespace AssetBundles
 
             // Build and copy AssetBundles.
             BuildScript.BuildAssetBundles();
-            WriteServerURL();
 
 #if UNITY_5_4 || UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0
             BuildOptions option = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None;
@@ -146,7 +112,7 @@ namespace AssetBundles
 
             // Build and copy AssetBundles.
             BuildScript.BuildAssetBundles();
-            BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, Utility.AssetBundlesOutputPath));
+            BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, ABManager.CfgAssetBundleRelativePath));
             AssetDatabase.Refresh();
 
 #if UNITY_5_4 || UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0
@@ -190,15 +156,15 @@ namespace AssetBundles
             FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath);
             Directory.CreateDirectory(outputPath);
 
-            string outputFolder = Utility.GetPlatformName();
+            string outputFolder = ABManager.CfgManifestAndPlatformName;
 
             // Setup the source folder for assetbundles.
-            var source = Path.Combine(Path.Combine(System.Environment.CurrentDirectory, Utility.AssetBundlesOutputPath), outputFolder);
+            var source = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath);
             if (!System.IO.Directory.Exists(source))
                 Debug.Log("No assetBundle output folder, try to build the assetBundles first.");
 
             // Setup the destination folder for assetbundles.
-            var destination = System.IO.Path.Combine(outputPath, outputFolder);
+            var destination = outputPath;
             if (System.IO.Directory.Exists(destination))
                 FileUtil.DeleteFileOrDirectory(destination);
 
@@ -219,8 +185,8 @@ namespace AssetBundles
 
         static string GetAssetBundleManifestFilePath()
         {
-            var relativeAssetBundlesOutputPathForPlatform = Path.Combine(Utility.AssetBundlesOutputPath, Utility.GetPlatformName());
-            return Path.Combine(relativeAssetBundlesOutputPathForPlatform,  Utility.GetPlatformName()) + ".manifest";
+            var relativeAssetBundlesOutputPathForPlatform = Path.Combine(ABManager.CfgAssetBundleRelativePath, ABManager.CfgManifestAndPlatformName) + ".manifest";
+            return relativeAssetBundlesOutputPathForPlatform;
         }
     }
 }
