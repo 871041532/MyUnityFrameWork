@@ -55,8 +55,11 @@ public class ABManager:IManager
         Init();
 
         // 测试
-        var asset = LoadAsset<GameObject>("Assets/Charactar/c1.prefab");
-        GameObject.Instantiate(asset);
+        //var asset = LoadAsset<GameObject>("Assets/Charactar/c1.prefab");
+        //GameObject.Instantiate(asset);
+        //LoadAssetAsync<GameObject>("Assets/Charactar/c1.prefab", (asset) => {
+        //    GameObject.Instantiate(asset);
+        //});
     }
 
     private void Init()
@@ -72,6 +75,11 @@ public class ABManager:IManager
     static ABManager()
     {
         setAssetBundlePath();
+    }
+
+    public GameObject LoadAssetGameObject(string fullPath)
+    {
+        return LoadAsset<GameObject>(fullPath);
     }
 
     public T LoadAsset<T>(string fullPath) where T : UnityEngine.Object
@@ -91,8 +99,33 @@ public class ABManager:IManager
         }
     }
 
-    public void LoadAssetAsync<T>(string path, Action<T> successCall, Action failCall = null) where T: UnityEngine.Object
+    public void LoadAssetAsync<T>(string fullPath, Action<T> successCall, Action failCall = null) where T: UnityEngine.Object
     {
+        switch (CfgLoadMode)
+        {
+# if UNITY_EDITOR
+            case LoadModeEnum.EditorOrigin:
+                T item = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
+                successCall(item);
+                break;
+            case LoadModeEnum.EditorAB:
+#endif
+            case LoadModeEnum.StandaloneAB:
+                LoadAssetBundleByAssetNameAsync(fullPath, (abItem)=> {
+                   GameMgr.StartCoroutine(_loadAssetFromABItemAsync(abItem, fullPath, successCall));
+                });
+                break;
+            default:
+                failCall?.Invoke();
+                break;
+        }
+    }
+
+    IEnumerator _loadAssetFromABItemAsync<T>(AssetBundleItem item, string assetFullPath, Action <T> successCall) where T : UnityEngine.Object
+    {
+        var request = item.m_assetBundle.LoadAssetAsync<T>(assetFullPath);
+        yield return request.isDone;
+        successCall(request.asset as T);
     }
 
     public bool LoadScene(string sceneName)
@@ -113,6 +146,8 @@ public class ABManager:IManager
 
     public void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
     {
+        string abName = m_assetToABNames[assetFullPath];
+        LoadAssetBundleAsync(abName, successCall);
     }
 
     public AssetBundleItem LoadAssetBundle(string abName)
@@ -135,9 +170,24 @@ public class ABManager:IManager
         return abItem;
     }
 
-    public void LoadAssetBundleAsync(Action<AssetBundleItem> successCall, Action failCall = null)
+    public void LoadAssetBundleAsync(string abName, Action<AssetBundleItem> successCall, Action failCall = null)
     {
-
+        Log(LogType.Info, "Loading Asset Bundle Async: " + abName);
+        AssetBundleItem abItem = null;
+        m_loadedABs.TryGetValue(abName, out abItem);
+        if (abItem != null)
+        {
+            abItem.m_referencedCount++;
+        }
+        else
+        {
+            string abPath = CfgAssetBundleLoadAbsolutePath + abName;
+            Log(LogType.Info, "Path：" + abPath);
+            AssetBundle ab = AssetBundle.LoadFromFile(abPath);
+            abItem = new AssetBundleItem(ab);
+            m_loadedABs[abName] = abItem;
+        }
+        successCall(abItem);
     }
 
 // 设置AB包名
@@ -168,7 +218,7 @@ private static void setAssetBundlePath()
         {
             platformPath = "Windows";
         }
-        CfgLoadMode = LoadModeEnum.DeviceStandaloneAB;
+        CfgLoadMode = LoadModeEnum.StandaloneAB;
 #endif
         CfgManifestAndPlatformName = platformPath;
         CfgAssetBundleRelativePath = "AssetBundles/" + platformPath + "/";

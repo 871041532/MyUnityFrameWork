@@ -25,8 +25,11 @@ public class LuaManager : IManager
     public override void Awake() {
         m_luaEnv = new LuaEnv();
         m_luaEnv.AddLoader(MyLuaLoader);
-        //m_luaEnv.DoString("require 'main.lua'");
-        //m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
+    }
+    public override void Start()
+    {
+        m_luaEnv.DoString("require 'main.lua'");
+        m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
     }
 
     // 自定义lua加载
