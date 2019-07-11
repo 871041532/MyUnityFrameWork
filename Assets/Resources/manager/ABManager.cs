@@ -27,13 +27,14 @@ public enum LoadModeEnum
 {  
     EditorOrigin,  // Editor下直接加载原始资源
     EditorAB,  // Editor下直接加载AB包
-    EditorFullAotAB,  // Editor下预下载到PresentData再加载
-    DeviceStandaloneAB,  // 设备上直接使用AB包
+    StandaloneAB,  // 设备或Editor下直接使用AB包
     DeviceFullAotAB,  // 设备上预下载到PrensentData再加载
 }
 
 public class ABManager:IManager
  {
+    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
+
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
     public static string CfgManifestAndPlatformName = "Windows";
@@ -42,7 +43,6 @@ public class ABManager:IManager
     public static string CfgAssetBundleLoadAbsolutePath = "";
     public static string CfgstreamingAssets = "";
     static LogMode CfgLogMode = LogMode.All;
-    public static LoadModeEnum CfgLoadMode = LoadModeEnum.DeviceStandaloneAB;
 
     private AssetBundleManifest m_manifest;
     Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
@@ -83,7 +83,7 @@ public class ABManager:IManager
                 return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
             case LoadModeEnum.EditorAB:
 #endif
-            case LoadModeEnum.DeviceStandaloneAB:
+            case LoadModeEnum.StandaloneAB:
                 AssetBundleItem ABItem = LoadAssetBundleByAssetName(fullPath);
                 return ABItem.m_assetBundle.LoadAsset<T>(fullPath);
             default:
@@ -173,7 +173,14 @@ private static void setAssetBundlePath()
         CfgManifestAndPlatformName = platformPath;
         CfgAssetBundleRelativePath = "AssetBundles/" + platformPath + "/";
         CfgServerLoadPath = string.Format("{0}:{1}/{2}/", CfgServerURL, CfgServerPort, platformPath);
-        CfgAssetBundleLoadAbsolutePath = Path.Combine(CfgstreamingAssets, CfgAssetBundleRelativePath);
+        if (CfgLoadMode == LoadModeEnum.EditorAB)
+        {
+            CfgAssetBundleLoadAbsolutePath = Path.Combine(Environment.CurrentDirectory, CfgAssetBundleRelativePath);
+        }
+        else
+        {
+            CfgAssetBundleLoadAbsolutePath = Path.Combine(CfgstreamingAssets, CfgAssetBundleRelativePath);
+        }    
     }
 
     // 自定义Altas加载
