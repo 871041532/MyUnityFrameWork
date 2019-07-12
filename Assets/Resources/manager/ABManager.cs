@@ -46,6 +46,7 @@ public class ABManager:IManager
 
     private AssetBundleManifest m_manifest;
     Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
+    HashSet<string> m_loadingABNames = new HashSet<string>();
     Dictionary<string, string> m_assetToABNames = new Dictionary<string, string> {
         { "Assets/Charactar/c1.prefab", "prefabs"},
     };
@@ -55,11 +56,12 @@ public class ABManager:IManager
         Init();
 
         // 测试
-        //var asset = LoadAsset<GameObject>("Assets/Charactar/c1.prefab");
-        //GameObject.Instantiate(asset);
-        //LoadAssetAsync<GameObject>("Assets/Charactar/c1.prefab", (asset) => {
-        //    GameObject.Instantiate(asset);
-        //});
+       //var asset = LoadAsset<GameObject>("Assets/Charactar/c1.prefab");
+       // GameObject.Instantiate(asset);
+    }
+
+    public override void Start()
+    {
     }
 
     private void Init()
@@ -80,6 +82,11 @@ public class ABManager:IManager
     public GameObject LoadAssetGameObject(string fullPath)
     {
         return LoadAsset<GameObject>(fullPath);
+    }
+
+    public void LoadAssetGameObjectAsync(string fullPath, Action<GameObject> successCall)
+    {
+        LoadAssetAsync<GameObject>(fullPath, successCall);
     }
 
     public T LoadAsset<T>(string fullPath) where T : UnityEngine.Object
@@ -147,7 +154,7 @@ public class ABManager:IManager
     public void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
     {
         string abName = m_assetToABNames[assetFullPath];
-        LoadAssetBundleAsync(abName, successCall);
+        GameMgr.StartCoroutine(LoadAssetBundleAsync(abName, successCall));
     }
 
     public AssetBundleItem LoadAssetBundle(string abName)
@@ -170,24 +177,46 @@ public class ABManager:IManager
         return abItem;
     }
 
-    public void LoadAssetBundleAsync(string abName, Action<AssetBundleItem> successCall, Action failCall = null)
+    IEnumerator LoadAssetBundleAsync(string abName, Action<AssetBundleItem> successCall, Action failCall = null)
     {
         Log(LogType.Info, "Loading Asset Bundle Async: " + abName);
+       
         AssetBundleItem abItem = null;
         m_loadedABs.TryGetValue(abName, out abItem);
         if (abItem != null)
         {
             abItem.m_referencedCount++;
+            Log(LogType.Info, string.Format("haven Loadded {0} reference: {1}", abName, abItem.m_referencedCount));
+            successCall(abItem);
         }
         else
         {
             string abPath = CfgAssetBundleLoadAbsolutePath + abName;
             Log(LogType.Info, "Path：" + abPath);
-            AssetBundle ab = AssetBundle.LoadFromFile(abPath);
-            abItem = new AssetBundleItem(ab);
-            m_loadedABs[abName] = abItem;
+            // 加载中
+            if (m_loadingABNames.Contains(abName))
+            {
+                Log(LogType.Info, "Asset Bundle In Loading wait:  " + abName);
+                yield return m_loadedABs.ContainsKey(abName);
+                abItem = m_loadedABs[abName];
+                abItem.m_referencedCount++;
+                Log(LogType.Info, "Asset Bundle In Loading wait ok:  " + abName + " reference: " + abItem.m_referencedCount);
+                successCall(abItem);
+            }
+            else
+            {
+                // 从头加载
+                Log(LogType.Info, "Asset Bundle begin loading:  " + abName);
+                m_loadingABNames.Add(abName);
+                var abRequest = AssetBundle.LoadFromFileAsync(abPath);
+                yield return abRequest.isDone;
+                abItem = new AssetBundleItem(abRequest.assetBundle);
+                Log(LogType.Info, "Asset Bundle end loaded:  " + abName);
+                m_loadedABs[abName] = abItem;
+                m_loadingABNames.Remove(abName);
+                successCall(abItem);
+            }
         }
-        successCall(abItem);
     }
 
 // 设置AB包名

@@ -25,12 +25,12 @@ namespace XLua.CSObjectWrap
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Awake", _m_Awake);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetGameObject", _m_LoadAssetGameObject);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetGameObjectAsync", _m_LoadAssetGameObjectAsync);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadScene", _m_LoadScene);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadSceneAsync", _m_LoadSceneAsync);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetBundleByAssetName", _m_LoadAssetBundleByAssetName);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetBundleByAssetNameAsync", _m_LoadAssetBundleByAssetNameAsync);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetBundle", _m_LoadAssetBundle);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetBundleAsync", _m_LoadAssetBundleAsync);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OnDestroy", _m_OnDestroy);
 			
 			
@@ -145,6 +145,35 @@ namespace XLua.CSObjectWrap
                     
                     
                     return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_LoadAssetGameObjectAsync(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _fullPath = LuaAPI.lua_tostring(L, 2);
+                    System.Action<UnityEngine.GameObject> _successCall = translator.GetDelegate<System.Action<UnityEngine.GameObject>>(L, 3);
+                    
+                    gen_to_be_invoked.LoadAssetGameObjectAsync( _fullPath, _successCall );
+                    
+                    
+                    
+                    return 0;
                 }
                 
             } catch(System.Exception gen_e) {
@@ -312,51 +341,6 @@ namespace XLua.CSObjectWrap
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_LoadAssetBundleAsync(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
-            
-            
-			    int gen_param_count = LuaAPI.lua_gettop(L);
-            
-                if(gen_param_count == 4&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<System.Action<AssetBundleItem>>(L, 3)&& translator.Assignable<System.Action>(L, 4)) 
-                {
-                    string _abName = LuaAPI.lua_tostring(L, 2);
-                    System.Action<AssetBundleItem> _successCall = translator.GetDelegate<System.Action<AssetBundleItem>>(L, 3);
-                    System.Action _failCall = translator.GetDelegate<System.Action>(L, 4);
-                    
-                    gen_to_be_invoked.LoadAssetBundleAsync( _abName, _successCall, _failCall );
-                    
-                    
-                    
-                    return 0;
-                }
-                if(gen_param_count == 3&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<System.Action<AssetBundleItem>>(L, 3)) 
-                {
-                    string _abName = LuaAPI.lua_tostring(L, 2);
-                    System.Action<AssetBundleItem> _successCall = translator.GetDelegate<System.Action<AssetBundleItem>>(L, 3);
-                    
-                    gen_to_be_invoked.LoadAssetBundleAsync( _abName, _successCall );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-            return LuaAPI.luaL_error(L, "invalid arguments to ABManager.LoadAssetBundleAsync!");
             
         }
         
