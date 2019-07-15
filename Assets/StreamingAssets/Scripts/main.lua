@@ -8,6 +8,14 @@ Datas = {
 local GM = CS.GameManager.Instance
 local ABM = GM.m_abMgr
 local GameObject = CS.UnityEngine.GameObject
-local asset = ABM:LoadAssetGameObject("Assets/Charactar/c1.prefab")
-print(asset)
-GameObject.Instantiate(asset)
+local prefabPath = "Assets/Charactar/c1.prefab"
+-- local asset = ABM:LoadAssetGameObject(prefabPath)
+-- GameObject.Instantiate(asset)
+
+ABM:LoadAssetGameObjectAsync(prefabPath, function(asset_obj)
+	GameObject.Instantiate(asset_obj)
+end)
+
+ABM:LoadAssetGameObjectAsync(prefabPath, function(asset_obj)
+	GameObject.Instantiate(asset_obj)
+end)
