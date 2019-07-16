@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using XLua;
 using System.IO;
+using UnityEngine.Networking;
 
 [CSharpCallLua]
 public interface ItemCfg
@@ -39,6 +40,7 @@ public class LuaManager : IManager
         byte[] data = File.ReadAllBytes(path);
         return data;
     }
+
 
     public override void OnDestroy()
     {

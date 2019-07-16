@@ -8,7 +8,7 @@ Datas = {
 local GM = CS.GameManager.Instance
 local ABM = GM.m_abMgr
 local GameObject = CS.UnityEngine.GameObject
-local prefabPath = "Assets/Charactar/c1.prefab"
+local prefabPath = "Assets/GameData/Prefabs/c1.prefab"
 -- local asset = ABM:LoadAssetGameObject(prefabPath)
 -- GameObject.Instantiate(asset)
 

@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 [System.Serializable]
 public class ABCfg
@@ -17,10 +18,17 @@ public class ABCfg
     public List<int> List { get; set; }
 }
 
-
-public class TestSerilize : ScriptableObject
+//[CreateAssetMenu(fileName = "TestAssets", menuName = "CreateAssets", order = 0)]
+public class AssetSerializeCfg: ScriptableObject
 {
-    [MenuItem("Tools/MyTool/XmlSerilize_write")]
+    public int Id;
+    public string Name;
+    public List<string> TestList;
+}
+
+public class TestSerilize
+{
+    [MenuItem("Tools/Serialize/XmlSerialize_write")]
     static void XmlSerilize()
     {
         ABCfg cfg = new ABCfg();
@@ -28,7 +36,7 @@ public class TestSerilize : ScriptableObject
         cfg.Name = "测试";
         cfg.List = new List<int>() { 1, 2, 3, 4 };
 
-        FileStream fileStream = new FileStream("ABCfg.xml", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        FileStream fileStream = new FileStream("ABCfg.xml", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
         StreamWriter sw = new StreamWriter(fileStream, System.Text.Encoding.UTF8);
         XmlSerializer xml = new XmlSerializer(typeof(ABCfg));
         xml.Serialize(sw, cfg);
@@ -36,7 +44,7 @@ public class TestSerilize : ScriptableObject
         fileStream.Close();
     }
 
-    [MenuItem("Tools/MyTool/XmlSerilize_read")]
+    [MenuItem("Tools/Serialize/XmlSerialize_read")]
     static void XmlSerilize_read()
     {
         FileStream fileStream = new FileStream("ABCfg.xml", FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -48,5 +56,50 @@ public class TestSerilize : ScriptableObject
         Debug.Log(cfg.List);
         sr.Close();
         fileStream.Close();
+    }
+
+    [MenuItem("Tools/Serialize/BinarySerialize_write")]
+    static void BinarySerializeWrite()
+    {
+        ABCfg cfg = new ABCfg();
+        cfg.Id = 3;
+        cfg.Name = "测试3";
+        cfg.List = new List<int>() { 2, 3, 4 };
+        FileStream fileStream = new FileStream("ABCfg.bytes", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(fileStream, cfg);
+        fileStream.Close();
+    }
+
+    [MenuItem("Tools/Serialize/BinarySerialize_read")]
+    static void BinarySerializeRead()
+    {
+        FileStream fileStream = new FileStream("ABCfg.bytes", FileMode.Open, FileAccess.Read, FileShare.Read);
+        BinaryFormatter bf = new BinaryFormatter();
+        ABCfg cfg = bf.Deserialize(fileStream) as ABCfg;
+        Debug.Log(cfg.Id);
+        Debug.Log(cfg.Name);
+        foreach (var item in cfg.List)
+        {
+            Debug.Log(item);
+        }     
+    }
+
+    [MenuItem("Tools/Serialize/ScriptableObjectSerialize_write")]
+    static void CreateScriptableObjectAsset()
+    {
+        AssetSerializeCfg asetSerializecfg = ScriptableObject.CreateInstance<AssetSerializeCfg>();
+        asetSerializecfg.Id = 1;
+        asetSerializecfg.Name = "ceshi";
+        asetSerializecfg.TestList = new List<string>() { "aa", "ww"};
+        AssetDatabase.CreateAsset(asetSerializecfg, "Assets/TestAssets.asset");
+    }
+
+    [MenuItem("Tools/Serialize/ScriptableObjectSerialize_read")]
+    static void ReadScriptableObjectAsset()
+    {
+        AssetSerializeCfg cfg = AssetDatabase.LoadAssetAtPath<AssetSerializeCfg>("Assets/TestAssets.asset");
+        Debug.Log(cfg.Id);
+        Debug.Log(cfg.Name);
     }
 }

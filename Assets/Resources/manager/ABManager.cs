@@ -33,7 +33,7 @@ public enum LoadModeEnum
 
 public class ABManager:IManager
  {
-    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
+    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorOrigin;
 
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
@@ -48,7 +48,7 @@ public class ABManager:IManager
     Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
     HashSet<string> m_loadingABNames = new HashSet<string>();
     Dictionary<string, string> m_assetToABNames = new Dictionary<string, string> {
-        { "Assets/Charactar/c1.prefab", "prefabs"},
+        { "Assets/GameData/Prefabs/c1.prefab", "prefabs"},
     };
 
     public override void Awake() {
@@ -266,7 +266,7 @@ private static void setAssetBundlePath()
     void OnAtlasRequested(string tag, Action<SpriteAtlas> action)
     {
         Debug.Log("加载Altas：" + tag);
-        string path = Path.Combine("Assets/UI/res", tag + ".spriteatlas");
+        string path = Path.Combine("Assets/GameData/UI/res", tag + ".spriteatlas");
 #if UNITY_EDITOR
         SpriteAtlas sa = UnityEditor.AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
         action(sa);
