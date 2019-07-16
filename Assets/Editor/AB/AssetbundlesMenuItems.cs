@@ -13,6 +13,8 @@ namespace AssetBundles
         public static Dictionary<string, string> m_AllFileDir = new Dictionary<string, string>();
         // 过滤list
         public static List<string> m_AllFilteAB = new List<string>();
+        // 单个prefab的ab包
+        public static Dictionary<string, List<string>> m_AllPrefabDir = new Dictionary<string, List<string>>();
 
         [MenuItem("Assets/AssetBundles/Clear and Set All Bundle Tag")]
         static public void ClearAndSetAllBundleTag()
@@ -27,12 +29,15 @@ namespace AssetBundles
                     ai.assetBundleName = "";
                 }                      
             }
+            // 清空缓存
+            m_AllFileDir.Clear();
+            m_AllFilteAB.Clear();
+            m_AllPrefabDir.Clear();
 
             // 加载配置
             ABConfig abConfig = AssetDatabase.LoadAssetAtPath<ABConfig>(ABCONFIGPATH);
            
             // 将文件夹AB包读取出来
-            m_AllFileDir.Clear();
             foreach (ABConfig.FileDirABName item in abConfig.m_AllFileDirAB)
             {
                 if (m_AllFileDir.ContainsKey(item.ABName))
@@ -66,6 +71,14 @@ namespace AssetBundles
                             allDependPath.Add(dependItem);
                         }
                     }
+                    string[] temp = path.Split('/');
+                    string prefabName = temp[temp.Length -1].Split('.')[0];
+                    if (m_AllPrefabDir.ContainsKey(prefabName))
+                    {
+                        Debug.LogError("存在同名prefab: " + prefabName);
+                        return;
+                    }
+                    m_AllPrefabDir.Add(prefabName, allDependPath);
                 }
 
             }
