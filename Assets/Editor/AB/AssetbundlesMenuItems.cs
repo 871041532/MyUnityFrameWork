@@ -17,6 +17,8 @@ namespace AssetBundles
         public static List<string> m_FilterABPaths = new List<string>();
         // 单个prefab的ab包
         public static Dictionary<string, List<string>> m_AllPrefabDir = new Dictionary<string, List<string>>();
+        // 有效路径
+        public static List<string> m_DynamicLoadPaths = new List<string>();
 
         [MenuItem("Assets/AssetBundles/Clear and Set Tag")]
         static public void ClearAndSetAllBundleTag()
@@ -37,6 +39,7 @@ namespace AssetBundles
             m_AllFileDir.Clear();
             m_FilterABPaths.Clear();
             m_AllPrefabDir.Clear();
+            m_DynamicLoadPaths.Clear();
 
             // s3.加载配置
             ABConfig abConfig = AssetDatabase.LoadAssetAtPath<ABConfig>(ABCONFIGPATH);
@@ -53,6 +56,7 @@ namespace AssetBundles
                 {
                     m_AllFileDir[item.ABName] = item.Path;
                     m_FilterABPaths.Add(item.Path);
+                    m_DynamicLoadPaths.Add(item.Path);
                 }
             }
 
@@ -64,6 +68,7 @@ namespace AssetBundles
                 EditorUtility.DisplayProgressBar("Find Prefab", "Prefab:" + path, (i + 1) * 1.0f / allPrefabGUIDs.Length);
                 if (!HavenInFilterABPaths(path))
                 {
+                    m_DynamicLoadPaths.Add(path);
                     string[] allDepends = AssetDatabase.GetDependencies(path);
                     List<string> allDependPath = new List<string>();
                     for (int j = 0; j < allDepends.Length; j++)
@@ -166,7 +171,7 @@ namespace AssetBundles
                 for (int j = 0; j < inBundleAssetPaths.Length; j++)
                 {
                     string assetPath = inBundleAssetPaths[j];
-                    if (!assetPath.EndsWith(".cs"))
+                    if (!assetPath.EndsWith(".cs") && IsDynamicLoadPath(assetPath))
                     {
                         res_to_bundle.Add(assetPath, bundleName);         
                     }
@@ -258,6 +263,23 @@ namespace AssetBundles
             for (int i = 0; i < m_FilterABPaths.Count; i++)
             {
                 if (path == m_FilterABPaths[i] || path.Contains(m_FilterABPaths[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 是否需要动态加载
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        static bool IsDynamicLoadPath(string path)
+        {
+            for (int i = 0; i < m_DynamicLoadPaths.Count; i++)
+            {
+                if (path.Contains(m_DynamicLoadPaths[i]))
                 {
                     return true;
                 }
