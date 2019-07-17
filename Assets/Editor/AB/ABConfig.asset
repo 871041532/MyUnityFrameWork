@@ -15,5 +15,5 @@ MonoBehaviour:
   m_AllPrefabPath:
   - Assets/GameData/Prefabs
   m_AllFileDirAB:
-  - ABName: scenes
-    Path: Assets/GameData/Scenes
+  - ABName: ui_common
+    Path: Assets/GameData/UI/res/common

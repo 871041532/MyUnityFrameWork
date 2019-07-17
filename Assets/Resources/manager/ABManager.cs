@@ -266,7 +266,7 @@ private static void setAssetBundlePath()
     void OnAtlasRequested(string tag, Action<SpriteAtlas> action)
     {
         Debug.Log("加载Altas：" + tag);
-        string path = Path.Combine("Assets/GameData/UI/res", tag + ".spriteatlas");
+        string path = Path.Combine("Assets/GameData/UI/res", tag, tag + ".spriteatlas");
 #if UNITY_EDITOR
         SpriteAtlas sa = UnityEditor.AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
         action(sa);
