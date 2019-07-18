@@ -17,3 +17,5 @@ MonoBehaviour:
   m_AllFileDirAB:
   - ABName: ui_common
     Path: Assets/GameData/UI/res/common
+  - ABName: configs
+    Path: Assets/GameData/Configs

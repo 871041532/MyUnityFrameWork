@@ -2,30 +2,31 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-[System.Serializable]
+[DataContract]
 public class AssetBundleConfig
 {
-    [XmlElement("ABList")]
-    public List<ABBase> ABList { get; set; }
+    [DataMember]
+    public Dictionary<string, ABBase> ABDict { get; set; }
 }
 
-[System.Serializable]
+[DataContract]
 public class ABBase
 {
-    [XmlAttribute("Path")]
+    [DataMember]
     public string Path { get; set; }
-    [XmlAttribute("MD5")]
+    [DataMember]
     public string MD5 { get; set; }
-    [XmlAttribute("ABName")]
+    [DataMember]
     public string ABName { get; set; }
-    [XmlAttribute("AssetName")]
+    [DataMember]
     public string AssetName { get; set; }
-    [XmlAttribute("ABDependence")]
+    [DataMember]
     public List<string> ABDependence { get; set; }
 }
 

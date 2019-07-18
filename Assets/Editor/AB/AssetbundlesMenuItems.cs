@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using System.Xml.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace AssetBundles
 {
@@ -179,7 +177,7 @@ namespace AssetBundles
             }
             // 构造每个asset的依赖信息
             AssetBundleConfig configs = new AssetBundleConfig();
-            configs.ABList = new List<ABBase>();
+            configs.ABDict = new Dictionary<string, ABBase>();
             foreach (var item in res_to_bundle)
             {
                 ABBase abBase = new ABBase();
@@ -209,14 +207,12 @@ namespace AssetBundles
                         }
                     }                    
                 }
-                configs.ABList.Add(abBase);
+                configs.ABDict.Add(assetFullPath, abBase);
             }
             // 依赖信息写入xml
-            FileStream fileStream = new FileStream(Path.Combine(ABManager.CfgAssetBundleRelativePath, "AssetBundleConfig.xml"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-            StreamWriter sw = new StreamWriter(fileStream, System.Text.Encoding.UTF8);
-            XmlSerializer xml = new XmlSerializer(typeof(AssetBundleConfig));
-            xml.Serialize(sw, configs);
-            sw.Close();
+            FileStream fileStream = new FileStream(Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.json"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(AssetBundleConfig));
+            jsonSerializer.WriteObject(fileStream, configs);
             fileStream.Close();
         }
 
@@ -262,7 +258,7 @@ namespace AssetBundles
         {
             for (int i = 0; i < m_FilterABPaths.Count; i++)
             {
-                if (path == m_FilterABPaths[i] || path.Contains(m_FilterABPaths[i]))
+                if (path == m_FilterABPaths[i] || (path.Contains(m_FilterABPaths[i]) && path.Replace(m_FilterABPaths[i], "")[0] == '/'))
                 {
                     return true;
                 }

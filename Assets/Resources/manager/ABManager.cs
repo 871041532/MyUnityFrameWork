@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.U2D;
+using System.Runtime.Serialization.Json;
 
 public class AssetBundleItem
 {
@@ -33,7 +33,7 @@ public enum LoadModeEnum
 
 public class ABManager:IManager
  {
-    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorOrigin;
+    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
 
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
@@ -44,20 +44,14 @@ public class ABManager:IManager
     public static string CfgstreamingAssets = "";
     static LogMode CfgLogMode = LogMode.All;
 
-    private AssetBundleManifest m_manifest;
     Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
     HashSet<string> m_loadingABNames = new HashSet<string>();
-    Dictionary<string, string> m_assetToABNames = new Dictionary<string, string> {
-        { "Assets/GameData/Prefabs/c1.prefab", "prefabs"},
-    };
+    // 存放 assets全路径与ab包名的依赖关系
+    Dictionary<string, string> m_assetToABNames = new Dictionary<string, string>();
 
     public override void Awake() {
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
         Init();
-
-        // 测试
-       //var asset = LoadAsset<GameObject>("Assets/Charactar/c1.prefab");
-       // GameObject.Instantiate(asset);
     }
 
     public override void Start()
@@ -68,9 +62,22 @@ public class ABManager:IManager
     {
         if (CfgLoadMode != LoadModeEnum.EditorOrigin)
         {
-            AssetBundleItem mainAB = LoadAssetBundle(CfgManifestAndPlatformName);
-            AssetBundleManifest manifest = mainAB.m_assetBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
-            m_manifest = manifest;
+            // asset to ab name 读取
+            AssetBundleItem abItem = LoadAssetBundle("configs");
+            TextAsset asset = abItem.m_assetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
+            MemoryStream stream = new MemoryStream(asset.bytes);
+            DataContractJsonSerializer jsonSerializer2 = new DataContractJsonSerializer(typeof(AssetBundleConfig));
+            AssetBundleConfig cfg2 = jsonSerializer2.ReadObject(stream) as AssetBundleConfig;
+            stream.Close();
+            m_assetToABNames.Clear();
+            foreach (var item in cfg2.ABDict)
+            {
+                m_assetToABNames.Add(item.Key, item.Value.ABName);
+            }
+        }
+        else
+        {
+
         }
     }
 
