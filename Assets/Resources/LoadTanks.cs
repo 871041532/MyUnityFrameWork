@@ -102,7 +102,7 @@ public class LoadTanks : MonoBehaviour
         yield return StartCoroutine(Initialize()); 
 
         // Set active variants.
-        AssetBundleManager.ActiveVariants = variants;
+        //AssetBundleManager.ActiveVariants = variants;
         // Load variant level which depends on variants.
         yield return StartCoroutine(InitializeSceneAsync(sceneName, true));
         // Load additonal assets, in this case a language specific banner
@@ -144,10 +144,11 @@ public class LoadTanks : MonoBehaviour
         InitializeSourceURL();
 
         // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
-        var request = AssetBundleManager.Initialize();
+        //var request = AssetBundleManager.Initialize();
 
-        if (request != null)
-            yield return StartCoroutine(request);
+        //if (request != null)
+        //    yield return StartCoroutine(request);
+        yield return null;
     }
 
     protected IEnumerator InitializeSceneAsync(string sceneName, bool isAdditive)
@@ -156,44 +157,46 @@ public class LoadTanks : MonoBehaviour
         float startTime = Time.realtimeSinceStartup;
         //yield return StartCoroutine(request1);
         // Load level from assetBundle.
-        ABOperation request = AssetBundleManager.LoadSceneAsync(sceneAssetBundle, sceneName, isAdditive);
-        if (request == null)
-            yield break;
+        //ABOperation request = AssetBundleManager.LoadSceneAsync(sceneAssetBundle, sceneName, isAdditive);
+        //if (request == null)
+        //    yield break;
 
-        yield return StartCoroutine(request);
+        //yield return StartCoroutine(request);
 
-        // Calculate and display the elapsed time.
-        float elapsedTime = Time.realtimeSinceStartup - startTime;
-        Debug.Log("Finished loading scene " + sceneName + " in " + elapsedTime + " seconds");
+        //// Calculate and display the elapsed time.
+        //float elapsedTime = Time.realtimeSinceStartup - startTime;
+        //Debug.Log("Finished loading scene " + sceneName + " in " + elapsedTime + " seconds");
+        yield return null;
     }
 
     protected IEnumerator InstantiateGameObjectAsync(string assetBundleName, string assetName)
     {
         // This is simply to get the elapsed time for this phase of AssetLoading.
-        float startTime = Time.realtimeSinceStartup; 
+        float startTime = Time.realtimeSinceStartup;
 
         //AssetBundleManager.LoadAssetBundle("tanks-albedo.desert-hd", false); 
 
         // Load asset from assetBundle.
-        ABLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
-        if (request == null)
-        {
-            Debug.LogError("Failed AssetBundleLoadAssetOperation on " + assetName + " from the AssetBundle " + assetBundleName + ".");
-            yield break;
-        }
-        yield return StartCoroutine(request);
+        //ABLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
+        //if (request == null)
+        //{
+        //    Debug.LogError("Failed AssetBundleLoadAssetOperation on " + assetName + " from the AssetBundle " + assetBundleName + ".");
+        //    yield break;
+        //}
+        //yield return StartCoroutine(request);
 
         // Get the Asset.
-        GameObject prefab = request.GetAsset<GameObject>();
+        //GameObject prefab = request.GetAsset<GameObject>();
 
-        // Instantiate the Asset, or log an error.
-        if (prefab != null)
-            GameObject.Instantiate(prefab);
-        else
-            Debug.LogError("Failed to GetAsset from request");
+        //// Instantiate the Asset, or log an error.
+        //if (prefab != null)
+        //    GameObject.Instantiate(prefab);
+        //else
+        //    Debug.LogError("Failed to GetAsset from request");
 
-        // Calculate and display the elapsed time.
-        float elapsedTime = Time.realtimeSinceStartup - startTime;
-        Debug.Log(assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds");
+        //// Calculate and display the elapsed time.
+        //float elapsedTime = Time.realtimeSinceStartup - startTime;
+        //Debug.Log(assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds");
+        yield return null;
     }
 }

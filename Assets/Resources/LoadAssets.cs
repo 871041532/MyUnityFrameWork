@@ -52,9 +52,10 @@ public class LoadAssets : MonoBehaviour
         InitializeSourceURL();
 
         // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
-        var request = AssetBundleManager.Initialize();
-        if (request != null)
-            yield return StartCoroutine(request);
+        //var request = AssetBundleManager.Initialize();
+        //if (request != null)
+        //    yield return StartCoroutine(request);
+        yield return null;
     }
 
     protected IEnumerator InstantiateGameObjectAsync(string assetBundleName, string assetName)
@@ -63,19 +64,20 @@ public class LoadAssets : MonoBehaviour
         float startTime = Time.realtimeSinceStartup;
 
         // Load asset from assetBundle.
-        ABLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
-        if (request == null)
-            yield break;
-        yield return StartCoroutine(request);
+        //ABLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
+        //if (request == null)
+        //    yield break;
+        //yield return StartCoroutine(request);
 
         // Get the asset.
-        GameObject prefab = request.GetAsset<GameObject>();
+        //GameObject prefab = request.GetAsset<GameObject>();
 
-        if (prefab != null)
-            GameObject.Instantiate(prefab);
+        //if (prefab != null)
+        //GameObject.Instantiate(prefab);
 
         // Calculate and display the elapsed time.
-        float elapsedTime = Time.realtimeSinceStartup - startTime;
-        Debug.Log(assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds");
+        //float elapsedTime = Time.realtimeSinceStartup - startTime;
+        //Debug.Log(assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds");
+        yield return null;
     }
 }

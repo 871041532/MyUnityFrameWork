@@ -159,7 +159,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.m_luaMgr);
+                translator.Push(L, gen_to_be_invoked.m_LuaMgr);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
@@ -173,7 +173,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.m_abMgr);
+                translator.Push(L, gen_to_be_invoked.m_ABMgr);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
@@ -187,7 +187,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.m_cutSceneMgr);
+                translator.Push(L, gen_to_be_invoked.m_CutSceneMgr);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
@@ -217,7 +217,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.m_luaMgr = (LuaManager)translator.GetObject(L, 2, typeof(LuaManager));
+                gen_to_be_invoked.m_LuaMgr = (LuaManager)translator.GetObject(L, 2, typeof(LuaManager));
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
@@ -232,7 +232,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.m_abMgr = (ABManager)translator.GetObject(L, 2, typeof(ABManager));
+                gen_to_be_invoked.m_ABMgr = (ABManager)translator.GetObject(L, 2, typeof(ABManager));
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
@@ -247,7 +247,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.m_cutSceneMgr = (CutSceneManager)translator.GetObject(L, 2, typeof(CutSceneManager));
+                gen_to_be_invoked.m_CutSceneMgr = (CutSceneManager)translator.GetObject(L, 2, typeof(CutSceneManager));
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

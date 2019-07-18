@@ -44,8 +44,8 @@ public class ABManager:IManager
     public static string CfgstreamingAssets = "";
     static LogMode CfgLogMode = LogMode.All;
 
-    Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
-    HashSet<string> m_loadingABNames = new HashSet<string>();
+    public Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
+    public HashSet<string> m_loadingABNames = new HashSet<string>();
     // 存放 assets全路径与ab包名的依赖关系
     Dictionary<string, string> m_assetToABNames = new Dictionary<string, string>();
 

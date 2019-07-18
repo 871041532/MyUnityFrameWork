@@ -51,10 +51,11 @@ public class LoadScenes : MonoBehaviour
         InitializeSourceURL();
 
         // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
-        var request = AssetBundleManager.Initialize();
+        //var request = AssetBundleManager.Initialize();
 
-        if (request != null)
-            yield return StartCoroutine(request);
+        //if (request != null)
+        //    yield return StartCoroutine(request);
+        yield return null;
     }
 
     protected IEnumerator InitializeSceneAsync(string levelName, bool isAdditive)
@@ -63,13 +64,14 @@ public class LoadScenes : MonoBehaviour
         float startTime = Time.realtimeSinceStartup;
 
         // Load level from assetBundle.
-        ABOperation request = AssetBundleManager.LoadSceneAsync(sceneAssetBundle, levelName, isAdditive);
-        if (request == null)
-            yield break;
-        yield return StartCoroutine(request);
+        //ABOperation request = AssetBundleManager.LoadSceneAsync(sceneAssetBundle, levelName, isAdditive);
+        //if (request == null)
+        //    yield break;
+        //yield return StartCoroutine(request);
 
         // Calculate and display the elapsed time.
         float elapsedTime = Time.realtimeSinceStartup - startTime;
         Debug.Log("Finished loading scene " + levelName + " in " + elapsedTime + " seconds");
+        yield return null;
     }
 }

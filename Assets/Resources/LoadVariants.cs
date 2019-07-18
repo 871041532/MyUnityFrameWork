@@ -68,7 +68,7 @@ public class LoadVariants : MonoBehaviour
         yield return StartCoroutine(Initialize());
 
         // Set active variants.
-        AssetBundleManager.ActiveVariants = activeVariants;
+        //AssetBundleManager.ActiveVariants = activeVariants;
 
         // Load variant level which depends on variants.
         yield return StartCoroutine(InitializeLevelAsync(variantSceneName, true));
@@ -122,26 +122,28 @@ public class LoadVariants : MonoBehaviour
         InitializeSourceURL();
 
         // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
-        var request = AssetBundleManager.Initialize();
+        //var request = AssetBundleManager.Initialize();
 
-        if (request != null)
-            yield return StartCoroutine(request);
+        //if (request != null)
+        //    yield return StartCoroutine(request);
+        yield return null;
     }
 
     protected IEnumerator InitializeLevelAsync(string levelName, bool isAdditive)
     {
         // This is simply to get the elapsed time for this phase of AssetLoading.
-        float startTime = Time.realtimeSinceStartup;
+        //float startTime = Time.realtimeSinceStartup;
 
-        // Load level from assetBundle.
-        ABOperation request = AssetBundleManager.LoadSceneAsync(variantSceneAssetBundle, levelName, isAdditive);
-        if (request == null)
-            yield break;
+        //// Load level from assetBundle.
+        //ABOperation request = AssetBundleManager.LoadSceneAsync(variantSceneAssetBundle, levelName, isAdditive);
+        //if (request == null)
+        //    yield break;
 
-        yield return StartCoroutine(request);
+        //yield return StartCoroutine(request);
 
-        // Calculate and display the elapsed time.
-        float elapsedTime = Time.realtimeSinceStartup - startTime;
-        Debug.Log("Finished loading scene " + levelName + " in " + elapsedTime + " seconds");
+        //// Calculate and display the elapsed time.
+        //float elapsedTime = Time.realtimeSinceStartup - startTime;
+        //Debug.Log("Finished loading scene " + levelName + " in " + elapsedTime + " seconds");
+        yield return null;
     }
 }

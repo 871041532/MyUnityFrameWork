@@ -160,7 +160,8 @@ namespace AssetBundles
             if (m_asyncOperation != null)
                 return false;
 
-            AssetBundleItem bundleItem = AssetBundleManager.GetLoadedAssetBundle(m_ABName, out m_downloadingError);
+            AssetBundleItem bundleItem = null;
+            GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundleItem);
             if (bundleItem != null)
             {
                 m_asyncOperation = SceneManager.LoadSceneAsync(m_sceneName, m_isAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single);
@@ -244,7 +245,8 @@ namespace AssetBundles
             if (m_request != null)
                 return false;
 
-            AssetBundleItem bundle = AssetBundleManager.GetLoadedAssetBundle(m_ABName, out m_downloadingError);
+            AssetBundleItem bundle = null;
+                       GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundle);
             if (bundle != null)
             {
                 ///@TODO: When asset bundle download fails this throws an exception...
@@ -282,7 +284,7 @@ namespace AssetBundles
 
             if (m_request != null && m_request.isDone)
             {
-                AssetBundleManager.AssetBundleManifestObject = GetAsset<AssetBundleManifest>();
+                //AssetBundleManager.AssetBundleManifestObject = GetAsset<AssetBundleManifest>();
                 return false;
             }
             else

@@ -5,10 +5,12 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public LuaManager m_luaMgr;
-    public ABManager m_abMgr;
-    public CutSceneManager m_cutSceneMgr;
-    private List<IManager> m_mgrs;
+    public LuaManager m_LuaMgr;
+    public ABManager m_ABMgr;
+    public CutSceneManager m_CutSceneMgr;
+    public ResourceManager m_ResManager;
+    public ObjectManager m_ObjectManager;
+    private List<IManager> m_Mgrs;
     public Text m_log_object;
 
     public void Log(string line)
@@ -20,16 +22,21 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        m_mgrs = new List<IManager>();
+        m_Mgrs = new List<IManager>();
 
-        m_luaMgr = new LuaManager();
-        m_abMgr = new ABManager();
-        m_cutSceneMgr = new CutSceneManager();
-        m_mgrs.Add(m_luaMgr);
-        m_mgrs.Add(m_abMgr);
-        m_mgrs.Add(m_cutSceneMgr);
+        m_LuaMgr = new LuaManager();
+        m_ABMgr = new ABManager();
+        m_CutSceneMgr = new CutSceneManager();
+        m_ResManager = new ResourceManager();
+        m_ObjectManager = new ObjectManager();
 
-        var iter = m_mgrs.GetEnumerator();
+        m_Mgrs.Add(m_LuaMgr);
+        m_Mgrs.Add(m_ABMgr);
+        m_Mgrs.Add(m_CutSceneMgr);
+        m_Mgrs.Add(m_ResManager);
+        m_Mgrs.Add(m_ObjectManager);
+
+        var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
             iter.Current.Awake();
@@ -38,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        var iter = m_mgrs.GetEnumerator();
+        var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
             iter.Current.Start();
@@ -47,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        var iter = m_mgrs.GetEnumerator();
+        var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
             iter.Current.Update();
@@ -56,7 +63,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        var iter = m_mgrs.GetEnumerator();
+        var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
             iter.Current.OnDestroy();
