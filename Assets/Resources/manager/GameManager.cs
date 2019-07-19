@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
         m_Mgrs.Add(m_CutSceneMgr);
         m_Mgrs.Add(m_ResManager);
         m_Mgrs.Add(m_ObjectManager);
-
+        Assert.raiseExceptions = true;
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {

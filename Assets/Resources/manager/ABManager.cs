@@ -5,12 +5,19 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.U2D;
 using System.Runtime.Serialization.Json;
+using UnityEngine.Assertions;
+
+public class ResouceItem
+{
+    public string m_MD5;
+    public string m_AssetName;
+    public string m_ABName;
+}
 
 public class AssetBundleItem
 {
     public AssetBundle m_assetBundle;
     public uint m_referencedCount;
-    public event Action OnUnload;
     public AssetBundleItem(AssetBundle ab)
     {
         m_assetBundle = ab;
@@ -19,7 +26,6 @@ public class AssetBundleItem
     public void UnLoad()
     {
         m_assetBundle.Unload(false);
-        OnUnload?.Invoke();
     }
 }
 
@@ -44,11 +50,11 @@ public class ABManager:IManager
     static LogMode CfgLogMode = LogMode.All;
 
     // 已经加载的ABItems
-    public Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
+    private Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
     // 加载中的ABItems
-    public HashSet<string> m_loadingABNames = new HashSet<string>();
+    private HashSet<string> m_loadingABNames = new HashSet<string>();
     // 存放 assets全路径与ab包名的依赖关系
-    Dictionary<string, string> m_assetToABNames = new Dictionary<string, string>();
+    private Dictionary<string, string> m_assetToABNames = new Dictionary<string, string>();
 
     public override void Awake() {
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
@@ -73,7 +79,7 @@ public class ABManager:IManager
             m_assetToABNames.Clear();
             foreach (var item in cfg2.ResDict)
             {
-                m_assetToABNames.Add(item.Key, item.Value.ABName);
+                m_assetToABNames.Add(item.Path, item.ABName);
             }
         }
     }
@@ -150,6 +156,7 @@ public class ABManager:IManager
 
     public AssetBundleItem LoadAssetBundleByAssetName(string assetFullPath)
     {
+        Assert.IsTrue(m_assetToABNames.ContainsKey(assetFullPath), assetFullPath + "没有对应的AB包！");
         string abName = m_assetToABNames[assetFullPath];
         AssetBundleItem abItem = LoadAssetBundle(abName);
         return abItem;
@@ -157,6 +164,7 @@ public class ABManager:IManager
 
     public void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
     {
+        Assert.IsTrue(m_assetToABNames.ContainsKey(assetFullPath), assetFullPath + "没有对应的AB包！");
         string abName = m_assetToABNames[assetFullPath];
         GameMgr.StartCoroutine(LoadAssetBundleAsync(abName, successCall));
     }
@@ -178,6 +186,7 @@ public class ABManager:IManager
             abItem = new AssetBundleItem(ab);
             m_loadedABs[abName] = abItem;
         }
+        Log(LogType.Info, string.Format("Loaded Asset Bundle: {0} reference {1}", abName, abItem.m_referencedCount));
         return abItem;
     }
 

@@ -8,9 +8,9 @@ using System.Text;
 public class AssetBundleConfig
 {
     [DataMember]
-    public Dictionary<string, ResData> ResDict { get; set; }
+    public List<ResData> ResDict { get; set; }
     [DataMember]
-    public Dictionary<string, ABData> ABDict { get; set; }
+    public List<ABData> ABDict { get; set; }
 }
 
 [DataContract]

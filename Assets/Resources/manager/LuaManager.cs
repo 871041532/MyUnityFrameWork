@@ -29,8 +29,18 @@ public class LuaManager : IManager
     }
     public override void Start()
     {
-        m_luaEnv.DoString("require 'main.lua'");
-        m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
+        //m_luaEnv.DoString("require 'main.lua'");
+        //m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
+        m_luaEnv.DoString(@"
+            local GM = CS.GameManager.Instance
+            local ABM = GM.m_abMgr
+            local GameObject = CS.UnityEngine.GameObject
+            local prefabPath = 'Assets/GameData/Prefabs/c1.prefab'
+            local asset = ABM:LoadAssetGameObject(prefabPath)
+            GameObject.Instantiate(asset)
+            local asset2 = ABM:LoadAssetGameObject('Assets/GameData/Prefabs/c1.prefab')
+            GameObject.Instantiate(asset2)
+        ");
     }
 
     // 自定义lua加载

@@ -161,7 +161,7 @@ namespace AssetBundles
                 return false;
 
             AssetBundleItem bundleItem = null;
-            GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundleItem);
+            //GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundleItem);
             if (bundleItem != null)
             {
                 m_asyncOperation = SceneManager.LoadSceneAsync(m_sceneName, m_isAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single);
@@ -242,21 +242,21 @@ namespace AssetBundles
         // 如果依赖的bundle还没有被加载则返回True，即还有依赖返回true，没有依赖返回false
         public override bool isDependentOtherOperation()
         {
-            if (m_request != null)
-                return false;
+            //if (m_request != null)
+            //    return false;
 
-            AssetBundleItem bundle = null;
-                       GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundle);
-            if (bundle != null)
-            {
-                ///@TODO: When asset bundle download fails this throws an exception...
-                m_request = bundle.m_assetBundle.LoadAssetAsync(m_assetName, m_type);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            //AssetBundleItem bundle = null;
+            //           GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundle);
+            //if (bundle != null)
+            //{
+            //    ///@TODO: When asset bundle download fails this throws an exception...
+            //    m_request = bundle.m_assetBundle.LoadAssetAsync(m_assetName, m_type);
+            //    return false;
+            //}
+            //else
+            //{
+            return true;
+            //}
         }
 
         public override bool IsDone()

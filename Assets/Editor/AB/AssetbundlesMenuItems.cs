@@ -181,7 +181,7 @@ namespace AssetBundles
             }
             // 构造每个Res的依赖信息
             AssetBundleConfig configs = new AssetBundleConfig();
-            configs.ResDict = new Dictionary<string, ResData>();
+            configs.ResDict = new List<ResData>();
             foreach (var item in res_to_bundle)
             {
                 ResData abBase = new ResData();
@@ -190,16 +190,16 @@ namespace AssetBundles
                 abBase.MD5 = ABUtility.GetMD5FromFile(assetFullPath);
                 abBase.ABName = item.Value;
                 abBase.AssetName = assetFullPath.Remove(0, assetFullPath.LastIndexOf("/") + 1);
-                configs.ResDict.Add(assetFullPath, abBase);
+                configs.ResDict.Add(abBase);
             }
             // 构造每个AB包的依赖信息
-            configs.ABDict = new Dictionary<string, ABData>();
+            configs.ABDict = new List<ABData>();
             foreach (var item in ab_to_abDepences)
             {
                 ABData abData = new ABData();
                 abData.Name = item.Key;
                 abData.DependenceNames = item.Value;
-                configs.ABDict.Add(abData.Name, abData);
+                configs.ABDict.Add(abData);
             }
 
             // 依赖信息写入xml
