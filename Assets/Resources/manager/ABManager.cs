@@ -34,7 +34,6 @@ public enum LoadModeEnum
 public class ABManager:IManager
  {
     public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
-
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
     public static string CfgManifestAndPlatformName = "Windows";
@@ -44,7 +43,9 @@ public class ABManager:IManager
     public static string CfgstreamingAssets = "";
     static LogMode CfgLogMode = LogMode.All;
 
+    // 已经加载的ABItems
     public Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
+    // 加载中的ABItems
     public HashSet<string> m_loadingABNames = new HashSet<string>();
     // 存放 assets全路径与ab包名的依赖关系
     Dictionary<string, string> m_assetToABNames = new Dictionary<string, string>();
@@ -70,14 +71,10 @@ public class ABManager:IManager
             AssetBundleConfig cfg2 = jsonSerializer2.ReadObject(stream) as AssetBundleConfig;
             stream.Close();
             m_assetToABNames.Clear();
-            foreach (var item in cfg2.ABDict)
+            foreach (var item in cfg2.ResDict)
             {
                 m_assetToABNames.Add(item.Key, item.Value.ABName);
             }
-        }
-        else
-        {
-
         }
     }
 

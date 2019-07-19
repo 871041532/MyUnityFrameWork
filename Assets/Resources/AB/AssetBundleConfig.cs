@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 [DataContract]
 public class AssetBundleConfig
 {
     [DataMember]
-    public Dictionary<string, ABBase> ABDict { get; set; }
+    public Dictionary<string, ResData> ResDict { get; set; }
+    [DataMember]
+    public Dictionary<string, ABData> ABDict { get; set; }
 }
 
 [DataContract]
-public class ABBase
+public class ResData
 {
     [DataMember]
     public string Path { get; set; }
@@ -26,8 +24,15 @@ public class ABBase
     public string ABName { get; set; }
     [DataMember]
     public string AssetName { get; set; }
+}
+
+[DataContract]
+public class ABData
+{
     [DataMember]
-    public List<string> ABDependence { get; set; }
+    public string Name { get; set; }
+    [DataMember]
+    public string[] DependenceNames { get; set; }
 }
 
 public class ABUtility

@@ -161,6 +161,7 @@ namespace AssetBundles
         {
             // resPath对应的AB包
             Dictionary<string, string> res_to_bundle = new Dictionary<string, string>();
+            Dictionary<string, string[]> ab_to_abDepences = new Dictionary<string, string[]>();
             string[] allBundleNames = AssetDatabase.GetAllAssetBundleNames();
             for (int i = 0; i < allBundleNames.Length; i++)
             {
@@ -174,41 +175,33 @@ namespace AssetBundles
                         res_to_bundle.Add(assetPath, bundleName);         
                     }
                 }
+
+                string[] dependBundleNames = AssetDatabase.GetAssetBundleDependencies(bundleName, false);
+                ab_to_abDepences.Add(bundleName, dependBundleNames);
             }
-            // 构造每个asset的依赖信息
+            // 构造每个Res的依赖信息
             AssetBundleConfig configs = new AssetBundleConfig();
-            configs.ABDict = new Dictionary<string, ABBase>();
+            configs.ResDict = new Dictionary<string, ResData>();
             foreach (var item in res_to_bundle)
             {
-                ABBase abBase = new ABBase();
+                ResData abBase = new ResData();
                 string assetFullPath = item.Key;
                 abBase.Path = assetFullPath;
                 abBase.MD5 = ABUtility.GetMD5FromFile(assetFullPath);
                 abBase.ABName = item.Value;
                 abBase.AssetName = assetFullPath.Remove(0, assetFullPath.LastIndexOf("/") + 1);
-                abBase.ABDependence = new List<string>();
-                string[] resDepends = AssetDatabase.GetDependencies(assetFullPath);
-                foreach (string itemPath in resDepends)
-                {
-                    if (itemPath == assetFullPath || itemPath.EndsWith(".cs"))
-                    {
-                        continue;
-                    }
-                    string abName = "";
-                    if (res_to_bundle.TryGetValue(itemPath, out abName))
-                    {
-                        if (abName == item.Value)
-                        {
-                            continue;
-                        }
-                        if (!abBase.ABDependence.Contains(abName))
-                        {
-                            abBase.ABDependence.Add(abName);
-                        }
-                    }                    
-                }
-                configs.ABDict.Add(assetFullPath, abBase);
+                configs.ResDict.Add(assetFullPath, abBase);
             }
+            // 构造每个AB包的依赖信息
+            configs.ABDict = new Dictionary<string, ABData>();
+            foreach (var item in ab_to_abDepences)
+            {
+                ABData abData = new ABData();
+                abData.Name = item.Key;
+                abData.DependenceNames = item.Value;
+                configs.ABDict.Add(abData.Name, abData);
+            }
+
             // 依赖信息写入xml
             FileStream fileStream = new FileStream(Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.json"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(AssetBundleConfig));
