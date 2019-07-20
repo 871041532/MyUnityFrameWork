@@ -111,8 +111,9 @@ namespace AssetBundles
                 return;
 
             // Build and copy AssetBundles.
-            BuildScript.BuildAssetBundles();
-            BuildScript.CopyAssetBundlesTo(Path.Combine(Application.streamingAssetsPath, ABManager.CfgAssetBundleRelativePath));
+            string inStreamAssetsPath = Path.Combine(Application.streamingAssetsPath, ABManager.CfgAssetBundleRelativePath);
+            //BuildScript.BuildAssetBundles();
+            BuildScript.CopyAssetBundlesTo(inStreamAssetsPath);
             AssetDatabase.Refresh();
 
 #if UNITY_5_4 || UNITY_5_3 || UNITY_5_2 || UNITY_5_1 || UNITY_5_0
@@ -126,6 +127,7 @@ namespace AssetBundles
             buildPlayerOptions.target = EditorUserBuildSettings.activeBuildTarget;
             buildPlayerOptions.options = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None;
             BuildPipeline.BuildPlayer(buildPlayerOptions);
+            FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
 #endif
         }
 
@@ -153,7 +155,7 @@ namespace AssetBundles
         static void CopyAssetBundlesTo(string outputPath)
         {
             // Clear streaming assets folder.
-            FileUtil.DeleteFileOrDirectory(Application.streamingAssetsPath);
+            FileUtil.DeleteFileOrDirectory(outputPath);
             Directory.CreateDirectory(outputPath);
 
             string outputFolder = ABManager.CfgManifestAndPlatformName;

@@ -282,10 +282,10 @@ namespace AssetBundles
             BuildScript.BuildAssetBundles();
         }
 
-        [MenuItem ("Assets/AssetBundles/Build Player")]
+        [MenuItem ("Assets/AssetBundles/Build Stabdlone Player")]
         static public void BuildPlayer ()
         {
-            BuildScript.BuildPlayer();
+            BuildScript.BuildStandalonePlayer();
         }
     }
 }
