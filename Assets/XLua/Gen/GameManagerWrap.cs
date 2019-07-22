@@ -205,7 +205,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.m_ResManager);
+                translator.Push(L, gen_to_be_invoked.m_ResMgr);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
@@ -219,7 +219,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.m_ObjectManager);
+                translator.Push(L, gen_to_be_invoked.m_ObjectMgr);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
@@ -294,7 +294,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.m_ResManager = (ResourceManager)translator.GetObject(L, 2, typeof(ResourceManager));
+                gen_to_be_invoked.m_ResMgr = (ResourceManager)translator.GetObject(L, 2, typeof(ResourceManager));
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
@@ -309,7 +309,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 GameManager gen_to_be_invoked = (GameManager)translator.FastGetCSObj(L, 1);
-                gen_to_be_invoked.m_ObjectManager = (ObjectManager)translator.GetObject(L, 2, typeof(ObjectManager));
+                gen_to_be_invoked.m_ObjectMgr = (ObjectManager)translator.GetObject(L, 2, typeof(ObjectManager));
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

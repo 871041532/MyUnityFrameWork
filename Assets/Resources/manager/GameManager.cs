@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     public LuaManager m_LuaMgr;
     public ABManager m_ABMgr;
     public CutSceneManager m_CutSceneMgr;
-    public ResourceManager m_ResManager;
-    public ObjectManager m_ObjectManager;
+    public ResourceManager m_ResMgr;
+    public ObjectManager m_ObjectMgr; 
     private List<IManager> m_Mgrs;
     public Text m_log_object;
 
@@ -28,14 +28,14 @@ public class GameManager : MonoBehaviour
         m_LuaMgr = new LuaManager();
         m_ABMgr = new ABManager();
         m_CutSceneMgr = new CutSceneManager();
-        m_ResManager = new ResourceManager();
-        m_ObjectManager = new ObjectManager();
+        m_ResMgr = new ResourceManager();
+        m_ObjectMgr = new ObjectManager();
 
         m_Mgrs.Add(m_LuaMgr);
         m_Mgrs.Add(m_ABMgr);
         m_Mgrs.Add(m_CutSceneMgr);
-        m_Mgrs.Add(m_ResManager);
-        m_Mgrs.Add(m_ObjectManager);
+        m_Mgrs.Add(m_ResMgr);
+        m_Mgrs.Add(m_ObjectMgr);
         Assert.raiseExceptions = true;
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
