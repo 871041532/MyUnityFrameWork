@@ -127,8 +127,8 @@ namespace AssetBundles
             buildPlayerOptions.target = EditorUserBuildSettings.activeBuildTarget;
             buildPlayerOptions.options = EditorUserBuildSettings.development ? BuildOptions.Development : BuildOptions.None;
             BuildPipeline.BuildPlayer(buildPlayerOptions);
-            FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
 #endif
+            FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
         }
 
         public static string GetBuildTargetName(BuildTarget target)
