@@ -6,31 +6,45 @@ using UnityEngine;
 using UnityEngine.U2D;
 using System.Runtime.Serialization.Json;
 using UnityEngine.Assertions;
+using XLua;
 
+[LuaCallCSharp]
 public class AssetItem
 {
-    public string m_AssetPath;
     public string m_ABName;
     public UnityEngine.Object m_Object;
-    public void Init(string assetPath, string abName, UnityEngine.Object obj)
+    public void Init(string abName, UnityEngine.Object obj)
     {
-        m_AssetPath = assetPath;
+        Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
         m_ABName = abName;
         m_Object = obj;
     }
     public void Unload()
     {
-        Resources.UnloadAsset(m_Object);
+        m_ABName = "";
         m_Object = null;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return m_Object as GameObject;
+    }
+
+    public SpriteAtlas GetSpriteAtlas()
+    {
+        return m_Object as SpriteAtlas;
     }
 }
 
 public class AssetBundleItem
 {
+    public string m_ABName;
     public AssetBundle m_assetBundle;
     public uint m_referencedCount;
-    public void Init(AssetBundle ab)
+    public void Init(AssetBundle ab, string abName)
     {
+        Assert.IsTrue(ab != null, "AssetBundleItem的Init函数obj传了null！");
+        m_ABName = abName;
         m_assetBundle = ab;
         m_referencedCount = 1;
     }
@@ -111,41 +125,46 @@ public class ABManager:IManager
         setAssetBundlePath();
     }
 
-    public GameObject LoadAssetGameObject(string fullPath)
+    public void UnloadAsset(AssetItem item)
     {
-        return LoadAsset<GameObject>(fullPath);
+        Assert.IsFalse(item == null);
+        UnloadAssetBundle(item.m_ABName);
+        item.Unload();
+        GameMgr.m_ObjectManager.RecycleClassObject<AssetItem>(item);
     }
 
-    public void LoadAssetGameObjectAsync(string fullPath, Action<GameObject> successCall)
-    {
-        LoadAssetAsync<GameObject>(fullPath, successCall);
-    }
-
-    public T LoadAsset<T>(string fullPath) where T : UnityEngine.Object
+    public AssetItem LoadAsset(string fullPath)
     {
         switch (CfgLoadMode)
         {
 # if UNITY_EDITOR
             case LoadModeEnum.EditorOrigin:
-                return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
+                UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullPath);
+                AssetItem assetItem = GameMgr.m_ObjectManager.SpawnClassObjectFromPool<AssetItem>();
+                assetItem.Init("", obj);
+                return assetItem;
             case LoadModeEnum.EditorAB:
 #endif
             case LoadModeEnum.StandaloneAB:
                 AssetBundleItem ABItem = LoadAssetBundleByAssetName(fullPath);
-                T obj = ABItem.m_assetBundle.LoadAsset<T>(fullPath);
-                return obj;
+                UnityEngine.Object obj2 = ABItem.m_assetBundle.LoadAsset(fullPath);
+                AssetItem assetItem2 = GameMgr.m_ObjectManager.SpawnClassObjectFromPool<AssetItem>();
+                assetItem2.Init(ABItem.m_ABName, obj2);
+                return assetItem2;
             default:
                 return null;
         }
     }
 
-    public void LoadAssetAsync<T>(string fullPath, Action<T> successCall, Action failCall = null) where T: UnityEngine.Object
+    public void LoadAssetAsync(string fullPath, Action<AssetItem> successCall, Action failCall = null)
     {
         switch (CfgLoadMode)
         {
 # if UNITY_EDITOR
             case LoadModeEnum.EditorOrigin:
-                T item = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(fullPath);
+                AssetItem item = GameMgr.m_ObjectManager.SpawnClassObjectFromPool<AssetItem>();
+                UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullPath);
+                item.Init("", obj);
                 successCall(item);
                 break;
             case LoadModeEnum.EditorAB:
@@ -161,23 +180,16 @@ public class ABManager:IManager
         }
     }
 
-    IEnumerator _loadAssetFromABItemAsync<T>(AssetBundleItem item, string assetFullPath, Action <T> successCall) where T : UnityEngine.Object
+    private IEnumerator _loadAssetFromABItemAsync(AssetBundleItem item, string assetFullPath, Action <AssetItem> successCall)
     {
-        var request = item.m_assetBundle.LoadAssetAsync<T>(assetFullPath);
+        var request = item.m_assetBundle.LoadAssetAsync(assetFullPath);
         yield return request.isDone;
-        successCall(request.asset as T);
+        AssetItem item2 = GameMgr.m_ObjectManager.SpawnClassObjectFromPool<AssetItem>();
+        item2.Init(item.m_ABName, request.asset);
+        successCall(item2);
     }
 
-    public bool LoadScene(string sceneName)
-    {
-        return false;
-    }
-
-    public void LoadSceneAsync(string sceneName, Action successCall, Action failCall)
-    {
-    }
-
-    public AssetBundleItem LoadAssetBundleByAssetName(string assetFullPath)
+    private AssetBundleItem LoadAssetBundleByAssetName(string assetFullPath)
     {
         Assert.IsTrue(m_assetToABNames.ContainsKey(assetFullPath), assetFullPath + "没有对应的AB包！");
         string abName = m_assetToABNames[assetFullPath];
@@ -185,21 +197,14 @@ public class ABManager:IManager
         return abItem;
     }
 
-    public void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
+    private void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
     {
         Assert.IsTrue(m_assetToABNames.ContainsKey(assetFullPath), assetFullPath + "没有对应的AB包！");
         string abName = m_assetToABNames[assetFullPath];
         GameMgr.StartCoroutine(LoadAssetBundleAsync(abName, successCall));
     }
 
-    public void UnloadReleaseAssetItem(AssetItem item)
-    {
-        Assert.IsFalse(item == null);
-        UnloadAssetBundle(item.m_ABName);
-    }
-
-
-    public void UnloadAssetBundle(string abName)
+    private void UnloadAssetBundle(string abName)
     {
         // 卸载本包
         AssetBundleItem item = null;
@@ -227,9 +232,10 @@ public class ABManager:IManager
         }
     }
 
-    public AssetBundleItem LoadAssetBundle(string abName)
+    private AssetBundleItem LoadAssetBundle(string abName)
     {
-        Log(LogType.Info, "Loading Asset Bundle: " + abName);
+        Log(LogType.Info, "同步加载AB包: " + abName);
+        Assert.IsFalse(m_loadingABNames.Contains(abName), "在异步加载尚未结束时不能再同步加载AB包：" + abName);
         // AB包的依赖项
         string[] dependence = null;
         m_ABToDependence.TryGetValue(abName, out dependence);
@@ -254,16 +260,16 @@ public class ABManager:IManager
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             abItem = GameMgr.m_ObjectManager.SpawnClassObjectFromPool<AssetBundleItem>();
             //abItem = new AssetBundleItem();
-            abItem.Init(ab);
+            abItem.Init(ab, abName);
             m_loadedABs[abName] = abItem;
         }
-        Log(LogType.Info, string.Format("Loaded Asset Bundle: {0} reference {1}", abName, abItem.m_referencedCount));
+        Log(LogType.Info, string.Format("同步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
         return abItem;
     }
 
-    IEnumerator LoadAssetBundleAsync(string abName, Action<AssetBundleItem> successCall, Action failCall = null)
+    private IEnumerator LoadAssetBundleAsync(string abName, Action<AssetBundleItem> successCall, Action failCall = null)
     {
-        Log(LogType.Info, "Loading Asset Bundle Async: " + abName);
+        Log(LogType.Info, "处理异步加载AssetBundle: " + abName);
         // AB包的依赖项
         string[] dependence = null;
         m_ABToDependence.TryGetValue(abName, out dependence);
@@ -280,7 +286,7 @@ public class ABManager:IManager
         if (abItem != null)
         {
             abItem.m_referencedCount++;
-            Log(LogType.Info, string.Format("haven Loadded {0} reference: {1}", abName, abItem.m_referencedCount));
+            Log(LogType.Info, string.Format("此包已存在 {0} 引用: {1}", abName, abItem.m_referencedCount));
             successCall?.Invoke(abItem);
         }
         else
@@ -290,24 +296,24 @@ public class ABManager:IManager
             // 加载中
             if (m_loadingABNames.Contains(abName))
             {
-                Log(LogType.Info, "Asset Bundle In Loading wait:  " + abName);
+                Log(LogType.Info, "等待Other异步加载:  " + abName);
                 yield return m_loadedABs.ContainsKey(abName);
                 abItem = m_loadedABs[abName];
                 abItem.m_referencedCount++;
-                Log(LogType.Info, "Asset Bundle In Loading wait ok:  " + abName + " reference: " + abItem.m_referencedCount);
+                Log(LogType.Info, "Other异步加载完毕:  " + abName + " 引用: " + abItem.m_referencedCount);
                 successCall?.Invoke(abItem);
             }
             else
             {
                 // 从头加载
-                Log(LogType.Info, "Asset Bundle begin loading:  " + abName);
+                Log(LogType.Info, "开始异步加载AB包:  " + abName);
                 m_loadingABNames.Add(abName);
                 var abRequest = AssetBundle.LoadFromFileAsync(abPath);
                 yield return abRequest.isDone;
                 abItem = GameMgr.m_ObjectManager.SpawnClassObjectFromPool<AssetBundleItem>();
                 //abItem = new AssetBundleItem();
-                abItem.Init(abRequest.assetBundle);
-                Log(LogType.Info, "Asset Bundle end loaded:  " + abName);
+                abItem.Init(abRequest.assetBundle, abName);
+                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
                 m_loadedABs[abName] = abItem;
                 m_loadingABNames.Remove(abName);
                 successCall?.Invoke(abItem);
@@ -359,7 +365,7 @@ private static void setAssetBundlePath()
     }
 
     // 自定义Altas加载
-    void OnAtlasRequested(string tag, Action<SpriteAtlas> action)
+    private void OnAtlasRequested(string tag, Action<SpriteAtlas> action)
     {
         Debug.Log("加载Altas：" + tag);
         string path = string.Format("Assets/GameData/UI/res/{0}/{0}.spriteatlas", tag);
@@ -371,13 +377,15 @@ private static void setAssetBundlePath()
         }
         else if (CfgLoadMode == LoadModeEnum.EditorAB)
         {
-            sa = LoadAsset<SpriteAtlas>(path);
+            AssetItem item = LoadAsset(path);
+            sa = item.GetSpriteAtlas();
         }
         else
 #endif
         if (CfgLoadMode == LoadModeEnum.StandaloneAB)
         {
-            sa = LoadAsset<SpriteAtlas>(path);
+            AssetItem item = LoadAsset(path);
+            sa = item.GetSpriteAtlas();
         }
         action(sa);
     }

@@ -12,10 +12,10 @@ local prefabPath = "Assets/GameData/Prefabs/c1.prefab"
 -- local asset = ABM:LoadAssetGameObject(prefabPath)
 -- GameObject.Instantiate(asset)
 
-ABM:LoadAssetGameObjectAsync(prefabPath, function(asset_obj)
-	GameObject.Instantiate(asset_obj)
+ABM:LoadAssetAsync(prefabPath, function(item)
+	GameObject.Instantiate(item:GetGameObject())
 end)
 
-ABM:LoadAssetGameObjectAsync(prefabPath, function(asset_obj)
-	GameObject.Instantiate(asset_obj)
+ABM:LoadAssetAsync(prefabPath, function(item)
+	GameObject.Instantiate(item:GetGameObject())
 end)

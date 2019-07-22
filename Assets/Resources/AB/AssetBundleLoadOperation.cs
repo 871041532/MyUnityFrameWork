@@ -94,7 +94,7 @@ namespace AssetBundles
                 error = string.Format("{0} is not a valid asset bundle.", m_ABName);
             else
                 m_ABItem = new AssetBundleItem();
-                m_ABItem.Init(m_WWW.assetBundle);
+                m_ABItem.Init(m_WWW.assetBundle, m_ABName);
 
             m_WWW.Dispose();
             m_WWW = null;
