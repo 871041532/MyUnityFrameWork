@@ -5,31 +5,8 @@ using UnityEngine.Assertions;
 
 public class ResourceManager : IManager
 {
-    public class A
-    {
-        static int t = 0;
-        public int v = 0;
-        public A()
-        {
-            v = ++t;
-        }
-    }
     public override void Awake() {
-        DoubleLinkedList<A> list = new DoubleLinkedList<A>();
-        var a1 = new A();
-        var a2 = new A();
-        var a3 = new A();
-        var a4 = new A();
-        list.AddFirst(a1);
-        list.AddFirst(a2);
-        list.AddLast(a3);
-        var node = list.AddLast(a4);
-        var a = 1;
-        list.Remove(node);
-        a = 1;
-        list.AddFirst(node);
-        a = 1;
-    }
+     }
     public override void Start() { }
     public override void Update() { }
     public override void OnDestroy() { }
@@ -39,11 +16,8 @@ public class DoubleLinkedNode<T> where T:class, new()
 {
     public DoubleLinkedNode<T> m_Previous = null;
     public DoubleLinkedNode<T> m_Next = null;
-    public T m_Value = null;
-    public void SetValue(T value)
-    {
-        m_Value = value;
-    }
+    private T m_Value = null;
+    public T Value { get { return m_Value; } set { m_Value = value; } }
 }
 
 public class DoubleLinkedList<T> where T : class, new()
@@ -53,7 +27,22 @@ public class DoubleLinkedList<T> where T : class, new()
     private int m_Count;
     private ClassObjectPool<DoubleLinkedNode<T>> m_Pool = null;
     public int Count { get { return m_Count; } }
-  
+    public DoubleLinkedNode<T> FirstNode {
+        get { return m_Count > 0 ? m_Head.m_Next : null; }
+    }
+    public DoubleLinkedNode<T> LastNode
+    {
+        get { return m_Count > 0 ? m_Tail.m_Previous : null; }
+    }
+    public T First
+    {
+        get { return m_Count > 0 ? m_Head.m_Next.Value : null; }
+    }
+    public T Last
+    {
+        get { return m_Count > 0 ? m_Tail.m_Previous.Value : null; }
+    }
+
     public DoubleLinkedList()
     {
         m_Count = 0;
@@ -67,7 +56,7 @@ public class DoubleLinkedList<T> where T : class, new()
     public DoubleLinkedNode<T> AddFirst(T value)
     {
         DoubleLinkedNode<T> node = m_Pool.Spawn();
-        node.SetValue(value);
+        node.Value = value;
         AddFirst(node);
         return node;
     }
@@ -85,7 +74,7 @@ public class DoubleLinkedList<T> where T : class, new()
     public DoubleLinkedNode<T> AddLast(T value)
     {
         DoubleLinkedNode<T> node = m_Pool.Spawn();
-        node.SetValue(value);
+        node.Value = value;
         AddLast(node);
         return node;
     }
@@ -119,5 +108,30 @@ public class DoubleLinkedList<T> where T : class, new()
     public void RemoveLast()
     {
         Remove(m_Tail.m_Previous);
+    }
+
+    public DoubleLinkedNode<T> PopNode()
+    {
+        if (m_Count > 0)
+        {
+            var node = m_Tail.m_Previous;
+            Remove(node);
+            return node;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public T Pop()
+    {
+        DoubleLinkedNode<T> node = PopNode();
+        T returnData = null;
+        if (node != null)
+        {
+            returnData = node.Value;
+        }
+        return returnData;
     }
 }
