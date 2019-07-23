@@ -87,8 +87,8 @@ public class ABManager:IManager
 
     public override void Awake() {
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
-        GameMgr.m_ObjectMgr.CreateClassPool<AssetBundleItem>();
-        GameMgr.m_ObjectMgr.CreateClassPool<AssetItem>();
+        GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetBundleItem>();
+        GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetItem>();
         InitCfg();
     }
 
@@ -130,7 +130,7 @@ public class ABManager:IManager
         Assert.IsFalse(item == null);
         UnloadAssetBundle(item.m_ABName);
         item.Unload();
-        GameMgr.m_ObjectMgr.RecycleClassObject<AssetItem>(item);
+        GameMgr.m_ObjectMgr.Recycle<AssetItem>(item);
     }
 
     public AssetItem LoadAsset(string fullPath)
@@ -140,7 +140,7 @@ public class ABManager:IManager
 # if UNITY_EDITOR
             case LoadModeEnum.EditorOrigin:
                 UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullPath);
-                AssetItem assetItem = GameMgr.m_ObjectMgr.SpawnClassObjectFromPool<AssetItem>();
+                AssetItem assetItem = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 assetItem.Init("", obj);
                 return assetItem;
             case LoadModeEnum.EditorAB:
@@ -148,7 +148,7 @@ public class ABManager:IManager
             case LoadModeEnum.StandaloneAB:
                 AssetBundleItem ABItem = LoadAssetBundleByAssetName(fullPath);
                 UnityEngine.Object obj2 = ABItem.m_assetBundle.LoadAsset(fullPath);
-                AssetItem assetItem2 = GameMgr.m_ObjectMgr.SpawnClassObjectFromPool<AssetItem>();
+                AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 assetItem2.Init(ABItem.m_ABName, obj2);
                 return assetItem2;
             default:
@@ -162,7 +162,7 @@ public class ABManager:IManager
         {
 # if UNITY_EDITOR
             case LoadModeEnum.EditorOrigin:
-                AssetItem item = GameMgr.m_ObjectMgr.SpawnClassObjectFromPool<AssetItem>();
+                AssetItem item = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullPath);
                 item.Init("", obj);
                 successCall(item);
@@ -184,7 +184,7 @@ public class ABManager:IManager
     {
         var request = item.m_assetBundle.LoadAssetAsync(assetFullPath);
         yield return request.isDone;
-        AssetItem item2 = GameMgr.m_ObjectMgr.SpawnClassObjectFromPool<AssetItem>();
+        AssetItem item2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
         item2.Init(item.m_ABName, request.asset);
         successCall(item2);
     }
@@ -216,7 +216,7 @@ public class ABManager:IManager
             if (item.m_referencedCount <= 0)
             {
                 item.UnLoad();
-                m_loadedABs.Remove(abName);              GameMgr.m_ObjectMgr.RecycleClassObject<AssetBundleItem>(item);
+                m_loadedABs.Remove(abName);              GameMgr.m_ObjectMgr.Recycle<AssetBundleItem>(item);
                 Log(LogType.Info, string.Format("移除AB包：{0}", abName));
             }
         }
@@ -258,7 +258,7 @@ public class ABManager:IManager
             string abPath = CfgAssetBundleLoadAbsolutePath + abName;
             Log(LogType.Info, "Path：" + abPath);
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
-            abItem = GameMgr.m_ObjectMgr.SpawnClassObjectFromPool<AssetBundleItem>();
+            abItem = GameMgr.m_ObjectMgr.Spawn<AssetBundleItem>();
             //abItem = new AssetBundleItem();
             abItem.Init(ab, abName);
             m_loadedABs[abName] = abItem;
@@ -310,7 +310,7 @@ public class ABManager:IManager
                 m_loadingABNames.Add(abName);
                 var abRequest = AssetBundle.LoadFromFileAsync(abPath);
                 yield return abRequest.isDone;
-                abItem = GameMgr.m_ObjectMgr.SpawnClassObjectFromPool<AssetBundleItem>();
+                abItem = GameMgr.m_ObjectMgr.Spawn<AssetBundleItem>();
                 //abItem = new AssetBundleItem();
                 abItem.Init(abRequest.assetBundle, abName);
                 Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));

@@ -13,21 +13,20 @@ public class ObjectManager : IManager
     /// <typeparam name="T"></typeparam>
     /// <param name="maxCount">最大数量为-1不限量</param>
     /// <param name="isPreLoad">是否预加载, 最大数量大于0有效</param>
-    public void CreateClassPool<T>(int maxCount = -1, bool isPreLoad = true) where T : class, new()
+    public ClassObjectPool<T> CreateOrGetClassPool<T>(int maxCount = -1, bool isPreLoad = true) where T : class, new()
     {
         Type type = typeof(T);
-        if (!m_ClassPoolDic.ContainsKey(type))
+        object pool = null;
+        m_ClassPoolDic.TryGetValue(type, out pool);
+        if (pool == null)
         {
-            ClassObjectPool<T> pool = new ClassObjectPool<T>(maxCount, isPreLoad);
+            pool = new ClassObjectPool<T>(maxCount, isPreLoad);
             m_ClassPoolDic.Add(type, pool);
         }
-        else
-        {
-            Debug.LogError("类对象池已存在不可重复创建！");
-        }
+        return pool as ClassObjectPool<T>;
     }
 
-    public T SpawnClassObjectFromPool<T>(bool createWhenPoolEmpty = true) where T:class, new()
+    public T Spawn<T>(bool createWhenPoolEmpty = true) where T:class, new()
     {
         object poolObj = null;
         Type type = typeof(T);
@@ -44,7 +43,7 @@ public class ObjectManager : IManager
         }
     }
 
-    public bool RecycleClassObject<T>(T obj) where T: class, new()
+    public bool Recycle<T>(T obj) where T: class, new()
     {
         object poolObj = null;
         Type type = typeof(T);
