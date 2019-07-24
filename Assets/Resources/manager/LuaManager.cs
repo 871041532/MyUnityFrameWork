@@ -31,26 +31,26 @@ public class LuaManager : IManager
     {
         //m_luaEnv.DoString("require 'main.lua'");
         //m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
-        m_luaEnv.DoString(@"
-            local GM = CS.GameManager.Instance
-            local ABM = GM.m_ABMgr
-            local GameObject = CS.UnityEngine.GameObject
-            local prefabPath = 'Assets/GameData/Prefabs/c1.prefab'
-            local asset = ABM:LoadAsset(prefabPath)
-            local asset_object = asset:GetGameObject()
-            GameObject.Instantiate(asset_object)
-            local asset2 = ABM:LoadAsset('Assets/GameData/Prefabs/c1.prefab')
-            local asset_object2 = asset2:GetGameObject()
-            GameObject.Instantiate(asset_object2)
-            ABM:UnloadAsset(asset);
-            ABM:UnloadAsset(asset2);
-            ABM:LoadAssetAsync(prefabPath, function(item)
-	            GameObject.Instantiate(item:GetGameObject())
-            end)
-            ABM:LoadAssetAsync(prefabPath, function(item)
-	            GameObject.Instantiate(item:GetGameObject())
-            end)
-        ");
+        //m_luaEnv.DoString(@"
+        //    local GM = CS.GameManager.Instance
+        //    local ABM = GM.m_ABMgr
+        //    local GameObject = CS.UnityEngine.GameObject
+        //    local prefabPath = 'Assets/GameData/Prefabs/c1.prefab'
+        //    local asset = ABM:LoadAsset(prefabPath)
+        //    local asset_object = asset:GetGameObject()
+        //    GameObject.Instantiate(asset_object)
+        //    local asset2 = ABM:LoadAsset('Assets/GameData/Prefabs/c1.prefab')
+        //    local asset_object2 = asset2:GetGameObject()
+        //    GameObject.Instantiate(asset_object2)
+        //    ABM:UnloadAsset(asset);
+        //    ABM:UnloadAsset(asset2);
+        //    ABM:LoadAssetAsync(prefabPath, function(item)
+	       //     GameObject.Instantiate(item:GetGameObject())
+        //    end)
+        //    ABM:LoadAssetAsync(prefabPath, function(item)
+	       //     GameObject.Instantiate(item:GetGameObject())
+        //    end)
+        //");
     }
 
     // 自定义lua加载

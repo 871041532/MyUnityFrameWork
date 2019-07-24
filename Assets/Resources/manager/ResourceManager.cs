@@ -2,14 +2,130 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using System;
+
+public class GameObjectPool
+{
+    public AssetItem m_AssetItem;
+    public DoubleLinkedList<GameObject> m_ResourceList;
+    public GameObjectPool (AssetItem assetItem, DoubleLinkedList<GameObject> resourceList)
+    {
+        m_AssetItem = assetItem;
+        m_ResourceList = resourceList;
+    }
+}
 
 public class ResourceManager : IManager
 {
-    public override void Awake() {
-     }
-    public override void Start() { }
-    public override void Update() { }
-    public override void OnDestroy() { }
+    GameObject obj = null;
+    // 池
+    private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
+    public override void Awake(){}
+
+    public override void Start()
+    {
+        string path = "Assets/GameData/Prefabs/c1.prefab";
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+
+        });
+    }
+
+    public override void Update()
+    {
+        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", (obj) =>
+        {
+            RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
+        });
+    }
+
+    public override void OnDestroy(){ }
+
+    public GameObject SpawnGameObject(string path)
+    {
+        GameObject t = null;
+        GameObjectPool resourcePool = null;
+        m_GameObjectPools.TryGetValue(path, out resourcePool);
+        if (resourcePool == null)
+        {
+            AssetItem assetItem = GameMgr.m_ABMgr.LoadAsset(path);
+            DoubleLinkedList<GameObject> list = new DoubleLinkedList<GameObject>();
+            resourcePool = new GameObjectPool(assetItem, list);
+            m_GameObjectPools.Add(path, resourcePool);
+        }
+        if (resourcePool.m_ResourceList.Count > 0)
+        {
+            t = resourcePool.m_ResourceList.Pop();
+        }
+        else
+        {
+            t = GameObject.Instantiate(resourcePool.m_AssetItem.m_Object as GameObject);
+        }
+        return t;
+    }
+
+
+    public void SpawnGameObjectAsync(string path, Action<GameObject> callback)
+    {
+        GameObjectPool resourcePool = null;
+        m_GameObjectPools.TryGetValue(path, out resourcePool);
+        if (resourcePool == null)
+        {
+            GameMgr.m_ABMgr.LoadAssetAsync(path, (assetItem) => {
+                GameObject t = null;
+                GameObjectPool innerResourcePool = null;
+                m_GameObjectPools.TryGetValue(path, out innerResourcePool);
+                if (innerResourcePool == null)
+                {
+                    DoubleLinkedList<GameObject> list = new DoubleLinkedList<GameObject>();
+                    innerResourcePool = new GameObjectPool(assetItem, list);
+                    m_GameObjectPools.Add(path, innerResourcePool);
+                }
+                if (innerResourcePool.m_ResourceList.Count > 0)
+                {
+                    t = innerResourcePool.m_ResourceList.Pop();
+                }
+                else
+                {
+                    t = GameObject.Instantiate(innerResourcePool.m_AssetItem.m_Object as GameObject);
+                }
+                callback(t);
+            });
+        }
+        else
+        {
+            GameObject t = null;
+            if (resourcePool.m_ResourceList.Count > 0)
+            {
+                t = resourcePool.m_ResourceList.Pop();
+            }
+            else
+            {
+                t = GameObject.Instantiate(resourcePool.m_AssetItem.m_Object as GameObject);
+            }
+            callback(t);
+        }
+    }
+
+    public void RecycleGameObject(string path, GameObject obj)
+    {
+        m_GameObjectPools[path].m_ResourceList.AddLast(obj);
+    }
+
+    public void ClearGameObject(string path)
+    {
+        GameObjectPool resourcePool = null;
+        m_GameObjectPools.TryGetValue(path, out resourcePool);
+        if (resourcePool != null)
+        {
+            GameMgr.m_ABMgr.UnloadAsset(resourcePool.m_AssetItem);
+            m_GameObjectPools.Remove(path);
+        }
+    }
 }
 
 public class DoubleLinkedNode<T> where T:class, new()
@@ -133,5 +249,13 @@ public class DoubleLinkedList<T> where T : class, new()
             returnData = node.Value;
         }
         return returnData;
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < m_Count; i++)
+        {
+            RemoveLast();
+        }
     }
 }

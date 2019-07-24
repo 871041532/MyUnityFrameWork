@@ -13,16 +13,20 @@ public class AssetItem
 {
     public string m_ABName;
     public UnityEngine.Object m_Object;
+    public float m_LastUseTime = 0;
     public void Init(string abName, UnityEngine.Object obj)
     {
         Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
         m_ABName = abName;
         m_Object = obj;
+        m_LastUseTime = Time.time;
     }
+
     public void Unload()
     {
         m_ABName = "";
         m_Object = null;
+        m_LastUseTime = 0;
     }
 
     public GameObject GetGameObject()
