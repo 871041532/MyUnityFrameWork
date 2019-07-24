@@ -17,30 +17,70 @@ public class GameObjectPool
 
 public class ResourceManager : IManager
 {
-    GameObject obj = null;
-    // 池
+    class LoadAssetItemLambda
+    {
+        string m_AssetPath;
+        Action<GameObject> m_Callback;
+        ResourceManager m_Owner;
+        public Action<AssetItem> m_LoadCall;
+        public LoadAssetItemLambda()
+        {
+            m_LoadCall = (AssetItem item) =>
+            {
+                GameObject t = null;
+                GameObjectPool resourcePool = null;
+                m_Owner.m_GameObjectPools.TryGetValue(m_AssetPath, out resourcePool);
+                if (resourcePool == null)
+                {
+                    DoubleLinkedList<GameObject> list = new DoubleLinkedList<GameObject>();
+                    resourcePool = new GameObjectPool(item, list);
+                    m_Owner.m_GameObjectPools.Add(m_AssetPath, resourcePool);
+                }
+                if (resourcePool.m_ResourceList.Count > 0)
+                {
+                    t = resourcePool.m_ResourceList.Pop();
+                }
+                else
+                {
+                    t = GameObject.Instantiate(resourcePool.m_AssetItem.m_Object as GameObject);
+                }
+                m_Callback?.Invoke(t);
+                m_Callback = null;
+                m_Owner.m_LambdaCache.AddLast(this);
+            };
+        }
+
+        public void Init(ResourceManager owner, string path, Action<GameObject> callback)
+        {
+            m_Owner = owner;
+            m_AssetPath = path;
+            m_Callback = callback;
+        }
+    }
+    Action<GameObject> endLoad = null;
+    // 加载GameObject的Lambda池
+    private DoubleLinkedList<LoadAssetItemLambda> m_LambdaCache;
+    // GameObject池
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
-    public override void Awake(){}
+    public override void Awake(){
+        m_LambdaCache = new DoubleLinkedList<LoadAssetItemLambda>();
+    }
 
     public override void Start()
     {
-        string path = "Assets/GameData/Prefabs/c1.prefab";
-        SpawnGameObjectAsync(path, (obj) =>
-        {
-
-        });
-        SpawnGameObjectAsync(path, (obj) =>
-        {
-
-        });
+        //string path = "Assets/GameData/Prefabs/c1.prefab";
+        //var obj1 = SpawnGameObject("Assets/GameData/Prefabs/c1.prefab");
+        //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj1);
+        endLoad = this.loadEnd;
     }
 
     public override void Update()
     {
-        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", (obj) =>
-        {
-            RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
-        });
+        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", endLoad);
+    }
+    private void loadEnd(GameObject obj)
+    {
+        RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
     }
 
     public override void OnDestroy(){ }
@@ -75,26 +115,9 @@ public class ResourceManager : IManager
         m_GameObjectPools.TryGetValue(path, out resourcePool);
         if (resourcePool == null)
         {
-            GameMgr.m_ABMgr.LoadAssetAsync(path, (assetItem) => {
-                GameObject t = null;
-                GameObjectPool innerResourcePool = null;
-                m_GameObjectPools.TryGetValue(path, out innerResourcePool);
-                if (innerResourcePool == null)
-                {
-                    DoubleLinkedList<GameObject> list = new DoubleLinkedList<GameObject>();
-                    innerResourcePool = new GameObjectPool(assetItem, list);
-                    m_GameObjectPools.Add(path, innerResourcePool);
-                }
-                if (innerResourcePool.m_ResourceList.Count > 0)
-                {
-                    t = innerResourcePool.m_ResourceList.Pop();
-                }
-                else
-                {
-                    t = GameObject.Instantiate(innerResourcePool.m_AssetItem.m_Object as GameObject);
-                }
-                callback(t);
-            });
+            LoadAssetItemLambda lambdaCall = m_LambdaCache.CreateOrPop();
+            lambdaCall.Init(this, path, callback);
+            GameMgr.m_ABMgr.LoadAssetAsync(path, lambdaCall.m_LoadCall);
         }
         else
         {
@@ -107,7 +130,7 @@ public class ResourceManager : IManager
             {
                 t = GameObject.Instantiate(resourcePool.m_AssetItem.m_Object as GameObject);
             }
-            callback(t);
+            callback?.Invoke(t);
         }
     }
 
@@ -239,6 +262,19 @@ public class DoubleLinkedList<T> where T : class, new()
             return null;
         }
     }
+
+    public T CreateOrPop()
+    {
+        if (m_Count > 0)
+        {
+            return Pop();
+        }
+        else
+        {
+            return new T();
+        }
+    }
+
 
     public T Pop()
     {

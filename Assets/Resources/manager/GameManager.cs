@@ -25,11 +25,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         m_Mgrs = new List<IManager>();
 
+        m_ObjectMgr = new ObjectManager();
         m_LuaMgr = new LuaManager();
         m_ABMgr = new ABManager();
         m_CutSceneMgr = new CutSceneManager();
         m_ResMgr = new ResourceManager();
-        m_ObjectMgr = new ObjectManager();
+        
 
         m_Mgrs.Add(m_LuaMgr);
         m_Mgrs.Add(m_ABMgr);

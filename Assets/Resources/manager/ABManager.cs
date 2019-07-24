@@ -190,7 +190,7 @@ public class ABManager:IManager
         yield return request.isDone;
         AssetItem item2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
         item2.Init(item.m_ABName, request.asset);
-        successCall(item2);
+        successCall?.Invoke(item2);
     }
 
     private AssetBundleItem LoadAssetBundleByAssetName(string assetFullPath)
@@ -281,7 +281,7 @@ public class ABManager:IManager
         {
             for (int i = 0; i < dependence.Length; i++)
             {
-                LoadAssetBundleAsync(dependence[i], null);
+                GameMgr.StartCoroutine(LoadAssetBundleAsync(dependence[i], null));
             }
         }
         // AB包本身
@@ -373,25 +373,28 @@ private static void setAssetBundlePath()
     {
         Debug.Log("加载Altas：" + tag);
         string path = string.Format("Assets/GameData/UI/res/{0}/{0}.spriteatlas", tag);
-        SpriteAtlas sa = null;
 #if UNITY_EDITOR
         if (CfgLoadMode == LoadModeEnum.EditorOrigin)
         {
-            sa = UnityEditor.AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
+            SpriteAtlas sa = UnityEditor.AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
+            action(sa);
         }
         else if (CfgLoadMode == LoadModeEnum.EditorAB)
         {
-            AssetItem item = LoadAsset(path);
-            sa = item.GetSpriteAtlas();
+            LoadAssetAsync(path, (item) => {
+                SpriteAtlas sa = item.GetSpriteAtlas();
+                action(sa);
+            });
         }
         else
 #endif
         if (CfgLoadMode == LoadModeEnum.StandaloneAB)
         {
-            AssetItem item = LoadAsset(path);
-            sa = item.GetSpriteAtlas();
+            LoadAssetAsync(path, (item) => {
+                SpriteAtlas sa = item.GetSpriteAtlas();
+                action(sa);
+            });
         }
-        action(sa);
     }
 
     // 日志
