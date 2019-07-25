@@ -132,7 +132,12 @@ public class ABManager:IManager
     public void UnloadAsset(AssetItem item)
     {
         Assert.IsFalse(item == null);
-        UnloadAssetBundle(item.m_ABName);
+        UnityEngine.Object obj = item.m_Object;
+         Resources.UnloadUnusedAssets();
+        if (CfgLoadMode != LoadModeEnum.EditorOrigin)
+        {
+            UnloadAssetBundle(item.m_ABName);
+        }
         item.Unload();
         GameMgr.m_ObjectMgr.Recycle<AssetItem>(item);
     }
