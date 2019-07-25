@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -37,6 +38,13 @@ public class ABData
 
 public class ABUtility
 {
+    static MD5 md5 = MD5.Create();
+    public static int GetMD5(string str)
+    {
+        byte[] data = Encoding.UTF8.GetBytes(str);
+        byte[] data2 = md5.ComputeHash(data);
+        return BitConverter.ToInt32(data2, 0);
+     }
     /// <summary>
     /// 通过字符串获取MD5值，返回32位字符串。
     /// </summary>

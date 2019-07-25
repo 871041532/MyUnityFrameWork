@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -86,5 +87,17 @@ public class IManager
     public virtual void OnDestroy() { }
 }
 
+public static class Extensions
+{
+    public static int HashTime33(this string value)
+    {
+        int hash = 0;
+        for (int i = 0; i < value.Length; i++)
+        {
+            hash = ((hash << 5) + hash) + Convert.ToInt32(value[i]);
+        }
+        return hash;
+    }
+}
 public enum LogMode { All, JustErrors };
 public enum LogType { Info, Warning, Error };

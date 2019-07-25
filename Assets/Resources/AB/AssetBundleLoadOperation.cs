@@ -36,7 +36,7 @@ namespace AssetBundles
         bool m_done;
 
         public string m_ABName { get; private set; }
-        public AssetBundleItem m_ABItem { get; protected set; }
+        public ABItem m_ABItem { get; protected set; }
         public string error { get; protected set; }
 
         protected abstract bool m_isDownloaded { get; }
@@ -93,7 +93,7 @@ namespace AssetBundles
             if (bundle == null)
                 error = string.Format("{0} is not a valid asset bundle.", m_ABName);
             else
-                m_ABItem = new AssetBundleItem();
+                m_ABItem = new ABItem();
                 m_ABItem.Init(m_WWW.assetBundle, m_ABName);
 
             m_WWW.Dispose();
@@ -161,7 +161,7 @@ namespace AssetBundles
             if (m_asyncOperation != null)
                 return false;
 
-            AssetBundleItem bundleItem = null;
+            ABItem bundleItem = null;
             //GameManager.Instance.m_ABMgr.m_loadedABs.TryGetValue(m_ABName, out bundleItem);
             if (bundleItem != null)
             {

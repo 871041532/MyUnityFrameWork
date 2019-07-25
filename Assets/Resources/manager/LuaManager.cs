@@ -37,18 +37,18 @@ public class LuaManager : IManager
         //    local GameObject = CS.UnityEngine.GameObject
         //    local prefabPath = 'Assets/GameData/Prefabs/c1.prefab'
         //    local asset = ABM:LoadAsset(prefabPath)
-        //    local asset_object = asset:GetGameObject()
+        //    local asset_object = asset.GameObject
         //    GameObject.Instantiate(asset_object)
         //    local asset2 = ABM:LoadAsset('Assets/GameData/Prefabs/c1.prefab')
-        //    local asset_object2 = asset2:GetGameObject()
+        //    local asset_object2 = asset2.GameObject
         //    GameObject.Instantiate(asset_object2)
         //    ABM:UnloadAsset(asset);
         //    ABM:UnloadAsset(asset2);
         //    ABM:LoadAssetAsync(prefabPath, function(item)
-	       //     GameObject.Instantiate(item:GetGameObject())
+	       //     GameObject.Instantiate(item.GameObject)
         //    end)
         //    ABM:LoadAssetAsync(prefabPath, function(item)
-	       //     GameObject.Instantiate(item:GetGameObject())
+	       //     GameObject.Instantiate(item.GameObject)
         //    end)
         //");
     }

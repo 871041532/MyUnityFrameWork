@@ -11,36 +11,36 @@ using XLua;
 [LuaCallCSharp]
 public class AssetItem
 {
-    public string m_ABName;
-    public UnityEngine.Object m_Object;
-    public float m_LastUseTime = 0;
-    public void Init(string abName, UnityEngine.Object obj)
+    public string m_ABItem;
+    private string m_AssetName;
+    private UnityEngine.Object m_Object;
+    public void Init(string abName, string assertName, UnityEngine.Object obj)
     {
         Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
-        m_ABName = abName;
+        m_ABItem = abName;
+        m_AssetName = assertName;
         m_Object = obj;
-        m_LastUseTime = Time.time;
     }
 
     public void Unload()
     {
-        m_ABName = "";
+        m_AssetName = "";
+        m_ABItem = "";
         m_Object = null;
-        m_LastUseTime = 0;
     }
 
-    public GameObject GetGameObject()
+    public GameObject GameObject
     {
-        return m_Object as GameObject;
+        get { return m_Object as GameObject; }
     }
 
-    public SpriteAtlas GetSpriteAtlas()
+    public SpriteAtlas GetSpriteAtlas() 
     {
         return m_Object as SpriteAtlas;
     }
 }
 
-public class AssetBundleItem
+public class ABItem
 {
     public string m_ABName;
     public AssetBundle m_assetBundle;
@@ -81,7 +81,7 @@ public class ABManager:IManager
     static LogMode CfgLogMode = LogMode.All;
     // 已经加载的
     // 已经加载的ABItems
-    private Dictionary<string, AssetBundleItem> m_loadedABs = new Dictionary<string, AssetBundleItem>();
+    private Dictionary<string, ABItem> m_loadedABs = new Dictionary<string, ABItem>();
     // 加载中的ABItems
     private HashSet<string> m_loadingABNames = new HashSet<string>();
     // 存放 assets全路径与ab包名的依赖关系
@@ -91,7 +91,7 @@ public class ABManager:IManager
 
     public override void Awake() {
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
-        GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetBundleItem>();
+        GameMgr.m_ObjectMgr.CreateOrGetClassPool<ABItem>();
         GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetItem>();
         InitCfg();
     }
@@ -105,7 +105,7 @@ public class ABManager:IManager
         if (CfgLoadMode != LoadModeEnum.EditorOrigin)
         {
             // asset to ab name 读取
-            AssetBundleItem abItem = LoadAssetBundle("configs");
+            ABItem abItem = LoadAssetBundle("configs");
             TextAsset asset = abItem.m_assetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
             MemoryStream stream = new MemoryStream(asset.bytes);
             DataContractJsonSerializer jsonSerializer2 = new DataContractJsonSerializer(typeof(AssetBundleConfig));
@@ -132,11 +132,10 @@ public class ABManager:IManager
     public void UnloadAsset(AssetItem item)
     {
         Assert.IsFalse(item == null);
-        UnityEngine.Object obj = item.m_Object;
          Resources.UnloadUnusedAssets();
         if (CfgLoadMode != LoadModeEnum.EditorOrigin)
         {
-            UnloadAssetBundle(item.m_ABName);
+            UnloadAssetBundle(item.m_ABItem);
         }
         item.Unload();
         GameMgr.m_ObjectMgr.Recycle<AssetItem>(item);
@@ -150,17 +149,17 @@ public class ABManager:IManager
             case LoadModeEnum.EditorOrigin:
                 UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullPath);
                 AssetItem assetItem = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
-                assetItem.Init("", obj);
+                assetItem.Init("", fullPath, obj);
                 return assetItem;
             case LoadModeEnum.EditorAB:
 #endif
             case LoadModeEnum.StandaloneAB:
-                AssetBundleItem ABItem = LoadAssetBundleByAssetName(fullPath);
+                ABItem ABItem = LoadAssetBundleByAssetName(fullPath);
                 UnityEngine.Object obj2 = ABItem.m_assetBundle.LoadAsset(fullPath);
                 int id = obj2.GetInstanceID();
                 int a = 1;
                 AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
-                assetItem2.Init(ABItem.m_ABName, obj2);
+                assetItem2.Init(ABItem.m_ABName, fullPath, obj2);
                 return assetItem2;
             default:
                 return null;
@@ -175,7 +174,7 @@ public class ABManager:IManager
             case LoadModeEnum.EditorOrigin:
                 AssetItem item = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullPath);
-                item.Init("", obj);
+                item.Init("", fullPath, obj);
                 successCall(item);
                 break;
             case LoadModeEnum.EditorAB:
@@ -191,26 +190,26 @@ public class ABManager:IManager
         }
     }
 
-    private IEnumerator _loadAssetFromABItemAsync(AssetBundleItem item, string assetFullPath, Action <AssetItem> successCall)
+    private IEnumerator _loadAssetFromABItemAsync(ABItem item, string assetFullPath, Action <AssetItem> successCall)
     {
         var request = item.m_assetBundle.LoadAssetAsync(assetFullPath);
         yield return request.isDone;
         AssetItem item2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
         int id = request.asset.GetInstanceID();
         int a = 1;
-        item2.Init(item.m_ABName, request.asset);
+        item2.Init(item.m_ABName, assetFullPath, request.asset);
         successCall?.Invoke(item2);
     }
 
-    private AssetBundleItem LoadAssetBundleByAssetName(string assetFullPath)
+    private ABItem LoadAssetBundleByAssetName(string assetFullPath)
     {
         Assert.IsTrue(m_assetToABNames.ContainsKey(assetFullPath), assetFullPath + "没有对应的AB包！");
         string abName = m_assetToABNames[assetFullPath];
-        AssetBundleItem abItem = LoadAssetBundle(abName);
+        ABItem abItem = LoadAssetBundle(abName);
         return abItem;
     }
 
-    private void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<AssetBundleItem> successCall, Action failCall= null)
+    private void LoadAssetBundleByAssetNameAsync(string assetFullPath, Action<ABItem> successCall, Action failCall= null)
     {
         Assert.IsTrue(m_assetToABNames.ContainsKey(assetFullPath), assetFullPath + "没有对应的AB包！");
         string abName = m_assetToABNames[assetFullPath];
@@ -220,17 +219,17 @@ public class ABManager:IManager
     private void UnloadAssetBundle(string abName)
     {
         // 卸载本包
-        AssetBundleItem item = null;
+        ABItem item = null;
         m_loadedABs.TryGetValue(abName, out item);
         if (item != null)
         {
             item.m_referencedCount--;
-            Log(LogType.Info, string.Format("ReleaseAB包：{0}  当前引用计数: {1}", abName, item.m_referencedCount));
+            Log(LogType.Info, string.Format("释放AB包：{0}  引用: {1}", abName, item.m_referencedCount));
             if (item.m_referencedCount <= 0)
             {
                 item.UnLoad();
-                m_loadedABs.Remove(abName);              GameMgr.m_ObjectMgr.Recycle<AssetBundleItem>(item);
-                Log(LogType.Info, string.Format("移除AB包：{0}", abName));
+                m_loadedABs.Remove(abName);              GameMgr.m_ObjectMgr.Recycle<ABItem>(item);
+                Log(LogType.Info, string.Format("删除AB包：{0}", abName));
             }
         }
         // 卸载依赖
@@ -245,7 +244,7 @@ public class ABManager:IManager
         }
     }
 
-    private AssetBundleItem LoadAssetBundle(string abName)
+    private ABItem LoadAssetBundle(string abName)
     {
         Log(LogType.Info, "同步加载AB包: " + abName);
         Assert.IsFalse(m_loadingABNames.Contains(abName), "在异步加载尚未结束时不能再同步加载AB包：" + abName);
@@ -260,7 +259,7 @@ public class ABManager:IManager
             }
         }
         // AB包本身
-        AssetBundleItem abItem = null;
+        ABItem abItem = null;
         m_loadedABs.TryGetValue(abName, out abItem);
         if(abItem != null)
         {
@@ -271,7 +270,7 @@ public class ABManager:IManager
             string abPath = CfgAssetBundleLoadAbsolutePath + abName;
             Log(LogType.Info, "Path：" + abPath);
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
-            abItem = GameMgr.m_ObjectMgr.Spawn<AssetBundleItem>();
+            abItem = GameMgr.m_ObjectMgr.Spawn<ABItem>();
             //abItem = new AssetBundleItem();
             abItem.Init(ab, abName);
             m_loadedABs[abName] = abItem;
@@ -280,9 +279,9 @@ public class ABManager:IManager
         return abItem;
     }
 
-    private IEnumerator LoadAssetBundleAsync(string abName, Action<AssetBundleItem> successCall, Action failCall = null)
+    private IEnumerator LoadAssetBundleAsync(string abName, Action<ABItem> successCall, Action failCall = null)
     {
-        Log(LogType.Info, "处理异步加载AssetBundle: " + abName);
+        Log(LogType.Info, "异步加载AB包: " + abName);
         // AB包的依赖项
         string[] dependence = null;
         m_ABToDependence.TryGetValue(abName, out dependence);
@@ -294,41 +293,39 @@ public class ABManager:IManager
             }
         }
         // AB包本身
-        AssetBundleItem abItem = null;
+        ABItem abItem = null;
         m_loadedABs.TryGetValue(abName, out abItem);
         if (abItem != null)
         {
+            Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
             abItem.m_referencedCount++;
-            Log(LogType.Info, string.Format("此包已存在 {0} 引用: {1}", abName, abItem.m_referencedCount));
             successCall?.Invoke(abItem);
         }
         else
         {
             string abPath = CfgAssetBundleLoadAbsolutePath + abName;
-            Log(LogType.Info, "Path：" + abPath);
             // 加载中
             if (m_loadingABNames.Contains(abName))
             {
-                Log(LogType.Info, "等待Other异步加载:  " + abName);
                 yield return m_loadedABs.ContainsKey(abName);
                 abItem = m_loadedABs[abName];
                 abItem.m_referencedCount++;
-                Log(LogType.Info, "Other异步加载完毕:  " + abName + " 引用: " + abItem.m_referencedCount);
+                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
                 successCall?.Invoke(abItem);
             }
             else
             {
                 // 从头加载
-                Log(LogType.Info, "开始异步加载AB包:  " + abName);
+                Log(LogType.Info, "Path：" + abPath);
                 m_loadingABNames.Add(abName);
                 var abRequest = AssetBundle.LoadFromFileAsync(abPath);
                 yield return abRequest.isDone;
-                abItem = GameMgr.m_ObjectMgr.Spawn<AssetBundleItem>();
+                abItem = GameMgr.m_ObjectMgr.Spawn<ABItem>();
                 //abItem = new AssetBundleItem();
                 abItem.Init(abRequest.assetBundle, abName);
-                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
                 m_loadedABs[abName] = abItem;
                 m_loadingABNames.Remove(abName);
+                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
                 successCall?.Invoke(abItem);
             }
         }
