@@ -17,13 +17,13 @@ public class GameObjectPool
 
 public class ResourceManager : IManager
 {
-    class LoadAssetItemLambda
+    class LoadGameObjectLambda
     {
         string m_AssetPath;
         Action<GameObject> m_Callback;
         ResourceManager m_Owner;
         public Action<AssetItem> m_LoadCall;
-        public LoadAssetItemLambda()
+        public LoadGameObjectLambda()
         {
             m_LoadCall = (AssetItem item) =>
             {
@@ -46,7 +46,9 @@ public class ResourceManager : IManager
                 }
                 m_Callback?.Invoke(t);
                 m_Callback = null;
+                m_AssetPath = null;
                 m_Owner.m_LambdaCache.AddLast(this);
+                m_Owner = null;
             };
         }
 
@@ -59,11 +61,11 @@ public class ResourceManager : IManager
     }
     Action<GameObject> endLoad = null;
     // 加载GameObject的Lambda池
-    private DoubleLinkedList<LoadAssetItemLambda> m_LambdaCache;
+    private DoubleLinkedList<LoadGameObjectLambda> m_LambdaCache;
     // GameObject池
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
     public override void Awake(){
-        m_LambdaCache = new DoubleLinkedList<LoadAssetItemLambda>();
+        m_LambdaCache = new DoubleLinkedList<LoadGameObjectLambda>();
     }
 
     public override void Start()
@@ -71,7 +73,7 @@ public class ResourceManager : IManager
         //string path = "Assets/GameData/Prefabs/c1.prefab";
         //var obj1 = SpawnGameObject("Assets/GameData/Prefabs/c1.prefab");
         //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj1);
-        endLoad = this.loadEnd;
+        endLoad = this.loadEnd;    
     }
 
     public override void Update()
@@ -115,7 +117,7 @@ public class ResourceManager : IManager
         m_GameObjectPools.TryGetValue(path, out resourcePool);
         if (resourcePool == null)
         {
-            LoadAssetItemLambda lambdaCall = m_LambdaCache.CreateOrPop();
+            LoadGameObjectLambda lambdaCall = m_LambdaCache.CreateOrPop();
             lambdaCall.Init(this, path, callback);
             GameMgr.m_ABMgr.LoadAssetAsync(path, lambdaCall.m_LoadCall);
         }
@@ -139,7 +141,7 @@ public class ResourceManager : IManager
         m_GameObjectPools[path].m_ResourceList.AddLast(obj);
     }
 
-    public void ClearGameObject(string path)
+    public void ClearGameObjectPool(string path)
     {
         GameObjectPool resourcePool = null;
         m_GameObjectPools.TryGetValue(path, out resourcePool);
