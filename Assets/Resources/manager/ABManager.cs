@@ -157,6 +157,8 @@ public class ABManager:IManager
             case LoadModeEnum.StandaloneAB:
                 AssetBundleItem ABItem = LoadAssetBundleByAssetName(fullPath);
                 UnityEngine.Object obj2 = ABItem.m_assetBundle.LoadAsset(fullPath);
+                int id = obj2.GetInstanceID();
+                int a = 1;
                 AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 assetItem2.Init(ABItem.m_ABName, obj2);
                 return assetItem2;
@@ -194,6 +196,8 @@ public class ABManager:IManager
         var request = item.m_assetBundle.LoadAssetAsync(assetFullPath);
         yield return request.isDone;
         AssetItem item2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
+        int id = request.asset.GetInstanceID();
+        int a = 1;
         item2.Init(item.m_ABName, request.asset);
         successCall?.Invoke(item2);
     }

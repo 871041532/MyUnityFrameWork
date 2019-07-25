@@ -190,6 +190,7 @@ public class ResourceManager : IManager
 
     public override void Update()
     {
+        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", endLoad);
     }
     private void loadEnd(GameObject obj)
     {
