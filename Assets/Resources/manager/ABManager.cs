@@ -11,13 +11,14 @@ using XLua;
 [LuaCallCSharp]
 public class AssetItem
 {
-    public string m_ABItem;
+    private string m_ABName;
     private string m_AssetName;
     private UnityEngine.Object m_Object;
+
     public void Init(string abName, string assertName, UnityEngine.Object obj)
     {
         Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
-        m_ABItem = abName;
+        m_ABName = abName;
         m_AssetName = assertName;
         m_Object = obj;
     }
@@ -25,8 +26,18 @@ public class AssetItem
     public void Unload()
     {
         m_AssetName = "";
-        m_ABItem = "";
+        m_ABName = "";
         m_Object = null;
+    }
+
+    public int ABReferencedCount
+    {
+        get { return GameManager.Instance.m_ABMgr.GetABReferencedCount(m_ABName); }
+    }
+
+    public string ABName
+    {
+        get { return m_ABName; }
     }
 
     public GameObject GameObject
@@ -34,29 +45,9 @@ public class AssetItem
         get { return m_Object as GameObject; }
     }
 
-    public SpriteAtlas GetSpriteAtlas() 
+    public SpriteAtlas SpriteAtlas
     {
-        return m_Object as SpriteAtlas;
-    }
-}
-
-public class ABItem
-{
-    public string m_ABName;
-    public AssetBundle m_assetBundle;
-    public uint m_referencedCount;
-    public void Init(AssetBundle ab, string abName)
-    {
-        Assert.IsTrue(ab != null, "AssetBundleItem的Init函数obj传了null！");
-        m_ABName = abName;
-        m_assetBundle = ab;
-        m_referencedCount = 1;
-    }
-    public void UnLoad()
-    {
-        m_assetBundle.Unload(true);
-        m_assetBundle = null;
-        m_referencedCount = 0;
+        get { return m_Object as SpriteAtlas; }
     }
 }
 
@@ -106,7 +97,7 @@ public class ABManager:IManager
         {
             // asset to ab name 读取
             ABItem abItem = LoadAssetBundle("configs");
-            TextAsset asset = abItem.m_assetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
+            TextAsset asset = abItem.AssetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
             MemoryStream stream = new MemoryStream(asset.bytes);
             DataContractJsonSerializer jsonSerializer2 = new DataContractJsonSerializer(typeof(AssetBundleConfig));
             AssetBundleConfig cfg2 = jsonSerializer2.ReadObject(stream) as AssetBundleConfig;
@@ -129,18 +120,48 @@ public class ABManager:IManager
         setAssetBundlePath();
     }
 
+    public int GetABReferencedCount(string abName)
+    {
+        if (string.IsNullOrEmpty(abName))
+        {
+            return -1;
+        }
+        else
+        {
+            ABItem item = null;
+            m_loadedABs.TryGetValue(abName, out item);
+            if(item !=null)
+            {
+                return item.ReferencedCount;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 卸载Asset
+    /// </summary>
+    /// <param name="item"></param>
     public void UnloadAsset(AssetItem item)
     {
         Assert.IsFalse(item == null);
          Resources.UnloadUnusedAssets();
         if (CfgLoadMode != LoadModeEnum.EditorOrigin)
         {
-            UnloadAssetBundle(item.m_ABItem);
+            UnloadAssetBundle(item.ABName);
         }
         item.Unload();
         GameMgr.m_ObjectMgr.Recycle<AssetItem>(item);
     }
 
+    /// <summary>
+    /// 同步加载Asset
+    /// </summary>
+    /// <param name="fullPath"></param>
+    /// <returns></returns>
     public AssetItem LoadAsset(string fullPath)
     {
         switch (CfgLoadMode)
@@ -155,17 +176,23 @@ public class ABManager:IManager
 #endif
             case LoadModeEnum.StandaloneAB:
                 ABItem ABItem = LoadAssetBundleByAssetName(fullPath);
-                UnityEngine.Object obj2 = ABItem.m_assetBundle.LoadAsset(fullPath);
+                UnityEngine.Object obj2 = ABItem.AssetBundle.LoadAsset(fullPath);
                 int id = obj2.GetInstanceID();
                 int a = 1;
                 AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
-                assetItem2.Init(ABItem.m_ABName, fullPath, obj2);
+                assetItem2.Init(ABItem.ABName, fullPath, obj2);
                 return assetItem2;
             default:
                 return null;
         }
     }
 
+    /// <summary>
+    /// 异步加载Asset
+    /// </summary>
+    /// <param name="fullPath"></param>
+    /// <param name="successCall"></param>
+    /// <param name="failCall"></param>
     public void LoadAssetAsync(string fullPath, Action<AssetItem> successCall, Action failCall = null)
     {
         switch (CfgLoadMode)
@@ -192,12 +219,10 @@ public class ABManager:IManager
 
     private IEnumerator _loadAssetFromABItemAsync(ABItem item, string assetFullPath, Action <AssetItem> successCall)
     {
-        var request = item.m_assetBundle.LoadAssetAsync(assetFullPath);
+        var request = item.AssetBundle.LoadAssetAsync(assetFullPath);
         yield return request.isDone;
         AssetItem item2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
-        int id = request.asset.GetInstanceID();
-        int a = 1;
-        item2.Init(item.m_ABName, assetFullPath, request.asset);
+        item2.Init(item.ABName, assetFullPath, request.asset);
         successCall?.Invoke(item2);
     }
 
@@ -223,12 +248,13 @@ public class ABManager:IManager
         m_loadedABs.TryGetValue(abName, out item);
         if (item != null)
         {
-            item.m_referencedCount--;
-            Log(LogType.Info, string.Format("释放AB包：{0}  引用: {1}", abName, item.m_referencedCount));
-            if (item.m_referencedCount <= 0)
+            item.Release();
+            Log(LogType.Info, string.Format("释放AB包：{0}  引用: {1}", abName, item.ReferencedCount));
+            if (item.ReferencedCount <= 0)
             {
                 item.UnLoad();
-                m_loadedABs.Remove(abName);              GameMgr.m_ObjectMgr.Recycle<ABItem>(item);
+                m_loadedABs.Remove(abName);
+                GameMgr.m_ObjectMgr.Recycle<ABItem>(item);
                 Log(LogType.Info, string.Format("删除AB包：{0}", abName));
             }
         }
@@ -263,7 +289,7 @@ public class ABManager:IManager
         m_loadedABs.TryGetValue(abName, out abItem);
         if(abItem != null)
         {
-            abItem.m_referencedCount++;
+            abItem.Retain();
         }
         else
         {
@@ -275,7 +301,7 @@ public class ABManager:IManager
             abItem.Init(ab, abName);
             m_loadedABs[abName] = abItem;
         }
-        Log(LogType.Info, string.Format("同步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
+        Log(LogType.Info, string.Format("同步加载AB包完毕: {0} 引用 {1}", abName, abItem.ReferencedCount));
         return abItem;
     }
 
@@ -297,8 +323,8 @@ public class ABManager:IManager
         m_loadedABs.TryGetValue(abName, out abItem);
         if (abItem != null)
         {
-            Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
-            abItem.m_referencedCount++;
+            Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.ReferencedCount));
+            abItem.Retain();
             successCall?.Invoke(abItem);
         }
         else
@@ -309,8 +335,8 @@ public class ABManager:IManager
             {
                 yield return m_loadedABs.ContainsKey(abName);
                 abItem = m_loadedABs[abName];
-                abItem.m_referencedCount++;
-                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
+                abItem.Retain();
+                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.ReferencedCount));
                 successCall?.Invoke(abItem);
             }
             else
@@ -325,7 +351,7 @@ public class ABManager:IManager
                 abItem.Init(abRequest.assetBundle, abName);
                 m_loadedABs[abName] = abItem;
                 m_loadingABNames.Remove(abName);
-                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.m_referencedCount));
+                Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.ReferencedCount));
                 successCall?.Invoke(abItem);
             }
         }
@@ -388,7 +414,7 @@ private static void setAssetBundlePath()
         else if (CfgLoadMode == LoadModeEnum.EditorAB)
         {
             LoadAssetAsync(path, (item) => {
-                SpriteAtlas sa = item.GetSpriteAtlas();
+                SpriteAtlas sa = item.SpriteAtlas;
                 action(sa);
             });
         }
@@ -397,7 +423,7 @@ private static void setAssetBundlePath()
         if (CfgLoadMode == LoadModeEnum.StandaloneAB)
         {
             LoadAssetAsync(path, (item) => {
-                SpriteAtlas sa = item.GetSpriteAtlas();
+                SpriteAtlas sa = item.SpriteAtlas;
                 action(sa);
             });
         }
@@ -415,6 +441,45 @@ private static void setAssetBundlePath()
         GameManager.Instance.Log(text);
     }
 
-    public override void OnDestroy() { }
+    class ABItem
+    {
+        private string m_ABName;
+        private AssetBundle m_assetBundle;
+        private int m_referencedCount;
+        public void Init(AssetBundle ab, string abName)
+        {
+            Assert.IsTrue(ab != null, "AssetBundleItem的Init函数obj传了null！");
+            m_ABName = abName;
+            m_assetBundle = ab;
+            m_referencedCount = 1;
+        }
+        public void UnLoad()
+        {
+            m_assetBundle.Unload(true);
+            m_assetBundle = null;
+            m_ABName = "";
+            m_referencedCount = 0;
+        }
+        public string ABName
+        {
+            get { return m_ABName; }
+        }
+        public AssetBundle AssetBundle
+        {
+            get { return m_assetBundle; }
+        }
+        public int ReferencedCount
+        {
+            get { return m_referencedCount; }
+        }
+        public void Retain()
+        {
+            m_referencedCount++;
+        }
+        public void Release()
+        {
+            m_referencedCount--;
+        }
+    }
 }
 

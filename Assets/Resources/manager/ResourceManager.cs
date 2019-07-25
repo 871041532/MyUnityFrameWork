@@ -83,7 +83,7 @@ public class ResourceManager : IManager
     private void LoadEnd(GameObject obj)
     {
         RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
-        ClearGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
+        DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ public class ResourceManager : IManager
     /// 清理path对应的缓存
     /// </summary>
     /// <param name="path"></param>
-    public void ClearGameObjectPool(string path)
+    public void DestroyGameObjectPool(string path)
     {
         GameObjectPool resourcePool = null;
         m_GameObjectPools.TryGetValue(path, out resourcePool);
