@@ -18,7 +18,7 @@ public enum LoadModeEnum
 
 public class ABManager:IManager
  {
-    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorOrigin;
+    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
     public static string CfgManifestAndPlatformName = "Windows";
@@ -282,8 +282,8 @@ public class ABManager:IManager
         m_loadedABs.TryGetValue(abName, out abItem);
         if (abItem != null)
         {
-            Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.ReferencedCount));
             abItem.Retain();
+            Log(LogType.Info, string.Format("异步加载AB包完毕: {0} 引用 {1}", abName, abItem.ReferencedCount));
             successCall?.Invoke(abItem);
         }
         else
@@ -476,6 +476,11 @@ public class AssetItem
     public string AssetName
     {
         get { return m_AssetName; }
+    }
+
+    public UnityEngine.Object Object
+    {
+        get { return m_Object; }
     }
 
     public GameObject GameObject

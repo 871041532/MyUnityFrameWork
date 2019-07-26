@@ -11,16 +11,21 @@ public class ResourceManager : IManager
     private DoubleLinkedList<LoadGameObjectFunc> m_LambdaCache = new DoubleLinkedList<LoadGameObjectFunc>();
     // GameObject池
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
+    // 资源池
 
     public override void Start()
     {
-        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
-        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
+        string path = "Assets/GameData/Prefabs/c1.prefab";
+        //SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
+    }
+
+    public override void Update()
+    {
     }
 
     private void LoadEnd(GameObject obj)
     {
-        // RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
+        RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
         // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
 
@@ -95,64 +100,6 @@ public class ResourceManager : IManager
         m_GameObjectPools[path].Clear();
     }
 
-
-
-    class GameObjectPool
-    {
-        private AssetItem m_AssetItem;
-        public AssetItem AssetItem { get { return m_AssetItem; } }
-        private DoubleLinkedList<GameObject> m_CacheObjects;
-        private Dictionary<int, GameObject> m_SpawnedObjects;
-
-        public GameObjectPool(AssetItem assetItem)
-        {
-            m_AssetItem = assetItem;
-            m_CacheObjects = new DoubleLinkedList<GameObject>();
-            m_SpawnedObjects = new Dictionary<int, GameObject>();
-        }
-
-        public GameObject Spawn()
-        {
-            GameObject obj = null;
-            if (m_CacheObjects.Count > 0)
-            {
-                obj = m_CacheObjects.Pop();
-            }
-            else
-            {
-                obj = GameObject.Instantiate(m_AssetItem.GameObject);   
-            }
-            m_SpawnedObjects.Add(obj.GetHashCode(), obj);
-            return obj;
-        }
-
-        public void Recycle(GameObject obj)
-        {
-            m_CacheObjects.AddLast(obj);
-            m_SpawnedObjects.Remove(obj.GetHashCode());
-        }
-
-        public void Clear()
-        {
-            while (m_CacheObjects.Count > 0)
-            {
-                var obj = m_CacheObjects.Pop();
-                UnityEngine.Object.Destroy(obj);
-            }
-        }
-
-        public void Destroy()
-        {
-            this.Clear();
-            foreach (var item in m_SpawnedObjects)
-            {
-                UnityEngine.Object.Destroy(item.Value);
-            }
-            m_SpawnedObjects.Clear();
-            m_AssetItem = null;
-        }
-    }
-
     class LoadGameObjectFunc
     {
         string m_AssetPath;
@@ -186,6 +133,143 @@ public class ResourceManager : IManager
             m_AssetPath = assetPath;
             m_Callback = callback;
         }
+    }
+}
+
+public class ResourceCache
+{
+    private Dictionary<string, AssetItem> m_UsedItems;
+    private Dictionary<string, int> m_UsedReference;
+    private Dictionary<int, string> m_ObjectHashToAssetName;
+    private Dictionary<string, AssetItem> m_UnUsedItems;
+
+    public ResourceCache()
+    {
+        m_UsedItems = new Dictionary<string, AssetItem>();
+        m_UsedReference = new Dictionary<string, int>();
+        m_ObjectHashToAssetName = new Dictionary<int, string>();
+        m_UnUsedItems = new Dictionary<string, AssetItem>();
+    }
+
+    public UnityEngine.Object Load(string assetPath)
+    {
+        AssetItem item = null;
+        if (m_UsedItems.ContainsKey(assetPath))
+        {
+            m_UsedReference[assetPath] += 1;
+            item = m_UsedItems[assetPath];
+        }
+        else if (m_UnUsedItems.ContainsKey(assetPath))
+        {
+            item = m_UnUsedItems[assetPath];
+            m_UsedItems.Add(assetPath, item);
+            m_UsedReference.Add(assetPath, 1);
+            m_UnUsedItems.Remove(assetPath);
+        }
+        else
+        {
+            item = GameManager.Instance.m_ABMgr.LoadAsset(assetPath);
+            m_UsedItems.Add(assetPath, item);
+            m_UsedReference.Add(assetPath, 1);
+            m_ObjectHashToAssetName.Add(item.Object.GetHashCode(), assetPath);
+        }
+        return item.Object;
+    }
+
+    public void Recycle(UnityEngine.Object obj)
+    {
+        int code = obj.GetHashCode();
+        string assetPath = m_ObjectHashToAssetName[code];
+        m_UsedReference[assetPath] -= 1;
+        if (m_UsedReference[assetPath] <= 0)
+        {
+            AssetItem item = m_UsedItems[assetPath];
+            m_UnUsedItems.Add(assetPath, item);
+            m_UsedItems.Remove(assetPath);
+        }
+    }
+
+    public void Clear()
+    {
+        foreach (var key in m_UnUsedItems.Keys)
+        {
+            AssetItem item = m_UnUsedItems[key];
+            m_ObjectHashToAssetName.Remove(item.Object.GetHashCode());
+            GameManager.Instance.m_ABMgr.UnloadAsset(item);
+        }
+        m_UnUsedItems.Clear();
+    }
+
+    public void Destroy()
+    {
+        foreach (var item in m_UsedItems)
+        {
+            GameManager.Instance.m_ABMgr.UnloadAsset(item.Value);
+        }
+        foreach (var item in m_UnUsedItems)
+        {
+            GameManager.Instance.m_ABMgr.UnloadAsset(item.Value);
+        }
+        m_ObjectHashToAssetName.Clear();
+        m_UnUsedItems.Clear();
+        m_UsedItems.Clear();
+        m_UsedReference.Clear();
+    }
+}
+
+public class GameObjectPool
+{
+    private AssetItem m_AssetItem;
+    public AssetItem AssetItem { get { return m_AssetItem; } }
+    private DoubleLinkedList<GameObject> m_CacheObjects;
+    private Dictionary<int, GameObject> m_SpawnedObjects;
+
+    public GameObjectPool(AssetItem assetItem)
+    {
+        m_AssetItem = assetItem;
+        m_CacheObjects = new DoubleLinkedList<GameObject>();
+        m_SpawnedObjects = new Dictionary<int, GameObject>();
+    }
+
+    public GameObject Spawn()
+    {
+        GameObject obj = null;
+        if (m_CacheObjects.Count > 0)
+        {
+            obj = m_CacheObjects.Pop();
+        }
+        else
+        {
+            obj = GameObject.Instantiate(m_AssetItem.GameObject);
+        }
+        m_SpawnedObjects.Add(obj.GetHashCode(), obj);
+        return obj;
+    }
+
+    public void Recycle(GameObject obj)
+    {
+        m_CacheObjects.AddLast(obj);
+        m_SpawnedObjects.Remove(obj.GetHashCode());
+    }
+
+    public void Clear()
+    {
+        while (m_CacheObjects.Count > 0)
+        {
+            var obj = m_CacheObjects.Pop();
+            UnityEngine.Object.Destroy(obj);
+        }
+    }
+
+    public void Destroy()
+    {
+        this.Clear();
+        foreach (var item in m_SpawnedObjects)
+        {
+            UnityEngine.Object.Destroy(item.Value);
+        }
+        m_SpawnedObjects.Clear();
+        m_AssetItem = null;
     }
 }
 
