@@ -8,49 +8,6 @@ using System.Runtime.Serialization.Json;
 using UnityEngine.Assertions;
 using XLua;
 
-[LuaCallCSharp]
-public class AssetItem
-{
-    private string m_ABName;
-    private string m_AssetName;
-    private UnityEngine.Object m_Object;
-
-    public void Init(string abName, string assertName, UnityEngine.Object obj)
-    {
-        Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
-        m_ABName = abName;
-        m_AssetName = assertName;
-        m_Object = obj;
-    }
-
-    public void Unload()
-    {
-        m_AssetName = "";
-        m_ABName = "";
-        m_Object = null;
-    }
-
-    public int ABReferencedCount
-    {
-        get { return GameManager.Instance.m_ABMgr.GetABReferencedCount(m_ABName); }
-    }
-
-    public string ABName
-    {
-        get { return m_ABName; }
-    }
-
-    public GameObject GameObject
-    {
-        get { return m_Object as GameObject; }
-    }
-
-    public SpriteAtlas SpriteAtlas
-    {
-        get { return m_Object as SpriteAtlas; }
-    }
-}
-
 public enum LoadModeEnum
 {  
     EditorOrigin,  // Editor下直接加载原始资源
@@ -61,7 +18,7 @@ public enum LoadModeEnum
 
 public class ABManager:IManager
  {
-    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
+    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorOrigin;
     public static string CfgServerURL = "127.0.0.1";
     public static string CfgServerPort = "7888";
     public static string CfgManifestAndPlatformName = "Windows";
@@ -120,6 +77,11 @@ public class ABManager:IManager
         setAssetBundlePath();
     }
 
+    /// <summary>
+    /// 获取AB包的引用
+    /// </summary>
+    /// <param name="abName"></param>
+    /// <returns></returns>
     public int GetABReferencedCount(string abName)
     {
         if (string.IsNullOrEmpty(abName))
@@ -142,7 +104,7 @@ public class ABManager:IManager
     }
 
     /// <summary>
-    /// 卸载Asset
+    /// 卸载AssetItem
     /// </summary>
     /// <param name="item"></param>
     public void UnloadAsset(AssetItem item)
@@ -158,7 +120,7 @@ public class ABManager:IManager
     }
 
     /// <summary>
-    /// 同步加载Asset
+    /// 同步加载AssetItem
     /// </summary>
     /// <param name="fullPath"></param>
     /// <returns></returns>
@@ -177,8 +139,6 @@ public class ABManager:IManager
             case LoadModeEnum.StandaloneAB:
                 ABItem ABItem = LoadAssetBundleByAssetName(fullPath);
                 UnityEngine.Object obj2 = ABItem.AssetBundle.LoadAsset(fullPath);
-                int id = obj2.GetInstanceID();
-                int a = 1;
                 AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 assetItem2.Init(ABItem.ABName, fullPath, obj2);
                 return assetItem2;
@@ -188,7 +148,7 @@ public class ABManager:IManager
     }
 
     /// <summary>
-    /// 异步加载Asset
+    /// 异步加载AssetItem
     /// </summary>
     /// <param name="fullPath"></param>
     /// <param name="successCall"></param>
@@ -297,7 +257,6 @@ public class ABManager:IManager
             Log(LogType.Info, "Path：" + abPath);
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             abItem = GameMgr.m_ObjectMgr.Spawn<ABItem>();
-            //abItem = new AssetBundleItem();
             abItem.Init(ab, abName);
             m_loadedABs[abName] = abItem;
         }
@@ -347,7 +306,6 @@ public class ABManager:IManager
                 var abRequest = AssetBundle.LoadFromFileAsync(abPath);
                 yield return abRequest.isDone;
                 abItem = GameMgr.m_ObjectMgr.Spawn<ABItem>();
-                //abItem = new AssetBundleItem();
                 abItem.Init(abRequest.assetBundle, abName);
                 m_loadedABs[abName] = abItem;
                 m_loadingABNames.Remove(abName);
@@ -357,8 +315,8 @@ public class ABManager:IManager
         }
     }
 
-// 设置AB包名
-private static void setAssetBundlePath()
+    // 设置AB包名
+    private static void setAssetBundlePath()
     {
         string platformPath = "Default";
         CfgstreamingAssets = Application.streamingAssetsPath;
@@ -480,6 +438,54 @@ private static void setAssetBundlePath()
         {
             m_referencedCount--;
         }
+    }
+}
+
+[LuaCallCSharp]
+public class AssetItem
+{
+    private string m_ABName;
+    private string m_AssetName;
+    private UnityEngine.Object m_Object;
+
+    public void Init(string abName, string assertName, UnityEngine.Object obj)
+    {
+        Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
+        m_ABName = abName;
+        m_AssetName = assertName;
+        m_Object = obj;
+    }
+
+    public void Unload()
+    {
+        m_AssetName = "";
+        m_ABName = "";
+        m_Object = null;
+    }
+
+    public int ABReferencedCount
+    {
+        get { return GameManager.Instance.m_ABMgr.GetABReferencedCount(m_ABName); }
+    }
+
+    public string ABName
+    {
+        get { return m_ABName; }
+    }
+
+    public string AssetName
+    {
+        get { return m_AssetName; }
+    }
+
+    public GameObject GameObject
+    {
+        get { return m_Object as GameObject; }
+    }
+
+    public SpriteAtlas SpriteAtlas
+    {
+        get { return m_Object as SpriteAtlas; }
     }
 }
 

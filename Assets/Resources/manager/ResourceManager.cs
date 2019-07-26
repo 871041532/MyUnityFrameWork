@@ -3,87 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 using System;
+using System.Diagnostics;
 
 public class ResourceManager : IManager
 {
-    class GameObjectPool
-    {
-        public AssetItem m_AssetItem;
-        public DoubleLinkedList<GameObject> m_List;
-        public GameObjectPool(AssetItem assetItem, DoubleLinkedList<GameObject> resourceList)
-        {
-            m_AssetItem = assetItem;
-            m_List = resourceList;
-        }
-    }
-
-    class LoadGameObjectLambda
-    {
-        string m_AssetPath;
-        Action<GameObject> m_Callback;
-        ResourceManager m_Owner;
-        public Action<AssetItem> m_LoadCall;
-        public LoadGameObjectLambda()
-        {
-            m_LoadCall = (AssetItem item) =>
-            {
-                GameObject t = null;
-                GameObjectPool resourcePool = null;
-                m_Owner.m_GameObjectPools.TryGetValue(m_AssetPath, out resourcePool);
-                if (resourcePool == null)
-                {
-                    DoubleLinkedList<GameObject> list = new DoubleLinkedList<GameObject>();
-                    resourcePool = new GameObjectPool(item, list);
-                    m_Owner.m_GameObjectPools.Add(m_AssetPath, resourcePool);
-                }
-                if (resourcePool.m_List.Count > 0)
-                {
-                    t = resourcePool.m_List.Pop();
-                }
-                else
-                {
-                    t = GameObject.Instantiate(resourcePool.m_AssetItem.GameObject);
-                }
-                m_Callback?.Invoke(t);
-                m_Callback = null;
-                m_AssetPath = null;
-                m_Owner.m_LambdaCache.AddLast(this);
-                m_Owner = null;
-            };
-        }
-
-        public void Init(ResourceManager owner, string path, Action<GameObject> callback)
-        {
-            m_Owner = owner;
-            m_AssetPath = path;
-            m_Callback = callback;
-        }
-    }
-
     // 加载GameObject的Lambda池
-    private DoubleLinkedList<LoadGameObjectLambda> m_LambdaCache;
+    private DoubleLinkedList<LoadGameObjectFunc> m_LambdaCache = new DoubleLinkedList<LoadGameObjectFunc>();
     // GameObject池
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
-
-    public override void Awake(){
-        m_LambdaCache = new DoubleLinkedList<LoadGameObjectLambda>();
-    }
 
     public override void Start()
     {
         SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
         SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
-        SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
     }
 
-    public override void Update()
-    {
-        //SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
-    }
     private void LoadEnd(GameObject obj)
     {
-        RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
-        DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
+        // RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
+        // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
 
     /// <summary>
@@ -93,25 +31,15 @@ public class ResourceManager : IManager
     /// <returns></returns>
     public GameObject SpawnGameObject(string path)
     {
-        GameObject t = null;
         GameObjectPool resourcePool = null;
         m_GameObjectPools.TryGetValue(path, out resourcePool);
         if (resourcePool == null)
         {
-            AssetItem assetItem = GameMgr.m_ABMgr.LoadAsset(path);
-            DoubleLinkedList<GameObject> list = new DoubleLinkedList<GameObject>();
-            resourcePool = new GameObjectPool(assetItem, list);
+            AssetItem item = GameMgr.m_ABMgr.LoadAsset(path);
+            resourcePool = new GameObjectPool(item);
             m_GameObjectPools.Add(path, resourcePool);
         }
-        if (resourcePool.m_List.Count > 0)
-        {
-            t = resourcePool.m_List.Pop();
-        }
-        else
-        {
-            t = GameObject.Instantiate(resourcePool.m_AssetItem.GameObject);
-        }
-        return t;
+        return resourcePool.Spawn();
     }
 
     /// <summary>
@@ -125,21 +53,13 @@ public class ResourceManager : IManager
         m_GameObjectPools.TryGetValue(path, out resourcePool);
         if (resourcePool == null)
         {
-            LoadGameObjectLambda lambdaCall = m_LambdaCache.CreateOrPop();
-            lambdaCall.Init(this, path, callback);
-            GameMgr.m_ABMgr.LoadAssetAsync(path, lambdaCall.m_LoadCall);
+            LoadGameObjectFunc lambda = m_LambdaCache.CreateOrPop();
+            lambda.Init(this, path, callback);
+            GameMgr.m_ABMgr.LoadAssetAsync(path, lambda.m_LoadCall);
         }
         else
         {
-            GameObject t = null;
-            if (resourcePool.m_List.Count > 0)
-            {
-                t = resourcePool.m_List.Pop();
-            }
-            else
-            {
-                t = GameObject.Instantiate(resourcePool.m_AssetItem.GameObject);
-            }
+            GameObject t = resourcePool.Spawn();
             callback?.Invoke(t);
         }
     }
@@ -151,26 +71,120 @@ public class ResourceManager : IManager
     /// <param name="obj"></param>
     public void RecycleGameObject(string path, GameObject obj)
     {
-        m_GameObjectPools[path].m_List.AddLast(obj);
+        m_GameObjectPools[path].Recycle(obj);
     }
 
     /// <summary>
-    /// 清理path对应的缓存
+    /// 销毁Path对应的对象池
     /// </summary>
     /// <param name="path"></param>
     public void DestroyGameObjectPool(string path)
     {
-        GameObjectPool resourcePool = null;
-        m_GameObjectPools.TryGetValue(path, out resourcePool);
-        if (resourcePool != null)
+        GameObjectPool pool = m_GameObjectPools[path];
+        GameMgr.m_ABMgr.UnloadAsset(pool.AssetItem);
+        pool.Destroy();
+        m_GameObjectPools.Remove(path);
+    }
+
+    /// <summary>
+    /// 清理path对应的缓存池中已经缓存但没使用的对象
+    /// </summary>
+    /// <param name="path"></param>
+    public void ClearGameObjectPool(string path)
+    {
+        m_GameObjectPools[path].Clear();
+    }
+
+
+
+    class GameObjectPool
+    {
+        private AssetItem m_AssetItem;
+        public AssetItem AssetItem { get { return m_AssetItem; } }
+        private DoubleLinkedList<GameObject> m_CacheObjects;
+        private Dictionary<int, GameObject> m_SpawnedObjects;
+
+        public GameObjectPool(AssetItem assetItem)
         {
-            GameMgr.m_ABMgr.UnloadAsset(resourcePool.m_AssetItem);
-            while(resourcePool.m_List.Count > 0)
+            m_AssetItem = assetItem;
+            m_CacheObjects = new DoubleLinkedList<GameObject>();
+            m_SpawnedObjects = new Dictionary<int, GameObject>();
+        }
+
+        public GameObject Spawn()
+        {
+            GameObject obj = null;
+            if (m_CacheObjects.Count > 0)
             {
-                var obj = resourcePool.m_List.Pop();
+                obj = m_CacheObjects.Pop();
+            }
+            else
+            {
+                obj = GameObject.Instantiate(m_AssetItem.GameObject);   
+            }
+            m_SpawnedObjects.Add(obj.GetHashCode(), obj);
+            return obj;
+        }
+
+        public void Recycle(GameObject obj)
+        {
+            m_CacheObjects.AddLast(obj);
+            m_SpawnedObjects.Remove(obj.GetHashCode());
+        }
+
+        public void Clear()
+        {
+            while (m_CacheObjects.Count > 0)
+            {
+                var obj = m_CacheObjects.Pop();
                 UnityEngine.Object.Destroy(obj);
             }
-            m_GameObjectPools.Remove(path);
+        }
+
+        public void Destroy()
+        {
+            this.Clear();
+            foreach (var item in m_SpawnedObjects)
+            {
+                UnityEngine.Object.Destroy(item.Value);
+            }
+            m_SpawnedObjects.Clear();
+            m_AssetItem = null;
+        }
+    }
+
+    class LoadGameObjectFunc
+    {
+        string m_AssetPath;
+        Action<GameObject> m_Callback;
+        ResourceManager m_Owner;
+        public Action<AssetItem> m_LoadCall;
+        public LoadGameObjectFunc()
+        {
+            m_LoadCall = (AssetItem item) =>
+            {
+                GameObject t = null;
+                GameObjectPool resourcePool = null;
+                m_Owner.m_GameObjectPools.TryGetValue(m_AssetPath, out resourcePool);
+                if (resourcePool == null)
+                {
+                    resourcePool = new GameObjectPool(item);
+                    m_Owner.m_GameObjectPools.Add(m_AssetPath, resourcePool);
+                }
+                t = resourcePool.Spawn();
+                m_Callback?.Invoke(t);
+                m_Callback = null;
+                m_AssetPath = null;
+                m_Owner.m_LambdaCache.AddLast(this);
+                m_Owner = null;
+            };
+        }
+
+        public void Init(ResourceManager owner, string assetPath, Action<GameObject> callback)
+        {
+            m_Owner = owner;
+            m_AssetPath = assetPath;
+            m_Callback = callback;
         }
     }
 }
