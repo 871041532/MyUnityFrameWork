@@ -12,11 +12,17 @@ public class ResourceManager : IManager
     // GameObject池
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
     // 资源池
+    private Dictionary<int, ResourceCache> m_ResourceCaches = new Dictionary<int, ResourceCache>();
 
     public override void Start()
     {
         string path = "Assets/GameData/Prefabs/c1.prefab";
         //SpawnGameObjectAsync("Assets/GameData/Prefabs/c1.prefab", LoadEnd);
+        ResourceCache cache = new ResourceCache();
+        var item = LoadAssetFromCache(1, path);
+        var item2 = LoadAssetFromCache(1, path);
+        RecycleAsset(1, item);
+        DestroyCache(1);
     }
 
     public override void Update()
@@ -27,6 +33,50 @@ public class ResourceManager : IManager
     {
         RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
         // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
+    }
+
+    /// <summary>
+    /// 从Cache中加载一个资源
+    /// </summary>
+    /// <returns></returns>
+    public AssetItem LoadAssetFromCache(int cacheId, string assetPath)
+    {
+        ResourceCache cache = null;
+        m_ResourceCaches.TryGetValue(cacheId, out cache);
+        if (cache == null)
+        {
+            cache = new ResourceCache();
+            m_ResourceCaches.Add(cacheId, cache);
+        }
+        return cache.Load(assetPath);
+    }
+
+    /// <summary>
+    /// 将一个资源放回cache
+    /// </summary>
+    /// <param name="cacheId"></param>
+    /// <param name="item"></param>
+    public void RecycleAsset(int cacheId, AssetItem item)
+    {
+        m_ResourceCaches[cacheId].Recycle(item);
+    }
+
+    /// <summary>
+    /// 清理cache中引用计数为0的资源
+    /// </summary>
+    /// <param name="cacheId"></param>
+    public void ClearCache(int cacheId)
+    {
+        m_ResourceCaches[cacheId].Clear();
+    }
+
+    /// <summary>
+    /// 清理所有资源并销毁cache
+    /// </summary>
+    /// <param name="cacheId"></param>
+    public void DestroyCache(int cacheId)
+    {
+        m_ResourceCaches[cacheId].Destroy();
     }
 
     /// <summary>
@@ -138,82 +188,70 @@ public class ResourceManager : IManager
 
 public class ResourceCache
 {
-    private Dictionary<string, AssetItem> m_UsedItems;
-    private Dictionary<string, int> m_UsedReference;
-    private Dictionary<int, string> m_ObjectHashToAssetName;
-    private Dictionary<string, AssetItem> m_UnUsedItems;
+    private Dictionary<string, AssetItem> m_CacheItems;
+    private Dictionary<int, int> m_CacheReference;
 
     public ResourceCache()
     {
-        m_UsedItems = new Dictionary<string, AssetItem>();
-        m_UsedReference = new Dictionary<string, int>();
-        m_ObjectHashToAssetName = new Dictionary<int, string>();
-        m_UnUsedItems = new Dictionary<string, AssetItem>();
+        m_CacheItems = new Dictionary<string, AssetItem>();
+        m_CacheReference = new Dictionary<int, int>();
     }
 
-    public UnityEngine.Object Load(string assetPath)
+    public AssetItem Load(string assetPath)
     {
         AssetItem item = null;
-        if (m_UsedItems.ContainsKey(assetPath))
+        m_CacheItems.TryGetValue(assetPath, out item);
+        if (item == null)
         {
-            m_UsedReference[assetPath] += 1;
-            item = m_UsedItems[assetPath];
-        }
-        else if (m_UnUsedItems.ContainsKey(assetPath))
-        {
-            item = m_UnUsedItems[assetPath];
-            m_UsedItems.Add(assetPath, item);
-            m_UsedReference.Add(assetPath, 1);
-            m_UnUsedItems.Remove(assetPath);
+            item = GameManager.Instance.m_ABMgr.LoadAsset(assetPath);
+            m_CacheItems.Add(assetPath, item);
+            m_CacheReference.Add(item.GetHashCode(), 1);
         }
         else
         {
-            item = GameManager.Instance.m_ABMgr.LoadAsset(assetPath);
-            m_UsedItems.Add(assetPath, item);
-            m_UsedReference.Add(assetPath, 1);
-            m_ObjectHashToAssetName.Add(item.Object.GetHashCode(), assetPath);
+            m_CacheReference[item.GetHashCode()] += 1;
         }
-        return item.Object;
+        return item;
     }
 
-    public void Recycle(UnityEngine.Object obj)
+    public void Recycle(AssetItem item)
     {
-        int code = obj.GetHashCode();
-        string assetPath = m_ObjectHashToAssetName[code];
-        m_UsedReference[assetPath] -= 1;
-        if (m_UsedReference[assetPath] <= 0)
+        int hashCode = item.GetHashCode();
+        if (m_CacheReference.ContainsKey(hashCode))
         {
-            AssetItem item = m_UsedItems[assetPath];
-            m_UnUsedItems.Add(assetPath, item);
-            m_UsedItems.Remove(assetPath);
+            m_CacheReference[hashCode] -= 1;
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("试图Recycle不在cache中的AssetItem！");
         }
     }
 
     public void Clear()
     {
-        foreach (var key in m_UnUsedItems.Keys)
+        List<string> keys = new List<string>(m_CacheItems.Keys);
+        for (int i = 0; i < keys.Count; i++)
         {
-            AssetItem item = m_UnUsedItems[key];
-            m_ObjectHashToAssetName.Remove(item.Object.GetHashCode());
-            GameManager.Instance.m_ABMgr.UnloadAsset(item);
+            string key = keys[i];
+            AssetItem item = m_CacheItems[key];
+            int hashCode = item.GetHashCode();
+            if (m_CacheReference[hashCode] <= 0)
+            {
+                GameManager.Instance.m_ABMgr.UnloadAsset(m_CacheItems[key]);
+                m_CacheItems.Remove(key);
+                m_CacheReference.Remove(hashCode);
+            }
         }
-        m_UnUsedItems.Clear();
     }
 
     public void Destroy()
     {
-        foreach (var item in m_UsedItems)
+        foreach (var item in m_CacheItems)
         {
             GameManager.Instance.m_ABMgr.UnloadAsset(item.Value);
         }
-        foreach (var item in m_UnUsedItems)
-        {
-            GameManager.Instance.m_ABMgr.UnloadAsset(item.Value);
-        }
-        m_ObjectHashToAssetName.Clear();
-        m_UnUsedItems.Clear();
-        m_UsedItems.Clear();
-        m_UsedReference.Clear();
+        m_CacheItems.Clear();
+        m_CacheReference.Clear();
     }
 }
 
