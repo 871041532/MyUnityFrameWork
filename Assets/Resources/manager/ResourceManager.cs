@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 public class ResourceManager : IManager
 {
-    // 加载GameObject的Lambda池
+    // 加载GameObject的Lambda缓存
     private DoubleLinkedList<LoadGameObjectFunc> m_LambdaCache = new DoubleLinkedList<LoadGameObjectFunc>();
     // GameObject池
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
@@ -22,7 +22,8 @@ public class ResourceManager : IManager
         var item = LoadAssetFromCache(1, path);
         var item2 = LoadAssetFromCache(1, path);
         RecycleAsset(1, item);
-        DestroyCache(1);
+        RecycleAsset(1, item2);
+        ClearCache(1);
     }
 
     public override void Update()
@@ -220,10 +221,14 @@ public class ResourceCache
         if (m_CacheReference.ContainsKey(hashCode))
         {
             m_CacheReference[hashCode] -= 1;
+            if (m_CacheReference[hashCode] < 0)
+            {
+                UnityEngine.Debug.LogError("Cache中AssetItem Recycle多次导致引用计数小于0！");
+            }
         }
         else
         {
-            UnityEngine.Debug.LogError("试图Recycle不在cache中的AssetItem！");
+            UnityEngine.Debug.LogError("试图Recycle不在此Cache中的AssetItem！");
         }
     }
 
