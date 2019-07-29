@@ -207,7 +207,9 @@ namespace AssetBundles
             }
 
             // “¿¿µ–≈œ¢–¥»Îxml
-            FileStream fileStream = new FileStream(Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.json"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            string filePath = Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.json");
+            File.Delete(filePath);
+            FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(AssetBundleConfig));
             jsonSerializer.WriteObject(fileStream, configs);
             fileStream.Close();
