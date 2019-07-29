@@ -110,7 +110,6 @@ public class ABManager:IManager
     public void UnloadAsset(AssetItem item)
     {
         Assert.IsFalse(item == null);
-         Resources.UnloadUnusedAssets();
         if (CfgLoadMode != LoadModeEnum.EditorOrigin)
         {
             UnloadAssetBundle(item.ABName);
