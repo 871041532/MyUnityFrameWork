@@ -123,12 +123,16 @@ namespace AssetBundles
                 HashSet<string> allBundleNamesSet = new HashSet<string>();
                 for (int i = 0; i < allBundleNames.Length; i++)
                 {
-                    string p = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath, allBundleNames[i]);
-                    string p2 = p.Replace("/", "\\");
-                    allBundleNamesSet.Add(p2);
-                    allBundleNamesSet.Add(p2 + ".manifest");
-                    allBundleNamesSet.Add(p2 + ".meta");
-                    allBundleNamesSet.Add(p2 + ".manifest.meta");
+                    // AB签名设置到文件夹上，里面是空的话不打包，这里把之前的删除掉
+                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0)
+                    {
+                        string p = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath, allBundleNames[i]);
+                        string p2 = p.Replace("/", "\\");
+                        allBundleNamesSet.Add(p2);
+                        allBundleNamesSet.Add(p2 + ".manifest");
+                        allBundleNamesSet.Add(p2 + ".meta");
+                        allBundleNamesSet.Add(p2 + ".manifest.meta");
+                    }
                 }
                 // 删除文件
                 FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);

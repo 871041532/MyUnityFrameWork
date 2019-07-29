@@ -13,7 +13,7 @@ public class ResourceManager : IManager
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
     // 资源池
     private Dictionary<int, ResourceCache> m_ResourceCaches = new Dictionary<int, ResourceCache>();
-
+    private AssetItem audioItem = null;
     public override void Start()
     {
         string path = "Assets/GameData/Prefabs/c1.prefab";

@@ -19,3 +19,5 @@ MonoBehaviour:
     Path: Assets/GameData/UI/res/common
   - ABName: configs
     Path: Assets/GameData/Configs
+  - ABName: audio
+    Path: Assets/GameData/Audio

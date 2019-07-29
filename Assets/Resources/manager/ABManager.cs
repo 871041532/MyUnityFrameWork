@@ -492,5 +492,10 @@ public class AssetItem
     {
         get { return m_Object as SpriteAtlas; }
     }
+
+    public AudioClip AudioClip
+    {
+        get { return m_Object as AudioClip; }
+    }
 }
 
