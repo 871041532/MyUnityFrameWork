@@ -13,20 +13,37 @@ public class ResourceManager : IManager
     private Dictionary<string, GameObjectPool> m_GameObjectPools = new Dictionary<string, GameObjectPool>();
     // 资源池
     private Dictionary<int, ResourceCache> m_ResourceCaches = new Dictionary<int, ResourceCache>();
-    private AssetItem audioItem = null;
+    public event Action UpdataEvent;
+
+    ResourcePrioritizedCache c2;
     public override void Start()
     {
         string path = "Assets/GameData/Prefabs/c1.prefab";
-        ResourceCache cache = new ResourceCache();
+        string path2 = "Assets/GameData/Configs/AssetBundleConfig.json";
+        string path3 = "Assets/GameData/UI/res/common/common.spriteatlas";
+        c2 = new ResourcePrioritizedCache();
+        c2.LoadAsync(path, LoadEnd);
+        c2.LoadAsync(path2, LoadEnd);
+        c2.LoadAsync(path3, LoadEnd);
+        c2.LoadAsync(path, LoadEnd2);
     }
 
     public override void Update()
     {
-        LoadAssetFromCacheAsync(1, "Assets/GameData/Prefabs/c1.prefab", null);
+        UpdataEvent?.Invoke();
     }
 
-    private void LoadEnd(GameObject obj)
+    private void LoadEnd(AssetItem obj)
     {
+        c2.Recycle(obj);
+        //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
+        // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
+    }
+
+    private void LoadEnd2(AssetItem obj)
+    {
+        c2.Recycle(obj);
+        c2.Destroy();
         //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
         // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
@@ -212,43 +229,50 @@ public class ResourcePrioritizedCache
         Low,
         VaildNum,  // 数量没有别的意思
     }
-
-    class AsyncCallback
-    {
-        public Action<AssetItem> m_LoadedCall = null;
-       
-        public void Reset()
-        {
-            m_LoadedCall = null;
-        }
-    }
-
-    class AsyncLoadResParam
-    {
-        public string m_Path;
-        public LoadPriority m_Priority;
-        
-        public void Reset()
-        {
-            m_Path = "";
-            m_Priority = LoadPriority.Hight;
-        }
-    }
     private ResourceCache m_Cache;
     // 正在加载的优先级列表
-    private List<AsyncLoadResParam>[] m_LoadingRes;
+    private Stack<AsyncLoadProcess>[] m_LoadingResList;
     // 正在加载的dict
-    private Dictionary<string, AsyncLoadResParam> m_LoadingResDict;
+    private Dictionary<string, AsyncLoadProcess> m_LoadingResDict;
+    // 加载过程缓存
+    private ClassObjectPool<AsyncLoadProcess> m_ProcessPool;
+    // 同时加载上限，每帧补充一次
+    private int m_MaxLoadingCount = 1;
+    private int m_CurrentLoadingCount = 0;
 
     public ResourcePrioritizedCache()
     {
         m_Cache = new ResourceCache();
-        m_LoadingRes = new List<AsyncLoadResParam>[(int)LoadPriority.VaildNum];
-        for (int i = 0; i < m_LoadingRes.Length; i++)
+        m_LoadingResList = new Stack<AsyncLoadProcess>[(int)LoadPriority.VaildNum];
+        for (int i = 0; i < m_LoadingResList.Length; i++)
         {
-            m_LoadingRes[i] = new List<AsyncLoadResParam>();
+            m_LoadingResList[i] = new Stack<AsyncLoadProcess>();
         }
-        m_LoadingResDict = new Dictionary<string, AsyncLoadResParam>();
+        m_LoadingResDict = new Dictionary<string, AsyncLoadProcess>();
+        m_ProcessPool = GameManager.Instance.m_ObjectMgr.CreateOrGetClassPool<AsyncLoadProcess>();
+        GameManager.Instance.m_ResMgr.UpdataEvent += this.Update;
+    }
+
+    private void Update()
+    {
+        if (m_CurrentLoadingCount >= m_MaxLoadingCount)
+        {
+            return;
+        }
+        for (int i = 0; i < m_LoadingResList.Length; i++)
+        {
+            Stack<AsyncLoadProcess> processStack = m_LoadingResList[i];
+            while (processStack.Count > 0)
+            {
+                if (m_CurrentLoadingCount >= m_MaxLoadingCount)
+                {
+                    return;
+                }
+                m_CurrentLoadingCount++;
+                AsyncLoadProcess param = processStack.Pop();
+                param.BeginLoad();
+            }
+        }
     }
 
     public void LoadAsync(string assetPath, Action<AssetItem> call, LoadPriority priority = LoadPriority.Hight)
@@ -257,17 +281,21 @@ public class ResourcePrioritizedCache
         if (m_Cache.IsHaveAsset(assetPath))
         {
             AssetItem item =  m_Cache.Load(assetPath);
-            call(item);
+            call?.Invoke(item);
         }
         // 加载中
         else if(m_LoadingResDict.ContainsKey(assetPath))
         {
-
+            m_LoadingResDict[assetPath].AddCallback(call);
         }
         // 从头加载
         else
         {
-                
+            AsyncLoadProcess param = m_ProcessPool.Spawn();
+            param.Init(assetPath, this, priority);
+            param.AddCallback(call);
+            m_LoadingResDict.Add(assetPath, param);
+            m_LoadingResList[(int)priority].Push(param);
         }
     }
 
@@ -289,55 +317,78 @@ public class ResourcePrioritizedCache
     public void Destroy()
     {
         m_Cache.Destroy();
+        GameManager.Instance.m_ResMgr.UpdataEvent -= this.Update;
+    }
+
+    class AsyncLoadProcess
+    {
+        private string m_AssetPath;
+        private LoadPriority m_Priority;
+        private List<Action<AssetItem>> m_CallbackList = new List<Action<AssetItem>>();
+        private ResourcePrioritizedCache m_Owner;
+        private Action<AssetItem> m_LoadedProcess;
+
+        public void Init(string path, ResourcePrioritizedCache owner, LoadPriority priority)
+        {
+            m_AssetPath = path;
+            m_Priority = priority;
+            m_Owner = owner;
+            m_LoadedProcess = LoadEnd;
+        }
+
+        public void AddCallback(Action<AssetItem> call)
+        {
+            m_CallbackList.Add(call);
+        }
+
+        public void BeginLoad()
+        {
+            m_Owner.m_Cache.LoadAsync(m_AssetPath, m_LoadedProcess);
+        }
+
+        private void LoadEnd(AssetItem assetItem)
+        {
+            m_Owner.m_CurrentLoadingCount--;
+            m_Owner.m_LoadingResDict.Remove(m_AssetPath);
+            for (int i = 0; i < m_CallbackList.Count; i++)
+            {
+                if (i == 0)
+                {
+                    m_CallbackList[i]?.Invoke(assetItem);
+                }
+                else
+                {
+                    AssetItem temp = m_Owner.m_Cache.Load(m_AssetPath);
+                    m_CallbackList[i]?.Invoke(temp);
+                }
+            }
+            m_Owner.m_ProcessPool.Recycle(this);
+            Reset();
+        }
+
+        private void Reset()
+        {
+            m_AssetPath = "";
+            m_Priority = LoadPriority.Hight;
+            m_Owner = null;
+            m_CallbackList.Clear();
+            m_LoadedProcess = null;
+        }
     }
 }
 
 // 资源缓存
 public class ResourceCache
 {
-    class LoadFunc
-    {
-        private ResourceCache cache;
-        private string assetPath;
-        private Action<AssetItem> ok_call;
-        public Action<AssetItem> m_process;
-    
-        public void Init(ResourceCache ache, string ssetPath, Action<AssetItem> k_call)
-        {
-            cache = ache;
-            assetPath = ssetPath;
-            ok_call = k_call;
-            m_process = (AssetItem assetItem) =>{
-                AssetItem innerItem = null;
-                cache.m_CacheItems.TryGetValue(assetPath, out innerItem);
-                if (innerItem == null)
-                {
-                    cache.m_CacheItems.Add(assetPath, assetItem);
-                    cache.m_CacheReference.Add(assetItem.GetHashCode(), 1);
-                    innerItem = assetItem;
-                }
-                else
-                {
-                    GameManager.Instance.m_ABMgr.UnloadAsset(assetItem);
-                    cache.m_CacheReference[innerItem.GetHashCode()] += 1;      
-                }
-                cache = null;
-                assetPath = "";
-                m_process = null;
-                ok_call?.Invoke(innerItem);
-                ok_call = null;
-            };
-        }
-    }
     private Dictionary<string, AssetItem> m_CacheItems;
     private Dictionary<int, int> m_CacheReference;
-    private DoubleLinkedList<LoadFunc> m_Func;
+    private DoubleLinkedList<AsyncLoadingFunc> m_LoadingFuncs;
 
     public ResourceCache()
     {
         m_CacheItems = new Dictionary<string, AssetItem>();
         m_CacheReference = new Dictionary<int, int>();
-        m_Func = new DoubleLinkedList<LoadFunc>();
+        m_LoadingFuncs = new DoubleLinkedList<AsyncLoadingFunc>();
     }
 
     public void LoadAsync(string assetPath, Action<AssetItem> call)
@@ -346,25 +397,9 @@ public class ResourceCache
         m_CacheItems.TryGetValue(assetPath, out item);
         if (item == null)
         {
-            var func = m_Func.CreateOrPop();
+            var func = m_LoadingFuncs.CreateOrPop();
             func.Init(this, assetPath, call);
-            GameManager.Instance.m_ABMgr.LoadAssetAsync(assetPath, func.m_process);
-            //GameManager.Instance.m_ABMgr.LoadAssetAsync(assetPath, (assetItem) => {
-            //    AssetItem innerItem = null;
-            //    m_CacheItems.TryGetValue(assetPath, out innerItem);
-            //    if (innerItem == null)
-            //    {
-            //        m_CacheItems.Add(assetPath, assetItem);
-            //        m_CacheReference.Add(assetItem.GetHashCode(), 1);
-            //        call?.Invoke(assetItem);
-            //    }
-            //    else
-            //    {
-            //        GameManager.Instance.m_ABMgr.UnloadAsset(assetItem);
-            //        m_CacheReference[innerItem.GetHashCode()] += 1;
-            //        call?.Invoke(innerItem);
-            //    }   
-            //});
+            GameManager.Instance.m_ABMgr.LoadAssetAsync(assetPath, func.m_Process);  
         }
         else
         {
@@ -439,6 +474,41 @@ public class ResourceCache
         m_CacheItems.Clear();
         m_CacheReference.Clear();
         Resources.UnloadUnusedAssets();
+    }
+
+    class AsyncLoadingFunc
+    {
+        private ResourceCache m_Owner;
+        private string m_AssetPath;
+        private Action<AssetItem> m_LoadedCall;
+        public Action<AssetItem> m_Process;
+
+        public void Init(ResourceCache ache, string ssetPath, Action<AssetItem> k_call)
+        {
+            m_Owner = ache;
+            m_AssetPath = ssetPath;
+            m_LoadedCall = k_call;
+            m_Process = (AssetItem assetItem) => {
+                AssetItem innerItem = null;
+                m_Owner.m_CacheItems.TryGetValue(m_AssetPath, out innerItem);
+                if (innerItem == null)
+                {
+                    m_Owner.m_CacheItems.Add(m_AssetPath, assetItem);
+                    m_Owner.m_CacheReference.Add(assetItem.GetHashCode(), 1);
+                    innerItem = assetItem;
+                }
+                else
+                {
+                    GameManager.Instance.m_ABMgr.UnloadAsset(assetItem);
+                    m_Owner.m_CacheReference[innerItem.GetHashCode()] += 1;
+                }
+                m_Owner = null;
+                m_AssetPath = "";
+                m_Process = null;
+                m_LoadedCall?.Invoke(innerItem);
+                m_LoadedCall = null;
+            };
+        }
     }
 }
 
@@ -624,7 +694,6 @@ public class DoubleLinkedList<T> where T : class, new()
             return new T();
         }
     }
-
 
     public T Pop()
     {
