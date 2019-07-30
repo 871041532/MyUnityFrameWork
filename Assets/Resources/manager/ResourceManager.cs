@@ -21,11 +21,14 @@ public class ResourceManager : IManager
         string path = "Assets/GameData/Prefabs/c1.prefab";
         string path2 = "Assets/GameData/Configs/AssetBundleConfig.json";
         string path3 = "Assets/GameData/UI/res/common/common.spriteatlas";
+        string path4 = "Assets/GameData/UI/res/common/items/apple.png";
         c2 = new ResourcePrioritizedCache();
         c2.LoadAsync(path, LoadEnd);
         c2.LoadAsync(path2, LoadEnd);
         c2.LoadAsync(path3, LoadEnd);
         c2.LoadAsync(path, LoadEnd2);
+        var item = c2.Load(path4);
+        var a = 1;
     }
 
     public override void Update()
@@ -234,7 +237,7 @@ public class ResourcePrioritizedCache
     private Stack<AsyncLoadProcess>[] m_LoadingResList;
     // 正在加载的dict
     private Dictionary<string, AsyncLoadProcess> m_LoadingResDict;
-    // 加载过程缓存
+    // 加载过程类缓存
     private ClassObjectPool<AsyncLoadProcess> m_ProcessPool;
     // 同时加载上限，每帧补充一次
     private int m_MaxLoadingCount = 1;
