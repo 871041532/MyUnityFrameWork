@@ -34,6 +34,9 @@ public class ResourceManager : IManager
     {
         UpdataEvent?.Invoke();
         c2.PreloadAsync("Assets/GameData/Prefabs/c1.prefab");
+        c2.LoadAsync("Assets/GameData/Prefabs/c1.prefab", (item)=> {
+
+        });
         if (Input.anyKey)
         {
             c2.m_MaxLoadingCount = 5;
@@ -51,7 +54,7 @@ public class ResourceManager : IManager
     private void LoadEnd2(AssetItem obj)
     {
         c2.Recycle(obj);
-        c2.Destroy();
+        c2.Clear();
         //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
         // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
@@ -361,7 +364,8 @@ public class ResourcePrioritizedCache
     {
         private string m_AssetPath;
         private LoadPriority m_Priority;
-        private List<Action<AssetItem>> m_CallbackList = new List<Action<AssetItem>>();
+        private HashSet<Action<AssetItem>> m_CallbackSet = new HashSet<Action<AssetItem>>();
+        private Dictionary<int, int> m_CallbackReference = new Dictionary<int, int>();
         private ResourcePrioritizedCache m_Owner;
         private Action<AssetItem> m_LoadedProcess;
 
@@ -375,7 +379,24 @@ public class ResourcePrioritizedCache
 
         public void AddCallback(Action<AssetItem> call)
         {
-            m_CallbackList.Add(call);
+            int hashCode = call.GetHashCode();
+            if (m_CallbackReference.ContainsKey(hashCode))
+            {
+                m_CallbackReference[hashCode] += 1;
+                if (m_CallbackReference[hashCode] > 100)
+                {
+                    UnityEngine.Debug.LogError("回调数目已经大于100，检查是否停止加载时，在Update中仍不断调用LoadAsync！");
+                }
+            }
+            else
+            {
+                m_CallbackSet.Add(call);
+                m_CallbackReference.Add(hashCode, 1);
+                if (m_CallbackSet.Count > 100)
+                {
+                    UnityEngine.Debug.LogError("回调数目已经大于100，检查是否停止加载时，在Update中仍不断调用LoadAsync！");
+                }
+            }
         }
 
         public void BeginLoad()
@@ -387,16 +408,23 @@ public class ResourcePrioritizedCache
         {
             m_Owner.m_CurrentLoadingCount--;
             m_Owner.m_LoadingResDict.Remove(m_AssetPath);
-            for (int i = 0; i < m_CallbackList.Count; i++)
+            bool first = true;
+            foreach (var callback in m_CallbackSet)
             {
-                if (i == 0)
+                int hashCode = callback.GetHashCode();   
+                while (m_CallbackReference[hashCode] > 0)
                 {
-                    m_CallbackList[i]?.Invoke(assetItem);
-                }
-                else
-                {
-                    AssetItem temp = m_Owner.m_Cache.Load(m_AssetPath);
-                    m_CallbackList[i]?.Invoke(temp);
+                    m_CallbackReference[hashCode] -= 1;
+                    if (first)
+                    {
+                        callback?.Invoke(assetItem);
+                        first = false;
+                    }
+                    else
+                    {
+                        AssetItem temp = m_Owner.m_Cache.Load(m_AssetPath);
+                        callback?.Invoke(temp);
+                    }  
                 }
             }
             m_Owner.m_ProcessPool.Recycle(this);
@@ -408,7 +436,8 @@ public class ResourcePrioritizedCache
             m_AssetPath = "";
             m_Priority = LoadPriority.Hight;
             m_Owner = null;
-            m_CallbackList.Clear();
+            m_CallbackSet.Clear();
+            m_CallbackReference.Clear();
             m_LoadedProcess = null;
         }
     }
