@@ -43,7 +43,7 @@ namespace AssetBundles
             try
             {
                 var process = Process.GetProcessById(instance.m_ServerPID);
-                if (process == null)
+                if (process is null)
                     return false;
 
                 return !process.HasExited;

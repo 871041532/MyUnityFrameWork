@@ -21,7 +21,7 @@ namespace XLuaTest
         public static void ShowAlertBox(string message, string title, Action onFinished = null)
         {
             var alertPanel = GameObject.Find("Canvas").transform.Find("AlertBox");
-            if (alertPanel == null)
+            if (alertPanel is null)
             {
                 alertPanel = (Instantiate(Resources.Load("AlertBox")) as GameObject).transform;
                 alertPanel.gameObject.name = "AlertBox";
@@ -51,7 +51,7 @@ namespace XLuaTest
         public static void ShowConfirmBox(string message, string title, Action<bool> onFinished = null)
         {
             var confirmPanel = GameObject.Find("Canvas").transform.Find("ConfirmBox");
-            if (confirmPanel == null)
+            if (confirmPanel is null)
             {
                 confirmPanel = (Instantiate(Resources.Load("ConfirmBox")) as GameObject).transform;
                 confirmPanel.gameObject.name = "ConfirmBox";

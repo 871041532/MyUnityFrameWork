@@ -193,7 +193,7 @@ namespace CSObjectWrapEditor
 
         static IEnumerable<MethodInfo> GetExtensionMethods(Type extendedType)
         {
-            if (type_has_extension_methods == null)
+            if (type_has_extension_methods is null)
             {
                 var gen_types = LuaCallCSharp;
 
@@ -423,7 +423,7 @@ namespace CSObjectWrapEditor
                         break;
                     case MemberTypes.Event:
                         EventInfo ev = member as EventInfo;
-                        if (ev.GetAddMethod() == null && ev.GetRemoveMethod() == null) break;
+                        if (ev.GetAddMethod() is null && ev.GetRemoveMethod() is null) break;
                         bool eventIsStatic = ev.GetAddMethod() != null ? ev.GetAddMethod().IsStatic : ev.GetRemoveMethod().IsStatic;
                         lazyMemberInfos.Add(new LazyMemberInfo {
                             Index = eventIsStatic ? "CLS_IDX" : "METHOD_IDX",
@@ -511,7 +511,7 @@ namespace CSObjectWrapEditor
 
         static bool isObsolete(MemberInfo mb)
         {
-            if (mb == null) return false;
+            if (mb is null) return false;
             ObsoleteAttribute oa = GetCustomAttribute(mb, typeof(ObsoleteAttribute)) as ObsoleteAttribute;
 #if XLUA_GENERAL && !XLUA_ALL_OBSOLETE || XLUA_JUST_EXCLUDE_ERROR
             return oa != null && oa.IsError;
@@ -522,7 +522,7 @@ namespace CSObjectWrapEditor
 
         static bool isObsolete(Type type)
         {
-            if (type == null) return false;
+            if (type is null) return false;
             if (isObsolete(type as MemberInfo))
             {
                 return true;
@@ -829,7 +829,7 @@ namespace CSObjectWrapEditor
             public bool Equals(MethodInfoSimulation x, MethodInfoSimulation y)
             {
                 if (object.ReferenceEquals(x, y)) return true;
-                if (x == null || y == null)
+                if (x is null || y is null)
                 {
                     return false;
                 }
@@ -1220,7 +1220,7 @@ namespace CSObjectWrapEditor
                 List<XluaFieldInfo> group = null;
                 foreach (var f in fs)
                 {
-                    if (group == null) group = new List<XluaFieldInfo>();
+                    if (group is null) group = new List<XluaFieldInfo>();
                     group.Add(f);
                     if (group.Count >= 6)
                     {
@@ -1377,7 +1377,7 @@ namespace CSObjectWrapEditor
                         if (!HotfixCfg.ContainsKey(type) && !isObsolete(type) 
                             && !type.IsEnum && !typeof(Delegate).IsAssignableFrom(type)
                             && (!type.IsGenericType || type.IsGenericTypeDefinition) 
-                            && (type.Namespace == null || (type.Namespace != "XLua" && !type.Namespace.StartsWith("XLua.")))
+                            && (type.Namespace is null || (type.Namespace != "XLua" && !type.Namespace.StartsWith("XLua.")))
                             && (assemblyList.Contains(type.Module.Assembly.GetName().Name)))
                         {
                             HotfixCfg.Add(type, hotfixType);

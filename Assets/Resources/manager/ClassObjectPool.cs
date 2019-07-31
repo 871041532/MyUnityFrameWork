@@ -87,7 +87,7 @@ public class ClassObjectPool<T> where T:class, new()
     /// <returns></returns>
     public bool Recycle(T obj)
     {
-        if (obj == null)
+        if (obj is null)
         {
             Debug.Log("空的object放回类池毫无意义。");
             return false;

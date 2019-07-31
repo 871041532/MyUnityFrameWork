@@ -19,27 +19,67 @@ public class ResourceManager : IManager
     ResourceCache c3;
     public override void Start()
     {
+        GameObject obj1 = new GameObject();
+        Stopwatch w = new Stopwatch();
+        w.Start();
+        for (int i = 0; i < 100000000; i++)
+        {
+            bool b = obj1 == null;
+        }
+        w.Stop();
+        UnityEngine.Debug.Log(w.ElapsedMilliseconds);
+
+        w.Restart();
+        for (int i = 0; i < 100000000; i++)
+        {
+            bool b = ReferenceEquals(obj1, null);
+        }
+        w.Stop();
+        UnityEngine.Debug.Log(w.ElapsedMilliseconds);
+
+        w.Restart();
+        for (int i = 0; i < 100000000; i++)
+        {
+            bool b = obj1 is null;
+        }
+        w.Stop();
+        UnityEngine.Debug.Log(w.ElapsedMilliseconds);
         string path = "Assets/GameData/Prefabs/c1.prefab";
-        string path2 = "Assets/GameData/Configs/AssetBundleConfig.json";
-        string path3 = "Assets/GameData/UI/res/common/common.spriteatlas";
-        c2 = new ResourcePrioritizedCache();
-        c2.m_MaxLoadingCount = 0;
-        c2.LoadAsync(path, LoadEnd);
-        c2.LoadAsync(path2, LoadEnd);
-        c2.LoadAsync(path3, LoadEnd);
-        c2.LoadAsync(path, LoadEnd2);
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
+        SpawnGameObjectAsync(path, (obj) =>
+        {
+            RecycleGameObject(path, obj);
+        });
     }
 
     public override void Update()
     {
         UpdataEvent?.Invoke();
-        c2.PreloadAsync("Assets/GameData/Prefabs/c1.prefab");
-        c2.LoadAsync("Assets/GameData/Prefabs/c1.prefab", (item)=> {
-
-        });
         if (Input.anyKey)
         {
-            c2.m_MaxLoadingCount = 5;
         }
     }
 
@@ -67,7 +107,7 @@ public class ResourceManager : IManager
     {
         ResourceCache cache = null;
         m_ResourceCaches.TryGetValue(cacheId, out cache);
-        if (cache == null)
+        if (cache is null)
         {
             cache = new ResourceCache();
             m_ResourceCaches.Add(cacheId, cache);
@@ -83,7 +123,7 @@ public class ResourceManager : IManager
     {
         ResourceCache cache = null;
         m_ResourceCaches.TryGetValue(cacheId, out cache);
-        if (cache == null)
+        if (cache is null)
         {
             cache = new ResourceCache();
             m_ResourceCaches.Add(cacheId, cache);
@@ -128,7 +168,7 @@ public class ResourceManager : IManager
     {
         GameObjectPool resourcePool = null;
         m_GameObjectPools.TryGetValue(path, out resourcePool);
-        if (resourcePool == null)
+        if (resourcePool is null)
         {
             AssetItem item = GameMgr.m_ABMgr.LoadAsset(path);
             resourcePool = new GameObjectPool(item);
@@ -146,7 +186,7 @@ public class ResourceManager : IManager
     {
         GameObjectPool resourcePool = null;
         m_GameObjectPools.TryGetValue(path, out resourcePool);
-        if (resourcePool == null)
+        if (resourcePool is null)
         {
             LoadGameObjectFunc lambda = m_LambdaCache.CreateOrPop();
             lambda.Init(this, path, callback);
@@ -203,7 +243,7 @@ public class ResourceManager : IManager
                 GameObject t = null;
                 GameObjectPool resourcePool = null;
                 m_Owner.m_GameObjectPools.TryGetValue(m_AssetPath, out resourcePool);
-                if (resourcePool == null)
+                if (resourcePool is null)
                 {
                     resourcePool = new GameObjectPool(item);
                     m_Owner.m_GameObjectPools.Add(m_AssetPath, resourcePool);
@@ -473,7 +513,7 @@ public class ResourceCache
     {
         AssetItem item = null;
         m_CacheItems.TryGetValue(assetPath, out item);
-        if (item == null)
+        if (item is null)
         {
             var func = m_LoadingFuncs.CreateOrPop();
             func.Init(this, assetPath, call);
@@ -496,7 +536,7 @@ public class ResourceCache
     {
         AssetItem item = null;
         m_CacheItems.TryGetValue(assetPath, out item);
-        if (item == null)
+        if (item is null)
         {
             item = GameManager.Instance.m_ABMgr.LoadAsset(assetPath);
             m_CacheItems.Add(assetPath, item);
@@ -575,7 +615,7 @@ public class ResourceCache
             m_Process = (AssetItem assetItem) => {
                 AssetItem innerItem = null;
                 m_Owner.m_CacheItems.TryGetValue(m_AssetPath, out innerItem);
-                if (innerItem == null)
+                if (innerItem is null)
                 {
                     m_Owner.m_CacheItems.Add(m_AssetPath, assetItem);
                     m_Owner.m_CacheReference.Add(assetItem.GetHashCode(), 1);
@@ -600,15 +640,20 @@ public class ResourceCache
 public class GameObjectPool
 {
     private AssetItem m_AssetItem;
+    private GameObject m_OriginalObject;
+    public GameObject OriginalObject { get { return m_OriginalObject; } }
     public AssetItem AssetItem { get { return m_AssetItem; } }
-    private DoubleLinkedList<GameObject> m_CacheObjects;
-    private Dictionary<int, GameObject> m_SpawnedObjects;
+    private DoubleLinkedList<GameObject> m_CacheObjects = new DoubleLinkedList<GameObject>();
+    private Dictionary<int, GameObject> m_SpawnedObjects = new Dictionary<int, GameObject>();
+
+    public GameObjectPool(GameObject originalObject)
+    {
+        m_OriginalObject = originalObject;
+    }
 
     public GameObjectPool(AssetItem assetItem)
     {
         m_AssetItem = assetItem;
-        m_CacheObjects = new DoubleLinkedList<GameObject>();
-        m_SpawnedObjects = new Dictionary<int, GameObject>();
     }
 
     public GameObject Spawn()
@@ -618,9 +663,13 @@ public class GameObjectPool
         {
             obj = m_CacheObjects.Pop();
         }
-        else
+        else if (m_OriginalObject is null)
         {
             obj = GameObject.Instantiate(m_AssetItem.GameObject);
+        }
+        else
+        {
+            obj = GameObject.Instantiate(m_OriginalObject);
         }
         m_SpawnedObjects.Add(obj.GetHashCode(), obj);
         return obj;
@@ -628,8 +677,16 @@ public class GameObjectPool
 
     public void Recycle(GameObject obj)
     {
-        m_CacheObjects.AddLast(obj);
-        m_SpawnedObjects.Remove(obj.GetHashCode());
+        int hashCode = obj.GetHashCode();
+        if (m_SpawnedObjects.ContainsKey(hashCode))
+        {
+            m_CacheObjects.AddLast(obj);
+            m_SpawnedObjects.Remove(hashCode);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("试图回收不在池中的GameObject、或重复回收！");
+        }
     }
 
     public void Clear()
@@ -644,13 +701,18 @@ public class GameObjectPool
 
     public void Destroy()
     {
-        this.Clear();
+        while (m_CacheObjects.Count > 0)
+        {
+            var obj = m_CacheObjects.Pop();
+            UnityEngine.Object.Destroy(obj);
+        }
         foreach (var item in m_SpawnedObjects)
         {
             UnityEngine.Object.Destroy(item.Value);
         }
         m_SpawnedObjects.Clear();
         m_AssetItem = null;
+        m_OriginalObject = null;
         Resources.UnloadUnusedAssets();
     }
 }
@@ -706,7 +768,7 @@ public class DoubleLinkedList<T> where T : class, new()
 
     public void AddFirst(DoubleLinkedNode<T> node)
     {
-        Assert.IsTrue(node != null && node.m_Next == null && node.m_Previous == null, "AddFirst方法要求node不为null, 并且Node不在链表中！");
+        Assert.IsTrue(node != null && node.m_Next is null && node.m_Previous is null, "AddFirst方法要求node不为null, 并且Node不在链表中！");
         node.m_Next = m_Head.m_Next;
         node.m_Previous = m_Head;
         m_Head.m_Next = node;
@@ -724,7 +786,7 @@ public class DoubleLinkedList<T> where T : class, new()
 
     public void AddLast(DoubleLinkedNode<T> node)
     {
-        Assert.IsTrue(node != null && node.m_Next == null && node.m_Previous == null, "AddLast方法要求node不为null, 并且Node不在链表中！");
+        Assert.IsTrue(node != null && node.m_Next is null && node.m_Previous is null, "AddLast方法要求node不为null, 并且Node不在链表中！");
         node.m_Previous = m_Tail.m_Previous;
         node.m_Next = m_Tail;
         m_Tail.m_Previous = node;

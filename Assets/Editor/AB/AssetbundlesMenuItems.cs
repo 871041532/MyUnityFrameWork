@@ -238,7 +238,7 @@ namespace AssetBundles
         static void SetABName(string name, string path)
         {
             AssetImporter importer = AssetImporter.GetAtPath(path);
-            if (importer == null)
+            if (importer is null)
             {
                 Debug.LogError("文件不存在：" + path);
             }

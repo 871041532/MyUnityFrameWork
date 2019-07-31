@@ -203,7 +203,7 @@ namespace XLua
         {
             get
             {
-                if (codeEmitModule == null)
+                if (codeEmitModule is null)
                 {
                     var assemblyName = new AssemblyName();
                     assemblyName.Name = "XLuaCodeEmit";
@@ -631,7 +631,7 @@ namespace XLua
                 param_types[i] = parameters[i].ParameterType;
             }
 
-            var method_builder = type_builder.DefineMethod(methodName == null ? to_be_impl.Name : methodName, attributes, to_be_impl.ReturnType, param_types);
+            var method_builder = type_builder.DefineMethod(methodName is null ? to_be_impl.Name : methodName, attributes, to_be_impl.ReturnType, param_types);
             for (int i = 0; i < parameters.Length; ++i)
             {
                 method_builder.DefineParameter(i + 1, parameters[i].Attributes, parameters[i].Name);
@@ -1249,7 +1249,7 @@ namespace XLua
             var instanceFields = toBeWrap.GetFields(instanceFlag).Where(m => !isMemberInBlackList(m));
             var instanceProperties = toBeWrap.GetProperties(instanceFlag).Where(m => !isMemberInBlackList(m));
             var extensionMethods = Utils.GetExtensionMethodsOf(toBeWrap);
-            extensionMethods = (extensionMethods == null) ? Enumerable.Empty<MethodInfo>() : extensionMethods.Where(m => !isMemberInBlackList(m));
+            extensionMethods = (extensionMethods is null) ? Enumerable.Empty<MethodInfo>() : extensionMethods.Where(m => !isMemberInBlackList(m));
             var instanceMethods = toBeWrap.GetMethods(instanceFlag)
                 .Where(m => !isMethodInBlackList(m))
                 .Concat(extensionMethods)
@@ -1456,7 +1456,7 @@ namespace XLua
             var addEvent = ev.GetAddMethod();
             var removeEvent = ev.GetRemoveMethod();
 
-            if (addEvent == null && removeEvent == null)
+            if (addEvent is null && removeEvent is null)
             {
                 return null;
             }
@@ -1813,11 +1813,11 @@ namespace XLua
                 bool hasReturn = false;
 
                 MethodInfo methodInfo = method as MethodInfo;
-                if (methodInfo == null || methodInfo.ReturnType != typeof(void))
+                if (methodInfo is null || methodInfo.ReturnType != typeof(void))
                 {
                     hasReturn = true;
-                    Type returnType = methodInfo == null ? method.DeclaringType : methodInfo.ReturnType;
-                    if (methodReturn == null)
+                    Type returnType = methodInfo is null ? method.DeclaringType : methodInfo.ReturnType;
+                    if (methodReturn is null)
                     {
                         methodReturn = il.DeclareLocal(returnType);
                         il.Emit(OpCodes.Stloc, methodReturn);
@@ -1889,7 +1889,7 @@ namespace XLua
                 else
                 {
                     il.Emit(OpCodes.Ldarg_0);
-                    if (methodDesciption == null)
+                    if (methodDesciption is null)
                     {
                         if (methodsToCall.Count > 0)
                         {

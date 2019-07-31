@@ -36,7 +36,7 @@ namespace XLua
         byte[] load_and_verify(ref string filepath)
         {
             byte[] data = userLoader(ref filepath);
-            if (data == null)
+            if (data is null)
             {
                 return null;
             }

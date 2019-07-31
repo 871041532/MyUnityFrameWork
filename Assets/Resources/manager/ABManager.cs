@@ -109,7 +109,7 @@ public class ABManager:IManager
     /// <param name="item"></param>
     public void UnloadAsset(AssetItem item)
     {
-        Assert.IsFalse(item == null || item.Object == null, "不可对AssetItem重复unload！");
+        Assert.IsFalse(item is null || item.Object is null, "不可对AssetItem重复unload！");
         if (CfgLoadMode != LoadModeEnum.EditorOrigin)
         {
             UnloadAssetBundle(item.ABName);

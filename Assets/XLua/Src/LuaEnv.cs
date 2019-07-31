@@ -193,7 +193,7 @@ namespace XLua
 
         public static void AddIniter(Action<LuaEnv, ObjectTranslator> initer)
         {
-            if (initers == null)
+            if (initers is null)
             {
                 initers = new List<Action<LuaEnv, ObjectTranslator>>();
             }
@@ -439,7 +439,7 @@ namespace XLua
                 if (ex != null) throw ex;
 
                 // A non-wrapped Lua error (best interpreted as a string) - wrap it and throw it
-                if (err == null) err = "Unknown Lua Error";
+                if (err is null) err = "Unknown Lua Error";
                 GameManager.Instance.Log(err.ToString());
                 throw new LuaException(err.ToString());
 #if THREAD_SAFE || HOTFIX_ENABLE

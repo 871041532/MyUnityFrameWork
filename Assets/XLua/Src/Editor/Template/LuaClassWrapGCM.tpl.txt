@@ -465,7 +465,7 @@ namespace XLua
             ObjectTranslator translator = this;
 			<%=GetSelfStatement(type)%>;
 			<%=GetCasterStatement(event.Type, 3, "gen_delegate", true)%>;
-			if (gen_delegate == null) {
+			if (gen_delegate is null) {
 				return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
 			}
 			
@@ -494,7 +494,7 @@ namespace XLua
         {
             ObjectTranslator translator = this;
 			<%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
-			if (gen_delegate == null) {
+			if (gen_delegate is null) {
 				return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
 			}
 			

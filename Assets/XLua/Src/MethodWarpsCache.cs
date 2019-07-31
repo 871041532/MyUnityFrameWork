@@ -340,7 +340,7 @@ namespace XLua
             if (!constructorCache.ContainsKey(type))
             {
                 var constructors = type.GetConstructors();
-                if (type.IsAbstract() || constructors == null || constructors.Length == 0)
+                if (type.IsAbstract() || constructors is null || constructors.Length == 0)
                 {
                     if (type.IsValueType())
                     {
@@ -410,7 +410,7 @@ namespace XLua
             if (!methodsOfType.ContainsKey(methodName))
             {
                 MemberInfo[] methods = type.GetMember(methodName, BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
-                if (methods == null || methods.Length == 0 ||
+                if (methods is null || methods.Length == 0 ||
 #if UNITY_WSA && !UNITY_EDITOR
                     methods[0] is MethodBase
 #else
@@ -463,7 +463,7 @@ namespace XLua
             {
                 {
                     EventInfo eventInfo = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.NonPublic);
-                    if (eventInfo == null)
+                    if (eventInfo is null)
                     {
                         throw new Exception(type.Name + " has no event named: " + eventName);
                     }
@@ -472,7 +472,7 @@ namespace XLua
                     MethodInfo add = eventInfo.GetAddMethod(true);
                     MethodInfo remove = eventInfo.GetRemoveMethod(true);
 
-                    if (add == null && remove == null)
+                    if (add is null && remove is null)
                     {
                         throw new Exception(type.Name + "'s " + eventName + " has either add nor remove");
                     }
@@ -487,7 +487,7 @@ namespace XLua
                         if (!is_static)
                         {
                             obj = translator.GetObject(L, 1, type);
-                            if (obj == null)
+                            if (obj is null)
                             {
                                 return LuaAPI.luaL_error(L, "invalid #1, needed:" + type);
                             }
@@ -496,21 +496,21 @@ namespace XLua
                         try
                         {
                             object handlerDelegate = translator.CreateDelegateBridge(L, eventInfo.EventHandlerType, start_idx + 2);
-                            if (handlerDelegate == null)
+                            if (handlerDelegate is null)
                             {
                                 return LuaAPI.luaL_error(L, "invalid #" + (start_idx + 2) + ", needed:" + eventInfo.EventHandlerType);
                             }
                             switch (LuaAPI.lua_tostring(L, start_idx + 1))
                             {
                                 case "+":
-                                    if (add == null)
+                                    if (add is null)
                                     {
                                         return LuaAPI.luaL_error(L, "no add for event " + eventName);
                                     }
                                     add.Invoke(obj, new object[] { handlerDelegate });
                                     break;
                                 case "-":
-                                    if (remove == null)
+                                    if (remove is null)
                                     {
                                         return LuaAPI.luaL_error(L, "no remove for event " + eventName);
                                     }
@@ -538,7 +538,7 @@ namespace XLua
             foreach(var methodBase in methodBases)
             {
                 var mb = methodBase as MethodBase;
-                if (mb == null)
+                if (mb is null)
                     continue;
 
                 if (mb.IsGenericMethodDefinition

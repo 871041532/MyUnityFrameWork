@@ -257,7 +257,7 @@ namespace XLua.LuaDLL
                 return Encoding.UTF8.GetString(buffer);
 #else
                 string ret = Marshal.PtrToStringAnsi(str, strlen.ToInt32());
-                if (ret == null)
+                if (ret is null)
                 {
                     int len = strlen.ToInt32();
                     byte[] buffer = new byte[len];
@@ -294,7 +294,7 @@ namespace XLua.LuaDLL
 #else
         public static void lua_pushstring(IntPtr L, string str) //业务使用
         {
-            if (str == null)
+            if (str is null)
             {
                 lua_pushnil(L);
             }
@@ -324,7 +324,7 @@ namespace XLua.LuaDLL
 
         public static void xlua_pushasciistring(IntPtr L, string str) // for inner use only
         {
-            if (str == null)
+            if (str is null)
             {
                 lua_pushnil(L);
             }
@@ -352,7 +352,7 @@ namespace XLua.LuaDLL
 
         public static void lua_pushstring(IntPtr L, byte[] str)
         {
-            if (str == null)
+            if (str is null)
             {
                 lua_pushnil(L);
             }

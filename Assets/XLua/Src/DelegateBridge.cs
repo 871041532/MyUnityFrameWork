@@ -59,12 +59,12 @@ namespace XLua
                 throw new ArgumentException("An element with the same key already exists in the dictionary.");
             }
 
-            if (firstKey == null && bindTo == null) // nothing 
+            if (firstKey is null && bindTo is null) // nothing 
             {
                 firstKey = key;
                 firstValue = value;
             }
-            else if (firstKey != null && bindTo == null) // one key existed
+            else if (firstKey != null && bindTo is null) // one key existed
             {
                 bindTo = new Dictionary<Type, Delegate>();
                 bindTo.Add(firstKey, firstValue);

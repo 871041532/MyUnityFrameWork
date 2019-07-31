@@ -195,7 +195,7 @@ namespace XLua
         public void Alias(Type type, string alias)
         {
             Type alias_type = FindType(alias);
-            if (alias_type == null)
+            if (alias_type is null)
             {
                 throw new ArgumentException("Can not find " + alias);
             }
@@ -354,7 +354,7 @@ namespace XLua
             Func<DelegateBridgeBase, Delegate> genericDelegateCreator;
             if (!genericDelegateCreatorCache.TryGetValue(delegateType, out genericDelegateCreator))
             {
-                if (genericAction == null)
+                if (genericAction is null)
                 {
                     var methods = typeof(DelegateBridge).GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
                     genericAction = methods.Where(m => m.Name == "Action").OrderBy(m => m.GetParameters().Length).ToArray();
@@ -379,7 +379,7 @@ namespace XLua
                             break;
                         }
                     }
-                    if (genericDelegateCreator == null)
+                    if (genericDelegateCreator is null)
                     {
                         var typeArgs = parameters.Select(pinfo => pinfo.ParameterType);
                         MethodInfo genericMethodInfo = null;
@@ -467,7 +467,7 @@ namespace XLua
 
                 if (delegate_bridges[referenced].IsAlive)
                 {
-                    if (delegateType == null)
+                    if (delegateType is null)
                     {
                         return delegate_bridges[referenced].Target;
                     }
@@ -518,7 +518,7 @@ namespace XLua
                 LuaAPI.xlua_rawseti(L, LuaIndexes.LUA_REGISTRYINDEX, reference);
                 throw e;
             }
-            if (delegateType == null)
+            if (delegateType is null)
             {
                 delegate_bridges[reference] = new WeakReference(bridge);
                 return bridge;
@@ -740,7 +740,7 @@ namespace XLua
                 for(int i = 0; i < generic_params.Length; i++)
                 {
                     Type generic_param = FindType(generic_params[i].Trim());
-                    if (generic_param == null)
+                    if (generic_param is null)
                     {
                         return null;
                     }
@@ -846,7 +846,7 @@ namespace XLua
                     {
                         obj = rawObject.Target;
                     }
-                    if (obj == null)
+                    if (obj is null)
                     {
                         return !type.IsValueType();
                     }
@@ -872,7 +872,7 @@ namespace XLua
             {
                 object obj = objects.Get(udata);
                 RawObject rawObject = obj as RawObject;
-                return rawObject == null ? obj : rawObject.Target;
+                return rawObject is null ? obj : rawObject.Target;
             }
             else
             {
@@ -1032,15 +1032,15 @@ namespace XLua
                 is_first = true;
                 Type alias_type = null;
                 aliasCfg.TryGetValue(type, out alias_type);
-                LuaAPI.luaL_getmetatable(L, alias_type == null ? type.FullName : alias_type.FullName);
+                LuaAPI.luaL_getmetatable(L, alias_type is null ? type.FullName : alias_type.FullName);
 
                 if (LuaAPI.lua_isnil(L, -1)) //no meta yet, try to use reflection meta
                 {
                     LuaAPI.lua_pop(L, 1);
 
-                    if (TryDelayWrapLoader(L, alias_type == null ? type : alias_type))
+                    if (TryDelayWrapLoader(L, alias_type is null ? type : alias_type))
                     {
-                        LuaAPI.luaL_getmetatable(L, alias_type == null ? type.FullName : alias_type.FullName);
+                        LuaAPI.luaL_getmetatable(L, alias_type is null ? type.FullName : alias_type.FullName);
                     }
                     else
                     {
@@ -1133,7 +1133,7 @@ namespace XLua
 
         public void PushAny(RealStatePtr L, object o)
         {
-            if (o == null)
+            if (o is null)
             {
                 LuaAPI.lua_pushnil(L);
                 return;
@@ -1221,7 +1221,7 @@ namespace XLua
 
         public void Push(RealStatePtr L, LuaBase o)
         {
-            if (o == null)
+            if (o is null)
             {
                 LuaAPI.lua_pushnil(L);
             }
@@ -1233,7 +1233,7 @@ namespace XLua
 
         public void Push(RealStatePtr L, object o)
         {
-            if (o == null)
+            if (o is null)
             {
                 LuaAPI.lua_pushnil(L);
                 return;
@@ -1277,7 +1277,7 @@ namespace XLua
 
         public void PushObject(RealStatePtr L, object o, int type_id)
         {
-            if (o == null)
+            if (o is null)
             {
                 LuaAPI.lua_pushnil(L);
                 return;
@@ -1346,7 +1346,7 @@ namespace XLua
             else if (objects.TryGetValue(udata, out obj))
             {
 #if !UNITY_5 && !XLUA_GENERAL && !UNITY_2017 && !UNITY_2017_1_OR_NEWER && !UNITY_2018
-                if (obj != null && obj is UnityEngine.Object && ((obj as UnityEngine.Object) == null))
+                if (obj != null && obj is UnityEngine.Object && ((obj as UnityEngine.Object) is null))
                 {
                     //throw new UnityEngine.MissingReferenceException("The object of type '"+ obj.GetType().Name +"' has been destroyed but you are still trying to access it.");
                     return null;
@@ -1389,7 +1389,7 @@ namespace XLua
 
         internal void PushFixCSFunction(RealStatePtr L, LuaCSFunction func)
         {
-            if (func == null)
+            if (func is null)
             {
                 LuaAPI.lua_pushnil(L);
             }
@@ -1432,7 +1432,7 @@ namespace XLua
 
         internal void PushCSharpWrapper(RealStatePtr L, CSharpWrapper func)
         {
-            if (func == null)
+            if (func is null)
             {
                 LuaAPI.lua_pushnil(L);
             }
@@ -1513,7 +1513,7 @@ namespace XLua
         
         bool tryGetPushFuncByType<T>(Type type, out T func) where T : class
         {
-            if (push_func_with_type == null)
+            if (push_func_with_type is null)
             {
                 push_func_with_type = new Dictionary<Type, Delegate>()
                 {
@@ -1553,7 +1553,7 @@ namespace XLua
 
         bool tryGetGetFuncByType<T>(Type type, out T func) where T : class
         {
-            if (get_func_with_type == null)
+            if (get_func_with_type is null)
             {
                 get_func_with_type = new Dictionary<Type, Delegate>()
                 {

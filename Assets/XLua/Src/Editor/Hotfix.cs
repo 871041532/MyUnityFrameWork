@@ -62,7 +62,7 @@ namespace XLua
                     && !type.IsEnum && !typeof(Delegate).IsAssignableFrom(type)
                     && (!type.IsGenericType || type.IsGenericTypeDefinition))
                 {
-                    if ((type.Namespace == null || (type.Namespace != "XLua" && !type.Namespace.StartsWith("XLua."))))
+                    if ((type.Namespace is null || (type.Namespace != "XLua" && !type.Namespace.StartsWith("XLua."))))
                     {
                         on_cfg(type, hotfixType);
                     }
@@ -362,7 +362,7 @@ namespace XLua
 
         static string getAssemblyFullName(IMetadataScope scope)
         {
-            if (scope == null) return null;
+            if (scope is null) return null;
             switch(scope.MetadataScopeType)
             {
                 case MetadataScopeType.ModuleDefinition:
@@ -401,7 +401,7 @@ namespace XLua
                 }
                 var lr = left.Resolve();
                 var rr = right.Resolve();
-                if (lr == null || rr == null) return false;
+                if (lr is null || rr is null) return false;
                 return lr.Module.Assembly.FullName == rr.Module.Assembly.FullName;
             }
         }
@@ -1023,7 +1023,7 @@ namespace XLua
         static MethodReference _findBase(TypeReference type, MethodDefinition method)
         {
             TypeDefinition td = type.Resolve();
-            if (td == null)
+            if (td is null)
             {
                 return null;
             }
@@ -1169,7 +1169,7 @@ namespace XLua
                 return false;
             }
 
-            if (invoke == null)
+            if (invoke is null)
             {
                 throw new Exception("unknow exception!");
             }
@@ -1191,7 +1191,7 @@ namespace XLua
                 method.Body.Variables.Add(injection);
 
                 var luaDelegateName = getDelegateName(method);
-                if (luaDelegateName == null)
+                if (luaDelegateName is null)
                 {
                     Error("too many overload!");
                     return false;
@@ -1340,7 +1340,7 @@ namespace XLua
             if (!isIntKey)
             {
                 var luaDelegateName = getDelegateName(method);
-                if (luaDelegateName == null)
+                if (luaDelegateName is null)
                 {
                     Error("too many overload!");
                     return false;

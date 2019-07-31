@@ -18,7 +18,7 @@ public class ObjectManager : IManager
         Type type = typeof(T);
         object pool = null;
         m_ClassPoolDic.TryGetValue(type, out pool);
-        if (pool == null)
+        if (pool is null)
         {
             pool = new ClassObjectPool<T>(maxCount, isPreLoad);
             m_ClassPoolDic.Add(type, pool);
@@ -31,7 +31,7 @@ public class ObjectManager : IManager
         object poolObj = null;
         Type type = typeof(T);
         m_ClassPoolDic.TryGetValue(type, out poolObj);
-        if (poolObj == null)
+        if (poolObj is null)
         {
             Debug.LogError("需要先创建类池，才能从池中获取对象！");
             return null;
@@ -48,7 +48,7 @@ public class ObjectManager : IManager
         object poolObj = null;
         Type type = typeof(T);
         m_ClassPoolDic.TryGetValue(type, out poolObj);
-        if (poolObj == null)
+        if (poolObj is null)
         {
             Debug.LogError("类池不存在无需回收！");
             return false;

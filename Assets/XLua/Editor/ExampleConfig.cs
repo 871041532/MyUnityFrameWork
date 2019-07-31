@@ -91,7 +91,7 @@ public static class ExampleConfig
     //        };
     //        var customTypes = (from assembly in customAssemblys.Select(s => Assembly.Load(s))
     //                           from type in assembly.GetExportedTypes()
-    //                           where type.Namespace == null || !type.Namespace.StartsWith("XLua")
+    //                           where type.Namespace is null || !type.Namespace.StartsWith("XLua")
     //                                   && type.BaseType != typeof(MulticastDelegate) && !type.IsInterface && !type.IsEnum
     //                           select type);
     //        return unityTypes.Concat(customTypes);
@@ -143,7 +143,7 @@ public static class ExampleConfig
     //    get
     //    {
     //        return (from type in Assembly.Load("Assembly-CSharp").GetExportedTypes()
-    //                           where type.Namespace == null || !type.Namespace.StartsWith("XLua")
+    //                           where type.Namespace is null || !type.Namespace.StartsWith("XLua")
     //                           select type);
     //    }
     //}
@@ -200,7 +200,7 @@ public static class ExampleConfig
     //{
     //    if (typeHasEditorRef(delegateType)) return true;
     //    var method = delegateType.GetMethod("Invoke");
-    //    if (method == null)
+    //    if (method is null)
     //    {
     //        return false;
     //    }

@@ -61,7 +61,7 @@ namespace XLua
         public static List<Assembly> _assemblies;
         public static List<Assembly> GetAssemblies()
         {
-            if (_assemblies == null)
+            if (_assemblies is null)
             {
                 System.Threading.Tasks.Task t = new System.Threading.Tasks.Task(() =>
                 {
@@ -78,7 +78,7 @@ namespace XLua
             List<Assembly> assemblies = new List<Assembly>();
             //return assemblies;
             var files = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFilesAsync();
-            if (files == null)
+            if (files is null)
                 return assemblies;
 
             foreach (var file in files.Where(file => file.FileType == ".dll" || file.FileType == ".exe"))
@@ -150,9 +150,9 @@ namespace XLua
 				{
 					ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 					object obj = translator.FastGetCSObj(L, 1);
-					if (obj == null || !type.IsInstanceOfType(obj))
+					if (obj is null || !type.IsInstanceOfType(obj))
 					{
-						return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj == null ? "null" : obj.GetType().ToString()) + ", while get field " + field);
+						return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj is null ? "null" : obj.GetType().ToString()) + ", while get field " + field);
 					}
 
 					translator.PushAny(L, field.GetValue(obj));
@@ -169,7 +169,7 @@ namespace XLua
 				{
 					ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 					object val = translator.GetObject(L, 1, field.FieldType);
-					if (field.FieldType.IsValueType() && Nullable.GetUnderlyingType(field.FieldType) == null && val == null)
+					if (field.FieldType.IsValueType() && Nullable.GetUnderlyingType(field.FieldType) is null && val is null)
 					{
 						return LuaAPI.luaL_error(L, type.Name + "." + field.Name + " Expected type " + field.FieldType);
 					}
@@ -184,13 +184,13 @@ namespace XLua
 					ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 
 					object obj = translator.FastGetCSObj(L, 1);
-					if (obj == null || !type.IsInstanceOfType(obj))
+					if (obj is null || !type.IsInstanceOfType(obj))
 					{
-						return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj == null ? "null" : obj.GetType().ToString()) + ", while set field " + field);
+						return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj is null ? "null" : obj.GetType().ToString()) + ", while set field " + field);
 					}
 
 					object val = translator.GetObject(L, 2, field.FieldType);
-					if (field.FieldType.IsValueType() && Nullable.GetUnderlyingType(field.FieldType) == null && val == null)
+					if (field.FieldType.IsValueType() && Nullable.GetUnderlyingType(field.FieldType) is null && val is null)
 					{
 						return LuaAPI.luaL_error(L, type.Name + "." + field.Name + " Expected type " + field.FieldType);
 					}
@@ -221,9 +221,9 @@ namespace XLua
 			{
 				ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 				object obj = translator.FastGetCSObj(L, 1);
-				if (obj == null || !type.IsInstanceOfType(obj))
+				if (obj is null || !type.IsInstanceOfType(obj))
 				{
-					return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj == null ? "null" : obj.GetType().ToString()) + ", while get prop " + props[0].Name);
+					return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj is null ? "null" : obj.GetType().ToString()) + ", while get prop " + props[0].Name);
 				}
 
 				for (int i = 0; i < props.Length; i++)
@@ -273,9 +273,9 @@ namespace XLua
 			{
 				ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 				object obj = translator.FastGetCSObj(L, 1);
-				if (obj == null || !type.IsInstanceOfType(obj))
+				if (obj is null || !type.IsInstanceOfType(obj))
 				{
-					return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj == null ? "null" : obj.GetType().ToString()) + ", while set prop " + props[0].Name);
+					return LuaAPI.luaL_error(L, "Expected type " + type + ", but got " + (obj is null ? "null" : obj.GetType().ToString()) + ", while set prop " + props[0].Name);
 				}
 
 				for (int i = 0; i < props.Length; i++)
@@ -291,7 +291,7 @@ namespace XLua
 						{
 							arg[0] = translator.GetObject(L, 2, params_type[i]);
 							object val = translator.GetObject(L, 3, prop.PropertyType);
-							if (val == null)
+							if (val is null)
 							{
 								return LuaAPI.luaL_error(L, type.Name + "." + prop.Name + " Expected type " + prop.PropertyType);
 							}
@@ -330,7 +330,7 @@ namespace XLua
 
 		internal static IEnumerable<MethodInfo> GetExtensionMethodsOf(Type type_to_be_extend)
 		{
-			if (InternalGlobals.extensionMethodMap == null)
+			if (InternalGlobals.extensionMethodMap is null)
 			{
 				List<Type> type_def_extention_method = new List<Type>();
 
@@ -502,7 +502,7 @@ namespace XLua
 				{
 					if (InternalGlobals.supportOp.ContainsKey(method_name))
 					{
-						if (overloads == null)
+						if (overloads is null)
 						{
 							overloads = new List<MemberInfo>();
 							pending_methods.Add(method_key, overloads);
@@ -531,7 +531,7 @@ namespace XLua
 				}
 				else
 				{
-					if (overloads == null)
+					if (overloads is null)
 					{
 						overloads = new List<MemberInfo>();
 						pending_methods.Add(method_key, overloads);
@@ -675,7 +675,7 @@ namespace XLua
 				{
 					case LazyMemberTypes.Method:
 						var members = type.GetMember(memberName);
-						if (members == null || members.Length == 0)
+						if (members is null || members.Length == 0)
 						{
 							return LuaAPI.luaL_error(L, "can not find " + memberName + " for " + type);
 						}
@@ -705,7 +705,7 @@ namespace XLua
 					case LazyMemberTypes.FieldGet:
 					case LazyMemberTypes.FieldSet:
 						var field = type.GetField(memberName);
-						if (field == null)
+						if (field is null)
 						{
 							return LuaAPI.luaL_error(L, "can not find " + memberName + " for " + type);
 						}
@@ -739,7 +739,7 @@ namespace XLua
 					case LazyMemberTypes.PropertyGet:
 					case LazyMemberTypes.PropertySet:
 						var prop = type.GetProperty(memberName);
-						if (prop == null)
+						if (prop is null)
 						{
 							return LuaAPI.luaL_error(L, "can not find " + memberName + " for " + type);
 						}
@@ -776,7 +776,7 @@ namespace XLua
 						break;
 					case LazyMemberTypes.Event:
 						var eventInfo = type.GetEvent(memberName);
-						if (eventInfo == null)
+						if (eventInfo is null)
 						{
 							return LuaAPI.luaL_error(L, "can not find " + memberName + " for " + type);
 						}
@@ -941,7 +941,7 @@ namespace XLua
 			LuaAPI.lua_rawset(L, cls_meta); // set __newindex
 
 			LuaCSFunction constructor = typeof(Delegate).IsAssignableFrom(type) ? translator.metaFunctions.DelegateCtor : translator.methodWrapsCache.GetConstructorWrap(type);
-			if (constructor == null)
+			if (constructor is null)
 			{
 				constructor = (RealStatePtr LL) =>
 				{
@@ -965,7 +965,7 @@ namespace XLua
 		public static void BeginObjectRegister(Type type, RealStatePtr L, ObjectTranslator translator, int meta_count, int method_count, int getter_count,
 			int setter_count, int type_id = -1)
 		{
-			if (type == null)
+			if (type is null)
 			{
 				if (type_id == -1) throw new Exception("Fatal: must provide a type of type_id");
 				LuaAPI.xlua_rawgeti(L, LuaIndexes.LUA_REGISTRYINDEX, type_id);
@@ -983,7 +983,7 @@ namespace XLua
 			LuaAPI.lua_pushnumber(L, 1);
 			LuaAPI.lua_rawset(L, -3);
 
-			if ((type == null || !translator.HasCustomOp(type)) && type != typeof(decimal))
+			if ((type is null || !translator.HasCustomOp(type)) && type != typeof(decimal))
 			{
 				LuaAPI.xlua_pushasciistring(L, "__gc");
 				LuaAPI.lua_pushstdcallcfunction(L, translator.metaFunctions.GcMeta);
@@ -1051,7 +1051,7 @@ namespace XLua
 			LuaAPI.lua_pushvalue(L, method_idx);
 			LuaAPI.lua_pushvalue(L, getter_idx);
 
-			if (csIndexer == null)
+			if (csIndexer is null)
 			{
 				LuaAPI.lua_pushnil(L);
 			}
@@ -1064,11 +1064,11 @@ namespace XLua
 #endif
 			}
 
-			translator.Push(L, type == null ? base_type : type.BaseType());
+			translator.Push(L, type is null ? base_type : type.BaseType());
 
 			LuaAPI.xlua_pushasciistring(L, LuaIndexsFieldName);
 			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
-			if (arrayIndexer == null)
+			if (arrayIndexer is null)
 			{
 				LuaAPI.lua_pushnil(L);
 			}
@@ -1100,7 +1100,7 @@ namespace XLua
 			LuaAPI.xlua_pushasciistring(L, "__newindex");
 			LuaAPI.lua_pushvalue(L, setter_idx);
 
-			if (csNewIndexer == null)
+			if (csNewIndexer is null)
 			{
 				LuaAPI.lua_pushnil(L);
 			}
@@ -1113,12 +1113,12 @@ namespace XLua
 #endif
 			}
 
-			translator.Push(L, type == null ? base_type : type.BaseType());
+			translator.Push(L, type is null ? base_type : type.BaseType());
 
 			LuaAPI.xlua_pushasciistring(L, LuaNewIndexsFieldName);
 			LuaAPI.lua_rawget(L, LuaIndexes.LUA_REGISTRYINDEX);
 
-			if (arrayNewIndexer == null)
+			if (arrayNewIndexer is null)
 			{
 				LuaAPI.lua_pushnil(L);
 			}
@@ -1304,7 +1304,7 @@ namespace XLua
 				path.AddRange(type.Namespace.Split(new char[] { '.' }));
 			}
 
-			string class_name = type.ToString().Substring(type.Namespace == null ? 0 : type.Namespace.Length + 1);
+			string class_name = type.ToString().Substring(type.Namespace is null ? 0 : type.Namespace.Length + 1);
 
 			if (type.IsNested)
 			{
@@ -1400,7 +1400,7 @@ namespace XLua
 
 		public static bool IsParamsMatch(MethodInfo delegateMethod, MethodInfo bridgeMethod)
 		{
-			if (delegateMethod == null || bridgeMethod == null)
+			if (delegateMethod is null || bridgeMethod is null)
 			{
 				return false;
 			}

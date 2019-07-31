@@ -507,7 +507,7 @@ namespace XLua
                     idx = idx > 0 ? idx : LuaAPI.lua_gettop(L) + idx + 1;// abs of index
                     Type et = type.GetElementType();
                     ObjectCast elementCaster = GetCaster(et);
-                    Array ary = target == null ? Array.CreateInstance(et, (int)len) : target as Array;
+                    Array ary = target is null ? Array.CreateInstance(et, (int)len) : target as Array;
                     if (!LuaAPI.lua_checkstack(L, 1))
                     {
                         throw new Exception("stack overflow while cast to Array");
@@ -525,7 +525,7 @@ namespace XLua
                         }
                         else
                         {
-                            if (InternalGlobals.genTryArraySetPtr == null
+                            if (InternalGlobals.genTryArraySetPtr is null
                                 || !InternalGlobals.genTryArraySetPtr(type, L, translator, ary, i, n + 1))
                             {
                                 ary.SetValue(elementCaster(L, n + 1, null), i);
@@ -551,7 +551,7 @@ namespace XLua
                         return null;
                     }
 
-                    obj = target == null ? Activator.CreateInstance(type) : target;
+                    obj = target is null ? Activator.CreateInstance(type) : target;
                     int n = LuaAPI.lua_gettop(L);
                     idx = idx > 0 ? idx : LuaAPI.lua_gettop(L) + idx + 1;// abs of index
                     IList list = obj as IList;
@@ -602,7 +602,7 @@ namespace XLua
                         return null;
                     }
 
-                    IDictionary dic = (target == null ? Activator.CreateInstance(type) : target) as IDictionary;
+                    IDictionary dic = (target is null ? Activator.CreateInstance(type) : target) as IDictionary;
                     int n = LuaAPI.lua_gettop(L);
                     idx = idx > 0 ? idx : LuaAPI.lua_gettop(L) + idx + 1;// abs of index
 
@@ -635,7 +635,7 @@ namespace XLua
                         return null;
                     }
 
-                    obj = target == null ? Activator.CreateInstance(type) : target;
+                    obj = target is null ? Activator.CreateInstance(type) : target;
 
                     int n = LuaAPI.lua_gettop(L);
                     idx = idx > 0 ? idx : LuaAPI.lua_gettop(L) + idx + 1;// abs of index
@@ -647,7 +647,7 @@ namespace XLua
                     {
                         var _setMethod = prop.GetSetMethod();
 
-                        if (_setMethod == null ||
+                        if (_setMethod is null ||
                             _setMethod.IsPrivate)
                         {
                             continue;
@@ -660,7 +660,7 @@ namespace XLua
                             try
                             {
                                 prop.SetValue(obj, GetCaster(prop.PropertyType)(L, n + 1,
-                                    target == null || prop.PropertyType.IsPrimitive() || prop.PropertyType == typeof(string) ? null : prop.GetValue(obj, null)), null);
+                                    target is null || prop.PropertyType.IsPrimitive() || prop.PropertyType == typeof(string) ? null : prop.GetValue(obj, null)), null);
                             }
                             catch (Exception e)
                             {
@@ -678,7 +678,7 @@ namespace XLua
                             try
                             {
                                 field.SetValue(obj, GetCaster(field.FieldType)(L, n + 1,
-                                        target == null || field.FieldType.IsPrimitive() || field.FieldType == typeof(string) ? null : field.GetValue(obj)));
+                                        target is null || field.FieldType.IsPrimitive() || field.FieldType == typeof(string) ? null : field.GetValue(obj)));
                             }
                             catch (Exception e)
                             {

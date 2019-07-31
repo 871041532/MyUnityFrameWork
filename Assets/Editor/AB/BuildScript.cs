@@ -48,7 +48,7 @@ namespace AssetBundles
 #endif
             }
 
-            if (builds == null || builds.Length == 0)
+            if (builds is null || builds.Length == 0)
             {
                 //@TODO: use append hash... (Make sure pipeline works correctly with it.)
                 BuildPipeline.BuildAssetBundles(outputPath, options, EditorUserBuildSettings.activeBuildTarget);
@@ -73,7 +73,7 @@ namespace AssetBundles
             }
 
             string targetName = GetBuildTargetName(EditorUserBuildSettings.activeBuildTarget);
-            if (targetName == null)
+            if (targetName is null)
                 return;
 
             // Build and copy AssetBundles.
@@ -107,7 +107,7 @@ namespace AssetBundles
             }
 
             string targetName = GetBuildTargetName(EditorUserBuildSettings.activeBuildTarget);
-            if (targetName == null)
+            if (targetName is null)
                 return;
 
             // Build and copy AssetBundles.

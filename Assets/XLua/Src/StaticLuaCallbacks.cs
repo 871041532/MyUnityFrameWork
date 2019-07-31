@@ -143,7 +143,7 @@ namespace XLua
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 object objDelegate = translator.FastGetCSObj(L, 1);
-                if (objDelegate == null || !(objDelegate is Delegate))
+                if (objDelegate is null || !(objDelegate is Delegate))
                 {
                     return LuaAPI.luaL_error(L, "trying to invoke a value that is not delegate nor callable");
                 }
@@ -206,7 +206,7 @@ namespace XLua
                 Type type = translator.FastGetCSObj(L, LuaAPI.lua_type(L, 1) == LuaTypes.LUA_TUSERDATA ? 1 : 2).GetType();
                 Delegate d1 = translator.GetObject(L, 1, type) as Delegate;
                 Delegate d2 = translator.GetObject(L, 2, type) as Delegate;
-                if (d1 == null || d2 == null)
+                if (d1 is null || d2 is null)
                 {
                     return LuaAPI.luaL_error(L, "one parameter must be a delegate, other one must be delegate or function");
                 }
@@ -230,12 +230,12 @@ namespace XLua
             {
                 var translator = ObjectTranslatorPool.Instance.Find(L);
                 Delegate d1 = translator.FastGetCSObj(L, 1) as Delegate;
-                if (d1 == null)
+                if (d1 is null)
                 {
                     return LuaAPI.luaL_error(L, "#1 parameter must be a delegate");
                 }
                 Delegate d2 = translator.GetObject(L, 2, d1.GetType()) as Delegate;
-                if (d2 == null)
+                if (d2 is null)
                 {
                     return LuaAPI.luaL_error(L, "#2 parameter must be a delegate or a function ");
                 }
@@ -342,7 +342,7 @@ namespace XLua
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 System.Array array = (System.Array)translator.FastGetCSObj(L, 1);
 
-                if (array == null)
+                if (array is null)
                 {
                     return LuaAPI.luaL_error(L, "#1 parameter is not a array!");
                 }
@@ -502,7 +502,7 @@ namespace XLua
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 System.Array array = (System.Array)translator.FastGetCSObj(L, 1);
 
-                if (array == null)
+                if (array is null)
                 {
                     return LuaAPI.luaL_error(L, "#1 parameter is not a array!");
                 }
@@ -573,7 +573,7 @@ namespace XLua
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 Type type = translator.FastGetCSObj(L, 2) as Type;
-                if (type == null)
+                if (type is null)
                 {
                     return LuaAPI.luaL_error(L, "#2 param need a System.Type!");
                 }
@@ -690,7 +690,7 @@ namespace XLua
 
                 // Load with Unity3D resources
                 UnityEngine.TextAsset file = (UnityEngine.TextAsset)UnityEngine.Resources.Load(filename);
-                if (file == null)
+                if (file is null)
                 {
                     LuaAPI.lua_pushstring(L, string.Format(
                         "\n\tno such resource '{0}'", filename));
@@ -826,7 +826,7 @@ namespace XLua
                     // The assemblyName was invalid.  It is most likely a path.
                 }
 
-                if (assembly == null)
+                if (assembly is null)
                 {
                     assembly = Assembly.Load(AssemblyName.GetAssemblyName(assemblyName));
                 }
@@ -887,7 +887,7 @@ namespace XLua
                 string className = LuaAPI.lua_tostring(L, 1);
                 if (className.EndsWith("<>")) className = className.Substring(0, className.Length - 2);
                 Type genericDef = translator.FindType(className + "`" + (top - 1));
-                if (genericDef == null || !genericDef.IsGenericTypeDefinition())
+                if (genericDef is null || !genericDef.IsGenericTypeDefinition())
                 {
                     LuaAPI.lua_pushnil(L);
                 }
@@ -898,7 +898,7 @@ namespace XLua
                     {
 
                         typeArguments[i - 2] = getType(L, translator, i);
-                        if (typeArguments[i - 2] == null)
+                        if (typeArguments[i - 2] is null)
                         {
                             return LuaAPI.luaL_error(L, "param need a type");
                         }
@@ -925,7 +925,7 @@ namespace XLua
                 Type type;
                 translator.Get(L, 2, out type);
 
-                if (type == null)
+                if (type is null)
                 {
                     return LuaAPI.luaL_error(L, "#2 param[" + LuaAPI.lua_tostring(L, 2) + "]is not valid type indicator");
                 }
@@ -974,17 +974,17 @@ namespace XLua
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 Type type = getType(L, translator, 1);
                 object obj = null;
-                if (type == null && LuaAPI.lua_type(L, 1) == LuaTypes.LUA_TUSERDATA)
+                if (type is null && LuaAPI.lua_type(L, 1) == LuaTypes.LUA_TUSERDATA)
                 {
                     obj = translator.SafeGetCSObj(L, 1);
-                    if (obj == null)
+                    if (obj is null)
                     {
                         return LuaAPI.luaL_error(L, "xlua.access, #1 parameter must a type/c# object/string");
                     }
                     type = obj.GetType();
                 }
 
-                if (type == null)
+                if (type is null)
                 {
                     return LuaAPI.luaL_error(L, "xlua.access, can not find c# type");
                 }
@@ -1038,7 +1038,7 @@ namespace XLua
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 Type type = getType(L, translator, 1); ;
-                if (type == null)
+                if (type is null)
                 {
                     return LuaAPI.luaL_error(L, "xlua.private_accessible, can not find c# type");
                 }
@@ -1063,7 +1063,7 @@ namespace XLua
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 Type type = getType(L, translator, 1);
-                if (type == null)
+                if (type is null)
                 {
                     return LuaAPI.luaL_error(L, "xlua.metatable_operation, can not find c# type");
                 }
@@ -1107,7 +1107,7 @@ namespace XLua
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 Type type = getType(L, translator, 1);
-                if (type == null || !typeof(Delegate).IsAssignableFrom(type))
+                if (type is null || !typeof(Delegate).IsAssignableFrom(type))
                 {
                     return LuaAPI.luaL_error(L, "delegate constructor: #1 argument must be a Delegate's type");
                 }
@@ -1128,7 +1128,7 @@ namespace XLua
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 MethodBase m;
                 translator.Get(L, 1, out m);
-                if (m == null)
+                if (m is null)
                 {
                     return LuaAPI.luaL_error(L, "ToFunction: #1 argument must be a MethodBase");
                 }
@@ -1155,7 +1155,7 @@ namespace XLua
                 for(int i = 0; i < n; i++)
                 {
                     Type type = getType(L, translator, i + 1);
-                    if (type == null)
+                    if (type is null)
                     {
                         return LuaAPI.luaL_error(L, "param #" + (i + 1) + " is not a type");
                     }
@@ -1179,7 +1179,7 @@ namespace XLua
             {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
                 Type type = getType(L, translator, 1);
-                if (type == null)
+                if (type is null)
                 {
                     return LuaAPI.luaL_error(L, "xlua.get_generic_method, can not find c# type");
                 }

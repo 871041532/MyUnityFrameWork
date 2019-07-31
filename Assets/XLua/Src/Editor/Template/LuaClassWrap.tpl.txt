@@ -527,7 +527,7 @@ namespace XLua.CSObjectWrap
 			    int gen_param_count = LuaAPI.lua_gettop(L);
 			<%=GetSelfStatement(type)%>;
                 <%=GetCasterStatement(event.Type, 3, "gen_delegate", true)%>;
-                if (gen_delegate == null) {
+                if (gen_delegate is null) {
                     return LuaAPI.luaL_error(L, "#3 need <%=CsFullTypeName(event.Type)%>!");
                 }
 				
@@ -562,7 +562,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			    int gen_param_count = LuaAPI.lua_gettop(L);
                 <%=GetCasterStatement(event.Type, 2, "gen_delegate", true)%>;
-                if (gen_delegate == null) {
+                if (gen_delegate is null) {
                     return LuaAPI.luaL_error(L, "#2 need <%=CsFullTypeName(event.Type)%>!");
                 }
                 
