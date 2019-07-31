@@ -16,29 +16,34 @@ public class ResourceManager : IManager
     public event Action UpdataEvent;
 
     ResourcePrioritizedCache c2;
+    ResourceCache c3;
     public override void Start()
     {
         string path = "Assets/GameData/Prefabs/c1.prefab";
         string path2 = "Assets/GameData/Configs/AssetBundleConfig.json";
         string path3 = "Assets/GameData/UI/res/common/common.spriteatlas";
-        string path4 = "Assets/GameData/UI/res/common/items/apple.png";
         c2 = new ResourcePrioritizedCache();
+        c2.m_MaxLoadingCount = 0;
         c2.LoadAsync(path, LoadEnd);
         c2.LoadAsync(path2, LoadEnd);
         c2.LoadAsync(path3, LoadEnd);
         c2.LoadAsync(path, LoadEnd2);
-        var item = c2.Load(path4);
-        var a = 1;
     }
 
     public override void Update()
     {
         UpdataEvent?.Invoke();
+        c2.PreloadAsync("Assets/GameData/Prefabs/c1.prefab");
+        if (Input.anyKey)
+        {
+            c2.m_MaxLoadingCount = 5;
+        }
     }
 
     private void LoadEnd(AssetItem obj)
     {
         c2.Recycle(obj);
+        
         //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
         // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
@@ -239,8 +244,10 @@ public class ResourcePrioritizedCache
     private Dictionary<string, AsyncLoadProcess> m_LoadingResDict;
     // 加载过程类缓存
     private ClassObjectPool<AsyncLoadProcess> m_ProcessPool;
+    // preload action
+    private Action<AssetItem> m_PreloadEndCall;
     // 同时加载上限，每帧补充一次
-    private int m_MaxLoadingCount = 1;
+    public int m_MaxLoadingCount = 10;
     private int m_CurrentLoadingCount = 0;
 
     public ResourcePrioritizedCache()
@@ -253,6 +260,7 @@ public class ResourcePrioritizedCache
         }
         m_LoadingResDict = new Dictionary<string, AsyncLoadProcess>();
         m_ProcessPool = GameManager.Instance.m_ObjectMgr.CreateOrGetClassPool<AsyncLoadProcess>();
+        m_PreloadEndCall = _PreLoadOk;
         GameManager.Instance.m_ResMgr.UpdataEvent += this.Update;
     }
 
@@ -276,6 +284,16 @@ public class ResourcePrioritizedCache
                 param.BeginLoad();
             }
         }
+    }
+
+    public void PreloadAsync(string assetPath, LoadPriority priority = LoadPriority.Hight)
+    {
+        LoadAsync(assetPath, m_PreloadEndCall, priority);
+    }
+
+    private void _PreLoadOk(AssetItem item)
+    {
+        Recycle(item);
     }
 
     public void LoadAsync(string assetPath, Action<AssetItem> call, LoadPriority priority = LoadPriority.Hight)
@@ -302,6 +320,11 @@ public class ResourcePrioritizedCache
         }
     }
 
+    public void Preload(string assetPath)
+    {
+        m_Cache.PreLoad(assetPath);
+    }
+
     public AssetItem Load(string assetPath)
     {
         return m_Cache.Load(assetPath);
@@ -320,6 +343,17 @@ public class ResourcePrioritizedCache
     public void Destroy()
     {
         m_Cache.Destroy();
+        // 清理掉加载队列
+        for (int i = 0; i < m_LoadingResList.Length; i++)
+        {
+            var stack = m_LoadingResList[i];
+            while (stack.Count > 0)
+            {
+                AsyncLoadProcess process = stack.Pop();
+                process.Reset();
+                m_ProcessPool.Recycle(process);
+            }
+        }
         GameManager.Instance.m_ResMgr.UpdataEvent -= this.Update;
     }
 
@@ -369,7 +403,7 @@ public class ResourcePrioritizedCache
             Reset();
         }
 
-        private void Reset()
+        public void Reset()
         {
             m_AssetPath = "";
             m_Priority = LoadPriority.Hight;
@@ -386,12 +420,24 @@ public class ResourceCache
     private Dictionary<string, AssetItem> m_CacheItems;
     private Dictionary<int, int> m_CacheReference;
     private DoubleLinkedList<AsyncLoadingFunc> m_LoadingFuncs;
+    private Action<AssetItem> m_PreloadEndCall;
 
     public ResourceCache()
     {
         m_CacheItems = new Dictionary<string, AssetItem>();
         m_CacheReference = new Dictionary<int, int>();
         m_LoadingFuncs = new DoubleLinkedList<AsyncLoadingFunc>();
+        m_PreloadEndCall = _PreloadOk;
+    }
+
+    public void PreLoadAsync(string assetPath)
+    {
+        LoadAsync(assetPath, m_PreloadEndCall);
+    }
+
+    private void _PreloadOk(AssetItem item)
+    {
+        Recycle(item);
     }
 
     public void LoadAsync(string assetPath, Action<AssetItem> call)
@@ -409,6 +455,12 @@ public class ResourceCache
             m_CacheReference[item.GetHashCode()] += 1;
             call?.Invoke(item);
         }
+    }
+
+    public void PreLoad(string assetPath)
+    {
+        AssetItem item = Load(assetPath);
+        Recycle(item);
     }
 
     public AssetItem Load(string assetPath)
