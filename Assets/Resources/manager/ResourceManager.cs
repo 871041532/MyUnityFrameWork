@@ -46,14 +46,14 @@ public class ResourceManager : IManager
         //UnityEngine.Debug.Log(w.ElapsedMilliseconds);
         string path = "Assets/GameData/Prefabs/c1.prefab";
         AssetItem item = LoadAssetFromCache(1, path);
-        var pool = new ActiveGameObjectPool(item,  null, "manager");
-        var o1 = SpawnGameObject(path);
-        var o2 = SpawnGameObject(path);
-        var o3 = SpawnGameObject(path);
-        var o4 = SpawnGameObject(path);
-        RecycleGameObject(path, o1);
-        RecycleGameObject(path, o2);
-        RecycleGameObject(path, o3);
+        var pool = new ActiveGameObjectPool(item);
+        var o1 = pool.Spawn();
+        var o2 = pool.Spawn();
+        var o3 = pool.Spawn();
+        var o4 = pool.Spawn();
+        pool.Recycle(o1);
+        pool.Recycle(o2);
+        pool.Recycle(o3);
     }
 
     public override void Update()
@@ -685,7 +685,7 @@ public class ActiveGameObjectPool: CoreGameObjectPool
         }
         if (string.IsNullOrEmpty(name))
         {
-            name = "DefaultPool";
+            name = "DefaultPoolsMount";
         }
         Transform poolRoot = m_Owner.Find(name);
         if (poolRoot is null)
