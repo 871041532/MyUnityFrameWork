@@ -21,3 +21,5 @@ MonoBehaviour:
     Path: Assets/GameData/Configs
   - ABName: audio
     Path: Assets/GameData/Audio
+  - ABName: ui_prefabs
+    Path: Assets/GameData/UI/prefabs

@@ -15,45 +15,8 @@ public class ResourceManager : IManager
     private Dictionary<int, ResourceCache> m_ResourceCaches = new Dictionary<int, ResourceCache>();
     public event Action UpdataEvent;
 
-    ResourcePrioritizedCache c2;
-    ResourceCache c3;
     public override void Start()
     {
-        //GameObject obj1 = new GameObject();
-        //Stopwatch w = new Stopwatch();
-        //w.Start();
-        //for (int i = 0; i < 100000000; i++)
-        //{
-        //    bool b = obj1 == null;
-        //}
-        //w.Stop();
-        //UnityEngine.Debug.Log(w.ElapsedMilliseconds);
-
-        //w.Restart();
-        //for (int i = 0; i < 100000000; i++)
-        //{
-        //    bool b = ReferenceEquals(obj1, null);
-        //}
-        //w.Stop();
-        //UnityEngine.Debug.Log(w.ElapsedMilliseconds);
-
-        //w.Restart();
-        //for (int i = 0; i < 100000000; i++)
-        //{
-        //    bool b = obj1 is null;
-        //}
-        //w.Stop();
-        //UnityEngine.Debug.Log(w.ElapsedMilliseconds);
-        string path = "Assets/GameData/Prefabs/c1.prefab";
-        AssetItem item = LoadAssetFromCache(1, path);
-        var pool = new ActiveGameObjectPool(item);
-        var o1 = pool.Spawn();
-        var o2 = pool.Spawn();
-        var o3 = pool.Spawn();
-        var o4 = pool.Spawn();
-        pool.Recycle(o1);
-        pool.Recycle(o2);
-        pool.Recycle(o3);
     }
 
     public override void Update()
@@ -62,22 +25,6 @@ public class ResourceManager : IManager
         if (Input.anyKey)
         {
         }
-    }
-
-    private void LoadEnd(AssetItem obj)
-    {
-        c2.Recycle(obj);
-        
-        //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
-        // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
-    }
-
-    private void LoadEnd2(AssetItem obj)
-    {
-        c2.Recycle(obj);
-        c2.Clear();
-        //RecycleGameObject("Assets/GameData/Prefabs/c1.prefab", obj);
-        // DestroyGameObjectPool("Assets/GameData/Prefabs/c1.prefab");
     }
 
     /// <summary>
