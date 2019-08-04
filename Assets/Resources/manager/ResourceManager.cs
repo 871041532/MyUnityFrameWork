@@ -92,14 +92,14 @@ public class ResourceManager : IManager
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    public GameObject SpawnGameObject(string path)
+    public GameObject SpawnGameObject(string path, Transform parent = null)
     {
         CoreGameObjectPool resourcePool = null;
         m_GameObjectPools.TryGetValue(path, out resourcePool);
         if (resourcePool is null)
         {
             AssetItem item = GameMgr.m_ABMgr.LoadAsset(path);
-            resourcePool = new ActiveGameObjectPool(item);
+            resourcePool = new CoreGameObjectPool(item, parent);
             m_GameObjectPools.Add(path, resourcePool);
         }
         return resourcePool.Spawn();
@@ -173,7 +173,7 @@ public class ResourceManager : IManager
                 m_Owner.m_GameObjectPools.TryGetValue(m_AssetPath, out resourcePool);
                 if (resourcePool is null)
                 {
-                    resourcePool = new ActiveGameObjectPool(item);
+                    resourcePool = new CoreGameObjectPool(item);
                     m_Owner.m_GameObjectPools.Add(m_AssetPath, resourcePool);
                 }
                 else
@@ -674,6 +674,68 @@ public class ActiveGameObjectPool: CoreGameObjectPool
     }
 }
 
+
+/// <summary>
+/// 聚合Pool
+/// </summary>
+public class CoreCompositePool
+{
+    private Dictionary<string, CoreGameObjectPool> m_Pools = new Dictionary<string, CoreGameObjectPool>();
+    private List<string> m_TempList = new List<string>();
+
+    public GameObject Spawn(string path, Transform parent = null)
+    {
+        CoreGameObjectPool resourcePool = null;
+        m_Pools.TryGetValue(path, out resourcePool);
+        if (resourcePool is null)
+        {
+            AssetItem item = GameManager.Instance.m_ABMgr.LoadAsset(path);
+            resourcePool = new CoreGameObjectPool(item, parent);
+            m_Pools.Add(path, resourcePool);
+        }
+        return resourcePool.Spawn();
+    }
+
+    public void Recycle(string path, GameObject obj)
+    {
+        m_Pools[path].Recycle(obj);
+    }
+
+    public void DestroyOne(string path, bool destroyOnlyNotUsed = false)
+    {
+        CoreGameObjectPool pool = m_Pools[path];
+        if ((!destroyOnlyNotUsed) || (destroyOnlyNotUsed && pool.NotUsed()))
+        {
+            GameManager.Instance.m_ABMgr.UnloadAsset(pool.AssetItem);
+            pool.Destroy();
+            m_Pools.Remove(path);
+        }
+    }
+
+    public void ClearOne(string path)
+    {
+        m_Pools[path].Clear();
+    }
+
+    public void DestroyAll(bool onlyUnUsed = false)
+    {
+        m_TempList.Clear();
+        m_TempList.AddRange(m_Pools.Keys);
+        for (int i = 0; i < m_TempList.Count; i++)
+        {
+            DestroyOne(m_TempList[i], onlyUnUsed);
+        }
+    }
+
+    public void ClearAll()
+    {
+        foreach (var item in m_Pools)
+        {
+            item.Value.Clear();
+        }
+    }
+}
+
 /// <summary>
 /// 极简Core对象池，出入池不作任何特殊处理
 /// </summary>
@@ -681,19 +743,28 @@ public class CoreGameObjectPool
 {
     protected AssetItem m_AssetItem;
     protected GameObject m_OriginalObject;
+    protected Transform m_ObjectParent;
+
     public GameObject OriginalObject { get { return m_OriginalObject; } }
     public AssetItem AssetItem { get { return m_AssetItem; } }
     protected DoubleLinkedList<GameObject> m_CacheObjects = new DoubleLinkedList<GameObject>();
     protected Dictionary<int, GameObject> m_SpawnedObjects = new Dictionary<int, GameObject>();
 
-    public CoreGameObjectPool(GameObject originalObject)
+    public CoreGameObjectPool(GameObject originalObject, Transform ObjParent = null)
     {
         m_OriginalObject = originalObject;
+        m_ObjectParent = ObjParent;
     }
 
-    public CoreGameObjectPool(AssetItem assetItem)
+    public CoreGameObjectPool(AssetItem assetItem, Transform ObjParent = null)
     {
         m_AssetItem = assetItem;
+        m_ObjectParent = ObjParent;
+    }
+
+    public bool NotUsed()
+    {
+        return m_SpawnedObjects.Count == 0;
     }
 
     public GameObject Spawn()
@@ -705,11 +776,25 @@ public class CoreGameObjectPool
         }
         else if (m_OriginalObject is null)
         {
-            obj = GameObject.Instantiate(m_AssetItem.GameObject);
+            if (m_ObjectParent is null)
+            {
+                obj = GameObject.Instantiate(m_AssetItem.GameObject);
+            }
+            else
+            {
+                obj = GameObject.Instantiate(m_AssetItem.GameObject, m_ObjectParent);
+            }    
         }
         else
         {
-            obj = GameObject.Instantiate(m_OriginalObject);
+            if (m_ObjectParent is null)
+            {
+                obj = GameObject.Instantiate(m_OriginalObject);
+            }
+            else
+            {
+                obj = GameObject.Instantiate(m_OriginalObject, m_ObjectParent);
+            }
         }
         m_SpawnedObjects.Add(obj.GetHashCode(), obj);
         OnSpawn(obj);

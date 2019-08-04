@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
     public ABManager m_ABMgr;
     public CutSceneManager m_CutSceneMgr;
     public ResourceManager m_ResMgr;
-    public ObjectManager m_ObjectMgr; 
+    public ObjectManager m_ObjectMgr;
+    public UIManager m_UIMgr;
+    public CallManager m_CallMgr;
     private List<IManager> m_Mgrs;
     public Text m_log_object;
 
@@ -31,13 +33,17 @@ public class GameManager : MonoBehaviour
         m_ABMgr = new ABManager();
         m_CutSceneMgr = new CutSceneManager();
         m_ResMgr = new ResourceManager();
-        
+        m_UIMgr = new UIManager();
+        m_CallMgr = new CallManager();
 
         m_Mgrs.Add(m_LuaMgr);
         m_Mgrs.Add(m_ABMgr);
         m_Mgrs.Add(m_CutSceneMgr);
         m_Mgrs.Add(m_ResMgr);
         m_Mgrs.Add(m_ObjectMgr);
+        m_Mgrs.Add(m_UIMgr);
+        m_Mgrs.Add(m_CallMgr);
+        
         Assert.raiseExceptions = true;
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
@@ -87,17 +93,5 @@ public class IManager
     public virtual void OnDestroy() { }
 }
 
-public static class Extensions
-{
-    public static int HashTime33(this string value)
-    {
-        int hash = 0;
-        for (int i = 0; i < value.Length; i++)
-        {
-            hash = ((hash << 5) + hash) + Convert.ToInt32(value[i]);
-        }
-        return hash;
-    }
-}
 public enum LogMode { All, JustErrors };
 public enum LogType { Info, Warning, Error };
