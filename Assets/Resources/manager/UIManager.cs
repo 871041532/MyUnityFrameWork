@@ -33,12 +33,16 @@ public class UIManager : IManager
         m_EventSystem = GameMgr.gameObject.transform.Find("EventSystem").GetComponent<EventSystem>();
         var canvasScaler = m_UIRoot.GetComponent<CanvasScaler>();
         m_ReferenceResolution = canvasScaler.referenceResolution;
-        //RegisterWindow("win1", () =>
-        //{
-        //    return new SportToolPanel();
-        //});
-        //var win = GetOrCreateWindow("win1");
-        //win.Show();
+        RegisterWindow("menu", () =>
+        {
+            return new MenuPanel();
+        });
+        RegisterWindow("loading", () =>
+        {
+            return new LoadingPanel();
+        });
+        var win = GetOrCreateWindow("menu");
+        win.Show();
     }
 
     public override void Update()
@@ -161,6 +165,23 @@ public class UIManager : IManager
         for (int i = 0; i < m_TempList.Count; i++)
         {
             DestroyWindow(m_TempList[i]);
+        }
+    }
+
+    /// <summary>
+    /// 清除所有隐藏的window
+    /// </summary>
+    public void DestroyHideWindow()
+    {
+        m_TempList.Clear();
+        m_TempList.AddRange(m_WinDic.Values);
+        for (int i = 0; i < m_TempList.Count; i++)
+        {
+            var win = m_TempList[i];
+            if (!win.IsVisible)
+            {
+                DestroyWindow(m_TempList[i]);
+            }
         }
     }
 

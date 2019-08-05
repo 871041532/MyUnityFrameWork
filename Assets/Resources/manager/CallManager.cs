@@ -8,7 +8,14 @@ public enum EventType
     General,
     NetWork,
     UI,
+    All,
     NoUsingOnlyNum,  // 仅仅显示数量用
+}
+
+public static class EventEnum
+{
+    public static string BeginChangeScene = "BeginChangeScene";
+    public static string OnChangeScene = "OnChangeScene";
 }
 
 public class CallManager : IManager
@@ -38,6 +45,14 @@ public class CallManager : IManager
     public void TriggerEvent(string eventName, EventType type = EventType.General, params object[] args)
     {
         m_EventManagers[(int)type].TriggerEvent(eventName, args);
+    }
+
+    public void TriggerAll(string eventName, params object[] args)
+    {
+        for (int i = 0; i < m_EventManagers.Length; i++)
+        {
+            m_EventManagers[i].TriggerEvent(eventName, args);
+        }
     }
 }
 

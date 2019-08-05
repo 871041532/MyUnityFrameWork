@@ -78,6 +78,14 @@ public class ResourceManager : IManager
         m_ResourceCaches[cacheId].Clear();
     }
 
+    public void ClearAllCache()
+    {
+        foreach (var item in m_ResourceCaches)
+        {
+            item.Value.Clear();
+        }
+    }
+
     /// <summary>
     /// 清理所有资源并销毁cache
     /// </summary>

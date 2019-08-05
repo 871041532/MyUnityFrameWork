@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class CutSceneManager:IManager
 {
+    public string CurrentSceneName { get; private set; }
+
     private LoadingSceneLogic m_loadSceneLogic;
+
+    public static int LoadingProgress = 0;
 
     public override void Awake() {
         m_loadSceneLogic = new LoadingSceneLogic(this);
@@ -21,6 +25,7 @@ public class CutSceneManager:IManager
 
     public void BeginLoadScene(string sceneName, Action successCall, Action<float> progressChangeCall)
     {
+        GameMgr.m_CallMgr.TriggerAll(EventEnum.BeginChangeScene, sceneName);
         m_loadSceneLogic.BeginLoading(sceneName, successCall, progressChangeCall);
     }
 }
@@ -70,6 +75,7 @@ public class LoadingSceneLogic
             yield return null;
         }
         // yield return m_async;
+        m_owner.GameMgr.m_CallMgr.TriggerAll(EventEnum.OnChangeScene, name);
         m_progressChangeCall?.Invoke(1.0f);
         m_successCall?.Invoke();
     }
