@@ -51,6 +51,8 @@ public static class ExampleGenConfig
                 typeof(UnityEngine.Debug),
                 typeof(ABManager),
                 typeof(GameManager),
+                typeof(UIManager),
+                typeof(Window),
             };
 
     //C#静态调用Lua的配置（包括事件的原型），仅可以配delegate，interface

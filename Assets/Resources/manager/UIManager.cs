@@ -18,7 +18,7 @@ public class UIManager : IManager
     // 分辨率
     private Vector2 m_ReferenceResolution;
     // 注册字典
-    public static Dictionary<string, Func<Window>> m_RegisterDic = new Dictionary<string, Func<Window>>();
+    public Dictionary<string, Func<Window>> m_RegisterDic = new Dictionary<string, Func<Window>>();
     // 打开的窗口
     private Dictionary<string, Window> m_WinDic = new Dictionary<string, Window>();
     // 对象池
@@ -33,19 +33,12 @@ public class UIManager : IManager
         m_EventSystem = GameMgr.gameObject.transform.Find("EventSystem").GetComponent<EventSystem>();
         var canvasScaler = m_UIRoot.GetComponent<CanvasScaler>();
         m_ReferenceResolution = canvasScaler.referenceResolution;
-        RegisterWindow("Window", ()=> {
-            return new Window("Assets/GameData/UI/prefabs/MenuPanel.prefab");
-        });
-        RegisterWindow("Window2", () => {
-            return new Window("Assets/GameData/UI/prefabs/MenuPanel.prefab");
-        });
-
-        var win1 = GetOrCreateWindow("Window");
-        win1.Show();
-        var win2 = GetOrCreateWindow("Window2");
-        win2.Show();
-        DestroyWindow(win1);
-        DestroyWindow(win2);
+        //RegisterWindow("win1", () =>
+        //{
+        //    return new SportToolPanel();
+        //});
+        //var win = GetOrCreateWindow("win1");
+        //win.Show();
     }
 
     public override void Update()
@@ -57,16 +50,21 @@ public class UIManager : IManager
     }
 
     // 注册 name -> window
-    private static void RegisterWindow(System.Type type)
+    private void RegisterWindow(System.Type type)
     {
         RegisterWindow(type.Name, () => {
             return Activator.CreateInstance(type) as Window;
         });
     }
 
-    public static void RegisterWindow(string name, Func<Window> createAction)
+    public void RegisterWindow(string windowName, Func<Window> createAction)
     {
-        m_RegisterDic[name] = createAction;
+        m_RegisterDic[windowName] = createAction;
+    }
+
+    public void UnRegisterWindow(string windowName)
+    {
+        m_RegisterDic.Remove(windowName);
     }
 
     /// <summary>
@@ -149,7 +147,7 @@ public class UIManager : IManager
         win.Hide();
         m_Pool.Recycle(win.PrefabPath, win.m_GameObject);
         m_Pool.DestroyOne(win.PrefabPath, true);
-        win.Destroy();
+        win.DestroyCallByUIMgr();
         m_WinDic.Remove(win.Name);
     }
 

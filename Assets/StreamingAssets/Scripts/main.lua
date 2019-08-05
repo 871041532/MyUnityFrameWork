@@ -5,17 +5,28 @@ Datas = {
     itemCfgs = itemCfgs
 }
 
-local GM = CS.GameManager.Instance
-local ABM = GM.m_abMgr
+local GameMgr = CS.GameManager.Instance
+local ABMgr = GameMgr.m_ABMgr
+local UIMgr = GameMgr.m_UIMgr
 local GameObject = CS.UnityEngine.GameObject
-local prefabPath = "Assets/GameData/Prefabs/c1.prefab"
--- local asset = ABM:LoadAssetGameObject(prefabPath)
--- GameObject.Instantiate(asset)
-
-ABM:LoadAssetAsync(prefabPath, function(item)
-	GameObject.Instantiate(item:GetGameObject())
+local Window = CS.Window
+local SportToolPanel = CS.SportToolPanel
+local prefabPath = 'Assets/GameData/Prefabs/c1.prefab'
+UIMgr:RegisterWindow('window1', function()
+	return SportToolPanel()
 end)
-
-ABM:LoadAssetAsync(prefabPath, function(item)
-	GameObject.Instantiate(item:GetGameObject())
+UIMgr:RegisterWindow('window2', function()
+	return SportToolPanel()
 end)
+local win = UIMgr:GetOrCreateWindow('window1')
+win.m_OnInit = function()
+	print("m_OnInit")
+end
+win.m_OnShow = function()
+	print("m_OnShow")
+end
+win:Show()
+win.m_OnInit = nil
+win.m_OnShow = nil
+UIMgr:UnRegisterWindow('window1')
+UIMgr:UnRegisterWindow('window2')
