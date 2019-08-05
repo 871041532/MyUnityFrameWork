@@ -6,12 +6,15 @@ using UnityEngine.UI;
 
 public class Window
 {
+    private string m_PrefabPath = "Assets/GameData/UI/prefabs/MenuPanel.prefab";
+    public string PrefabPath { get { return m_PrefabPath; } }
+    private string m_Name = "DefaultName";
+    public string Name { get { return m_Name; } }
     public GameObject m_GameObject;
     public RectTransform m_TransForm;
-    private string m_PrefabPath;
-    public string PrefabPath { get { return m_PrefabPath; } }
     private bool m_IsVisible;
     public bool IsVisible { get { return m_IsVisible; } }
+    private bool m_HavenInit = false;
 
     public Action m_OnInit = null;
     public Action<object[]> m_OnShow = null;
@@ -19,22 +22,19 @@ public class Window
     public Action m_OnUpdate = null;
     public Action m_OnDestroy = null;
 
-    public Window()
+    public Window(string prefabPath = null)
     {
-        m_PrefabPath = GetPrefabPath();
+        if (!string.IsNullOrEmpty(prefabPath))
+        {
+            m_PrefabPath = prefabPath;
+        }
     }
 
-    public void Init(GameObject obj)
+    public void SetGameObjectAndName(GameObject obj, string name)
     {
+        m_Name = name;
         m_GameObject = obj;
         m_TransForm = obj.transform as RectTransform;
-        OnInit();
-        m_OnInit?.Invoke();
-
-        var btn = m_TransForm.Find("BtnLoad").GetComponent<Button>();
-        btn.onClick.AddListener(()=> {
-            GameManager.Instance.m_CallMgr.TriggerEvent("login");
-        });
     }
 
     public void SetVisible(bool visible)
@@ -46,8 +46,19 @@ public class Window
         }
     }
 
+    private void Init()
+    {
+        if (!m_HavenInit)
+        {
+            m_HavenInit = true;
+            OnInit();
+            m_OnInit?.Invoke();
+        }
+    }
+
     public void Show(params object[] args)
     {
+        Init();
         SetVisible(true);
         OnShow(args);
         m_OnShow?.Invoke(args);
@@ -79,15 +90,11 @@ public class Window
         m_OnDestroy?.Invoke();
     }
 
+    #region 模板方法
     protected virtual void OnInit() { }
     protected virtual void OnShow(params object[] args) { }
     protected virtual void OnHide() { }
     protected virtual void OnUpdate() { }
     protected virtual void OnDestroy() { }
-
-    protected virtual string GetPrefabPath()
-    {
-        return "Assets/GameData/UI/prefabs/MenuPanel.prefab";
-    }
-
+    #endregion
 }

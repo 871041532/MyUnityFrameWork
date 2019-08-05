@@ -701,10 +701,10 @@ public class CoreCompositePool
         m_Pools[path].Recycle(obj);
     }
 
-    public void DestroyOne(string path, bool destroyOnlyNotUsed = false)
+    public void DestroyOne(string path, bool OnlyUnUsed = false)
     {
         CoreGameObjectPool pool = m_Pools[path];
-        if ((!destroyOnlyNotUsed) || (destroyOnlyNotUsed && pool.NotUsed()))
+        if ((!OnlyUnUsed) || (OnlyUnUsed && pool.NotUsed()))
         {
             GameManager.Instance.m_ABMgr.UnloadAsset(pool.AssetItem);
             pool.Destroy();

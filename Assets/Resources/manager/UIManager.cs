@@ -23,6 +23,7 @@ public class UIManager : IManager
     private Dictionary<string, Window> m_WinDic = new Dictionary<string, Window>();
     // 对象池
     private CoreCompositePool m_Pool = new CoreCompositePool();
+    private List<Window> m_TempList = new List<Window>();
 
     public override void Awake()
     {
@@ -32,12 +33,19 @@ public class UIManager : IManager
         m_EventSystem = GameMgr.gameObject.transform.Find("EventSystem").GetComponent<EventSystem>();
         var canvasScaler = m_UIRoot.GetComponent<CanvasScaler>();
         m_ReferenceResolution = canvasScaler.referenceResolution;
-        RegisterWindow(typeof(Window));
-
-        SwitchSingleWindow("Window");
-        GameManager.Instance.m_CallMgr.RegisterEvent("login", (args)=> {
-            Debug.Log("点击了登录按钮");
+        RegisterWindow("Window", ()=> {
+            return new Window("Assets/GameData/UI/prefabs/MenuPanel.prefab");
         });
+        RegisterWindow("Window2", () => {
+            return new Window("Assets/GameData/UI/prefabs/MenuPanel.prefab");
+        });
+
+        var win1 = GetOrCreateWindow("Window");
+        win1.Show();
+        var win2 = GetOrCreateWindow("Window2");
+        win2.Show();
+        DestroyWindow(win1);
+        DestroyWindow(win2);
     }
 
     public override void Update()
@@ -49,7 +57,7 @@ public class UIManager : IManager
     }
 
     // 注册 name -> window
-    public static void RegisterWindow(System.Type type)
+    private static void RegisterWindow(System.Type type)
     {
         RegisterWindow(type.Name, () => {
             return Activator.CreateInstance(type) as Window;
@@ -95,7 +103,7 @@ public class UIManager : IManager
             }
             GameObject obj = m_Pool.Spawn(win.PrefabPath, m_WinRoot);
             obj.transform.SetAsLastSibling();
-            win.Init(obj);
+            win.SetGameObjectAndName(obj, windowName);
             if (!m_WinDic.ContainsKey(windowName))
             {
                 m_WinDic.Add(windowName, win);
@@ -123,34 +131,38 @@ public class UIManager : IManager
         win.Hide();
     }
 
+    public void HideAllWindow()
+    {
+        foreach (var item in m_WinDic)
+        {
+            HideWindow(item.Value);
+        }
+    }
+
     /// <summary>
-    /// 关闭一个window
+    /// destroy一个window
     /// </summary>
     /// <param name="win"></param>
     /// <param name="destroy"></param>
-    public void  CloseWindow(Window win, bool destroy = false)
+    public void  DestroyWindow(Window win)
     {
-        if (win.IsVisible)
-        {
-            win.Hide();
-        }
-        if (destroy)
-        {
-            m_Pool.Recycle(win.PrefabPath, win.m_GameObject);
-            m_Pool.DestroyOne(win.PrefabPath, true);
-            win.Destroy();
-            m_WinDic.Remove(win.PrefabPath);
-        }
+        win.Hide();
+        m_Pool.Recycle(win.PrefabPath, win.m_GameObject);
+        m_Pool.DestroyOne(win.PrefabPath, true);
+        win.Destroy();
+        m_WinDic.Remove(win.Name);
     }
 
     /// <summary>
     /// 关闭所有window
     /// </summary>
-    public void CloseAllWindow()
+    public void DestroyAllWindow()
     {
-        foreach (var item in m_WinDic)
+        m_TempList.Clear();
+        m_TempList.AddRange(m_WinDic.Values);
+        for (int i = 0; i < m_TempList.Count; i++)
         {
-            CloseWindow(item.Value);
+            DestroyWindow(m_TempList[i]);
         }
     }
 
@@ -159,11 +171,12 @@ public class UIManager : IManager
     /// </summary>
     /// <param name="name"></param>
     /// <param name="args"></param>
-    public void SwitchSingleWindow(string name, params object[] args)
+    public Window SwitchSingleWindow(string name, params object[] args)
     {
-        CloseAllWindow();
+        HideAllWindow();
         Window win = GetOrCreateWindow(name);
         win.Show(args);
+        return win;
     }
 
 }
