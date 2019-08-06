@@ -104,7 +104,6 @@ public class UIManager : IManager
                 Debug.LogError(windowName + "窗口名对应的Window创建函数未注册！");
             }
             GameObject obj = m_Pool.Spawn(win.PrefabPath, m_WinRoot);
-            obj.transform.SetAsLastSibling();
             win.SetGameObjectAndName(obj, windowName);
             if (!m_WinDic.ContainsKey(windowName))
             {
