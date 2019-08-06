@@ -18,6 +18,7 @@ public class MenuPanel : Window
         m_BtnExit = m_TransForm.Find("BtnExit").GetComponent<Button>();
 
         m_BtnLoad.onClick.AddListener(()=> {
+            GameManager.Instance.m_UIMgr.DestroyHideWindow();
             GameManager.Instance.m_UIMgr.SwitchSingleWindow("loading", "scene2");
         });
 

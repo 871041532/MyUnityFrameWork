@@ -59,7 +59,7 @@ namespace AssetBundles
             }
 
             // s5.将prefab从单个prefab文件夹中找出，并查找依赖
-            string[] allPrefabGUIDs = AssetDatabase.FindAssets("t:Prefab", abConfig.m_AllPrefabPath.ToArray());
+            string[] allPrefabGUIDs = AssetDatabase.FindAssets("t:Prefab t:Scene", abConfig.m_AllPrefabPath.ToArray());
             for (int i = 0; i < allPrefabGUIDs.Length; i++)
             {
                 string path = AssetDatabase.GUIDToAssetPath(allPrefabGUIDs[i]);
@@ -79,7 +79,7 @@ namespace AssetBundles
                         }
                         else
                         {
-                            Debug.Log("已设置过，不再重复设置：" + dependItem);
+                            Debug.Log("已设置过，不再重复设置; 或是C#文件不需要设置：" + dependItem);
                         }
                     }
                     string[] temp = path.Split('/');
@@ -124,7 +124,7 @@ namespace AssetBundles
                 for (int i = 0; i < allBundleNames.Length; i++)
                 {
                     // AB签名设置到文件夹上，里面是空的话不打包，这里把之前的删除掉
-                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0)
+                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0 && allBundleNames[i] != "configs")
                     {
                         string p = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath, allBundleNames[i]);
                         string p2 = p.Replace("/", "\\");

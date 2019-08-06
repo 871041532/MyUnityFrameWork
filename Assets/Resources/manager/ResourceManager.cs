@@ -225,6 +225,9 @@ public class ResourcePrioritizedCache
     private ClassObjectPool<AsyncLoadProcess> m_ProcessPool;
     // preload action
     private Action<AssetItem> m_PreloadEndCall;
+    private Action m_PreloadOkCall;
+    private int m_PreloadTargetNum;
+    private int m_PreloadCurNum;
     // 同时加载上限，每帧补充一次
     public int m_MaxLoadingCount = 10;
     private int m_CurrentLoadingCount = 0;
@@ -239,7 +242,7 @@ public class ResourcePrioritizedCache
         }
         m_LoadingResDict = new Dictionary<string, AsyncLoadProcess>();
         m_ProcessPool = GameManager.Instance.m_ObjectMgr.CreateOrGetClassPool<AsyncLoadProcess>();
-        m_PreloadEndCall = _PreLoadOk;
+        m_PreloadEndCall = _PreloadOk;
         RegisterTick();
     }
 
@@ -275,14 +278,33 @@ public class ResourcePrioritizedCache
         }
     }
 
-    public void PreloadAsync(string assetPath, LoadPriority priority = LoadPriority.Hight)
+    public void PreLoadAsync(List<string> assetPaths, Action okCall)
     {
-        LoadAsync(assetPath, m_PreloadEndCall, priority);
+        Assert.IsFalse(assetPaths is null || assetPaths.Count == 0, "PreLoadAsync参数禁止传空数组或null！");
+        if (!(m_PreloadOkCall is null))
+        {
+            UnityEngine.Debug.LogError("ResourceCache不能在上次PreLoadAsync未完成时重复调用！");
+            return;
+        }
+        m_PreloadOkCall = okCall;
+        m_PreloadTargetNum = assetPaths.Count;
+        m_PreloadCurNum = 0;
+        for (int i = 0; i < assetPaths.Count; i++)
+        {
+            LoadAsync(assetPaths[i], m_PreloadEndCall);
+        }
     }
 
-    private void _PreLoadOk(AssetItem item)
+    private void _PreloadOk(AssetItem item)
     {
         Recycle(item);
+        if (++m_PreloadCurNum == m_PreloadTargetNum)
+        {
+            m_PreloadOkCall();
+            m_PreloadCurNum = 0;
+            m_PreloadTargetNum = 0;
+            m_PreloadOkCall = null;
+        }
     }
 
     public void LoadAsync(string assetPath, Action<AssetItem> call, LoadPriority priority = LoadPriority.Hight)
@@ -436,6 +458,9 @@ public class ResourceCache
     private Dictionary<int, int> m_CacheReference;
     private DoubleLinkedList<AsyncLoadingFunc> m_LoadingFuncs;
     private Action<AssetItem> m_PreloadEndCall;
+    private Action m_PreloadOkCall;
+    private int m_PreloadTargetNum;
+    private int m_PreloadCurNum;
 
     public ResourceCache()
     {
@@ -445,14 +470,33 @@ public class ResourceCache
         m_PreloadEndCall = _PreloadOk;
     }
 
-    public void PreLoadAsync(string assetPath)
+    public void PreLoadAsync(List<string> assetPaths, Action okCall)
     {
-        LoadAsync(assetPath, m_PreloadEndCall);
+        Assert.IsFalse(assetPaths is null || assetPaths.Count == 0, "PreLoadAsync参数禁止传空数组或null！");
+        if (!(m_PreloadOkCall is null))
+        {
+            UnityEngine.Debug.LogError("ResourceCache不能在上次PreLoadAsync未完成时重复调用！");
+            return;
+        }
+        m_PreloadOkCall = okCall;
+        m_PreloadTargetNum = assetPaths.Count;
+        m_PreloadCurNum = 0;
+        for (int i = 0; i < assetPaths.Count; i++)
+        {
+            LoadAsync(assetPaths[i], m_PreloadEndCall);
+        }
     }
 
     private void _PreloadOk(AssetItem item)
     {
         Recycle(item);
+        if (++m_PreloadCurNum == m_PreloadTargetNum)
+        {
+            m_PreloadOkCall();
+            m_PreloadCurNum = 0;
+            m_PreloadTargetNum = 0;
+            m_PreloadOkCall = null;
+        }
     }
 
     public void LoadAsync(string assetPath, Action<AssetItem> call)

@@ -35,7 +35,7 @@ public class LoadingSceneLogic
     private AsyncOperation m_async;
     private Action m_successCall;
     private Action<float> m_progressChangeCall;
-    private float m_minTime = 1f;
+    private float m_minTime = 0.5f;
     private float m_startTime = 0;
     private IManager m_owner;
 

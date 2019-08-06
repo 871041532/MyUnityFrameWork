@@ -19,7 +19,7 @@ public class LoadingPanel : Window
     protected override void OnShow(params object[] args)
     {
         string name = args[0] as string;
-        GameManager.Instance.m_CutSceneMgr.BeginLoadScene("scene2", () => {
+        GameManager.Instance.m_CutSceneMgr.BeginLoadScene("Assets/GameData/Scenes/scene2.unity", () => {
             Debug.Log("场景加载成功！");
             GameManager.Instance.m_UIMgr.SwitchSingleWindow("menu");
         }, (i) => {
