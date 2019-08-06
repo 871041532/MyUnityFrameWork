@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3A848AB7-9891-EDDA-D555-BF184C2F81F4}</ProjectGuid>
+    <ProjectGuid>{01B441AF-88CF-005F-B176-75F0E9BDF74E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Unity.TextMeshPro.Editor</AssemblyName>
+    <AssemblyName>Unity.AssetBundleBrowser.Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
@@ -622,59 +622,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.TextMeshPro.csproj">
-      <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
-      <Name>Unity.TextMeshPro</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\DropdownOptionListDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\GlyphInfoDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\GlyphMetricsPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\GlyphRectPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_BaseEditorPanel.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_BaseShaderGUI.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_BitmapShaderGUI.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_CharacterPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_ColorGradientAssetMenu.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_ColorGradientEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_DropdownEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_EditorCoroutine.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_EditorPanel.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_EditorUtility.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_FontAsset_CreationMenu.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_FontAssetEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_GlyphPairAdjustmentRecordPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_GlyphPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_InputFieldEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_MeshRendererEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_PackageUtilities.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_PostBuildProcessHandler.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_ProjectTextSettings.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_ResourcesLoader.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SDFShaderGUI.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SerializedPropertyHolder.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SettingsEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SpriteAssetEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SpriteAssetImporter.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SpriteAssetMenu.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SpriteCharacterPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SpriteGlyphPropertyDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_StyleAssetMenu.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_StyleSheetEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SubMesh_Editor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_SubMeshUI_Editor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_TextAlignmentDrawer.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_UiEditorPanel.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMP_UIStyleManager.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_ContextMenus.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_CreateObjectMenu.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_EditorShaderUtilities.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_FontAssetCreatorWindow.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_FontPlugin.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_SortingLayerHelper.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_TextContainerEditor.cs" />
-    <Compile Include="Packages\com.unity.textmeshpro\Scripts\Editor\TMPro_TexturePostProcessor.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleBrowserMain.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleBuildTab.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleDataSource\ABDataSource.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleDataSource\ABDataSourceProvider.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleDataSource\AssetDatabaseABDataSource.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleManageTab.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleModel\ABModel.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleModel\ABModelAssetInfo.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleModel\ABModelBundleInfo.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetBundleTree.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\AssetListTree.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\BundleDetailList.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\InspectTab\AssetBundleInspectTab.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\InspectTab\AssetBundleRecord.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\InspectTab\InspectSingleBundle.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\InspectTab\InspectTreeView.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\MessageList.cs" />
+    <Compile Include="Packages\com.unity.assetbundlebrowser\Editor\MessageSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\XLua\CHANGELOG.txt" />

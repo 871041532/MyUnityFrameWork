@@ -672,7 +672,6 @@
     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
-    <None Include="Assets\XLua\Gen\link.xml" />
     <None Include="Assets\XLua\Resources\perf\memory.lua.txt" />
     <None Include="Assets\XLua\Resources\perf\profiler.lua.txt" />
     <None Include="Assets\XLua\Resources\tdr\tdr.lua.txt" />
@@ -695,6 +694,8 @@
     <None Include="Packages\com.unity.analytics\DataPrivacy\Unity.Analytics.DataPrivacy.asmdef" />
     <None Include="Packages\com.unity.analytics\Tests\Editor\Unity.Analytics.StandardEvents\Unity.Analytics.StandardEvents.EditorTests.asmdef" />
     <None Include="Packages\com.unity.analytics\Tests\Runtime\DataPrivacy\Unity.Analytics.DataPrivacy.Tests.asmdef" />
+    <None Include="Packages\com.unity.assetbundlebrowser\Editor\Unity.AssetBundleBrowser.Editor.asmdef" />
+    <None Include="Packages\com.unity.assetbundlebrowser\Tests\Editor\Unity.AssetBundleBrowser.Editor.Tests.asmdef" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryCommon.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryDark.uss" />
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryLight.uss" />

@@ -8,14 +8,6 @@ using System.Runtime.Serialization.Json;
 using UnityEngine.Assertions;
 using XLua;
 
-public enum LoadModeEnum
-{  
-    EditorOrigin,  // Editor下直接加载原始资源
-    EditorAB,  // Editor下直接加载AB包
-    StandaloneAB,  // 设备或Editor下直接使用AB包
-    DeviceFullAotAB,  // 设备上预下载到PrensentData再加载
-}
-
 public class ABManager:IManager
  {
     public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;

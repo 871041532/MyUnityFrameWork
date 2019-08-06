@@ -208,7 +208,6 @@ namespace AssetBundles
                 ResData abBase = new ResData();
                 string assetFullPath = item.Key;
                 abBase.Path = assetFullPath;
-                abBase.MD5 = ABUtility.GetMD5FromFile(assetFullPath);
                 abBase.ABName = item.Value;
                 abBase.AssetName = assetFullPath.Remove(0, assetFullPath.LastIndexOf("/") + 1);
                 configs.ResDict.Add(abBase);
