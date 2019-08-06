@@ -3,11 +3,25 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using System.Reflection;
+using System;
 
 namespace AssetBundles
 {
+
     public class AssetBundlesMenuItems
     {
+        static MethodInfo clearMethod = null;
+        public static void ClearConsole()
+        {
+             if (clearMethod == null)
+             {
+                    Type log = typeof(EditorWindow).Assembly.GetType("UnityEditor.LogEntries");
+                    clearMethod = log.GetMethod("Clear");
+              }
+            clearMethod.Invoke(null, null);
+        }
+
         public static string ABCONFIGPATH = "Assets/Editor/AB/ABConfig.asset";
         // key：ABName  value:文件夹路径，所有文件夹包dict
         public static Dictionary<string, string> m_AllFileDir = new Dictionary<string, string>();
@@ -21,6 +35,7 @@ namespace AssetBundles
         [MenuItem("Assets/AssetBundles/Clear and Set Tag")]
         static public void ClearAndSetAllBundleTag()
         {
+            ClearConsole();
             // s1.先把所有资源的ab签名置空
             string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
             foreach (string path in allAssetPaths)
@@ -119,12 +134,14 @@ namespace AssetBundles
             if (directory.Exists)
             {
                 // 构造AB包名称Set
-                string[] allBundleNames = AssetDatabase.GetAllAssetBundleNames();
+                string[] temp = AssetDatabase.GetAllAssetBundleNames();
+                List<string> allBundleNames = new List<string>(temp);
+                allBundleNames.Add(ABManager.CfgManifestAndPlatformName);
                 HashSet<string> allBundleNamesSet = new HashSet<string>();
-                for (int i = 0; i < allBundleNames.Length; i++)
+                for (int i = 0; i < allBundleNames.Count; i++)
                 {
                     // AB签名设置到文件夹上，里面是空的话不打包，这里把之前的删除掉
-                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0)
+                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0 || allBundleNames[i] == ABManager.CfgManifestAndPlatformName)
                     {
                         string p = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath, allBundleNames[i]);
                         string p2 = p.Replace("/", "\\");
@@ -286,12 +303,14 @@ namespace AssetBundles
         [MenuItem("Assets/AssetBundles/Build AssetBundles")]
         static public void BuildAssetBundles()
         {
+            ClearConsole();
             BuildScript.BuildAssetBundles();
         }
 
         [MenuItem ("Assets/AssetBundles/Build Stabdlone Player")]
         static public void BuildPlayer ()
         {
+            ClearConsole();
             BuildScript.BuildStandalonePlayer();
         }
     }

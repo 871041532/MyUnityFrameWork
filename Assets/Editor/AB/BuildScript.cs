@@ -57,6 +57,7 @@ namespace AssetBundles
             {
                 BuildPipeline.BuildAssetBundles(outputPath, builds, options, EditorUserBuildSettings.activeBuildTarget);
             }
+            Debug.Log("Build AssetBundle Done!");
         }
 
         public static void BuildPlayer()
