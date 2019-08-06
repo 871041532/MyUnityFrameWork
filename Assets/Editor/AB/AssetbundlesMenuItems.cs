@@ -304,6 +304,7 @@ namespace AssetBundles
         static public void BuildAssetBundles()
         {
             ClearConsole();
+            ClearAndSetAllBundleTag();
             BuildScript.BuildAssetBundles();
         }
 
