@@ -7,10 +7,8 @@ using System.Diagnostics;
 
 public class ResourceManager : IManager
 {
-    // 加载GameObject的Lambda缓存
-    private DoubleLinkedList<LoadGameObjectFunc> m_LambdaCache = new DoubleLinkedList<LoadGameObjectFunc>();
     // GameObject池
-    private Dictionary<string, CoreGameObjectPool> m_GameObjectPools = new Dictionary<string, CoreGameObjectPool>();
+    private CoreCompositePool m_CompositePool = new CoreCompositePool();
     // 资源池
     private Dictionary<int, ResourceCache> m_ResourceCaches = new Dictionary<int, ResourceCache>();
     public event Action UpdataEvent;
@@ -102,37 +100,12 @@ public class ResourceManager : IManager
     /// <returns></returns>
     public GameObject SpawnGameObject(string path, Transform parent = null)
     {
-        CoreGameObjectPool resourcePool = null;
-        m_GameObjectPools.TryGetValue(path, out resourcePool);
-        if (resourcePool is null)
-        {
-            AssetItem item = GameMgr.m_ABMgr.LoadAsset(path);
-            resourcePool = new CoreGameObjectPool(item, parent);
-            m_GameObjectPools.Add(path, resourcePool);
-        }
-        return resourcePool.Spawn();
+        return m_CompositePool.Spawn(path, parent);
     }
 
-    /// <summary>
-    /// 从池中异步获取GameObject对象
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="callback"></param>
-    public void SpawnGameObjectAsync(string path, Action<GameObject> callback)
+    public void SpawnGameObjectAsync(string path, Action<GameObject> callback, Transform parent = null)
     {
-        CoreGameObjectPool resourcePool = null;
-        m_GameObjectPools.TryGetValue(path, out resourcePool);
-        if (resourcePool is null)
-        {
-            LoadGameObjectFunc lambda = m_LambdaCache.CreateOrPop();
-            lambda.Init(this, path, callback);
-            GameMgr.m_ABMgr.LoadAssetAsync(path, lambda.m_LoadCall);
-        }
-        else
-        {
-            GameObject t = resourcePool.Spawn();
-            callback?.Invoke(t);
-        }
+        m_CompositePool.SpawnAsync(path, callback, parent);
     }
 
     /// <summary>
@@ -142,19 +115,16 @@ public class ResourceManager : IManager
     /// <param name="obj"></param>
     public void RecycleGameObject(string path, GameObject obj)
     {
-        m_GameObjectPools[path].Recycle(obj);
+        m_CompositePool.Recycle(path, obj);
     }
 
     /// <summary>
     /// 销毁Path对应的对象池
     /// </summary>
     /// <param name="path"></param>
-    public void DestroyGameObjectPool(string path)
+    public void DestroyGameObjectPool(string path, bool onlyUnUsed = false)
     {
-        CoreGameObjectPool pool = m_GameObjectPools[path];
-        GameMgr.m_ABMgr.UnloadAsset(pool.AssetItem);
-        pool.Destroy();
-        m_GameObjectPools.Remove(path);
+        m_CompositePool.DestroyOne(path, onlyUnUsed);
     }
 
     /// <summary>
@@ -163,46 +133,7 @@ public class ResourceManager : IManager
     /// <param name="path"></param>
     public void ClearGameObjectPool(string path)
     {
-        m_GameObjectPools[path].Clear();
-    }
-
-    class LoadGameObjectFunc
-    {
-        string m_AssetPath;
-        Action<GameObject> m_Callback;
-        ResourceManager m_Owner;
-        public Action<AssetItem> m_LoadCall;
-        public LoadGameObjectFunc()
-        {
-            m_LoadCall = (AssetItem item) =>
-            {
-                GameObject t = null;
-                CoreGameObjectPool resourcePool = null;
-                m_Owner.m_GameObjectPools.TryGetValue(m_AssetPath, out resourcePool);
-                if (resourcePool is null)
-                {
-                    resourcePool = new CoreGameObjectPool(item);
-                    m_Owner.m_GameObjectPools.Add(m_AssetPath, resourcePool);
-                }
-                else
-                {
-                    GameManager.Instance.m_ABMgr.UnloadAsset(item);
-                }
-                t = resourcePool.Spawn();
-                m_Callback?.Invoke(t);
-                m_Callback = null;
-                m_AssetPath = null;
-                m_Owner.m_LambdaCache.AddLast(this);
-                m_Owner = null;
-            };
-        }
-
-        public void Init(ResourceManager owner, string assetPath, Action<GameObject> callback)
-        {
-            m_Owner = owner;
-            m_AssetPath = assetPath;
-            m_Callback = callback;
-        }
+        m_CompositePool.ClearOne(path);
     }
 }
 
@@ -731,7 +662,9 @@ public class ActiveGameObjectPool: CoreGameObjectPool
 /// 聚合Pool
 /// </summary>
 public class CoreCompositePool
-{
+{    
+    // 加载GameObject的Lambda缓存
+    private DoubleLinkedList<LoadGameObjectFunc> m_LambdaCache = new DoubleLinkedList<LoadGameObjectFunc>();
     private Dictionary<string, CoreGameObjectPool> m_Pools = new Dictionary<string, CoreGameObjectPool>();
     private List<string> m_TempList = new List<string>();
 
@@ -746,6 +679,23 @@ public class CoreCompositePool
             m_Pools.Add(path, resourcePool);
         }
         return resourcePool.Spawn();
+    }
+
+    public void SpawnAsync(string path, Action<GameObject> callback, Transform parent = null)
+    {
+        CoreGameObjectPool resourcePool = null;
+        m_Pools.TryGetValue(path, out resourcePool);
+        if (resourcePool is null)
+        {
+            LoadGameObjectFunc lambda = m_LambdaCache.CreateOrPop();
+            lambda.Init(this, path, callback);
+            GameManager.Instance.m_ABMgr.LoadAssetAsync(path, lambda.m_LoadCall);
+        }
+        else
+        {
+            GameObject t = resourcePool.Spawn();
+            callback?.Invoke(t);
+        }
     }
 
     public void Recycle(string path, GameObject obj)
@@ -784,6 +734,45 @@ public class CoreCompositePool
         foreach (var item in m_Pools)
         {
             item.Value.Clear();
+        }
+    }
+
+    class LoadGameObjectFunc
+    {
+        string m_AssetPath;
+        Action<GameObject> m_Callback;
+        CoreCompositePool m_Owner;
+        public Action<AssetItem> m_LoadCall;
+        public LoadGameObjectFunc()
+        {
+            m_LoadCall = (AssetItem item) =>
+            {
+                GameObject t = null;
+                CoreGameObjectPool resourcePool = null;
+                m_Owner.m_Pools.TryGetValue(m_AssetPath, out resourcePool);
+                if (resourcePool is null)
+                {
+                    resourcePool = new CoreGameObjectPool(item);
+                    m_Owner.m_Pools.Add(m_AssetPath, resourcePool);
+                }
+                else
+                {
+                    GameManager.Instance.m_ABMgr.UnloadAsset(item);
+                }
+                t = resourcePool.Spawn();
+                m_Callback?.Invoke(t);
+                m_Callback = null;
+                m_AssetPath = null;
+                m_Owner.m_LambdaCache.AddLast(this);
+                m_Owner = null;
+            };
+        }
+
+        public void Init(CoreCompositePool owner, string assetPath, Action<GameObject> callback)
+        {
+            m_Owner = owner;
+            m_AssetPath = assetPath;
+            m_Callback = callback;
         }
     }
 }
