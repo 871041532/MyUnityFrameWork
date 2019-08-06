@@ -124,7 +124,7 @@ namespace AssetBundles
                 for (int i = 0; i < allBundleNames.Length; i++)
                 {
                     // AB签名设置到文件夹上，里面是空的话不打包，这里把之前的删除掉
-                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0 && allBundleNames[i] != "configs")
+                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0)
                     {
                         string p = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath, allBundleNames[i]);
                         string p2 = p.Replace("/", "\\");
@@ -213,6 +213,7 @@ namespace AssetBundles
             DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(AssetBundleConfig));
             jsonSerializer.WriteObject(fileStream, configs);
             fileStream.Close();
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
