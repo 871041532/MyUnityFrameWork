@@ -10,16 +10,7 @@ using XLua;
 
 public class ABManager:IManager
  {
-    public static LoadModeEnum CfgLoadMode = LoadModeEnum.EditorAB;
-    public static string CfgServerURL = "127.0.0.1";
-    public static string CfgServerPort = "7888";
-    public static string CfgManifestAndPlatformName = "Windows";
-    public static string CfgServerLoadPath = "127.0.0.1:7888/Windows/";
-    public static string CfgAssetBundleRelativePath = "AssetBundles/Windows/";
-    public static string CfgAssetBundleLoadAbsolutePath = "";
-    public static string CfgstreamingAssets = "";
     static LogMode CfgLogMode = LogMode.All;
-    // 已经加载的
     // 已经加载的ABItems
     private Dictionary<string, ABItem> m_loadedABs = new Dictionary<string, ABItem>();
     // 加载中的ABItems
@@ -29,6 +20,15 @@ public class ABManager:IManager
     // 存放AB依赖项
     private Dictionary<string, string[]> m_ABToDependence = new Dictionary<string, string[]>();
 
+    public ABManager()
+    {
+#if UNITY_EDITOR
+        ABUtility.ResetInfoInEditor(UnityEditor.EditorUserBuildSettings.activeBuildTarget);
+#else
+        ABUtility.ResetInfoInDevice(Application.platform);
+#endif
+    }
+
     public override void Awake() {
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
         GameMgr.m_ObjectMgr.CreateOrGetClassPool<ABItem>();
@@ -36,13 +36,9 @@ public class ABManager:IManager
         InitCfg();
     }
 
-    public override void Start()
-    {
-    }
-
     private void InitCfg()
     {
-        if (CfgLoadMode != LoadModeEnum.EditorOrigin)
+        if (ABUtility.LoadMode != LoadModeEnum.EditorOrigin)
         {
             // asset to ab name 读取
             ABItem abItem = LoadAssetBundle("configs");
@@ -62,11 +58,6 @@ public class ABManager:IManager
                 m_ABToDependence.Add(item.Name, item.DependenceNames);
             }
         }
-    }
-
-    static ABManager()
-    {
-        setAssetBundlePath();
     }
 
     /// <summary>
@@ -102,7 +93,7 @@ public class ABManager:IManager
     public void UnloadAsset(AssetItem item)
     {
         Assert.IsFalse(item is null || item.Object is null, "不可对AssetItem重复unload！");
-        if (CfgLoadMode != LoadModeEnum.EditorOrigin)
+        if (ABUtility.LoadMode != LoadModeEnum.EditorOrigin)
         {
             UnloadAssetBundle(item.ABName);
         }
@@ -117,7 +108,7 @@ public class ABManager:IManager
     /// <returns></returns>
     public AssetItem LoadAsset(string fullPath)
     {
-        switch (CfgLoadMode)
+        switch (ABUtility.LoadMode)
         {
 # if UNITY_EDITOR
             case LoadModeEnum.EditorOrigin:
@@ -146,7 +137,7 @@ public class ABManager:IManager
     /// <param name="failCall"></param>
     public void LoadAssetAsync(string fullPath, Action<AssetItem> successCall, Action failCall = null)
     {
-        switch (CfgLoadMode)
+        switch (ABUtility.LoadMode)
         {
 # if UNITY_EDITOR
             case LoadModeEnum.EditorOrigin:
@@ -244,7 +235,7 @@ public class ABManager:IManager
         }
         else
         {
-            string abPath = CfgAssetBundleLoadAbsolutePath + abName;
+            string abPath = ABUtility.ABAbsolutePath + abName;
             Log(LogType.Info, "Path：" + abPath);
             AssetBundle ab = AssetBundle.LoadFromFile(abPath);
             abItem = GameMgr.m_ObjectMgr.Spawn<ABItem>();
@@ -279,7 +270,7 @@ public class ABManager:IManager
         }
         else
         {
-            string abPath = CfgAssetBundleLoadAbsolutePath + abName;
+            string abPath = ABUtility.ABAbsolutePath + abName;
             // 加载中
             if (m_loadingABNames.Contains(abName))
             {
@@ -306,61 +297,18 @@ public class ABManager:IManager
         }
     }
 
-    // 设置AB包名
-    private static void setAssetBundlePath()
-    {
-        string platformPath = "Default";
-        CfgstreamingAssets = Application.streamingAssetsPath;
-#if UNITY_EDITOR
-        var target = UnityEditor.EditorUserBuildSettings.activeBuildTarget;
-        if (target == UnityEditor.BuildTarget.Android)
-            platformPath = "Android";
-        else if (target == UnityEditor.BuildTarget.iOS)
-            platformPath = "iOS";
-        else if (target == UnityEditor.BuildTarget.StandaloneWindows || target == UnityEditor.BuildTarget.StandaloneWindows64)
-            platformPath = "Windows";
-#else
-        var target2 = Application.platform;
-        if (target2 == RuntimePlatform.Android)
-        {
-            platformPath = "Android";
-            CfgstreamingAssets = Application.dataPath + "!assets";
-        }  
-        else if (target2== RuntimePlatform.IPhonePlayer)
-        {
-            platformPath = "iOS";
-        }
-        else if (target2 == RuntimePlatform.WindowsPlayer)
-        {
-            platformPath = "Windows";
-        }
-        CfgLoadMode = LoadModeEnum.StandaloneAB;
-#endif
-        CfgManifestAndPlatformName = platformPath;
-        CfgAssetBundleRelativePath = "AssetBundles/" + platformPath + "/";
-        CfgServerLoadPath = string.Format("{0}:{1}/{2}/", CfgServerURL, CfgServerPort, platformPath);
-        if (CfgLoadMode == LoadModeEnum.EditorAB)
-        {
-            CfgAssetBundleLoadAbsolutePath = Path.Combine(Environment.CurrentDirectory, CfgAssetBundleRelativePath);
-        }
-        else
-        {
-            CfgAssetBundleLoadAbsolutePath = Path.Combine(CfgstreamingAssets, CfgAssetBundleRelativePath);
-        }    
-    }
-
     // 自定义Altas加载
     private void OnAtlasRequested(string tag, Action<SpriteAtlas> action)
     {
         Debug.Log("加载Altas：" + tag);
         string path = string.Format("Assets/GameData/UI/res/{0}/{0}.spriteatlas", tag);
 #if UNITY_EDITOR
-        if (CfgLoadMode == LoadModeEnum.EditorOrigin)
+        if (ABUtility.LoadMode == LoadModeEnum.EditorOrigin)
         {
             SpriteAtlas sa = UnityEditor.AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
             action(sa);
         }
-        else if (CfgLoadMode == LoadModeEnum.EditorAB)
+        else if (ABUtility.LoadMode == LoadModeEnum.EditorAB)
         {
             LoadAssetAsync(path, (item) => {
                 SpriteAtlas sa = item.SpriteAtlas;
@@ -369,7 +317,7 @@ public class ABManager:IManager
         }
         else
 #endif
-        if (CfgLoadMode == LoadModeEnum.StandaloneAB)
+        if (ABUtility.LoadMode == LoadModeEnum.StandaloneAB)
         {
             LoadAssetAsync(path, (item) => {
                 SpriteAtlas sa = item.SpriteAtlas;

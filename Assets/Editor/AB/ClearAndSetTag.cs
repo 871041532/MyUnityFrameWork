@@ -6,10 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.Reflection;
 using System;
 
-namespace AssetBundles
-{
-
-    public class AssetBundlesMenuItems
+    public static class ClearAndSetTag
     {
         static MethodInfo clearMethod = null;
         public static void ClearConsole()
@@ -22,7 +19,7 @@ namespace AssetBundles
             clearMethod.Invoke(null, null);
         }
 
-        public static string ABCONFIGPATH = "Assets/Editor/AB/ABConfig.asset";
+        public static string ABCONFIGPATH = "Assets/Editor/AB/ABBuildConfig.asset";
         // key：ABName  value:文件夹路径，所有文件夹包dict
         public static Dictionary<string, string> m_AllFileDir = new Dictionary<string, string>();
         // 过滤list
@@ -32,7 +29,13 @@ namespace AssetBundles
         // 有效路径
         public static List<string> m_DynamicLoadPaths = new List<string>();
 
-        [MenuItem("Assets/AssetBundles/Clear and Set Tag")]
+        [MenuItem("Assets/Build/Clear And Set Tag", priority = 1)]
+        static public void ClearAndSetTagMenuItemFunc()
+        {
+            ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+            ClearAndSetAllBundleTag();
+        }
+
         static public void ClearAndSetAllBundleTag()
         {
             ClearConsole();
@@ -55,10 +58,10 @@ namespace AssetBundles
             m_DynamicLoadPaths.Clear();
 
             // s3.加载配置
-            ABConfig abConfig = AssetDatabase.LoadAssetAtPath<ABConfig>(ABCONFIGPATH);
+            BuildConfig abConfig = AssetDatabase.LoadAssetAtPath<BuildConfig>(ABCONFIGPATH);
            
             // s4.将文件夹AB包读取出来
-            foreach (ABConfig.FileDirABName item in abConfig.m_AllFileDirAB)
+            foreach (BuildConfig.FileDirABName item in abConfig.m_AllFileDirAB)
             {
                 if (m_AllFileDir.ContainsKey(item.ABName))
                 {
@@ -74,6 +77,8 @@ namespace AssetBundles
             }
 
             // s5.将prefab从单个prefab文件夹中找出，并查找依赖
+            if (abConfig.m_AllPrefabPath.Count > 0)
+            {
             string[] allPrefabGUIDs = AssetDatabase.FindAssets("t:Prefab t:Scene", abConfig.m_AllPrefabPath.ToArray());
             for (int i = 0; i < allPrefabGUIDs.Length; i++)
             {
@@ -115,6 +120,7 @@ namespace AssetBundles
                 }
             }
             EditorUtility.ClearProgressBar();
+            }
             // s6.设置AB签名
             SetALLABName();
             // s7.删除无用的AB包
@@ -130,20 +136,20 @@ namespace AssetBundles
         /// </summary>
         static void DeleteUselessAssetBundle()
         {
-            DirectoryInfo directory = new DirectoryInfo(ABManager.CfgAssetBundleRelativePath);
+            DirectoryInfo directory = new DirectoryInfo(ABUtility.ABRelativePath);
             if (directory.Exists)
             {
                 // 构造AB包名称Set
                 string[] temp = AssetDatabase.GetAllAssetBundleNames();
                 List<string> allBundleNames = new List<string>(temp);
-                allBundleNames.Add(ABManager.CfgManifestAndPlatformName);
+                allBundleNames.Add(ABUtility.PlatformName);
                 HashSet<string> allBundleNamesSet = new HashSet<string>();
                 for (int i = 0; i < allBundleNames.Count; i++)
                 {
                     // AB签名设置到文件夹上，里面是空的话不打包，这里把之前的删除掉
-                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0 || allBundleNames[i] == ABManager.CfgManifestAndPlatformName)
+                    if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0 || allBundleNames[i] == ABUtility.PlatformName)
                     {
-                        string p = Path.Combine(System.Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath, allBundleNames[i]);
+                        string p = Path.Combine(System.Environment.CurrentDirectory, ABUtility.ABRelativePath, allBundleNames[i]);
                         string p2 = p.Replace("/", "\\");
                         allBundleNamesSet.Add(p2);
                         allBundleNamesSet.Add(p2 + ".manifest");
@@ -298,20 +304,4 @@ namespace AssetBundles
             }
             return false;
         }
-
-        [MenuItem("Assets/AssetBundles/Build AssetBundles")]
-        static public void BuildAssetBundles()
-        {
-            ClearConsole();
-            ClearAndSetAllBundleTag();
-            BuildScript.BuildAssetBundles();
-        }
-
-        [MenuItem ("Assets/AssetBundles/Build Stabdlone Player")]
-        static public void BuildPlayer ()
-        {
-            ClearConsole();
-            BuildScript.BuildStandalonePlayer();
-        }
     }
-}

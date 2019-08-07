@@ -41,6 +41,10 @@ public class UIManager : IManager
         {
             return new LoadingPanel();
         });
+        RegisterWindow("sportTool", () =>
+        {
+            return new SportToolPanel();
+        });
         var win = GetOrCreateWindow("menu");
         win.Show();
     }

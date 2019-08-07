@@ -8,17 +8,18 @@ namespace AssetBundles
 {
     internal class LaunchAssetBundleServer : ScriptableSingleton<LaunchAssetBundleServer>
     {
-        const string kLocalAssetbundleServerMenu = "Assets/AssetBundles/Local AssetBundle Server";
+        const string kLocalAssetbundleServerMenu = "Assets/Build/Launch AB File Server";
 
         [SerializeField]
         int     m_ServerPID = 0;
 
-        [MenuItem(kLocalAssetbundleServerMenu)]
+        [MenuItem(kLocalAssetbundleServerMenu, priority = 7)]
         public static void ToggleLocalAssetBundleServer()
         {
             bool isRunning = IsRunning();
             if (!isRunning)
             {
+                ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
                 Run();
             }
             else
@@ -86,12 +87,8 @@ namespace AssetBundles
 
         static void Run()
         {
-            string assetBundlesDirectory = Path.Combine(Environment.CurrentDirectory, ABManager.CfgAssetBundleRelativePath);
-
             KillRunningAssetBundleServer();
-
-            BuildScript.CreateAssetBundleDirectory();
-            int id = LaunchAssetBundleServer.RunCmd(assetBundlesDirectory, ABManager.CfgServerPort);
+            int id = LaunchAssetBundleServer.RunCmd(ABUtility.ABAbsolutePath, ABUtility.ServerPort);
             instance.m_ServerPID = id;
         }
     }

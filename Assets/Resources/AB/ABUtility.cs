@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.IO;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -14,16 +16,24 @@ public enum LoadModeEnum
 public static class ABUtility
 {
     // AB包加载模式
-    public static LoadModeEnum RunTimeLoadMode = LoadModeEnum.EditorOrigin;
+    public static LoadModeEnum LoadMode = LoadModeEnum.EditorAB;
     // 当前平台名字
     public static string PlatformName = "Windows";
     // 当前StreamingAssetsPath
     public static string StreamingAssetsPath = Application.streamingAssetsPath;
-    
+    public static string ServerURL = "127.0.0.1";
+    public static string ServerPort = "7888";
+    public static string ServerLoadPath = "";
+    // AB包相对编辑器根目录路径
+    public static string ABRelativePath = "AssetBundles/Windows/";
+    // AB包绝对路径
+    public static string ABAbsolutePath = "";
 
-    public static void ResetInfo(RuntimePlatform platform)
+    // 设备上初始化各种信息
+    public static void ResetInfoInDevice(RuntimePlatform platform)
     {
         PlatformName = RunTimePlatformToString(platform);
+        LoadMode = LoadModeEnum.StandaloneAB;
         if (platform == RuntimePlatform.Android)
         {
             StreamingAssetsPath = Application.dataPath + "!assets";
@@ -32,14 +42,20 @@ public static class ABUtility
         {
             StreamingAssetsPath = Application.streamingAssetsPath;
         }
+        ServerLoadPath = string.Format("{0}:{1}/{2}/", ServerURL, ServerPort,PlatformName);
+        ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
+        ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
     }
 
-    // 编辑器下获取target对应的string名字 
 #if UNITY_EDITOR
+    // 编辑器下初始化各种信息
     public static void ResetInfoInEditor(BuildTarget target)
     {
         PlatformName = BuildTargetToString(target);
         StreamingAssetsPath = Application.streamingAssetsPath;
+        ServerLoadPath = string.Format("{0}:{1}/{2}/", ServerURL, ServerPort, PlatformName);
+        ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
+        ABAbsolutePath = Path.Combine(Environment.CurrentDirectory, ABUtility.ABRelativePath);
     }
 
     public static string BuildTargetToString(BuildTarget target)

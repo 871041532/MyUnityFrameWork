@@ -50,7 +50,7 @@ public class LuaManager : IManager
     // 自定义lua加载
     byte[] MyLuaLoader(ref string filepath)
     {
-        string path = Path.Combine(ABManager.CfgstreamingAssets, "Scripts", filepath);
+        string path = Path.Combine(ABUtility.StreamingAssetsPath, "Scripts", filepath);
         byte[] data = File.ReadAllBytes(path);
         return data;
     }

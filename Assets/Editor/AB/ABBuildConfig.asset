@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cab31cc5fd9fea74997c7eb7d114aa96, type: 3}
-  m_Name: ABConfig
+  m_Name: ABBuildConfig
   m_EditorClassIdentifier: 
   m_AllPrefabPath:
   - Assets/GameData/Prefabs
+  - Assets/GameData/UI/prefabs
   m_AllFileDirAB:
-  - ABName: ui_common
-    Path: Assets/GameData/UI/res/common
   - ABName: configs
     Path: Assets/GameData/Configs
   - ABName: audio
     Path: Assets/GameData/Audio
-  - ABName: ui_prefabs
-    Path: Assets/GameData/UI/prefabs
+  - ABName: ui_common
+    Path: Assets/GameData/UI/res/common
