@@ -311,8 +311,8 @@ public class ABManager:IManager
         else if (ABUtility.LoadMode == LoadModeEnum.EditorAB)
         {
             LoadAssetAsync(path, (item) => {
-                SpriteAtlas sa = item.SpriteAtlas;
-                action(sa);
+                action(item.SpriteAtlas);
+                UnloadAsset(item);
             });
         }
         else
@@ -320,8 +320,8 @@ public class ABManager:IManager
         if (ABUtility.LoadMode == LoadModeEnum.StandaloneAB)
         {
             LoadAssetAsync(path, (item) => {
-                SpriteAtlas sa = item.SpriteAtlas;
-                action(sa);
+                action(item.SpriteAtlas);
+                UnloadAsset(item);    
             });
         }
     }

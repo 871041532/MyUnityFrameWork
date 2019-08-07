@@ -26,7 +26,7 @@ public class MenuPanel : Window
         });
 
         m_BtnExit.onClick.AddListener(() => {
-
+            Destroy();
         });
     }
 
