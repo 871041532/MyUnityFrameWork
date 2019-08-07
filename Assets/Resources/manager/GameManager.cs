@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     }
     private void Awake()
     {
+        Debugger.Init();
         Instance = this;
         DontDestroyOnLoad(gameObject);
         m_Mgrs = new List<IManager>();
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
         {
             iter.Current.OnDestroy();
         }
+        Debugger.OnDestroy();
     }
 
     public void OnGUI()

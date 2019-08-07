@@ -329,6 +329,7 @@ public class ABManager:IManager
     // 日志
     public static void Log(LogType logType, string text)
     {
+        Debugger.SendUDP("[ABMgr] " + text);
         if (logType == LogType.Error)
             Debug.LogError("[ABMgr] " + text);
         else if (CfgLogMode == LogMode.All && logType == LogType.Warning)
