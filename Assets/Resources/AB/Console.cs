@@ -91,7 +91,7 @@ public static class Console
         {
             IPAddress remoteIP = IPAddress.Parse(m_UDPServerURL); //假设发送给这个IP
             m_EndPoint = new IPEndPoint(remoteIP, Convert.ToInt32(m_UDPServerPort));//实例化一个远程端点 
-            m_UDPClient = new UdpClient();
+            m_UDPClient = new UdpClient(10001);
             AsyncReceive();
         }
         byte[] sendData = Encoding.UTF8.GetBytes(sendString);
@@ -100,21 +100,24 @@ public static class Console
 
     static async void AsyncReceive()
     {
-        string strs = null;
+        string strs = "";
         try
         {
             UdpReceiveResult result = await m_UDPClient.ReceiveAsync();
             strs = Encoding.UTF8.GetString(result.Buffer);
-            AsyncReceive();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return;
+            if (!(e is SocketException))
+            {
+                return;
+            }
         }
+        AsyncReceive();
         if (!(string.IsNullOrEmpty(strs)))
         {
             PraseReceive(strs);
-        }
+        }  
     }
 
     static void PraseReceive(string strs)
