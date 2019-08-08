@@ -26,9 +26,12 @@ def prase_str(strs):
 	if strs in gm_set:
 		if strs in (LogType.Error, LogType.Assert, LogType.Exception):
 			color_log.set_red()
+			color_log.print("\nTrace or Error:")
 		elif strs == LogType.Warning:
 			color_log.set_yellow()
+			color_log.print("\nWarning:")
 		elif strs == LogType.Log:
+			color_log.print("")
 			color_log.set_white()
 	else:
 		color_log.print(strs)

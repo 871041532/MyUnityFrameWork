@@ -39,6 +39,10 @@ public static class Debugger
                 SendUDP("#" + (int)type);
             }
             SendUDP(condition);
+            if (type != UnityEngine.LogType.Log)
+            {
+                SendUDP(stackTrace);
+            }         
         };
         Application.logMessageReceived += m_LogCallback;
     }
