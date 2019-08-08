@@ -1,5 +1,6 @@
 import sys
 import socket
+import _thread
 from Color import Color
 
 # 获取端口号
@@ -9,6 +10,7 @@ try:
 except Exception as e:
 	print("请输入端口号！")
 
+
 # GM相关指令
 class LogType:
     Error = "#0"
@@ -17,29 +19,54 @@ class LogType:
     Log = "#3"
     Exception = "#4"
 
-gm_list = [LogType.Error, LogType.Assert, LogType.Warning, LogType.Log, LogType.Exception]
-gm_set = set(gm_list)
+
+# GM处理函数
 color_log = Color()
+
+def switch_error():
+	color_log.set_red()
+	color_log.print("\nTrace or Error:")
+
+def switch_warning():
+	color_log.set_yellow()
+	color_log.print("\nWarning:")
+
+def switch_normal():
+	color_log.print("")
+	color_log.set_white()
+
+
+gm_dict = {
+	LogType.Error: switch_error,
+	LogType.Assert: switch_error,
+	LogType.Warning: switch_warning,
+	LogType.Log: switch_normal,
+	LogType.Exception: switch_error,
+}
 
 # 解析发来的字符串
 def prase_str(strs):
-	if strs in gm_set:
-		if strs in (LogType.Error, LogType.Assert, LogType.Exception):
-			color_log.set_red()
-			color_log.print("\nTrace or Error:")
-		elif strs == LogType.Warning:
-			color_log.set_yellow()
-			color_log.print("\nWarning:")
-		elif strs == LogType.Log:
-			color_log.print("")
-			color_log.set_white()
+	if strs in gm_dict:
+		gm_dict[strs]()
 	else:
 		color_log.print(strs)
 
-# 启动UDP客户端
+# 启动UDP服务端
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.bind(('127.0.0.1', port))
 color_log.print_green("UPD Server Open, Port: " + args[0])
+is_init = False
+addr = 0
+
+def receive_input():
+	while True:
+		strs = input()
+		s.sendto(strs.encode("utf-8"), addr)
+
 while True:
- data, addr = s.recvfrom(1024)
- prase_str(data.decode(encoding="utf-8"))
+ 	data, client_addr = s.recvfrom(1024)
+ 	addr = client_addr
+ 	prase_str(data.decode(encoding="utf-8"))
+ 	if not is_init:
+ 		is_init = True
+ 		_thread.start_new_thread(receive_input, ())
