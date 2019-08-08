@@ -1,11 +1,42 @@
+import sys
 import socket
+from Color import Color
 
+# 获取端口号
+try:
+	args = sys.argv[1:]
+	port = int(args[0])
+except Exception as e:
+	print("请输入端口号！")
+
+# GM相关指令
+class LogType:
+    Error = "#0"
+    Assert = "#1"
+    Warning = "#2"
+    Log = "#3"
+    Exception = "#4"
+
+gm_list = [LogType.Error, LogType.Assert, LogType.Warning, LogType.Log, LogType.Exception]
+gm_set = set(gm_list)
+color_log = Color()
+
+# 解析发来的字符串
+def prase_str(strs):
+	if strs in gm_set:
+		if strs in (LogType.Error, LogType.Assert, LogType.Exception):
+			color_log.set_red()
+		elif strs == LogType.Warning:
+			color_log.set_yellow()
+		elif strs == LogType.Log:
+			color_log.set_white()
+	else:
+		color_log.print(strs)
+
+# 启动UDP客户端
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# 指定 IP:port
-s.bind(('192.168.1.5', 9000))
-print('\033[0;32;40m欢迎使用学生选课系统\033[0m')
-print('\033[1;31m')
-print("UPD Server Open, Port: 9000")
+s.bind(('127.0.0.1', port))
+color_log.print_green("UPD Server Open, Port: " + args[0])
 while True:
  data, addr = s.recvfrom(1024)
- print(data.decode(encoding="utf-8"))
+ prase_str(data.decode(encoding="utf-8"))
