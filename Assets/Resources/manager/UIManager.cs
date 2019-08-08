@@ -47,7 +47,6 @@ public class UIManager : IManager
         });
         var win = GetOrCreateWindow("menu");
         win.Show();
-        GetOrCreateWindow("dasdasd");
     }
 
     public override void Update()
