@@ -53,7 +53,7 @@ def prase_str(strs):
 
 # 启动UDP服务端
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.bind(('127.0.0.1', port))
+s.bind(('', port))
 color_log.print_green("UPD Server Open, Port: " + args[0])
 is_init = False
 addr = 0
