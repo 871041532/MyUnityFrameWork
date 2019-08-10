@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,13 +14,8 @@ public class GameManager : MonoBehaviour
     public UIManager m_UIMgr;
     public CallManager m_CallMgr;
     private List<IManager> m_Mgrs;
-    public Text m_log_object;
 
-    public void Log(string line)
-    {
-        string text = m_log_object.text;
-        m_log_object.text = text + "\n" + line;
-    }
+
     private void Awake()
     {
         Console.Init();

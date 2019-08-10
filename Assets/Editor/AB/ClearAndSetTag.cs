@@ -280,6 +280,7 @@ using System;
         {
             for (int i = 0; i < m_FilterABPaths.Count; i++)
             {
+                // path已经在路径中了，或者路径是个path的父目录
                 if (path == m_FilterABPaths[i] || (path.Contains(m_FilterABPaths[i]) && path.Replace(m_FilterABPaths[i], "")[0] == '/'))
                 {
                     return true;

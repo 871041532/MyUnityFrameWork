@@ -16,7 +16,7 @@ public class SportToolPanel : Window
     public bool m_IsOpenState = true;
     public float m_LastTime = -1;
     UnityAction m_Restart;
-    IEnumerator iter;
+    IEnumerator m_Iter;
 
     protected override void OnInit()
     {
@@ -28,20 +28,20 @@ public class SportToolPanel : Window
         m_ClipAsset = GameManager.Instance.m_ABMgr.LoadAsset("Assets/GameData/Audio/zhong.wav");
         m_Restart = () =>
         {
-            if (!(iter is null))
+            if (!(m_Iter is null))
             {
-                GameManager.Instance.StopCoroutine(iter);
+                GameManager.Instance.StopCoroutine(m_Iter);
             }
-            iter = StartRun();
-            GameManager.Instance.StartCoroutine(iter);
+            m_Iter = StartRun();
+            GameManager.Instance.StartCoroutine(m_Iter);
         };
         m_BtnStart.onClick.AddListener(m_Restart);
 
         m_BtnStop.onClick.AddListener(() => {
-            if (!(iter is null))
+            if (!(m_Iter is null))
             {
-                GameManager.Instance.StopCoroutine(iter);
-                iter = null;
+                GameManager.Instance.StopCoroutine(m_Iter);
+                m_Iter = null;
                 ResetTime();
             }
         });
@@ -87,6 +87,7 @@ public class SportToolPanel : Window
 
     protected override void OnDestroy()
     {
+        GameManager.Instance.StopCoroutine(m_Iter);
         GameManager.Instance.m_ABMgr.UnloadAsset(m_ClipAsset);
     }
 }

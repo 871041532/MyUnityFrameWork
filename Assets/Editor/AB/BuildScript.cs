@@ -10,13 +10,15 @@ public class MyBuildApp : ScriptableObject
     {
         ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
         ClearAndSetTag.ClearAndSetAllBundleTag();
-        BuildAssetBundles();
+        BuildAssetBundles(EditorUserBuildSettings.activeBuildTarget);
     }
 
     [MenuItem("Assets/Build/Build ActivePlayer", priority = 3)]
     public static void BuildCurrentPlantform()
     {
         ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+        ClearAndSetTag.ClearAndSetAllBundleTag();
+        BuildAssetBundles(EditorUserBuildSettings.activeBuildTarget);
         BuildPlayer(EditorUserBuildSettings.activeBuildTarget);
     }
 
@@ -24,6 +26,8 @@ public class MyBuildApp : ScriptableObject
     public static void BuildAndroid()
     {
         ABUtility.ResetInfoInEditor(BuildTarget.Android);
+        ClearAndSetTag.ClearAndSetAllBundleTag();
+        BuildAssetBundles(BuildTarget.Android);
         BuildPlayer(BuildTarget.Android);
     }
 
@@ -31,6 +35,8 @@ public class MyBuildApp : ScriptableObject
     public static void BuildWindows()
     {
         ABUtility.ResetInfoInEditor(BuildTarget.StandaloneWindows64);
+        ClearAndSetTag.ClearAndSetAllBundleTag();
+        BuildAssetBundles(BuildTarget.StandaloneWindows64);
         BuildPlayer(BuildTarget.StandaloneWindows64);
     }
 
@@ -38,11 +44,13 @@ public class MyBuildApp : ScriptableObject
     public static void BuildIOS()
     {
         ABUtility.ResetInfoInEditor(BuildTarget.iOS);
+        ClearAndSetTag.ClearAndSetAllBundleTag();
+        BuildAssetBundles(BuildTarget.iOS);
         BuildPlayer(BuildTarget.iOS);
     }
 
     #region 构建AB包
-    public static void BuildAssetBundles(AssetBundleBuild[] builds = null)
+    public static void BuildAssetBundles(BuildTarget target, AssetBundleBuild[] builds = null)
     {
         string outputPath = ABUtility.ABRelativePath;
         if (!Directory.Exists(outputPath))
@@ -65,11 +73,11 @@ public class MyBuildApp : ScriptableObject
         }
         if (builds is null || builds.Length == 0)
         {
-            BuildPipeline.BuildAssetBundles(outputPath, options, EditorUserBuildSettings.activeBuildTarget);
+            BuildPipeline.BuildAssetBundles(outputPath, options, target);
         }
         else
         {
-            BuildPipeline.BuildAssetBundles(outputPath, builds, options, EditorUserBuildSettings.activeBuildTarget);
+            BuildPipeline.BuildAssetBundles(outputPath, builds, options, target);
         }
         Debug.Log("Build AssetBundle Done!");
     }

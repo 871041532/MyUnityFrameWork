@@ -10,9 +10,11 @@ public class MenuPanel : Window
     public Button m_BtnLoad;
     public Button m_BtnStart;
     public Button m_BtnExit;
+    public AssetItem m_ClipAsset;
 
     protected override void OnInit()
     {
+        m_ClipAsset = GameManager.Instance.m_ABMgr.LoadAsset("Assets/GameData/Audio/zhong.wav");
         m_BtnLoad = m_TransForm.Find("BtnLoad").GetComponent<Button>();
         m_BtnStart = m_TransForm.Find("BtnStart").GetComponent<Button>();
         m_BtnExit = m_TransForm.Find("BtnExit").GetComponent<Button>();
@@ -32,6 +34,6 @@ public class MenuPanel : Window
 
     protected override void OnDestroy()
     {
-        
+        GameManager.Instance.m_ABMgr.UnloadAsset(m_ClipAsset);
     }
 }

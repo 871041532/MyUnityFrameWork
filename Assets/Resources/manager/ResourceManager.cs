@@ -507,7 +507,7 @@ public class ResourceCache
                 m_CacheReference.Remove(hashCode);
             }
         }
-        Resources.UnloadUnusedAssets();
+        //Resources.UnloadUnusedAssets();
     }
 
     public void Destroy()
@@ -518,7 +518,7 @@ public class ResourceCache
         }
         m_CacheItems.Clear();
         m_CacheReference.Clear();
-        Resources.UnloadUnusedAssets();
+        //Resources.UnloadUnusedAssets();
     }
 
     class AsyncLoadingFunc
@@ -885,7 +885,7 @@ public class CoreGameObjectPool
         OnDestroy();
         m_AssetItem = null;
         m_OriginalObject = null;
-        Resources.UnloadUnusedAssets();
+        //Resources.UnloadUnusedAssets();
     }
 
     protected virtual void OnDestroy() { }

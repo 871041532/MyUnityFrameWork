@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab31cc5fd9fea74997c7eb7d114aa96, type: 3}
   m_Name: ABBuildConfig
   m_EditorClassIdentifier: 
-  m_AllPrefabPath:
-  - Assets/GameData/Prefabs
-  - Assets/GameData/UI/prefabs
   m_AllFileDirAB:
   - ABName: configs
     Path: Assets/GameData/Configs
@@ -22,3 +19,6 @@ MonoBehaviour:
     Path: Assets/GameData/Audio
   - ABName: ui_common
     Path: Assets/GameData/UI/res/common
+  m_AllPrefabPath:
+  - Assets/GameData/Prefabs
+  - Assets/GameData/UI/prefabs
