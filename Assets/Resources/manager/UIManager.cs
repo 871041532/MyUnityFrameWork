@@ -47,8 +47,6 @@ public class UIManager : IManager
         });
         var win = GetOrCreateWindow("menu");
         win.Show();
-        var item = GameMgr.m_ABMgr.LoadAsset("Assets/GameData/Prefabs/c2.prefab");
-        var item2 = GameMgr.m_ABMgr.LoadAsset("Assets/GameData/Prefabs/c1.prefab");
     }
 
     public override void Update()
