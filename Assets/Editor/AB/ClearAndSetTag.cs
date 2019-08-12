@@ -314,7 +314,7 @@ using System;
         AssetDatabase.Refresh();
     }
 
-    static void SaveVersion(string version, string package)
+    public static void SaveVersion(string version, string package)
     {
         // 依赖信息写入xml
         string filePath = Path.Combine(Application.dataPath, "Resources/version.json");
@@ -339,13 +339,41 @@ using System;
             DirectoryInfo directory = new DirectoryInfo(ABUtility.ABAbsolutePath);
             if (directory.Exists)
             {
-                FileInfo[] fileNames = directory.GetFiles("*", SearchOption.AllDirectories);
+                FileInfo[] fileInfos = directory.GetFiles("*", SearchOption.AllDirectories);
+                List<ABMD5> abmd5List = new List<ABMD5>();
+                for (int i = 0; i < fileInfos.Length; i++)
+                {
+                    FileInfo info = fileInfos[i];
+                    if (!info.Name.EndsWith(".meta") && !info.Name.EndsWith(".manifest"))
+                    {
+                        ABMD5 abmd5 = new ABMD5();
+                        string name = info.FullName.Replace(directory.FullName, "").Replace("\\", "/");
+                        abmd5.Name = name;
+                        abmd5.MD5 = FileHelper.MD5Stream(info.FullName);
+                        abmd5.Size = info.Length / 1024;
+                        abmd5List.Add(abmd5);
+                    }
+                }
+                config.ABMD5Dict = abmd5List;
             }
             else
             {
                 Debug.LogError("文件夹不存在，写入MD5失败！");
             }
             jsonSerializer.WriteObject(fileStream, config);
+            // 将版本文件拷贝到外部存储
+            string outDirectory = Path.Combine("Version", ABUtility.PlatformName);
+            if (!Directory.Exists(outDirectory))
+            {
+                Directory.CreateDirectory(outDirectory);
+            }
+            string outFilePath = string.Format("{0}/{1}{2}.json", outDirectory, "version_", config.Version );
+            if (File.Exists(outFilePath))
+            {
+                File.Delete(outFilePath);
+            }
+            File.Copy(filePath, outFilePath);
+            Debug.Log(string.Format("{0} version {1} 信息写入完毕。Path: {2}", ABUtility.PlatformName, config.Version, outFilePath));
         }
     }
  }
