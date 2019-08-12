@@ -305,4 +305,47 @@ using System;
             }
             return false;
         }
+
+    [MenuItem("Assets/version写入")]
+    static void Test()
+    {
+        ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+        SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+        AssetDatabase.Refresh();
     }
+
+    static void SaveVersion(string version, string package)
+    {
+        // 依赖信息写入xml
+        string filePath = Path.Combine(Application.dataPath, "Resources/version.json");
+        using (FileStream fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+        {
+            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(VersionData));
+            VersionData config = new VersionData();
+            try
+            {
+                config = jsonSerializer.ReadObject(fileStream) as VersionData;
+            }
+            catch (Exception)
+            {
+            }
+            fileStream.Flush();
+            fileStream.Seek(0, SeekOrigin.Begin);
+            config.Version = version;
+            config.PackageName = package;
+
+            // 写入MD5
+            string[] abNames = AssetDatabase.GetAllAssetBundleNames();
+            DirectoryInfo directory = new DirectoryInfo(ABUtility.ABAbsolutePath);
+            if (directory.Exists)
+            {
+                FileInfo[] fileNames = directory.GetFiles("*", SearchOption.AllDirectories);
+            }
+            else
+            {
+                Debug.LogError("文件夹不存在，写入MD5失败！");
+            }
+            jsonSerializer.WriteObject(fileStream, config);
+        }
+    }
+ }
