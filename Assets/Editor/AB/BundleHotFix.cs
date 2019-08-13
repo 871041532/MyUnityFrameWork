@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class BundleHotFix : EditorWindow
 {
-
+    static string m_HotPath = "Hot";
 
     [MenuItem("Tools/热更管理面板")]
     static void Init()
@@ -33,6 +33,8 @@ public class BundleHotFix : EditorWindow
         hotCount = EditorGUILayout.TextField("热更补丁版本：", hotCount, GUILayout.Width(500), GUILayout.Height(20));
         if (GUILayout.Button("开始打热更包", GUILayout.Width(150), GUILayout.Height(20)))
         {
+            ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+            Debug.Log("开始生成热更包...");
             if (!string.IsNullOrEmpty(md5Path))
             {
                 NormalBuild(md5Path, hotCount);
@@ -47,8 +49,36 @@ public class BundleHotFix : EditorWindow
 
     static void NormalBuild(string md5Path, string hotCount)
     {
-        VersionData versionData = ReadVersionFile(md5Path);
-        var a = 1;
+        VersionData targetVersionData = ReadVersionFile(md5Path);
+        string curVersionPath = Application.dataPath + "/Resources/version.json";
+        VersionData curVersionData = ReadVersionFile(curVersionPath);
+        Dictionary<string, ABMD5> diferentDict = new Dictionary<string, ABMD5>();
+        foreach (var item in curVersionData.ABMD5Dict.Values)
+        {
+            var targetDict = targetVersionData.ABMD5Dict;
+            if (!targetDict.ContainsKey(item.Name) || (targetDict.ContainsKey(item.Name) && targetDict[item.Name].MD5 != item.MD5 ))
+            {
+                diferentDict.Add(item.Name, item);
+            }
+        }
+        CopyABAndGeneraJson(diferentDict, hotCount);
+        Debug.Log("热更包生成完毕！");
+    }
+
+    static void CopyABAndGeneraJson(Dictionary<string, ABMD5> diferentDict, string hotCount)
+    {
+        if (Directory.Exists(m_HotPath))
+        {
+            Directory.Delete(m_HotPath, true);
+        }
+        Directory.CreateDirectory(m_HotPath);
+        foreach (var item in diferentDict)
+        {
+            Debug.Log("包：" + item.Key);
+            string sourceFIlePath = Path.Combine(ABUtility.ABAbsolutePath, item.Key);
+            string targetFilePath = Path.Combine(m_HotPath, item.Key);
+            File.Copy(sourceFIlePath, targetFilePath);
+        }
     }
 
     public static void SaveVersion(string version, string package)
@@ -60,11 +90,11 @@ public class BundleHotFix : EditorWindow
         config.PackageName = package;
         // 写入MD5
         string[] abNames = AssetDatabase.GetAllAssetBundleNames();
+        Dictionary<string, ABMD5> abmd5List = new Dictionary<string, ABMD5>();
         DirectoryInfo directory = new DirectoryInfo(ABUtility.ABAbsolutePath);
         if (directory.Exists)
         {
             FileInfo[] fileInfos = directory.GetFiles("*", SearchOption.AllDirectories);
-            Dictionary<string, ABMD5> abmd5List = new Dictionary<string, ABMD5>();
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 FileInfo info = fileInfos[i];
@@ -78,12 +108,12 @@ public class BundleHotFix : EditorWindow
                     abmd5List.Add(name, abmd5);
                 }
             }
-            config.ABMD5Dict = abmd5List;
         }
         else
         {
-            Debug.LogError("文件夹不存在，写入MD5失败！");
+            Debug.Log("AB文件夹不存在，写入MD5为空！");
         }
+        config.ABMD5Dict = abmd5List;
         WriteVersionFile(config, filePath);
         // 将版本文件拷贝到外部存储
         string outDirectory = Path.Combine("Version", ABUtility.PlatformName);
