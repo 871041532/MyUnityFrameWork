@@ -42,7 +42,7 @@ public class VersionData
     [DataMember]
     public string PackageName { get; set; }
     [DataMember]
-    public List<ABMD5> ABMD5Dict { get; set; }
+    public Dictionary<string, ABMD5> ABMD5Dict { get; set; }
 }
 
 [DataContract]
