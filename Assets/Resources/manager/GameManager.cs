@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public ObjectManager m_ObjectMgr;
     public UIManager m_UIMgr;
     public CallManager m_CallMgr;
+    public HotPatchManager m_HotPatchMgr;
     private List<IManager> m_Mgrs;
 
 
@@ -23,13 +24,16 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         m_Mgrs = new List<IManager>();
 
+        m_CallMgr = new CallManager();
         m_ObjectMgr = new ObjectManager();
         m_LuaMgr = new LuaManager();
+
         m_ABMgr = new ABManager();
-        m_CutSceneMgr = new CutSceneManager();
         m_ResMgr = new ResourceManager();
+        m_CutSceneMgr = new CutSceneManager();
         m_UIMgr = new UIManager();
-        m_CallMgr = new CallManager();
+        m_HotPatchMgr = new HotPatchManager();
+
 
         m_Mgrs.Add(m_LuaMgr);
         m_Mgrs.Add(m_ABMgr);
@@ -38,6 +42,7 @@ public class GameManager : MonoBehaviour
         m_Mgrs.Add(m_ObjectMgr);
         m_Mgrs.Add(m_UIMgr);
         m_Mgrs.Add(m_CallMgr);
+        m_Mgrs.Add(m_HotPatchMgr);
         
         Assert.raiseExceptions = true;
         var iter = m_Mgrs.GetEnumerator();

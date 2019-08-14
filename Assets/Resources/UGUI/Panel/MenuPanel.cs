@@ -24,7 +24,7 @@ public class MenuPanel : Window
         });
 
         m_BtnStart.onClick.AddListener(() => {
-
+            GameManager.Instance.m_UIMgr.SwitchSingleWindow("sportTool");
         });
 
         m_BtnExit.onClick.AddListener(() => {

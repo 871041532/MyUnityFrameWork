@@ -11,9 +11,13 @@ public class CutSceneManager:IManager
     private LoadingSceneLogic m_loadSceneLogic;
 
     public static int LoadingProgress = 0;
+    
+    public CutSceneManager()
+    {
+        m_loadSceneLogic = new LoadingSceneLogic(this);
+    }
 
     public override void Awake() {
-        m_loadSceneLogic = new LoadingSceneLogic(this);
     }
     public override void Start() {
         //BeginLoadScene("Scene1", () => {

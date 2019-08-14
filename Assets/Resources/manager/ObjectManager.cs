@@ -59,10 +59,4 @@ public class ObjectManager : IManager
             return pool.Recycle(obj);
         }
     }
-
-    public override void Awake() {
-    }
-    public override void Start() { }
-    public override void Update() { }
-    public override void OnDestroy() { }
 }

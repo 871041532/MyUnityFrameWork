@@ -26,13 +26,14 @@ public class ABManager:IManager
 #else
         ABUtility.ResetInfoInDevice(Application.platform);
 #endif
-    }
-
-    public override void Awake() {
         SpriteAtlasManager.atlasRequested += OnAtlasRequested;
         GameMgr.m_ObjectMgr.CreateOrGetClassPool<ABItem>();
         GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetItem>();
         InitCfg();
+    }
+
+    public override void Awake() {    
+
     }
 
     private void InitCfg()
@@ -417,6 +418,11 @@ public class AssetItem
     public Sprite Sprite
     {
         get { return m_Object as Sprite; }
+    }
+
+    public TextAsset TextAsset
+    {
+        get { return m_Object as TextAsset; }
     }
 }
 
