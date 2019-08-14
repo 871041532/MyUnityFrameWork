@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class BundleHotFix : EditorWindow
 {
-    static string m_curVersionPath = "Assets/GameData/Configs/version.json";
+    static string m_curVersionPath = "Assets/StreamingAssets/Configs/version.json";
     static string m_HotPath = "Hot";
 
     [MenuItem("Tools/热更管理面板")]

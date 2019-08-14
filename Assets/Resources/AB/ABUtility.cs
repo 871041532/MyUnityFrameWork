@@ -11,7 +11,7 @@ public enum LoadModeEnum
 {
     EditorOrigin,  // Editor下直接加载原始资源
     EditorAB,  // Editor下直接加载AB包
-    StandaloneAB,  // 设备或Editor下直接使用AB包
+    StandaloneAB,  // 设备或Editor下直接使用整个AB包
     DeviceFullAotAB,  // 设备上预下载到PrensentData再加载
 }
 
@@ -19,6 +19,8 @@ public static class ABUtility
 {
     // AB包加载模式
     public static LoadModeEnum LoadMode = LoadModeEnum.EditorAB;
+    // persistentDataPath 持久化目录
+    public static string persistentDataPath;
     // 当前平台名字
     public static string PlatformName = "Windows";
     // 当前StreamingAssetsPath
@@ -47,6 +49,7 @@ public static class ABUtility
         ServerLoadPath = string.Format("{0}:{1}/{2}/", ServerURL, ServerPort,PlatformName);
         ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
         ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
+        persistentDataPath = Application.persistentDataPath;
     }
 
 #if UNITY_EDITOR
@@ -58,6 +61,7 @@ public static class ABUtility
         ServerLoadPath = string.Format("{0}:{1}/{2}/", ServerURL, ServerPort, PlatformName);
         ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
         ABAbsolutePath = Path.Combine(Environment.CurrentDirectory, ABUtility.ABRelativePath);
+        persistentDataPath = "persistentDataPath";
     }
 
     public static string BuildTargetToString(BuildTarget target)
