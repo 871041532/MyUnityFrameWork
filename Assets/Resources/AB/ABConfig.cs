@@ -55,3 +55,46 @@ public class ABMD5
     [DataMember]
     public float Size { get; set; }
 }
+
+[DataContract]
+public class ServerInfo
+{
+    public ServerVersionInfo[] GameVersion;
+}
+
+[DataContract]
+public class ServerVersionInfo
+{
+    [DataMember]
+    public string Version;
+    [DataMember]
+    public AllPatch[] Patches;
+}
+
+// 补丁包集合
+[DataContract]
+public class AllPatch
+{
+    [DataMember]
+    public int Version;
+    [DataMember]
+    public string Description;
+    [DataMember]
+    public List<Patch> Files;
+}
+
+// 单个补丁
+[DataContract]
+public class Patch
+{
+    [DataMember]
+    public string Name;
+    [DataMember]
+    public string URL;
+    [DataMember]
+    public string Platform;
+    [DataMember]
+    public string MD5;
+    [DataMember]
+    public float Size;
+}

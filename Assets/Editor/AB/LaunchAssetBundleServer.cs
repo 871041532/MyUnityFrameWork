@@ -21,10 +21,12 @@ namespace AssetBundles
             {
                 ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
                 Run();
+                UnityEngine.Debug.Log("文件server已开启。端口：" + ABUtility.ServerPort);
             }
             else
             {
                 KillRunningAssetBundleServer();
+                UnityEngine.Debug.Log("文件server已关闭。");
             }
         }
 
@@ -59,13 +61,20 @@ namespace AssetBundles
         {
                 if (instance.m_ServerPID == 0)
                     return;
+            try
+            {
                 var lastProcess = Process.GetProcessById(instance.m_ServerPID);
-                Process[] child_process = Process.GetProcessesByName("python");  
+                Process[] child_process = Process.GetProcessesByName("python");
                 foreach (var item in child_process)
                 {
                     item.Kill();
                 }
                 lastProcess.Close();
+            }
+            catch (Exception)
+            {
+            }
+
                 instance.m_ServerPID = 0;
         }
 
@@ -88,7 +97,8 @@ namespace AssetBundles
         static void Run()
         {
             KillRunningAssetBundleServer();
-            int id = LaunchAssetBundleServer.RunCmd(ABUtility.ABAbsolutePath, ABUtility.ServerPort);
+            string fileDirectory = Path.Combine(Environment.CurrentDirectory, "Hot/");
+            int id = LaunchAssetBundleServer.RunCmd(fileDirectory, ABUtility.ServerPort);
             instance.m_ServerPID = id;
         }
     }

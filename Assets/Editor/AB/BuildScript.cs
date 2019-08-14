@@ -80,7 +80,7 @@ public class MyBuildApp : ScriptableObject
             BuildPipeline.BuildAssetBundles(outputPath, builds, options, target);
         }
         Debug.Log("Build AssetBundle Done!");
-        BundleHotFix.SaveVersion(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+        BundleHotFix.SaveVersionWhenBuildAB(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
     }
     #endregion
 
