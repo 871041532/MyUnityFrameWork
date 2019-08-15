@@ -62,6 +62,10 @@ public static class ABUtility
         ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
         ABAbsolutePath = Path.Combine(Environment.CurrentDirectory, ABUtility.ABRelativePath);
         persistentDataPath = "persistentDataPath";
+        if (!Directory.Exists(persistentDataPath))
+        {
+            Directory.CreateDirectory(persistentDataPath);
+        }
     }
 
     public static string BuildTargetToString(BuildTarget target)

@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1488391565
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 346ae30f9635d07ce340f0b65cd1a932
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3f7d0c5e0986ec71841622bcb2f9be1c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/GameData/Audio/zhong.wav
+Dependencies: []

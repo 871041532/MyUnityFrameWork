@@ -49,6 +49,15 @@ public class MyBuildApp : ScriptableObject
         BuildPlayer(BuildTarget.iOS);
     }
 
+    [MenuItem("Assets/Build/Build ActiveEditorPlayer", priority = 7)]
+    public static void BuildCurrentEditorPlantform()
+    {
+        ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+        ClearAndSetTag.ClearAndSetAllBundleTag();
+        BuildAssetBundles(EditorUserBuildSettings.activeBuildTarget);
+        BuildPlayer(EditorUserBuildSettings.activeBuildTarget, true);
+    }
+
     #region 构建AB包
     public static void BuildAssetBundles(BuildTarget target, AssetBundleBuild[] builds = null)
     {
@@ -80,26 +89,29 @@ public class MyBuildApp : ScriptableObject
             BuildPipeline.BuildAssetBundles(outputPath, builds, options, target);
         }
         Debug.Log("Build AssetBundle Done!");
-        BundleHotFix.SaveVersionWhenBuildAB(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
     }
     #endregion
 
     #region 构建Player
-    private static void BuildPlayer(BuildTarget target)
+    private static void BuildPlayer(BuildTarget target, bool buildEditorPlayer = false)
     {
         Resources.UnloadUnusedAssets();
-        string targetFilePath = BuildTargetToAppName(target);
-        string targetString = ABUtility.BuildTargetToString(target);
-        string buildPath = string.Format("{0}/{1}/{2}", "Build", targetString, targetFilePath);
-
+        FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "AssetBundles/"));
         string inStreamAssetsPath = Path.Combine(Application.streamingAssetsPath, ABUtility.ABRelativePath);
         CopyAssetBundlesTo(inStreamAssetsPath);
-        BuildPlayerOptions options = new BuildPlayerOptions();
-        options.scenes = FindActiveScenes();
-        options.locationPathName = buildPath;
-        options.target = target;
-        BuildPipeline.BuildPlayer(options);
-        FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
+        BundleHotFix.SaveVersionWhenBuildPlayer(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+        if (!buildEditorPlayer)
+        {
+            string targetFilePath = BuildTargetToAppName(target);
+            string targetString = ABUtility.BuildTargetToString(target);
+            string buildPath = string.Format("{0}/{1}/{2}", "Build", targetString, targetFilePath);
+            BuildPlayerOptions options = new BuildPlayerOptions();
+            options.scenes = FindActiveScenes();
+            options.locationPathName = buildPath;
+            options.target = target;
+            BuildPipeline.BuildPlayer(options);
+            FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
+        }    
         Debug.Log("Build Player Done!");
     }
 

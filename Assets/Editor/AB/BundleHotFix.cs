@@ -88,9 +88,13 @@ public class BundleHotFix : EditorWindow
         foreach (var item in diferentDict)
         {
             Debug.Log("AB包：" + item.Key);
-            string sourceFIlePath = Path.Combine(ABUtility.ABAbsolutePath, item.Key);
+            string sourceFIlePath = Path.Combine(ABUtility.StreamingAssetsPath, item.Key);
             string targetFilePath = Path.Combine(hotPlatformPath, item.Key);
-            File.Copy(sourceFIlePath, targetFilePath);
+            //int idx = targetFilePath.LastIndexOf('/');
+            //string p1 = targetFilePath.Substring(0, idx);
+            //Directory.CreateDirectory(p1);
+            //File.Copy(sourceFIlePath, targetFilePath, true);
+            FileUtil.CopyFileOrDirectory(sourceFIlePath, targetFilePath);
         }
 
         // 生成Patch
@@ -113,18 +117,16 @@ public class BundleHotFix : EditorWindow
     }
 
     #region buildAB时，将当前平台版本信息覆盖写入Resources/version.json
-    public static void SaveVersionWhenBuildAB(string version, string package)
+    public static void SaveVersionWhenBuildPlayer(string version, string package)
     {
         // 依赖信息写入
-        //string filePath = Path.Combine(Application.dataPath, "Resources/version.json");
         string filePath = m_curVersionPath;
         VersionData config = ReadJsonFile<VersionData>(filePath);
         config.Version = version;
         config.PackageName = package;
         // 写入MD5
-        string[] abNames = AssetDatabase.GetAllAssetBundleNames();
         Dictionary<string, ABMD5> abmd5List = new Dictionary<string, ABMD5>();
-        DirectoryInfo directory = new DirectoryInfo(ABUtility.ABAbsolutePath);
+        DirectoryInfo directory = new DirectoryInfo(ABUtility.StreamingAssetsPath);
         if (directory.Exists)
         {
             FileInfo[] fileInfos = directory.GetFiles("*", SearchOption.AllDirectories);
@@ -134,7 +136,7 @@ public class BundleHotFix : EditorWindow
                 if (!info.Name.EndsWith(".meta") && !info.Name.EndsWith(".manifest"))
                 {
                     ABMD5 abmd5 = new ABMD5();
-                    string name = info.FullName.Replace(directory.FullName, "").Replace("\\", "/");
+                    string name = info.FullName.Replace(directory.FullName + "\\", "").Replace("\\", "/");
                     abmd5.Name = name;
                     abmd5.MD5 = FileHelper.MD5Stream(info.FullName);
                     abmd5.Size = info.Length / 1024;
