@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public CallManager m_CallMgr;
     public HotPatchManager m_HotPatchMgr;
     private List<IManager> m_Mgrs;
-
+    private bool isInitOk = false;
 
     private void Awake()
     {
@@ -50,14 +50,10 @@ public class GameManager : MonoBehaviour
         {
             iter.Current.Awake();
         }
-    }
-
-    private void Start()
-    {
-        var iter = m_Mgrs.GetEnumerator();
+        var iter2 = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
-            iter.Current.Start();
+            iter2.Current.Start();
         }
     }
 

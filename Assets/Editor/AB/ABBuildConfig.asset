@@ -19,6 +19,8 @@ MonoBehaviour:
     Path: Assets/GameData/Audio
   - ABName: ui_common
     Path: Assets/GameData/UI/res/common
+  - ABName: lua
+    Path: Assets/GameData/Scripts
   m_AllPrefabPath:
   - Assets/GameData/Prefabs
   - Assets/GameData/UI/prefabs

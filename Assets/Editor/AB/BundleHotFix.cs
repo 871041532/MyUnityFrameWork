@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class BundleHotFix : EditorWindow
 {
-    static string m_curVersionPath = "Assets/StreamingAssets/Configs/version.json";
+    static string m_curVersionPath = "Assets/StreamingAssets/version.json";
     static string m_HotPath = "Hot";
 
     [MenuItem("Tools/热更管理面板")]
@@ -90,11 +90,10 @@ public class BundleHotFix : EditorWindow
             Debug.Log("AB包：" + item.Key);
             string sourceFIlePath = Path.Combine(ABUtility.StreamingAssetsPath, item.Key);
             string targetFilePath = Path.Combine(hotPlatformPath, item.Key);
-            //int idx = targetFilePath.LastIndexOf('/');
-            //string p1 = targetFilePath.Substring(0, idx);
-            //Directory.CreateDirectory(p1);
-            //File.Copy(sourceFIlePath, targetFilePath, true);
-            FileUtil.CopyFileOrDirectory(sourceFIlePath, targetFilePath);
+            int idx = targetFilePath.LastIndexOf('/');
+            string p1 = targetFilePath.Substring(0, idx);
+            Directory.CreateDirectory(p1);
+            File.Copy(sourceFIlePath, targetFilePath, true);
         }
 
         // 生成Patch

@@ -80,15 +80,64 @@ public class MyBuildApp : ScriptableObject
                 options |= BuildAssetBundleOptions.UncompressedAssetBundle;
 #endif
         }
-        if (builds is null || builds.Length == 0)
+
+        try
         {
-            BuildPipeline.BuildAssetBundles(outputPath, options, target);
+            PreProcessLua();
+            if (builds is null || builds.Length == 0)
+            {
+                BuildPipeline.BuildAssetBundles(outputPath, options, target);
+            }
+            else
+            {
+                BuildPipeline.BuildAssetBundles(outputPath, builds, options, target);
+            }
+            PostProcessLua();
         }
-        else
+        catch (System.Exception)
         {
-            BuildPipeline.BuildAssetBundles(outputPath, builds, options, target);
+            PostProcessLua();
+            throw;
         }
+
         Debug.Log("Build AssetBundle Done!");
+    }
+
+    // 处理一下Lua文件
+    static void PreProcessLua()
+    {
+        DirectoryInfo dInfo = new DirectoryInfo("Assets/GameData/Scripts");
+        if (dInfo.Exists)
+        {
+            FileInfo[] fileInfos = dInfo.GetFiles("*", SearchOption.AllDirectories);
+            for (int i = 0; i < fileInfos.Length; i++)
+            {
+                var fileInfo = fileInfos[i];
+                if (fileInfo.Name.EndsWith(".lua"))
+                {
+                    fileInfo.CopyTo(fileInfo.FullName + ".txt");
+                    fileInfo.Delete();
+                }
+            }
+        }
+    }
+    static void PostProcessLua()
+    {
+        DirectoryInfo dInfo = new DirectoryInfo("Assets/GameData/Scripts");
+        if (dInfo.Exists)
+        {
+            FileInfo[] fileInfos = dInfo.GetFiles("*", SearchOption.AllDirectories);
+            for (int i = 0; i < fileInfos.Length; i++)
+            {
+                var fileInfo = fileInfos[i];
+                if (fileInfo.Name.EndsWith(".txt"))
+                {
+                    long idx = fileInfo.FullName.Length - 4;
+                    fileInfo.CopyTo(fileInfo.FullName.Substring(0, (int)idx));
+                    fileInfo.Delete();
+                }
+            }
+        }
     }
     #endregion
 

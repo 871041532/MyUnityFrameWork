@@ -127,6 +127,7 @@ public class ABManager:IManager
             case LoadModeEnum.EditorAB:
 #endif
             case LoadModeEnum.StandaloneAB:
+            case LoadModeEnum.DeviceFullAotAB:
                 ABItem ABItem = LoadAssetBundleByAssetName(fullPath);
                 UnityEngine.Object obj2 = ABItem.AssetBundle.LoadAsset(fullPath);
                 AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
@@ -157,6 +158,7 @@ public class ABManager:IManager
             case LoadModeEnum.EditorAB:
 #endif
             case LoadModeEnum.StandaloneAB:
+            case LoadModeEnum.DeviceFullAotAB:
                 LoadAssetBundleByAssetNameAsync(fullPath, (abItem)=> {
                    GameMgr.StartCoroutine(_loadAssetFromABItemAsync(abItem, fullPath, successCall));
                 });
