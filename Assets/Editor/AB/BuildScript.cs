@@ -58,6 +58,17 @@ public class MyBuildApp : ScriptableObject
         BuildPlayer(EditorUserBuildSettings.activeBuildTarget, true);
     }
 
+    [MenuItem("Assets/Build/Clear EditorPlayerRemain", priority = 7)]
+    public static void ClearStreamingAssetsAb()
+    {
+        FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "AssetBundles/"));
+        FileUtil.DeleteFileOrDirectory("persistentDataPath");
+        FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "version.json"));
+        FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "version.json.meta"));
+        Debug.Log("EditorPlayerRemain 清理完毕。");
+        AssetDatabase.Refresh();
+    }
+
     #region 构建AB包
     static void BuildAssetBundles(BuildTarget target, AssetBundleBuild[] builds = null)
     {
@@ -99,7 +110,6 @@ public class MyBuildApp : ScriptableObject
             PostProcessLua();
             throw;
         }
-
         Debug.Log("Build AssetBundle Done!");
     }
 
@@ -118,8 +128,13 @@ public class MyBuildApp : ScriptableObject
                     fileInfo.CopyTo(fileInfo.FullName + ".txt");
                     fileInfo.Delete();
                 }
+                else if(fileInfo.Name.EndsWith(".meta"))
+                {
+                    fileInfo.Delete();
+                }
             }
         }
+        AssetDatabase.Refresh();
     }
     
     private static void PostProcessLua()
@@ -137,6 +152,10 @@ public class MyBuildApp : ScriptableObject
                     fileInfo.CopyTo(fileInfo.FullName.Substring(0, (int)idx));
                     fileInfo.Delete();
                 }
+                else if(fileInfo.Name.EndsWith(".meta"))
+                {
+                    fileInfo.Delete();
+                }
             }
         }
     }
@@ -146,10 +165,15 @@ public class MyBuildApp : ScriptableObject
     private static void BuildPlayer(BuildTarget target, bool buildEditorPlayer = false)
     {
         Resources.UnloadUnusedAssets();
+        // 删除冗余目录
         FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "AssetBundles/"));
         var inStreamAssetsPath = Path.Combine(Application.streamingAssetsPath, ABUtility.ABRelativePath);
+        // 将AssetsBundle复制进StreamingAssets
         CopyAssetBundlesTo(inStreamAssetsPath);
-        BundleHotFix.SaveVersionWhenBuildPlayer(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+        // StreamingAssets文件夹内容写入版本信息
+        BundleHotFix.SaveVersionToStreamingAssetsWhenBuildPlayer(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
+        // 将热更文件部署到server端
+        BundleHotFix.DeployStreamingAssetsToHotWhenBuildPlayer();
         if (!buildEditorPlayer)
         {
             var targetFilePath = BuildTargetToAppName(target);
@@ -162,7 +186,8 @@ public class MyBuildApp : ScriptableObject
                 target = target
             };
             BuildPipeline.BuildPlayer(options);
-            FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
+            FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "AssetBundles/"));
+            FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "version.json"));
         }    
         Debug.Log("Build Player Done!");
     }
@@ -214,5 +239,6 @@ public class MyBuildApp : ScriptableObject
             FileUtil.DeleteFileOrDirectory(destination);
         FileUtil.CopyFileOrDirectory(source, destination);
     }
+    
     #endregion
 }

@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     public CallManager m_CallMgr;
     public HotPatchManager m_HotPatchMgr;
     private List<IManager> m_Mgrs;
-    private bool isInitOk = false;
 
     private void Awake()
     {

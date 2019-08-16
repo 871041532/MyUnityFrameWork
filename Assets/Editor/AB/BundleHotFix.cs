@@ -10,55 +10,39 @@ public class BundleHotFix : EditorWindow
 {
     static string m_curVersionPath = "Assets/StreamingAssets/version.json";
     static string m_HotPath = "Hot";
+    
+    static string m_Version = "";
+    static string m_PackageName = "1";
 
     [MenuItem("Tools/热更管理面板")]
     static void Init()
     {
         BundleHotFix win = EditorWindow.GetWindow(typeof(BundleHotFix), false, "生成热更包", true) as BundleHotFix;
         win.Show();
+        m_Version = PlayerSettings.bundleVersion;
+        m_PackageName = PlayerSettings.applicationIdentifier;
     }
 
-    string targetVersionPath = "";
-    string hotCount = "1";
     private void OnGUI()
     {
         GUILayout.BeginHorizontal();
-        targetVersionPath = EditorGUILayout.TextField("targetVersionPath", targetVersionPath, GUILayout.Width(500), GUILayout.Height(20));
-        if (GUILayout.Button("选择版本文件", GUILayout.Width(150), GUILayout.Height(20)))
-        {
-            string file = EditorUtility.OpenFilePanel("选择版本文件", "Version/" + ABUtility.PlatformName, "*.json");
-            targetVersionPath = file;
-        }
+        m_Version = EditorGUILayout.TextField("Version:", m_Version, GUILayout.Width(500), GUILayout.Height(20));
         GUILayout.EndHorizontal();
+        
         GUILayout.BeginHorizontal();
-        hotCount = EditorGUILayout.TextField("热更补丁版本：", hotCount, GUILayout.Width(500), GUILayout.Height(20));
-        if (GUILayout.Button("开始打热更包", GUILayout.Width(150), GUILayout.Height(20)))
-        {
-            ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
-            Debug.Log("开始生成热更包...");
-            Debug.Log("路径：" + m_HotPath + "/" + ABUtility.PlatformName + "/" + PlayerSettings.bundleVersion + "/" + hotCount + "/");
-            if (!string.IsNullOrEmpty(targetVersionPath) && File.Exists(targetVersionPath))
-            {
-                NormalBuild(targetVersionPath, hotCount);
-            }
-            else
-            {
-                Debug.LogError("打包失败目标版本文件为空！");
-            }
-        }
+        m_PackageName = EditorGUILayout.TextField("PackageName:", m_PackageName, GUILayout.Width(500), GUILayout.Height(20));
         GUILayout.EndHorizontal();
+        
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("部署StreamingAssets到服务器", GUILayout.Width(300), GUILayout.Height(20)))
+        if (GUILayout.Button("确认设置", GUILayout.Width(300), GUILayout.Height(20)))
         {
-            DeployStreamingAssetsToHot();
         }
         GUILayout.EndHorizontal();
     }
 
-    static void DeployStreamingAssetsToHot()
+    public static void DeployStreamingAssetsToHotWhenBuildPlayer()
     {
-        Debug.Log($"开始部署，Version:{PlayerSettings.bundleVersion}  PackageName:{PlayerSettings.applicationIdentifier}");
-        ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+        Debug.Log($"开始部署热更文件，Version:{PlayerSettings.bundleVersion}  PackageName:{PlayerSettings.applicationIdentifier}");
         string srcPath = ABUtility.StreamingAssetsPath + "/";
         string destPath = $"{m_HotPath}/{PlayerSettings.applicationIdentifier}/{ABUtility.PlatformName}/";
         if (Directory.Exists(destPath))
@@ -90,81 +74,18 @@ public class BundleHotFix : EditorWindow
         Debug.Log("部署完毕。路径：" + destPath);
     }
     
-    static void NormalBuild(string targetVersionPath, string hotCount)
-    {
-        VersionData targetVersionData = ReadJsonFile<VersionData>(targetVersionPath);
-        string curVersionPath = m_curVersionPath;
-        if (!File.Exists(curVersionPath))
-        {
-            Debug.LogError("打包失败，当前版本version文件为空！");
-            return;
-        }
-        VersionData curVersionData = ReadJsonFile<VersionData>(curVersionPath);
-        Dictionary<string, ABMD5> diferentDict = new Dictionary<string, ABMD5>();
-        foreach (var item in curVersionData.ABMD5Dict.Values)
-        {
-            var targetDict = targetVersionData.ABMD5Dict;
-            if (!targetDict.ContainsKey(item.Name) || (targetDict.ContainsKey(item.Name) && targetDict[item.Name].MD5 != item.MD5 ))
-            {
-                if (item.Name != ABUtility.PlatformName)
-                {
-                    diferentDict.Add(item.Name, item);
-                }        
-            }
-        }
-        CopyDifferentABToHot(diferentDict, hotCount);
-        Debug.Log("热更包生成完毕！");
-    }
-
-    static void CopyDifferentABToHot(Dictionary<string, ABMD5> diferentDict, string hotCount)
-    {
-        string relativePath = ABUtility.PlatformName + "/" +PlayerSettings.bundleVersion + "/" + hotCount + "/";
-        string hotPlatformPath = Path.Combine(m_HotPath, relativePath);
-        if (Directory.Exists(hotPlatformPath))
-        {
-            Directory.Delete(hotPlatformPath, true);
-        }
-        Directory.CreateDirectory(hotPlatformPath);
-        foreach (var item in diferentDict)
-        {
-            Debug.Log("AB包：" + item.Key);
-            string sourceFIlePath = Path.Combine(ABUtility.StreamingAssetsPath, item.Key);
-            string targetFilePath = Path.Combine(hotPlatformPath, item.Key);
-            int idx = targetFilePath.LastIndexOf('/');
-            string p1 = targetFilePath.Substring(0, idx);
-            Directory.CreateDirectory(p1);
-            File.Copy(sourceFIlePath, targetFilePath, true);
-        }
-
-        // 生成Patch
-        AllPatch allPatch = new AllPatch();
-        allPatch.Version = 1;
-        allPatch.Files = new List<Patch>();
-        string fileServerPath = string.Format("{0}:{1}/", ABUtility.ServerURL, ABUtility.ServerPort);
-        foreach (var item in diferentDict)
-        {
-            Patch patch = new Patch();
-            patch.Name = item.Value.Name;
-            patch.MD5 = item.Value.MD5;
-            patch.Size = item.Value.Size;
-            patch.Platform = ABUtility.PlatformName;
-            patch.URL = fileServerPath + relativePath + patch.Name;
-            allPatch.Files.Add(patch);
-        }
-        WriteJsonFile<AllPatch>(allPatch, Path.Combine(hotPlatformPath, "allPath.json"));
-        Debug.Log("Patch配置：allPath.json");
-    }
-
-    #region buildAB时，将当前平台版本信息覆盖写入Resources/version.json
-    public static void SaveVersionWhenBuildPlayer(string version, string package)
+    #region buildAB时，将当前平台版本信息覆盖写入StreamingAssets/version.json
+    public static void SaveVersionToStreamingAssetsWhenBuildPlayer(string version, string package)
     {
         // 依赖信息写入
-        string filePath = m_curVersionPath;
-        VersionData config = ReadJsonFile<VersionData>(filePath);
-        config.Version = version;
-        config.PackageName = package;
+        VersionData config = new VersionData()
+        {
+            Version = PlayerSettings.bundleVersion,
+            PackageName = PlayerSettings.applicationIdentifier,
+            ABMD5Dict = new Dictionary<string, ABMD5>()
+        };
         // 写入MD5
-        Dictionary<string, ABMD5> abmd5List = new Dictionary<string, ABMD5>();
+        var abMd5List = config.ABMD5Dict;
         DirectoryInfo directory = new DirectoryInfo(ABUtility.StreamingAssetsPath);
         if (directory.Exists)
         {
@@ -172,36 +93,30 @@ public class BundleHotFix : EditorWindow
             for (int i = 0; i < fileInfos.Length; i++)
             {
                 FileInfo info = fileInfos[i];
-                if (!info.Name.EndsWith(".meta") && !info.Name.EndsWith(".manifest"))
+                if (!info.Name.EndsWith(".meta") && !info.Name.EndsWith(".manifest") && info.Name != "version.json")
                 {
-                    ABMD5 abmd5 = new ABMD5();
+                    var abMd5 = new ABMD5();
                     string name = info.FullName.Replace(directory.FullName + "\\", "").Replace("\\", "/");
-                    abmd5.Name = name;
-                    abmd5.MD5 = FileHelper.MD5Stream(info.FullName);
-                    abmd5.Size = info.Length / 1024;
-                    abmd5List.Add(name, abmd5);
+                    abMd5.Name = name;
+                    abMd5.MD5 = FileHelper.MD5Stream(info.FullName);
+                    abMd5.Size = info.Length / 1024;
+                    abMd5List.Add(name, abMd5);
                 }
             }
+            // 把自己也添加进去
+            abMd5List.Add("version.json", new ABMD5()
+            {
+                Name = "version.json",
+                MD5 = config.Version,
+                Size = 1,
+            });
         }
         else
         {
             Debug.Log("AB文件夹不存在，写入MD5为空！");
         }
-        config.ABMD5Dict = abmd5List;
-        WriteJsonFile<VersionData>(config, filePath);
-        // 将版本文件拷贝到外部存储
-        string outDirectory = Path.Combine("Version", ABUtility.PlatformName);
-        if (!Directory.Exists(outDirectory))
-        {
-            Directory.CreateDirectory(outDirectory);
-        }
-        string outFilePath = string.Format("{0}/{1}{2}.json", outDirectory, "version_", config.Version);
-        if (File.Exists(outFilePath))
-        {
-            File.Delete(outFilePath);
-        }
-        File.Copy(filePath, outFilePath);
-        Debug.Log(string.Format("{0} version {1} 信息写入完毕。Path: {2}", ABUtility.PlatformName, config.Version, outFilePath));
+        WriteJsonFile<VersionData>(config, m_curVersionPath);
+        Debug.Log($"Version写入完毕。包名：{config.PackageName}； 平台：{ABUtility.PlatformName}； 版本：{config.Version}");
     }
     #endregion
 
@@ -228,10 +143,6 @@ public class BundleHotFix : EditorWindow
     // 写入version data
     static void WriteJsonFile<T>(T info, string path) where T:class
     {
-        //if (!File.Exists(path))
-        //{
-        //    File.Create(path);
-        //}
         using (FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate))
         {
 
