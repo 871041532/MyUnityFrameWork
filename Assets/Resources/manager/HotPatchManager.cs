@@ -22,7 +22,7 @@ public class HotPatchManager:IManager
     VersionData m_streamingVersionData = null;
     VersionData m_persistentVersionData = null;
     VersionData m_serverVersionData = null;
-    string m_serverVersionPath = "http://127.0.0.1:7888/Windows/version.json";
+    string m_serverVersionPath = "";
     string m_streamingVersionPath;
     string m_persistentVersionPath;
     string m_AssetBundlePrePath;
@@ -31,9 +31,13 @@ public class HotPatchManager:IManager
     {
         m_streamingVersionPath = ABUtility.StreamingAssetsPath + m_RelativeFilePath;
         m_persistentVersionPath = ABUtility.persistentDataPath + m_RelativeFilePath;
-        m_AssetBundlePrePath = "http://127.0.0.1:7888/" + ABUtility.PlatformName + "/";
-        m_serverVersionPath = m_AssetBundlePrePath + "version.json";
         CheckVersion(null);
+    }
+
+    void SetServerPath(string PackageName)
+    {
+        m_AssetBundlePrePath = $"http://127.0.0.1:7888/{PackageName}/{ABUtility.PlatformName}/";
+        m_serverVersionPath = m_AssetBundlePrePath + "version.json";
     }
 
     public void CheckVersion(Action<PackageState> call)
@@ -55,6 +59,7 @@ public class HotPatchManager:IManager
                     return;
                 }
                 Debug.Log("开始获取服务器资源信息...");
+                Debug.Log("URL:" + m_serverVersionPath);
                 GetPersistentAndServerInfo(()=> {
                     // s4：RunPatch
                     Debug.Log("开始向服务器获取Path...");
@@ -80,6 +85,7 @@ public class HotPatchManager:IManager
         };
         GameMgr.StartCoroutine(ReadVersion(m_streamingVersionPath, (data) => {
             m_streamingVersionData = data;
+            SetServerPath(m_streamingVersionData.PackageName);
             call();
         }));
         GameMgr.StartCoroutine(ReadVersion(m_persistentVersionPath, (data) => {
@@ -92,12 +98,14 @@ public class HotPatchManager:IManager
      void CheckLocalRes(Action okCall)
     {
         m_State = PackageState.Error;
+        Debug.Log("Streaming Version: " + m_streamingVersionData.Version);
         if (m_persistentVersionData is null)
         {
             m_State = PackageState.FirstOrOverInstall;
         }
         else
         {
+            Debug.Log("Persistent Version: " + m_persistentVersionData.Version);
             int[] pv = GetNumVersion(m_persistentVersionData.Version);
             int[] sv = GetNumVersion(m_streamingVersionData.Version);
             int contrastValue = ContrastNumVersion(pv, sv);
@@ -188,6 +196,8 @@ public class HotPatchManager:IManager
         }
         else
         {
+            Debug.Log("Persistent Version: " + m_persistentVersionData.Version);
+            Debug.Log("Server Version: " + m_serverVersionData.Version);
             int[] pv = GetNumVersion(m_persistentVersionData.Version);
             int[] sv = GetNumVersion(m_serverVersionData.Version);
             int contrastValue = ContrastNumVersion(pv, sv);
@@ -208,7 +218,7 @@ public class HotPatchManager:IManager
         }
         else if (m_State == PackageState.Normal)
         {
-            Debug.Log("已是最新版本，不需要热更。");
+            Debug.Log($"已是最新版本，不需要热更。");
             okCall();
         }
         else if(m_State == PackageState.NeedFullInstall)

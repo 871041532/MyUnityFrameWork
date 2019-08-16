@@ -6,7 +6,7 @@ using System.IO;
 public class MyBuildApp : ScriptableObject
 {
     [MenuItem("Assets/Build/Build AssetBundles", priority = 2)]
-    public static void BuildAB()
+    public static void BuildAssetBundle()
     {
         ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
         ClearAndSetTag.ClearAndSetAllBundleTag();
@@ -14,7 +14,7 @@ public class MyBuildApp : ScriptableObject
     }
 
     [MenuItem("Assets/Build/Build ActivePlayer", priority = 3)]
-    public static void BuildCurrentPlantform()
+    public static void BuildCurrentPlatform()
     {
         ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
         ClearAndSetTag.ClearAndSetAllBundleTag();
@@ -41,7 +41,7 @@ public class MyBuildApp : ScriptableObject
     }
 
     [MenuItem("Assets/Build/Build IOS", priority = 6)]
-    public static void BuildIOS()
+    public static void BuildIos()
     {
         ABUtility.ResetInfoInEditor(BuildTarget.iOS);
         ClearAndSetTag.ClearAndSetAllBundleTag();
@@ -50,7 +50,7 @@ public class MyBuildApp : ScriptableObject
     }
 
     [MenuItem("Assets/Build/Build ActiveEditorPlayer", priority = 7)]
-    public static void BuildCurrentEditorPlantform()
+    public static void BuildCurrentEditorPlatform()
     {
         ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
         ClearAndSetTag.ClearAndSetAllBundleTag();
@@ -59,18 +59,18 @@ public class MyBuildApp : ScriptableObject
     }
 
     #region 构建AB包
-    public static void BuildAssetBundles(BuildTarget target, AssetBundleBuild[] builds = null)
+    static void BuildAssetBundles(BuildTarget target, AssetBundleBuild[] builds = null)
     {
         string outputPath = ABUtility.ABRelativePath;
         if (!Directory.Exists(outputPath))
             Directory.CreateDirectory(outputPath);
 
         var options = BuildAssetBundleOptions.ChunkBasedCompression;
-        bool shouldCheckODR = EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS;
+        bool shouldCheckOdr = EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS;
 #if UNITY_TVOS
             shouldCheckODR |= EditorUserBuildSettings.activeBuildTarget == BuildTarget.tvOS;
 #endif
-        if (shouldCheckODR)
+        if (shouldCheckOdr)
         {
 #if ENABLE_IOS_ON_DEMAND_RESOURCES
                 if (PlayerSettings.iOS.useOnDemandResources)
@@ -104,7 +104,7 @@ public class MyBuildApp : ScriptableObject
     }
 
     // 处理一下Lua文件
-    static void PreProcessLua()
+    private static void PreProcessLua()
     {
         DirectoryInfo dInfo = new DirectoryInfo("Assets/GameData/Scripts");
         if (dInfo.Exists)
@@ -121,7 +121,8 @@ public class MyBuildApp : ScriptableObject
             }
         }
     }
-    static void PostProcessLua()
+    
+    private static void PostProcessLua()
     {
         DirectoryInfo dInfo = new DirectoryInfo("Assets/GameData/Scripts");
         if (dInfo.Exists)
@@ -146,18 +147,20 @@ public class MyBuildApp : ScriptableObject
     {
         Resources.UnloadUnusedAssets();
         FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "AssetBundles/"));
-        string inStreamAssetsPath = Path.Combine(Application.streamingAssetsPath, ABUtility.ABRelativePath);
+        var inStreamAssetsPath = Path.Combine(Application.streamingAssetsPath, ABUtility.ABRelativePath);
         CopyAssetBundlesTo(inStreamAssetsPath);
         BundleHotFix.SaveVersionWhenBuildPlayer(PlayerSettings.bundleVersion, PlayerSettings.applicationIdentifier);
         if (!buildEditorPlayer)
         {
-            string targetFilePath = BuildTargetToAppName(target);
-            string targetString = ABUtility.BuildTargetToString(target);
-            string buildPath = string.Format("{0}/{1}/{2}", "Build", targetString, targetFilePath);
-            BuildPlayerOptions options = new BuildPlayerOptions();
-            options.scenes = FindActiveScenes();
-            options.locationPathName = buildPath;
-            options.target = target;
+            var targetFilePath = BuildTargetToAppName(target);
+            var targetString = ABUtility.BuildTargetToString(target);
+            var buildPath = $"Build/{targetString}/{targetFilePath}";
+            var options = new BuildPlayerOptions
+            {
+                scenes = FindActiveScenes(), 
+                locationPathName = buildPath, 
+                target = target
+            };
             BuildPipeline.BuildPlayer(options);
             FileUtil.DeleteFileOrDirectory(inStreamAssetsPath);
         }    
@@ -165,7 +168,7 @@ public class MyBuildApp : ScriptableObject
     }
 
     // 用target获取build后的app名字
-    public static string BuildTargetToAppName(BuildTarget target)
+    private static string BuildTargetToAppName(BuildTarget target)
     {
         switch (target)
         {
