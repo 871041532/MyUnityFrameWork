@@ -47,12 +47,36 @@ public class BundleHotFix : EditorWindow
             }
         }
         GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("部署StreamingAssets到服务器", GUILayout.Width(300), GUILayout.Height(20)))
+        {
+            ABUtility.ResetInfoInEditor(EditorUserBuildSettings.activeBuildTarget);
+            string srcPath = ABUtility.StreamingAssetsPath + "/";
+            string destPath = m_HotPath + "/" + ABUtility.PlatformName + "/";
+            if (Directory.Exists(destPath))
+            {
+                Directory.Delete(destPath, true);
+            }
+            VersionData versionData = ReadJsonFile<VersionData>(m_curVersionPath);
+            foreach (var item in versionData.ABMD5Dict)
+            {
+                var md5Data = item.Value;
+                string srcFile = srcPath + md5Data.Name;
+                string destFile = destPath + md5Data.Name;
+                int idx = destFile.LastIndexOf('/');
+                string p1 = destFile.Substring(0, idx);
+                Directory.CreateDirectory(p1);
+                Debug.Log("文件：" + md5Data.Name);
+                File.Copy(srcFile, destFile);
+            }
+            Debug.Log("部署完毕。路径：" + destPath);
+        }
+        GUILayout.EndHorizontal();
     }
 
     static void NormalBuild(string targetVersionPath, string hotCount)
     {
         VersionData targetVersionData = ReadJsonFile<VersionData>(targetVersionPath);
-        //string curVersionPath = Application.dataPath + "/Resources/version.json";
         string curVersionPath = m_curVersionPath;
         if (!File.Exists(curVersionPath))
         {

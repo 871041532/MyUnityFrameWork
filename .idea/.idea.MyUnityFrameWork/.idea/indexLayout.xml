@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelUserStore">
+    <attachedFolders />
+    <explicitIncludes>
+      <Path>Library/PackageCache/com.unity.ads@2.0.8</Path>
+      <Path>Library/PackageCache/com.unity.analytics@3.3.2</Path>
+      <Path>Library/PackageCache/com.unity.assetbundlebrowser@1.7.0</Path>
+      <Path>Library/PackageCache/com.unity.collab-proxy@1.2.16</Path>
+      <Path>Library/PackageCache/com.unity.purchasing@2.0.6</Path>
+      <Path>Library/PackageCache/com.unity.textmeshpro@2.0.1</Path>
+      <Path>Packages</Path>
+      <Path>ProjectSettings</Path>
+    </explicitIncludes>
+    <explicitExcludes>
+      <Path>.git</Path>
+      <Path>.idea</Path>
+      <Path>.vs</Path>
+      <Path>AssetBundles</Path>
+      <Path>Build</Path>
+      <Path>Hot</Path>
+      <Path>Library</Path>
+      <Path>Logs</Path>
+      <Path>Temp</Path>
+      <Path>Tools</Path>
+      <Path>Version</Path>
+      <Path>obj</Path>
+      <Path>persistentDataPath</Path>
+    </explicitExcludes>
+  </component>
+</project>
