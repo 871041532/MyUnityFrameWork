@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
@@ -164,6 +165,7 @@ public class MyBuildApp : ScriptableObject
     #region 构建Player
     private static void BuildPlayer(BuildTarget target, bool buildEditorPlayer = false)
     {
+        SetPlayerInfoBeforeBuildPlayer();
         Resources.UnloadUnusedAssets();
         // 删除冗余目录
         FileUtil.DeleteFileOrDirectory(Path.Combine(Application.streamingAssetsPath, "AssetBundles/"));
@@ -192,6 +194,16 @@ public class MyBuildApp : ScriptableObject
         Debug.Log("Build Player Done!");
     }
 
+    // buildplayer之前设置一下版本号和别的信息
+    private static void SetPlayerInfoBeforeBuildPlayer()
+    {
+        string[] array = PlayerSettings.bundleVersion.Split('.'); 
+        int[] intArray = new int[3] {Convert.ToInt32(array[0]), Convert.ToInt32(array[1]), Convert.ToInt32(array[2])};
+        intArray[2] += 1;
+        PlayerSettings.bundleVersion = $"{intArray[0]}.{ intArray[1]}.{intArray[2]}";
+        PlayerSettings.applicationIdentifier = "com.Default.Default";
+    }
+    
     // 用target获取build后的app名字
     private static string BuildTargetToAppName(BuildTarget target)
     {

@@ -21,38 +21,60 @@ public class ABManager:IManager
 
     public ABManager()
     {
+        SpriteAtlasManager.atlasRequested += OnAtlasRequested;
+        GameMgr.m_ObjectMgr.CreateOrGetClassPool<ABItem>();
+        GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetItem>();
+        PreHotFix();
+    }
+
+    public void PreHotFix()
+    {
+#if UNITY_EDITOR
+        ABUtility.ResetInfoInEditor(UnityEditor.EditorUserBuildSettings.activeBuildTarget, true);
+#else
+        ABUtility.ResetInfoInDevice(Application.platform, true);
+#endif
+        ResetCfg();
+    }
+
+    public void PostHotFix()
+    {
+        if (ABUtility.LoadMode != LoadModeEnum.DeviceFullAotAB)
+        {
+            return;;
+        }
 #if UNITY_EDITOR
         ABUtility.ResetInfoInEditor(UnityEditor.EditorUserBuildSettings.activeBuildTarget);
 #else
         ABUtility.ResetInfoInDevice(Application.platform);
 #endif
-        SpriteAtlasManager.atlasRequested += OnAtlasRequested;
-        GameMgr.m_ObjectMgr.CreateOrGetClassPool<ABItem>();
-        GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetItem>();
-        InitCfg();
+        ResetCfg();
     }
 
     public override void Awake() {    
 
     }
-
-    private void InitCfg()
+    private void ResetCfg()
     {
         if (ABUtility.LoadMode != LoadModeEnum.EditorOrigin)
         {
             // asset to ab name 读取
-            ABItem abItem = LoadAssetBundle("configs");
-            TextAsset asset = abItem.AssetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
+            if (m_assetToABNames.Count > 0)
+            {
+                UnloadAssetBundle("configs");
+                m_assetToABNames.Clear();
+                m_ABToDependence.Clear();
+            }
+            ABItem ab = LoadAssetBundle("configs");
+            TextAsset asset = ab.AssetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
             MemoryStream stream = new MemoryStream(asset.bytes);
             DataContractJsonSerializer jsonSerializer2 = new DataContractJsonSerializer(typeof(AssetBundleConfig));
             AssetBundleConfig cfg2 = jsonSerializer2.ReadObject(stream) as AssetBundleConfig;
             stream.Close();
-            m_assetToABNames.Clear();
             foreach (var item in cfg2.ResDict)
             {
                 m_assetToABNames.Add(item.Path, item.ABName);
             }
-            m_ABToDependence.Clear();
             foreach (var item in cfg2.ABDict)
             {
                 m_ABToDependence.Add(item.Name, item.DependenceNames);
@@ -312,10 +334,13 @@ public class ABManager:IManager
     {
         Debug.Log("加载Altas：" + tag);
         string path = string.Format("Assets/GameData/UI/res/{0}/{0}.spriteatlas", tag);
-        LoadAssetAsync(path, (item) => {
-            action(item.SpriteAtlas);
-            UnloadAsset(item);    
-        });
+        AssetItem item = LoadAsset(path);
+        action(item.SpriteAtlas);
+        UnloadAsset(item);
+//        LoadAssetAsync(path, (item) => {
+//            action(item.SpriteAtlas);
+//            UnloadAsset(item);    
+//        });
     }
 
     class ABItem

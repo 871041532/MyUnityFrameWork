@@ -64,7 +64,7 @@ def receive_input():
 		s.sendto(strs.encode("utf-8"), addr)
 
 while True:
- 	data, client_addr = s.recvfrom(2048)
+ 	data, client_addr = s.recvfrom(8192)
  	addr = client_addr
  	prase_str(data.decode(encoding="utf-8"))
  	if not is_init:

@@ -25,46 +25,78 @@ public static class ABUtility
     public static string PlatformName = "Windows";
     // 当前StreamingAssetsPath
     public static string StreamingAssetsPath = Application.streamingAssetsPath;
-    public static string ServerURL = "127.0.0.1";
+    public static string ServerURL = "192.168.1.5";
     public static string ServerPort = "7888";
     public static string ServerLoadPath = "";
     // AB包相对编辑器根目录路径
     public static string ABRelativePath = "AssetBundles/Windows/";
     // AB包绝对路径
     public static string ABAbsolutePath = "";
-
-    // 设备上初始化各种信息
-    public static void ResetInfoInDevice(RuntimePlatform platform)
+    
+    // 设备上初始化各种信息，资源都ok后的处理
+    public static void ResetInfoInDevice(RuntimePlatform platform, bool is_DeviceFullAotABPreInRun = false)
     {
         PlatformName = RunTimePlatformToString(platform);
-        LoadMode = LoadModeEnum.StandaloneAB;
         if (platform == RuntimePlatform.Android)
         {
             StreamingAssetsPath = Application.dataPath + "!assets";
+            persistentDataPath = "file://" + Application.persistentDataPath;
         }
         else
         {
             StreamingAssetsPath = Application.streamingAssetsPath;
+            persistentDataPath = Application.persistentDataPath;
         }
         ServerLoadPath = string.Format("{0}:{1}/{2}/", ServerURL, ServerPort,PlatformName);
         ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
-        ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
-        persistentDataPath = Application.persistentDataPath;
+        if (LoadMode == LoadModeEnum.StandaloneAB)
+        {
+            ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
+        }
+        else if (LoadMode == LoadModeEnum.DeviceFullAotAB)
+        {
+            if (is_DeviceFullAotABPreInRun)
+            {
+                ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
+            }
+            else
+            {
+                ABAbsolutePath = Path.Combine(persistentDataPath.Replace("file://", ""), ABUtility.ABRelativePath);
+            }
+        }
     }
 
 #if UNITY_EDITOR
     // 编辑器下初始化各种信息
-    public static void ResetInfoInEditor(BuildTarget target)
+    public static void ResetInfoInEditor(BuildTarget target, bool is_DeviceFullAotABPreInRun = false)
     {
         PlatformName = BuildTargetToString(target);
         StreamingAssetsPath = Application.streamingAssetsPath;
         ServerLoadPath = string.Format("{0}:{1}/{2}/", ServerURL, ServerPort, PlatformName);
         ABRelativePath = string.Format("AssetBundles/{0}/", ABUtility.PlatformName);
-        ABAbsolutePath = Path.Combine(Environment.CurrentDirectory, ABUtility.ABRelativePath);
         persistentDataPath = Path.Combine(Environment.CurrentDirectory , "persistentDataPath");
         if (!Directory.Exists(persistentDataPath))
         {
             Directory.CreateDirectory(persistentDataPath);
+        }
+        if (LoadMode == LoadModeEnum.StandaloneAB)
+        {
+            ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
+        }
+        else if (LoadMode == LoadModeEnum.DeviceFullAotAB)
+        {
+            if (is_DeviceFullAotABPreInRun)
+            {
+                ABAbsolutePath = Path.Combine(StreamingAssetsPath, ABUtility.ABRelativePath);
+            }
+            else
+            {
+                ABAbsolutePath = Path.Combine(persistentDataPath, ABUtility.ABRelativePath);
+            }
+        }
+        else
+        {
+            ABAbsolutePath = Path.Combine(Environment.CurrentDirectory, ABUtility.ABRelativePath);
         }
     }
 

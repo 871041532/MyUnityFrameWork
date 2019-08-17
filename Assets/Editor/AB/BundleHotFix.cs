@@ -40,6 +40,7 @@ public class BundleHotFix : EditorWindow
         GUILayout.EndHorizontal();
     }
 
+    // BuildPlayer时将StreamingAssets部署到服务器
     public static void DeployStreamingAssetsToHotWhenBuildPlayer()
     {
         Debug.Log($"开始部署热更文件，Version:{PlayerSettings.bundleVersion}  PackageName:{PlayerSettings.applicationIdentifier}");
@@ -74,7 +75,7 @@ public class BundleHotFix : EditorWindow
         Debug.Log("部署完毕。路径：" + destPath);
     }
     
-    #region buildAB时，将当前平台版本信息覆盖写入StreamingAssets/version.json
+    #region BuildPlayer时，将当前平台版本信息覆盖写入StreamingAssets/version.json
     public static void SaveVersionToStreamingAssetsWhenBuildPlayer(string version, string package)
     {
         // 依赖信息写入

@@ -54,6 +54,15 @@ public class ABMD5
     public string MD5 { get; set; }
     [DataMember]
     public float Size { get; set; }
+    
+    public static bool operator ==(ABMD5 lhs, ABMD5 rhs)
+    {
+        return lhs.Name == rhs.Name && lhs.MD5 == rhs.MD5;
+    }
+    public static bool operator !=(ABMD5 lhs, ABMD5 rhs)
+    {
+        return lhs.Name != rhs.Name || (lhs.Name == rhs.Name && lhs.MD5 != rhs.MD5);
+    }
 }
 
 [DataContract]

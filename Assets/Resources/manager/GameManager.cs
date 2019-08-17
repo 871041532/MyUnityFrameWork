@@ -20,40 +20,39 @@ public class GameManager : MonoBehaviour
     {
         Console.Init();
         Instance = this;
+        Assert.raiseExceptions = true;
         DontDestroyOnLoad(gameObject);
         m_Mgrs = new List<IManager>();
-
         m_CallMgr = new CallManager();
         m_ObjectMgr = new ObjectManager();
-        m_LuaMgr = new LuaManager();
-
         m_ABMgr = new ABManager();
-        m_ResMgr = new ResourceManager();
-        m_CutSceneMgr = new CutSceneManager();
-        m_UIMgr = new UIManager();
-        m_HotPatchMgr = new HotPatchManager();
-
-
-        m_Mgrs.Add(m_LuaMgr);
-        m_Mgrs.Add(m_ABMgr);
-        m_Mgrs.Add(m_CutSceneMgr);
-        m_Mgrs.Add(m_ResMgr);
-        m_Mgrs.Add(m_ObjectMgr);
-        m_Mgrs.Add(m_UIMgr);
-        m_Mgrs.Add(m_CallMgr);
-        m_Mgrs.Add(m_HotPatchMgr);
-        
-        Assert.raiseExceptions = true;
-        var iter = m_Mgrs.GetEnumerator();
-        while (iter.MoveNext())
+        m_HotPatchMgr = new HotPatchManager(() =>
         {
-            iter.Current.Awake();
-        }
-        var iter2 = m_Mgrs.GetEnumerator();
-        while (iter.MoveNext())
-        {
-            iter2.Current.Start();
-        }
+            m_ABMgr.PostHotFix();
+            m_LuaMgr = new LuaManager();
+            m_ResMgr = new ResourceManager();
+            m_CutSceneMgr = new CutSceneManager();
+            m_UIMgr = new UIManager();
+            m_Mgrs.Add(m_LuaMgr);
+            m_Mgrs.Add(m_ABMgr);
+            m_Mgrs.Add(m_CutSceneMgr);
+            m_Mgrs.Add(m_ResMgr);
+            m_Mgrs.Add(m_ObjectMgr);
+            m_Mgrs.Add(m_UIMgr);
+            m_Mgrs.Add(m_CallMgr);
+            m_Mgrs.Add(m_HotPatchMgr);
+
+            var iter = m_Mgrs.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                iter.Current.Awake();
+            }
+            var iter2 = m_Mgrs.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                iter2.Current.Start();
+            }
+        });
     }
 
     private void Update()
