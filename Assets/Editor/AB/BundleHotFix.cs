@@ -56,7 +56,7 @@ public class BundleHotFix : EditorWindow
             return;
         }
         VersionData versionData = ReadJsonFile<VersionData>(m_curVersionPath);
-        foreach (var item in versionData.ABMD5Dict)
+        foreach (var item in versionData.FileInfoDict)
         {
             var md5Data = item.Value;
             string srcFile = srcPath + md5Data.Name;
@@ -83,10 +83,10 @@ public class BundleHotFix : EditorWindow
         {
             Version = PlayerSettings.bundleVersion,
             PackageName = PlayerSettings.applicationIdentifier,
-            ABMD5Dict = new Dictionary<string, ABMD5>()
+            FileInfoDict = new Dictionary<string, FileMD5>()
         };
         // 写入MD5
-        var abMd5List = config.ABMD5Dict;
+        var abMd5List = config.FileInfoDict;
         DirectoryInfo directory = new DirectoryInfo(ABUtility.StreamingAssetsFilePath);
         if (directory.Exists)
         {
@@ -96,7 +96,7 @@ public class BundleHotFix : EditorWindow
                 FileInfo info = fileInfos[i];
                 if (!info.Name.EndsWith(".meta") && !info.Name.EndsWith(".manifest") && info.Name != "version.json")
                 {
-                    var abMd5 = new ABMD5();
+                    var abMd5 = new FileMD5();
                     string name = info.FullName.Replace(directory.FullName + "\\", "").Replace("\\", "/");
                     abMd5.Name = name;
                     abMd5.MD5 = MD5Helper.MD5File(info.FullName);
@@ -105,7 +105,7 @@ public class BundleHotFix : EditorWindow
                 }
             }
             // 把自己也添加进去
-            abMd5List.Add("version.json", new ABMD5()
+            abMd5List.Add("version.json", new FileMD5()
             {
                 Name = "version.json",
                 MD5 = config.Version,

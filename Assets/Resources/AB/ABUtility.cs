@@ -151,8 +151,7 @@ public static class ABUtility
 
     public class MD5Helper
         {
-            
-             /// <summary>
+            /// <summary>
             /// 对文件流进行MD5加密
             /// </summary>
             public static string MD5Stream(Stream stream)

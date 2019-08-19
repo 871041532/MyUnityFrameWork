@@ -44,6 +44,11 @@
             <e p="OfflineEffectData.cs" t="Include" />
             <e p="OfflineUIData.cs" t="Include" />
           </e>
+          <e p="Patch" t="Include">
+            <e p="DownLoadAB.cs" t="Include" />
+            <e p="DownLoadItem.cs" t="Include" />
+            <e p="VersionData.cs" t="Include" />
+          </e>
           <e p="UGUI" t="Include">
             <e p="BaseItem.cs" t="Include" />
             <e p="Panel" t="Include">

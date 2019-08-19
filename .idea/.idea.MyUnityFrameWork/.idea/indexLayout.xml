@@ -25,6 +25,7 @@
       <Path>Tools</Path>
       <Path>Version</Path>
       <Path>obj</Path>
+      <Path>persistentDataPath</Path>
     </explicitExcludes>
   </component>
 </project>

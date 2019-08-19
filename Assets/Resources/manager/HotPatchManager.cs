@@ -127,14 +127,14 @@ public class HotPatchManager:IManager
                 GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(m_streamingVersionPath, m_persistentWriteVersionPath, okCall));
             };
             int num = 0;
-            int count = m_streamingVersionData.ABMD5Dict.Count - 1;
+            int count = m_streamingVersionData.FileInfoDict.Count - 1;
             Action<bool> call = (result) => {
                 if ( ++ num == count)
                 {
                     lastOneCall();
                 }
             };
-            foreach (var item in m_streamingVersionData.ABMD5Dict)
+            foreach (var item in m_streamingVersionData.FileInfoDict)
             {
                 string srcPath = $"{Application.streamingAssetsPath}/{item.Value.Name}";
                 string descPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
@@ -152,13 +152,13 @@ public class HotPatchManager:IManager
 
     IEnumerator CopyStreamAssetsToPersistent(string source, string dest, Action<bool> okCall)
     {
-        Debug.Log(dest + "开始写入...");
+        Debug.Log("开始写入：" + dest);
         var request = UnityWebRequest.Get(source);
         yield return request.SendWebRequest();
         if (request.error != null)
         {
             Debug.LogError(request.error);
-            Debug.LogError(dest + "写入失败！");
+            Debug.LogError("写入失败：" + dest);
             okCall(false);
         }
         byte[] results = request.downloadHandler.data;
@@ -173,7 +173,7 @@ public class HotPatchManager:IManager
         fs.Write(results, 0, results.Length);
         fs.Flush();
         fs.Close();
-        Debug.Log(dest + "写入成功！");
+        Debug.Log("写入成功：" + dest);
         okCall(true);
     }
 
@@ -252,7 +252,7 @@ public class HotPatchManager:IManager
                 GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(m_serverVersionPath, m_persistentWriteVersionPath, okCall));
             };
             int num = 0;
-            int count = m_serverVersionData.ABMD5Dict.Count - 1;
+            int count = m_serverVersionData.FileInfoDict.Count - 1;
             Action<bool> call = (result) => {
                 if (!result)
                 {
@@ -263,12 +263,14 @@ public class HotPatchManager:IManager
                     lastOneCall();
                 }
             };
-            foreach (var item in m_serverVersionData.ABMD5Dict)
+            int i = 0;
+            float allSize = 0;
+            foreach (var item in m_serverVersionData.FileInfoDict)
             {
                 string key = item.Key;
                 string srcPath = m_AssetBundlePrePath + "/" + item.Value.Name;
                 string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
-                if (m_persistentVersionData.ABMD5Dict.ContainsKey(key) && m_persistentVersionData.ABMD5Dict[key] == item.Value)
+                if (m_persistentVersionData.FileInfoDict.ContainsKey(key) && m_persistentVersionData.FileInfoDict[key] == item.Value)
                 {
                     call(true);
                 }
@@ -277,9 +279,12 @@ public class HotPatchManager:IManager
                     if (destPath != m_persistentWriteVersionPath && !CheckLocalMD5(item.Value.MD5, destPath))
                     {
                         GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(srcPath, destPath, call));
+                        allSize += item.Value.Size;
                     }
                 }
+                i++;
             }
+            Debug.Log($"总下载大小：{allSize}KB。");
         }
     }
 
