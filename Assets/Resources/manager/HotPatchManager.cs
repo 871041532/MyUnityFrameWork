@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using UnityEngine;
@@ -17,28 +16,28 @@ public enum PackageState
 
 public class HotPatchManager:IManager
 {
-    static string m_RelativeFilePath = "/version.json";
+    static readonly string m_RelativeFilePath = "/version.json";
     public PackageState m_State = PackageState.Normal;
-    VersionData m_streamingVersionData = null;
-    VersionData m_persistentVersionData = null;
-    VersionData m_serverVersionData = null;
-    string m_serverVersionPath = "";
+    VersionData m_streamingVersionData;
+    VersionData m_persistentVersionData;
+    VersionData m_serverVersionData;
+    string m_serverVersionPath;
     string m_streamingVersionPath;
     string m_persistentReadVersionPath;
     string m_AssetBundlePrePath;
-    private string m_persistentWriteVersionPath = "";
+    private string m_persistentWriteVersionPath;
 
     public HotPatchManager(Action endCall)
     {
-        m_streamingVersionPath = Application.streamingAssetsPath + m_RelativeFilePath;
-        m_persistentReadVersionPath = ABUtility.persistentDataPath + m_RelativeFilePath;
-        m_persistentWriteVersionPath = ABUtility.persistentDataPath.Replace("file://", "")  + m_RelativeFilePath;
+        m_streamingVersionPath = ABUtility.StreamingAssetsURLPath + m_RelativeFilePath;
+        m_persistentReadVersionPath = ABUtility.PersistentDataURLPath + m_RelativeFilePath;
+        m_persistentWriteVersionPath = ABUtility.PersistentDataFilePath  + m_RelativeFilePath;
         CheckVersion(endCall);
     }
 
-    void SetServerPath(string PackageName)
+    void SetServerPath(string packageName)
     {
-        m_AssetBundlePrePath = $"http://192.168.1.5:7888/{PackageName}/{ABUtility.PlatformName}/";
+        m_AssetBundlePrePath = $"http://10.231.10.87:7888/{packageName}/{ABUtility.PlatformName}/";
         m_serverVersionPath = m_AssetBundlePrePath + "version.json";
     }
 
@@ -55,15 +54,22 @@ public class HotPatchManager:IManager
             }
             // s2：本地资源处理
             Debug.Log("本地版本已获取，开始准备本地资源...");
-            CheckLocalRes(()=> {
+            CheckLocalRes((result1)=> {
                 // s3：获取服务器资源版本
                 Debug.Log("本地资源处理完毕，开始获取服务器资源信息...");
                 Debug.Log("URL:" + m_serverVersionPath);
                 GetPersistentAndServerInfo(()=> {
                     // s4：RunPatch
                     Debug.Log("开始向服务器获取Path...");
-                    RunPatch(()=> {
-                        Debug.Log("热更处理完毕，进入游戏！");
+                    RunPatch((result2)=> {
+                        if (result2)
+                        {
+                            Debug.Log("热更处理成功完毕，进入游戏！");
+                        }
+                        else
+                        {
+                            Debug.Log("热更处理失败完毕，进入游戏！");
+                        }
                         okCall();
                     });
                 });
@@ -95,7 +101,7 @@ public class HotPatchManager:IManager
     }
 
      // s2:检测本地版本，可能stream复制到Present
-     void CheckLocalRes(Action okCall)
+     void CheckLocalRes(Action<bool> okCall)
     {
         m_State = PackageState.Error;
         Debug.Log("Streaming Version: " + m_streamingVersionData.Version);
@@ -122,7 +128,7 @@ public class HotPatchManager:IManager
             };
             int num = 0;
             int count = m_streamingVersionData.ABMD5Dict.Count - 1;
-            Action call = () => {
+            Action<bool> call = (result) => {
                 if ( ++ num == count)
                 {
                     lastOneCall();
@@ -130,8 +136,8 @@ public class HotPatchManager:IManager
             };
             foreach (var item in m_streamingVersionData.ABMD5Dict)
             {
-                string srcPath = Application.streamingAssetsPath + "/" + item.Value.Name;
-                string descPath = ABUtility.persistentDataPath.Replace("file://", "") + "/" + item.Value.Name;
+                string srcPath = $"{Application.streamingAssetsPath}/{item.Value.Name}";
+                string descPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
                 if (srcPath != m_streamingVersionPath)
                 {
                    GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(srcPath, descPath, call));
@@ -140,11 +146,11 @@ public class HotPatchManager:IManager
         }
         else
         {
-            okCall();
+            okCall(true);
         }
     }
 
-    IEnumerator CopyStreamAssetsToPersistent(string source, string dest, Action okCall)
+    IEnumerator CopyStreamAssetsToPersistent(string source, string dest, Action<bool> okCall)
     {
         Debug.Log(dest + "开始写入...");
         var request = UnityWebRequest.Get(source);
@@ -152,6 +158,8 @@ public class HotPatchManager:IManager
         if (request.error != null)
         {
             Debug.LogError(request.error);
+            Debug.LogError(dest + "写入失败！");
+            okCall(false);
         }
         byte[] results = request.downloadHandler.data;
         int idx = dest.LastIndexOf('/');
@@ -166,7 +174,7 @@ public class HotPatchManager:IManager
         fs.Flush();
         fs.Close();
         Debug.Log(dest + "写入成功！");
-        okCall();
+        okCall(true);
     }
 
     // s3: 获取server端与persistent信息
@@ -192,7 +200,7 @@ public class HotPatchManager:IManager
     }
 
     // s4: 对比，Patch更新或整包更新
-    void  RunPatch(Action okCall)
+    void  RunPatch(Action<bool> okCall)
     {
         m_State = PackageState.Error;
         if (m_serverVersionData is null)
@@ -224,17 +232,17 @@ public class HotPatchManager:IManager
         if (m_State == PackageState.Error)
         {
             Debug.Log("连接服务器失败");
-            okCall();
+            okCall(false);
         }
         else if (m_State == PackageState.Normal)
         {
             Debug.Log($"已是最新版本，不需要热更。");
-            okCall();
+            okCall(true);
         }
         else if(m_State == PackageState.NeedFullInstall)
         {
             Debug.Log("版本差距过大，需要整包更新，不需要热更。");
-            okCall();
+            okCall(false);
         }
         else
         {
@@ -245,8 +253,12 @@ public class HotPatchManager:IManager
             };
             int num = 0;
             int count = m_serverVersionData.ABMD5Dict.Count - 1;
-            Action call = () => {
-                if (++num == count)
+            Action<bool> call = (result) => {
+                if (!result)
+                {
+                    okCall(false);
+                }
+                else if (++num == count)
                 {
                     lastOneCall();
                 }
@@ -254,23 +266,28 @@ public class HotPatchManager:IManager
             foreach (var item in m_serverVersionData.ABMD5Dict)
             {
                 string key = item.Key;
+                string srcPath = m_AssetBundlePrePath + "/" + item.Value.Name;
+                string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
                 if (m_persistentVersionData.ABMD5Dict.ContainsKey(key) && m_persistentVersionData.ABMD5Dict[key] == item.Value)
                 {
-                    call();
+                    call(true);
                 }
                 else
                 {
-                    string srcPath = m_AssetBundlePrePath + "/" + item.Value.Name;
-                    string descPath = ABUtility.persistentDataPath.Replace("file://", "") + "/" + item.Value.Name;
-                    if (descPath != m_persistentWriteVersionPath)
+                    if (destPath != m_persistentWriteVersionPath && !CheckLocalMD5(item.Value.MD5, destPath))
                     {
-                        GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(srcPath, descPath, call));
+                        GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(srcPath, destPath, call));
                     }
                 }
             }
         }
     }
 
+    bool CheckLocalMD5(string serverMD5, string destPath)
+    {
+        string destMD5 = MD5Helper.MD5File(destPath);
+        return serverMD5 == destPath;
+    }
 
     // <0 小于；0等于；>0大于
     int ContrastNumVersion(int[] version1, int[] version2)
@@ -304,7 +321,7 @@ public class HotPatchManager:IManager
     {
         Debug.Log("Version Path: " + path);
         UnityWebRequest request = UnityWebRequest.Get(path);
-        request.timeout = 5000;
+        request.timeout = 2;
         yield return request.SendWebRequest();
         VersionData data = null;
         try
@@ -316,7 +333,9 @@ public class HotPatchManager:IManager
         }
         catch (Exception)
         {
+            // ignored
         }
+
         request.Dispose();
         call(data);
     }

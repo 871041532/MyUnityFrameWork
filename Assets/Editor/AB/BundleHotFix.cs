@@ -44,7 +44,7 @@ public class BundleHotFix : EditorWindow
     public static void DeployStreamingAssetsToHotWhenBuildPlayer()
     {
         Debug.Log($"开始部署热更文件，Version:{PlayerSettings.bundleVersion}  PackageName:{PlayerSettings.applicationIdentifier}");
-        string srcPath = ABUtility.StreamingAssetsPath + "/";
+        string srcPath = ABUtility.StreamingAssetsFilePath + "/";
         string destPath = $"{m_HotPath}/{PlayerSettings.applicationIdentifier}/{ABUtility.PlatformName}/";
         if (Directory.Exists(destPath))
         {
@@ -87,7 +87,7 @@ public class BundleHotFix : EditorWindow
         };
         // 写入MD5
         var abMd5List = config.ABMD5Dict;
-        DirectoryInfo directory = new DirectoryInfo(ABUtility.StreamingAssetsPath);
+        DirectoryInfo directory = new DirectoryInfo(ABUtility.StreamingAssetsFilePath);
         if (directory.Exists)
         {
             FileInfo[] fileInfos = directory.GetFiles("*", SearchOption.AllDirectories);
@@ -99,7 +99,7 @@ public class BundleHotFix : EditorWindow
                     var abMd5 = new ABMD5();
                     string name = info.FullName.Replace(directory.FullName + "\\", "").Replace("\\", "/");
                     abMd5.Name = name;
-                    abMd5.MD5 = FileHelper.MD5Stream(info.FullName);
+                    abMd5.MD5 = MD5Helper.MD5File(info.FullName);
                     abMd5.Size = info.Length / 1024;
                     abMd5List.Add(name, abMd5);
                 }
