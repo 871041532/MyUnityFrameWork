@@ -2,7 +2,6 @@
 using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Json;
-using Boo.Lang;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -29,21 +28,25 @@ public class HotPatchManager:IManager
     string m_AssetBundlePrePath;
     private string m_persistentWriteVersionPath;
 
-    public HotPatchManager(Action endCall)
+    public HotPatchManager()
     {
         m_streamingVersionPath = ABUtility.StreamingAssetsURLPath + m_RelativeFilePath;
         m_persistentReadVersionPath = ABUtility.PersistentDataURLPath + m_RelativeFilePath;
         m_persistentWriteVersionPath = ABUtility.PersistentDataFilePath  + m_RelativeFilePath;
-        CheckVersion(endCall);
+    }
+
+    public override void Start()
+    {
+        CheckVersion();
     }
 
     void SetServerPath(string packageName)
-    {
-        m_AssetBundlePrePath = $"http://10.231.10.87:7888/{packageName}/{ABUtility.PlatformName}/";
-        m_serverVersionPath = m_AssetBundlePrePath + "version.json";
-    }
+         {
+             m_AssetBundlePrePath = $"http://127.0.0.1:7888/{packageName}/{ABUtility.PlatformName}/";
+             m_serverVersionPath = m_AssetBundlePrePath + "version.json";
+         }
 
-    private void CheckVersion(Action endCall)
+    public void CheckVersion()
     {
         SequenceJob sequenceJob = new SequenceJob();
         if (ABUtility.LoadMode == LoadModeEnum.DeviceFullAotAB)
@@ -64,11 +67,11 @@ public class HotPatchManager:IManager
         sequenceJob.Run((job) =>
         {
             Debug.Log("Patch模块处理完毕，开始进入游戏！");
-            endCall();
+            GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatched);
         }, (job) =>
         {
             Debug.Log("Patch模块处理失败，请检查网络连接！");
-            endCall();
+            GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatched);
         });
     }
 
@@ -122,16 +125,24 @@ public class HotPatchManager:IManager
             var seqJob = new SequenceJob();
             foreach (var item in m_streamingVersionData.FileInfoDict)
             {
+                string key = item.Key;
                 string srcPath = $"{Application.streamingAssetsPath}/{item.Value.Name}";
                 string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
-                if (srcPath != m_streamingVersionPath)
+                bool judge =
+                    !(m_persistentVersionData != null && m_persistentVersionData.FileInfoDict.ContainsKey(key) &&
+                      m_persistentVersionData.FileInfoDict[key] == item.Value) && srcPath != m_streamingVersionPath &&
+                    !CheckLocalMD5(item.Value.MD5, destPath);
+                if (judge)
                 {
                     var job = new DownloadPatch(srcPath, destPath);
                     seqJob.AddChild(job);
                 }
             }
             seqJob.AddChild(new DownloadPatch(m_streamingVersionPath, m_persistentWriteVersionPath));
-            seqJob.Run((j) => { job2.Success(); }, (j)=>{ job2.Fail(); });
+            seqJob.Run((j) => { job2.Success(); }, (j)=>{ job2.Fail(); }, (j) =>
+            {
+                Debug.Log("进度：" + j.Progress);
+            });
         }
         else
         {

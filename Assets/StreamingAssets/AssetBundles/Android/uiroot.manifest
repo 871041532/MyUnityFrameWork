@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 3562732162
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5dbf2ad742f8e5ca140d048226097373
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b733b6e47c13a5a5348595654da85393
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/GameData/UI/prefabs/UIRoot.prefab
+Dependencies: []

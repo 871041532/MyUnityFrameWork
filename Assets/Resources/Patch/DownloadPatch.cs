@@ -14,6 +14,7 @@ public class DownloadPatch:DownloadBase
     protected override void OnRun()
     {
         GameManager.Instance.StartCoroutine(DownLoad());
+        GameManager.Instance.m_CallMgr.AddUpdate(EvalProcess);
     }
     public IEnumerator DownLoad()
     {
@@ -43,13 +44,13 @@ public class DownloadPatch:DownloadBase
 
     protected override void OnReset()
     {
+        GameManager.Instance.m_CallMgr.RemoveUpdate(EvalProcess);
         Destroy();
     }
 
-    private bool EvalProcess()
+    private void EvalProcess()
     {
         ProgressChange(m_WebRequest.downloadProgress);
-        return true;
     }
 
     public override long GetCurLength()

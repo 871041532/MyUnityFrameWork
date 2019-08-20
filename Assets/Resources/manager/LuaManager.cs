@@ -54,8 +54,7 @@ public class LuaManager : IManager
         byte[] data = File.ReadAllBytes(path);
         return data;
     }
-
-
+    
     public override void OnDestroy()
     {
         m_luaEnv.Dispose();

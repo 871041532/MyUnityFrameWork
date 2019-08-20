@@ -2,6 +2,8 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine.Experimental.PlayerLoop;
 
 public enum EventType
 {
@@ -16,12 +18,13 @@ public static class EventEnum
 {
     public static string BeginChangeScene = "BeginChangeScene";
     public static string OnChangeScene = "OnChangeScene";
+    public static string OnPatched = "OnPatched";
 }
 
 public class CallManager : IManager
 {
     private EventManager[] m_EventManagers;
-
+    private CallBackManager m_CallbackManager;
     public CallManager()
     {
         int count = (int)EventType.NoUsingOnlyNum;
@@ -30,8 +33,24 @@ public class CallManager : IManager
         {
             m_EventManagers[i] = new EventManager();
         }
+        m_CallbackManager = new CallBackManager();
     }
 
+    public override void Update()
+    {
+        m_CallbackManager.Update();
+    }
+
+    public void AddUpdate(Action call)
+    {
+        m_CallbackManager.AddUpdate(call);
+    }
+
+    public void RemoveUpdate(Action call)
+    {
+        m_CallbackManager.RemoveUpdate(call);
+    }
+    
     public void RegisterEvent(string eventName, Action<object[]> call, EventType type = EventType.General)
     {
         m_EventManagers[(int)type].RegisterEvent(eventName, call);
@@ -56,6 +75,32 @@ public class CallManager : IManager
     }
 }
 
+public class CallBackManager
+{
+    public SortedDictionary<int, Action> m_TimeRegisters = new SortedDictionary<int, Action>();
+    public Dictionary<int, Action> m_UpdateRegisters = new Dictionary<int, Action>();
+
+    public void AddUpdate(Action call)
+    {
+        int hashCode = call.GetHashCode();
+        m_UpdateRegisters.Add(hashCode, call);
+    }
+
+
+    public void RemoveUpdate(Action call)
+    {
+        m_UpdateRegisters.Remove(call.GetHashCode());
+    }
+    
+    
+    public void Update()
+    {
+        foreach (var item in m_UpdateRegisters)
+        {
+            item.Value();
+        }
+    }
+}
 
 public class EventManager
 {

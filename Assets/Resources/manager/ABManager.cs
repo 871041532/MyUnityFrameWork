@@ -37,6 +37,11 @@ public class ABManager:IManager
         ResetCfg();
     }
 
+    public override void OnPatched()
+    {
+        PostHotFix();
+    }
+
     public void PostHotFix()
     {
         if (ABUtility.LoadMode != LoadModeEnum.DeviceFullAotAB)
@@ -51,9 +56,6 @@ public class ABManager:IManager
         ResetCfg();
     }
 
-    public override void Awake() {    
-
-    }
     private void ResetCfg()
     {
         if (ABUtility.LoadMode != LoadModeEnum.EditorOrigin)

@@ -13,7 +13,7 @@ using UnityEngine;
         
         protected int m_Id = -1;
         public float Id { get { return m_Id; } }
-        protected float m_Progress = 0;
+        protected float m_Progress = -1;
         public float Progress { get { return m_Progress; } }
         protected bool m_IsRunning = false;
         public bool IsRunning { get { return m_IsRunning; } }
@@ -147,7 +147,7 @@ using UnityEngine;
 
         private void ChildProgressChangeHandler(Job child)
         {
-            float progress = (m_CurIdx + child.Progress >= 0? child.Progress:0) / m_Children.Count;
+            float progress = (m_CurIdx + (child.Progress >= 0? child.Progress:0)) / m_Children.Count;
             ProgressChange(progress);
         }
 
@@ -284,7 +284,7 @@ using UnityEngine;
             float childrenProgress = 0;
             for (int i = 0; i < m_Children.Count; i++)
             {
-                childrenProgress += m_Children[i].Progress >= 0? m_Children[i].Progress:0;
+                childrenProgress += (m_Children[i].Progress >= 0? m_Children[i].Progress:0);
             }
             childrenProgress /= m_Children.Count;
             ProgressChange(childrenProgress);

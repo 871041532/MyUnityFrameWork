@@ -33,20 +33,21 @@ public class UIManager : IManager
         m_EventSystem = GameMgr.gameObject.transform.Find("EventSystem").GetComponent<EventSystem>();
         var canvasScaler = m_UIRoot.GetComponent<CanvasScaler>();
         m_ReferenceResolution = canvasScaler.referenceResolution;
-        RegisterWindow("menu", () =>
-        {
-            return new MenuPanel();
-        });
-        RegisterWindow("loading", () =>
-        {
-            return new LoadingPanel();
-        });
-        RegisterWindow("sportTool", () =>
-        {
-            return new SportToolPanel();
-        });
-        var win = GetOrCreateWindow("menu");
-        win.Show();
+        RegisterWindow("menu", () => new MenuPanel());
+        RegisterWindow("loading", () => new LoadingPanel());
+        RegisterWindow("sportTool", () => new SportToolPanel());
+        RegisterWindow("hotPatch", () => new HotPatchPanel());
+    }
+
+    public override void Start()
+    {
+        SwitchSingleWindow("hotPatch");
+    }
+
+    public override void OnPatched()
+    {
+        DestroyAllWindow();
+        SwitchSingleWindow("menu");
     }
 
     public override void Update()
@@ -200,5 +201,4 @@ public class UIManager : IManager
         win.Show(args);
         return win;
     }
-
 }
