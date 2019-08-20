@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using Boo.Lang;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,6 +17,7 @@ public enum PackageState
 
 public class HotPatchManager:IManager
 {
+    public static string ErrorInfo;
     static readonly string m_RelativeFilePath = "/version.json";
     public PackageState m_State = PackageState.Normal;
     VersionData m_streamingVersionData;
@@ -41,7 +43,7 @@ public class HotPatchManager:IManager
         m_serverVersionPath = m_AssetBundlePrePath + "version.json";
     }
 
-    private void CheckVersion(Action okCall)
+    private void CheckVersion(Action endCall)
     {
         // s1:获取本地版本
         Debug.Log("开始获取本地版本信息...");
@@ -49,7 +51,7 @@ public class HotPatchManager:IManager
             if (ABUtility.LoadMode != LoadModeEnum.DeviceFullAotAB)
             {
                 Debug.Log("开始进入游戏！");
-                okCall();
+                endCall();
                 return;
             }
             // s2：本地资源处理
@@ -70,7 +72,7 @@ public class HotPatchManager:IManager
                         {
                             Debug.Log("热更处理失败完毕，进入游戏！");
                         }
-                        okCall();
+                        endCall();
                     });
                 });
             });

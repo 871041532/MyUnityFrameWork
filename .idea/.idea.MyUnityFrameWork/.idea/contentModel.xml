@@ -47,6 +47,7 @@
           <e p="Patch" t="Include">
             <e p="DownLoadAB.cs" t="Include" />
             <e p="DownLoadItem.cs" t="Include" />
+            <e p="Job.cs" t="Include" />
             <e p="VersionData.cs" t="Include" />
           </e>
           <e p="UGUI" t="Include">

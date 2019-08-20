@@ -28,6 +28,47 @@ public class AssetSerializeCfg: ScriptableObject
 
 public class TestSerilize
 {
+    [MenuItem("Tools/Test Job")]
+    static void TestJob()
+    {
+        var j1 = new Job((job) =>
+        {
+            Debug.Log("j1");
+            job.Success();
+        });
+        var j2 = new Job((job) =>
+        {
+            Debug.Log("j2");
+            job.Success();
+        });
+        var j3 = new Job((job) =>
+        {
+            Debug.Log("j3");
+            job.Fail();
+        });
+        var j4 = new Job((job) =>
+        {
+            Debug.Log("j4");
+            job.Success();
+        });
+        var parallel = new ParallelJob();
+        parallel.AddChild(j1);
+        parallel.AddChild(j2);
+        parallel.AddChild(j3);
+        parallel.AddChild(j4);
+        parallel.Run((job) =>
+        {
+            Debug.Log("parallel success");
+        }, (Job) =>
+        {
+            var children = (Job as ParallelJob)?.m_ErrorChildren;
+            Debug.Log("parallel error");
+        }, (job) =>
+        {
+            Debug.Log("parallel progress：" + job.Progress);
+        });
+    }
+    
     [MenuItem("Tools/Serialize/XmlSerialize_write")]
     static void XmlSerilize()
     {
