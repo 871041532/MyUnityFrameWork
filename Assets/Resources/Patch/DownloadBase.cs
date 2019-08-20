@@ -2,25 +2,19 @@
 using System.Collections;
 using System.IO;
 
-public abstract class DownLoadItem
+public abstract class DownloadBase:Job
 {
         protected string m_URL;
         protected string m_FilePath;
         protected long m_FileSize;
         protected bool m_StartDownLoad = false;
 
-        protected DownLoadItem(string mURL, string filePath)
+        protected DownloadBase(string mURL, string filePath)
         {
                 m_URL = mURL;
                 m_FilePath = filePath;
         }
-
-        public virtual IEnumerator DownLoad(Action callback)
-        {
-                yield return null;
-        }
         
-        public abstract float GetProgress();
         public abstract long GetCurLength();
         public abstract long GetLength();
         public abstract void Destroy();

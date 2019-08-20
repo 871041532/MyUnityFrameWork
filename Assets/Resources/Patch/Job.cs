@@ -102,7 +102,7 @@ using UnityEngine;
         }
         protected virtual void OnReset()
         {
-
+            
         }
         #endregion
     }

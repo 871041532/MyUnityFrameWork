@@ -104,8 +104,3 @@ public class EventManager
         }
     }
 }
-
-public class CallBackManager
-{
-
-}

@@ -45,66 +45,60 @@ public class HotPatchManager:IManager
 
     private void CheckVersion(Action endCall)
     {
-        // s1:获取本地版本
-        Debug.Log("开始获取本地版本信息...");
-        GetLocalVersion(()=> {
-            if (ABUtility.LoadMode != LoadModeEnum.DeviceFullAotAB)
-            {
-                Debug.Log("开始进入游戏！");
-                endCall();
-                return;
-            }
+        SequenceJob sequenceJob = new SequenceJob();
+        if (ABUtility.LoadMode == LoadModeEnum.DeviceFullAotAB)
+        {
+            // s1: 获取本地版本
+            Job s1 = new Job(GetLocalVersion);
+            sequenceJob.AddChild(s1);
             // s2：本地资源处理
-            Debug.Log("本地版本已获取，开始准备本地资源...");
-            CheckLocalRes((result1)=> {
-                // s3：获取服务器资源版本
-                Debug.Log("本地资源处理完毕，开始获取服务器资源信息...");
-                Debug.Log("URL:" + m_serverVersionPath);
-                GetPersistentAndServerInfo(()=> {
-                    // s4：RunPatch
-                    Debug.Log("开始向服务器获取Path...");
-                    RunPatch((result2)=> {
-                        if (result2)
-                        {
-                            Debug.Log("热更处理成功完毕，进入游戏！");
-                        }
-                        else
-                        {
-                            Debug.Log("热更处理失败完毕，进入游戏！");
-                        }
-                        endCall();
-                    });
-                });
-            });
+            Job s2 = new Job(CheckLocalRes);
+            sequenceJob.AddChild(s2);
+            // s3：获取服务器资源版本
+            Job s3 = new Job(GetPersistentAndServerInfo);
+            sequenceJob.AddChild(s3);
+            // s4：RunPatch
+            Job s4 = new Job(RunPatch);
+            sequenceJob.AddChild(s4);
+        }
+        sequenceJob.Run((job) =>
+        {
+            Debug.Log("Patch模块处理完毕，开始进入游戏！");
+            endCall();
+        }, (job) =>
+        {
+            Debug.Log("Patch模块处理失败，请检查网络连接！");
+            endCall();
         });
     }
 
     // s1：获取本地版本文件
-    void GetLocalVersion(Action okCall)
+    void GetLocalVersion(Job job)
     {
-        var count = 2;
-        var num = 0;
-        Action call = () =>
+        Debug.Log("开始获取本地版本信息...");
+        SequenceJob seq = new SequenceJob();
+        seq.AddChild(new Job((j) =>
         {
-            if (++num == count)
-            {
-                okCall();
-            }
-        };
-        GameMgr.StartCoroutine(ReadVersion(m_streamingVersionPath, (data) => {
-            m_streamingVersionData = data;
-            SetServerPath(m_streamingVersionData.PackageName);
-            call();
+            GameMgr.StartCoroutine(ReadVersion(m_streamingVersionPath, (data) => {
+                m_streamingVersionData = data;
+                SetServerPath(m_streamingVersionData.PackageName);
+                j.Success();
+            }));
         }));
-        GameMgr.StartCoroutine(ReadVersion(m_persistentReadVersionPath, (data) => {
-            m_persistentVersionData = data;
-            call();
+        seq.AddChild(new Job((j) =>
+        {
+            GameMgr.StartCoroutine(ReadVersion(m_persistentReadVersionPath, (data) => {
+                m_persistentVersionData = data;
+                j.Success();
+            }));
         }));
+        seq.Run((j) => { job.Success(); }, (j) => { job.Fail(); });
     }
 
      // s2:检测本地版本，可能stream复制到Present
-     void CheckLocalRes(Action<bool> okCall)
+     void CheckLocalRes(Job job2)
     {
+        Debug.Log("本地版本已获取，开始准备本地资源...");
         m_State = PackageState.Error;
         Debug.Log("Streaming Version: " + m_streamingVersionData.Version);
         if (m_persistentVersionData is null)
@@ -125,85 +119,54 @@ public class HotPatchManager:IManager
         if (m_State == PackageState.FirstOrOverInstall)
         {
             Debug.Log("首次安装开始解压资源...");
-            Action lastOneCall = ()=>{
-                GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(m_streamingVersionPath, m_persistentWriteVersionPath, okCall));
-            };
-            int num = 0;
-            int count = m_streamingVersionData.FileInfoDict.Count - 1;
-            Action<bool> call = (result) => {
-                if ( ++ num == count)
-                {
-                    lastOneCall();
-                }
-            };
+            var seqJob = new SequenceJob();
             foreach (var item in m_streamingVersionData.FileInfoDict)
             {
                 string srcPath = $"{Application.streamingAssetsPath}/{item.Value.Name}";
-                string descPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
+                string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
                 if (srcPath != m_streamingVersionPath)
                 {
-                   GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(srcPath, descPath, call));
+                    var job = new DownloadPatch(srcPath, destPath);
+                    seqJob.AddChild(job);
                 }
             }
+            seqJob.AddChild(new DownloadPatch(m_streamingVersionPath, m_persistentWriteVersionPath));
+            seqJob.Run((j) => { job2.Success(); }, (j)=>{ job2.Fail(); });
         }
         else
         {
-            okCall(true);
+            job2.Success();
         }
     }
 
-    IEnumerator CopyStreamAssetsToPersistent(string source, string dest, Action<bool> okCall)
+     // s3: 获取server端与persistent信息
+    void GetPersistentAndServerInfo(Job job)
     {
-        Debug.Log("开始写入：" + dest);
-        var request = UnityWebRequest.Get(source);
-        yield return request.SendWebRequest();
-        if (request.error != null)
+        Debug.Log("本地资源处理完毕，开始获取服务器资源信息...");
+        SequenceJob seq = new SequenceJob();
+        var s1 = new Job((j) =>
         {
-            Debug.LogError(request.error);
-            Debug.LogError("写入失败：" + dest);
-            okCall(false);
-        }
-        byte[] results = request.downloadHandler.data;
-        int idx = dest.LastIndexOf('/');
-        string p1 = dest.Substring(0, idx);
-        Directory.CreateDirectory(p1);
-        if (File.Exists(dest))
+            GameMgr.StartCoroutine(ReadVersion(m_persistentReadVersionPath, (data) => {
+                m_persistentVersionData = data;
+                j.Success();
+            }));
+        });
+        seq.AddChild(s1);
+        var s2 = new Job((j) =>
         {
-            File.Delete(dest);
-        }
-        FileStream fs = new FileStream(dest, FileMode.Create, FileAccess.Write);
-        fs.Write(results, 0, results.Length);
-        fs.Flush();
-        fs.Close();
-        Debug.Log("写入成功：" + dest);
-        okCall(true);
-    }
-
-    // s3: 获取server端与persistent信息
-    void GetPersistentAndServerInfo(Action okCall)
-    {
-        var count = 2;
-        var num = 0;
-        Action call = () =>
-        {
-            if (++num == count)
-            {
-                okCall();
-            }
-        };
-        GameMgr.StartCoroutine(ReadVersion(m_persistentReadVersionPath, (data) => {
-            m_persistentVersionData = data;
-            call();
-        }));
-        GameMgr.StartCoroutine(ReadVersion(m_serverVersionPath, (data) => {
-            m_serverVersionData = data;
-            call();
-        }));
+            GameMgr.StartCoroutine(ReadVersion(m_serverVersionPath, (data) => {
+                m_serverVersionData = data;
+                j.Success();
+            }));
+        });
+        seq.AddChild(s2);
+        seq.Run((j) => { job.Success();}, (j) => { job.Fail();});
     }
 
     // s4: 对比，Patch更新或整包更新
-    void  RunPatch(Action<bool> okCall)
+    void  RunPatch(Job job)
     {
+        Debug.Log("开始向服务器获取Path...");
         m_State = PackageState.Error;
         if (m_serverVersionData is null)
         {
@@ -234,58 +197,38 @@ public class HotPatchManager:IManager
         if (m_State == PackageState.Error)
         {
             Debug.Log("连接服务器失败");
-            okCall(false);
+            job.Fail();
         }
         else if (m_State == PackageState.Normal)
         {
             Debug.Log($"已是最新版本，不需要热更。");
-            okCall(true);
+            job.Success();
         }
         else if(m_State == PackageState.NeedFullInstall)
         {
             Debug.Log("版本差距过大，需要整包更新，不需要热更。");
-            okCall(false);
+            job.Fail();
         }
         else
         {
             // 需要热更
             Debug.Log("开始从服务器Path资源...");
-            Action lastOneCall = () => {
-                GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(m_serverVersionPath, m_persistentWriteVersionPath, okCall));
-            };
-            int num = 0;
-            int count = m_serverVersionData.FileInfoDict.Count - 1;
-            Action<bool> call = (result) => {
-                if (!result)
-                {
-                    okCall(false);
-                }
-                else if (++num == count)
-                {
-                    lastOneCall();
-                }
-            };
-            int i = 0;
             float allSize = 0;
+            SequenceJob seq = new SequenceJob();
             foreach (var item in m_serverVersionData.FileInfoDict)
             {
                 string key = item.Key;
                 string srcPath = m_AssetBundlePrePath + "/" + item.Value.Name;
                 string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
-                if (m_persistentVersionData.FileInfoDict.ContainsKey(key) && m_persistentVersionData.FileInfoDict[key] == item.Value)
+                if (!(m_persistentVersionData.FileInfoDict.ContainsKey(key) && m_persistentVersionData.FileInfoDict[key] == item.Value) && destPath != m_persistentWriteVersionPath && !CheckLocalMD5(item.Value.MD5, destPath))
                 {
-                    call(true);
+                    var j = new DownloadPatch(srcPath, destPath);
+                    seq.AddChild(j);
+                    allSize += item.Value.Size;
                 }
-                else
-                {
-                    if (destPath != m_persistentWriteVersionPath && !CheckLocalMD5(item.Value.MD5, destPath))
-                    {
-                        GameMgr.StartCoroutine(CopyStreamAssetsToPersistent(srcPath, destPath, call));
-                        allSize += item.Value.Size;
-                    }
-                }
-                i++;
             }
+            seq.AddChild(new DownloadPatch(m_serverVersionPath, m_persistentWriteVersionPath));
+            seq.Run((j) => { job.Success();}, (j) => { job.Fail();});
             Debug.Log($"总下载大小：{allSize}KB。");
         }
     }
@@ -323,7 +266,7 @@ public class HotPatchManager:IManager
         int[] returnData = new int[3] {Convert.ToInt32(array[0]), Convert.ToInt32(array[1]), Convert.ToInt32(array[2])};
         return returnData;
     }
-
+    
     IEnumerator ReadVersion(string path, Action<VersionData> call)
     {
         Debug.Log("Version Path: " + path);
@@ -342,7 +285,6 @@ public class HotPatchManager:IManager
         {
             // ignored
         }
-
         request.Dispose();
         call(data);
     }

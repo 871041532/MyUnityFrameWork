@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
             m_Mgrs.Add(m_ObjectMgr);
             m_Mgrs.Add(m_UIMgr);
             m_Mgrs.Add(m_CallMgr);
-            m_Mgrs.Add(m_HotPatchMgr);
+//            m_Mgrs.Add(m_HotPatchMgr);
 
             var iter = m_Mgrs.GetEnumerator();
             while (iter.MoveNext())
