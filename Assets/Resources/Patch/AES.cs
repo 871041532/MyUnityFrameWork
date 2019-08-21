@@ -9,20 +9,16 @@ using UnityEngine;
 public class AES
 {
     private static string AESHead = "AESEncrypt";
-
-    /// <summary>
-    /// 文件加密，传入文件路径
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="EncrptyKey"></param>
-    public static void AESFileEncrypt(string path, string EncrptyKey)
+    
+    // 文件加密，传入文件路径
+    public static void EncryptFile(string filePath, string key)
     {
-        if (!File.Exists(path))
+        if (!File.Exists(filePath))
             return;
 
         try
         {
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 if (fs != null)
                 {
@@ -33,7 +29,7 @@ public class AES
                     if (headTag == AESHead)
                     {
 #if UNITY_EDITOR
-                        Debug.Log(path + "已经加密过了！");
+                        Debug.Log(filePath + "已经加密过了！");
 #endif
                         return;
                     }
@@ -45,7 +41,7 @@ public class AES
                     fs.SetLength(0);
                     byte[] headBuffer = Encoding.UTF8.GetBytes(AESHead);
                     fs.Write(headBuffer, 0, headBuffer.Length);
-                    byte[] EncBuffer = AESEncrypt(buffer, EncrptyKey);
+                    byte[] EncBuffer = EncryptBytes(buffer, key);
                     fs.Write(EncBuffer, 0, EncBuffer.Length);
                 }
             }
@@ -55,21 +51,17 @@ public class AES
             Debug.LogError(e);
         }
     }
-
-    /// <summary>
-    /// 文件解密，传入文件路径（会改动加密文件，不适合运行时）
-    /// </summary>
-    /// <param name="path"></param>
-    /// <param name="EncrptyKey"></param>
-    public static void AESFileDecrypt(string path, string EncrptyKey)
+    
+    // 文件解密，传入文件路径（会改动加密文件）
+    public static void DecryptFile(string filePath, string key)
     {
-        if (!File.Exists(path))
+        if (!File.Exists(filePath))
         {
             return;
         }
         try
         {
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 if (fs != null)
                 {
@@ -82,7 +74,7 @@ public class AES
                         fs.Read(buffer, 0, Convert.ToInt32(fs.Length - headBuff.Length));
                         fs.Seek(0, SeekOrigin.Begin);
                         fs.SetLength(0);
-                        byte[] DecBuffer = AESDecrypt(buffer, EncrptyKey);
+                        byte[] DecBuffer = DecryptBytes(buffer, key);
                         fs.Write(DecBuffer, 0, DecBuffer.Length);
                     }
                 }
@@ -93,21 +85,18 @@ public class AES
             Debug.LogError(e);
         }
     }
-
-    /// <summary>
-    /// 文件解密，传入文件路径，返回字节
-    /// </summary>
-    /// <returns></returns>
-    public static byte[] AESFileByteDecrypt(string path, string EncrptyKey)
+    
+    // 文件解密，传入文件路径，返回字节
+    public static byte[] DecryptFileToBytes(string filePath, string key)
     {
-        if (!File.Exists(path))
+        if (!File.Exists(filePath))
         {
             return null;
         }
         byte[] DecBuffer = null;
         try
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 if (fs != null)
                 {
@@ -118,7 +107,7 @@ public class AES
                     {
                         byte[] buffer = new byte[fs.Length - headBuff.Length];
                         fs.Read(buffer, 0, Convert.ToInt32(fs.Length - headBuff.Length));
-                        DecBuffer = AESDecrypt(buffer, EncrptyKey);
+                        DecBuffer = DecryptBytes(buffer, key);
                     }
                 }
             }
@@ -130,26 +119,53 @@ public class AES
 
         return DecBuffer;
     }
-
-    /// <summary>
-    /// AES 加密(高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法)
-    /// </summary>
-    /// <param name="EncryptString">待加密密文</param>
-    /// <param name="EncryptKey">加密密钥</param>
-    public static string AESEncrypt(string EncryptString, string EncryptKey)
+    
+    // 加密string
+    public static string EncryptString(string originalString, string key)
     {
-        return Convert.ToBase64String(AESEncrypt(Encoding.Default.GetBytes(EncryptString), EncryptKey));
+        byte[] strBytes = StringToBytes(originalString);
+        byte[] encryptBytes = EncryptBytes(strBytes, key);
+        string encryptString = BytesToString(encryptBytes);
+        return encryptString;
+    }
+    
+    // string 解密
+    public static string DecryptString(string encryptedString, string key)
+    {
+        byte[] encryptBytes = StringToBytes(encryptedString);
+        byte[] decryptBytes = DecryptBytes(encryptBytes, key);
+        string decryString = BytesToString(decryptBytes);
+        return decryString;
+    }
+     public static byte[] StringToBytes(string strs)
+    {
+        byte[] bytes = new byte[strs.Length * 2];
+        for (int i = 0; i < strs.Length; i++)
+        {
+            char c = strs[i];
+            bytes[i*2] = (byte) ((c & 0xFF00) >> 8); 
+            bytes[i*2 + 1] = (byte) (c & 0xFF);
+        }
+        return bytes;
     }
 
-    /// <summary>
-    /// AES 加密(高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法)
-    /// </summary>
-    /// <param name="EncryptString">待加密密文</param>
-    /// <param name="EncryptKey">加密密钥</param>
-    public static byte[] AESEncrypt(byte[] EncryptByte, string EncryptKey)
+     public static string BytesToString(Byte[] bytes)
+     {
+         char[] strs = new char[bytes.Length / 2];
+         for (int i = 0; i < bytes.Length / 2; i++)
+         {
+             byte b0 = bytes[i * 2];
+             byte b1 = bytes[i * 2 + 1];
+             strs[i] = (char) (((b0 & 0xFF) << 8) | (b1 & 0xFF)); 
+         }
+         return new string(strs);
+     }
+     
+     // 加密Byte[]
+    public static byte[] EncryptBytes(byte[] originalBytes, string key)
     {
-        if (EncryptByte.Length == 0) { throw (new Exception("明文不得为空")); }
-        if (string.IsNullOrEmpty(EncryptKey)) { throw (new Exception("密钥不得为空")); }
+        if (originalBytes.Length == 0) { throw (new Exception("明文不得为空")); }
+        if (string.IsNullOrEmpty(key)) { throw (new Exception("密钥不得为空")); }
         byte[] m_strEncrypt;
         byte[] m_btIV = Convert.FromBase64String("Rkb4jvUy/ye7Cd7k89QQgQ==");
         byte[] m_salt = Convert.FromBase64String("gsf4jvkyhye5/d7k8OrLgM==");
@@ -157,10 +173,10 @@ public class AES
         try
         {
             MemoryStream m_stream = new MemoryStream();
-            PasswordDeriveBytes pdb = new PasswordDeriveBytes(EncryptKey, m_salt);
+            PasswordDeriveBytes pdb = new PasswordDeriveBytes(key, m_salt);
             ICryptoTransform transform = m_AESProvider.CreateEncryptor(pdb.GetBytes(32), m_btIV);
             CryptoStream m_csstream = new CryptoStream(m_stream, transform, CryptoStreamMode.Write);
-            m_csstream.Write(EncryptByte, 0, EncryptByte.Length);
+            m_csstream.Write(originalBytes, 0, originalBytes.Length);
             m_csstream.FlushFinalBlock();
             m_strEncrypt = m_stream.ToArray();
             m_stream.Close(); m_stream.Dispose();
@@ -174,26 +190,11 @@ public class AES
         return m_strEncrypt;
     }
 
-
-    /// <summary>
-    /// AES 解密(高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法)
-    /// </summary>
-    /// <param name="DecryptString">待解密密文</param>
-    /// <param name="DecryptKey">解密密钥</param>
-    public static string AESDecrypt(string DecryptString, string DecryptKey)
+    // 解密byte[]
+    public static byte[] DecryptBytes(byte[] encryptedBytes, string key)
     {
-        return Convert.ToBase64String(AESDecrypt(Encoding.Default.GetBytes(DecryptString), DecryptKey));
-    }
-
-    /// <summary>
-    /// AES 解密(高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法)
-    /// </summary>
-    /// <param name="DecryptString">待解密密文</param>
-    /// <param name="DecryptKey">解密密钥</param>
-    public static byte[] AESDecrypt(byte[] DecryptByte, string DecryptKey)
-    {
-        if (DecryptByte.Length == 0) { throw (new Exception("密文不得为空")); }
-        if (string.IsNullOrEmpty(DecryptKey)) { throw (new Exception("密钥不得为空")); }
+        if (encryptedBytes.Length == 0) { throw (new Exception("密文不得为空")); }
+        if (string.IsNullOrEmpty(key)) { throw (new Exception("密钥不得为空")); }
         byte[] m_strDecrypt;
         byte[] m_btIV = Convert.FromBase64String("Rkb4jvUy/ye7Cd7k89QQgQ==");
         byte[] m_salt = Convert.FromBase64String("gsf4jvkyhye5/d7k8OrLgM==");
@@ -201,19 +202,19 @@ public class AES
         try
         {
             MemoryStream m_stream = new MemoryStream();
-            PasswordDeriveBytes pdb = new PasswordDeriveBytes(DecryptKey, m_salt);
+            PasswordDeriveBytes pdb = new PasswordDeriveBytes(key, m_salt);
             ICryptoTransform transform = m_AESProvider.CreateDecryptor(pdb.GetBytes(32), m_btIV);
             CryptoStream m_csstream = new CryptoStream(m_stream, transform, CryptoStreamMode.Write);
-            m_csstream.Write(DecryptByte, 0, DecryptByte.Length);
+            m_csstream.Write(encryptedBytes, 0, encryptedBytes.Length);
             m_csstream.FlushFinalBlock();
             m_strDecrypt = m_stream.ToArray();
             m_stream.Close(); m_stream.Dispose();
             m_csstream.Close(); m_csstream.Dispose();
         }
-        catch (IOException) { throw; }
-        catch (CryptographicException) { throw; }
-        catch (ArgumentException) { throw; }
-        catch (Exception) { throw; }
+        catch (IOException ex) { throw ex; }
+        catch (CryptographicException ex) { throw ex; }
+        catch (ArgumentException ex) { throw ex; }
+        catch (Exception ex) { throw ex; }
         finally { m_AESProvider.Clear(); }
         return m_strDecrypt;
     }

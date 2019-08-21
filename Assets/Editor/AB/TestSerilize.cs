@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 [System.Serializable]
 public class ABCfg
@@ -28,6 +30,16 @@ public class AssetSerializeCfg: ScriptableObject
 
 public class TestSerilize
 {
+    [MenuItem("Tools/Test AES")]
+    static void TestAES()
+    {
+        string key = "12345";
+        string s1 = AES.EncryptString("卧槽", key);
+        string s2 = AES.DecryptString(s1, key);
+        Debug.Log(s1);
+        Debug.Log(s2);
+    }
+    
     [MenuItem("Tools/Test Job")]
     static void TestJob()
     {
