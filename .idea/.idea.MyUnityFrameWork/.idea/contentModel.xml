@@ -45,6 +45,7 @@
             <e p="OfflineUIData.cs" t="Include" />
           </e>
           <e p="Patch" t="Include">
+            <e p="AES.cs" t="Include" />
             <e p="DownloadBase.cs" t="Include" />
             <e p="DownloadPatch.cs" t="Include" />
             <e p="Job.cs" t="Include" />

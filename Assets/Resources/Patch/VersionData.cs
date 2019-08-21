@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -25,10 +26,18 @@ public class FileMD5
     
     public static bool operator ==(FileMD5 lhs, FileMD5 rhs)
     {
+        if (lhs is null || rhs is null)
+        {
+            return false;
+        }
         return lhs.Name == rhs.Name && lhs.MD5 == rhs.MD5;
     }
     public static bool operator !=(FileMD5 lhs, FileMD5 rhs)
     {
+        if (lhs is null || rhs is null)
+        {
+            return true;
+        }
         return lhs.Name != rhs.Name || (lhs.Name == rhs.Name && lhs.MD5 != rhs.MD5);
     }
 }

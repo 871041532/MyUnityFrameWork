@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3827965294
+CRC: 76954564
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bdd39a51091c03736d92487c848c94cc
+    Hash: 3c93691778a76bbd78076ca74e53e76c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 5ad585dd02dfb5016c0dad519eab8f49
@@ -13,6 +13,6 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/GameData/Scripts/Datas/Item.lua.txt
-- Assets/GameData/Scripts/step.lua.txt
 - Assets/GameData/Scripts/main.lua.txt
+- Assets/GameData/Scripts/step.lua.txt
 Dependencies: []

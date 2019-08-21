@@ -22,14 +22,16 @@ public class LuaManager : IManager
 {
     private LuaEnv m_luaEnv;
     public Cfgs m_cfgs;
+    public string m_PrePath = "Assets/GameData/Scripts";
 
     public override void Awake() {
         m_luaEnv = new LuaEnv();
         m_luaEnv.AddLoader(MyLuaLoader);
     }
-    public override void Start()
+    
+    public override void OnPatched()
     {
-        //m_luaEnv.DoString("require 'main.lua'");
+        m_luaEnv.DoString("require 'main.lua'");
         //m_cfgs = m_luaEnv.Global.Get<Cfgs>("Datas");
         //m_luaEnv.DoString(@"
         //    local GameMgr = CS.GameManager.Instance
@@ -50,8 +52,18 @@ public class LuaManager : IManager
     // 自定义lua加载
     byte[] MyLuaLoader(ref string filepath)
     {
-        string path = Path.Combine(ABUtility.StreamingAssetsFilePath, "Scripts", filepath);
-        byte[] data = File.ReadAllBytes(path);
+        byte[] data;
+        if (ABUtility.LoadMode == LoadModeEnum.EditorOrigin)
+        {
+            string path = Path.Combine(ABUtility.StreamingAssetsFilePath, "Scripts", filepath);
+            data = File.ReadAllBytes(path);
+        }
+        else
+        {
+            string path = $"{m_PrePath}/{filepath}.txt";
+            AssetItem item = GameMgr.m_ABMgr.LoadAsset(path);
+            data = item.TextAsset.bytes;
+        }
         return data;
     }
     
