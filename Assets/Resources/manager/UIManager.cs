@@ -37,11 +37,19 @@ public class UIManager : IManager
         RegisterWindow("loading", () => new LoadingPanel());
         RegisterWindow("sportTool", () => new SportToolPanel());
         RegisterWindow("hotPatch", () => new HotPatchPanel());
+        RegisterWindow("confirm", () => new ConfirmSurePanel());
     }
 
     public override void Start()
     {
-        SwitchSingleWindow("hotPatch");
+        if (ABUtility.LoadMode == LoadModeEnum.DeviceFullAotAB)
+        {
+            SwitchSingleWindow("hotPatch");
+        }
+        else
+        {
+            SwitchSingleWindow("menu");
+        }
     }
 
     public override void OnPatched()

@@ -7,27 +7,58 @@ using UnityEngine.Networking;
 
 public enum PackageState
 {
-    Error, // 错误
+    NetWorkError,  // 网络异常
+    ServerVersionError,  // 服务端版本号异常
+    PersistentVersionError,  // 无法获取沙盒目录版本
+    NeedFullInstallError,  // 需要整包更新 （Server有大版本更新）
+
     Normal,  // 不需要更新 （Patch版等于Server）
     NeedPatch, // 需要Patch （Patch版本低于Server）
-    NeedFullInstall, // 需要整包更新 （Server有大版本更新）
     FirstOrOverInstall,  // 需要覆盖（初次安装Present为空或覆盖安装，小于Stream版本）
+}
+
+public enum PackageStep
+{
+    Step1,  // s1: 获取本地版本
+    Step2,  // s2：本地资源处理
+    Step3,  // s3：获取服务器资源版本
+    Step4,  // s4：RunPatch
 }
 
 public class HotPatchManager:IManager
 {
-    public static string ErrorInfo;
+    private PackageStep m_CurrentStep = PackageStep.Step1;
+    public PackageStep CurrentStep
+    {
+        get => m_CurrentStep;
+        private set
+        {
+            m_CurrentStep = value;
+            GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatchInfoUpdate);
+        }
+    }
+    public PackageState State { get; set; }
+    private float m_CurStepProgress = 0;
+    public float CurStepProgress
+    {
+        get { return m_CurStepProgress; }
+        private set
+        {
+            m_CurStepProgress = value; 
+            GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatchInfoUpdate);
+        }
+    }
+
     static readonly string m_RelativeFilePath = "/version.json";
-    public PackageState m_State = PackageState.Normal;
     VersionData m_streamingVersionData;
     VersionData m_persistentVersionData;
     VersionData m_serverVersionData;
     string m_serverVersionPath;
     string m_streamingVersionPath;
     string m_persistentReadVersionPath;
-    string m_AssetBundlePrePath;
+    string m_ServerPatchPath;
     private string m_persistentWriteVersionPath;
-
+    
     public HotPatchManager()
     {
         m_streamingVersionPath = ABUtility.StreamingAssetsURLPath + m_RelativeFilePath;
@@ -42,8 +73,8 @@ public class HotPatchManager:IManager
 
     void SetServerPath(string packageName)
          {
-             m_AssetBundlePrePath = $"http://127.0.0.1:7888/{packageName}/{ABUtility.PlatformName}/";
-             m_serverVersionPath = m_AssetBundlePrePath + "version.json";
+             m_ServerPatchPath = $"http://127.0.0.1:7888/{packageName}/{ABUtility.PlatformName}/";
+             m_serverVersionPath = m_ServerPatchPath + "version.json";
          }
 
     public void CheckVersion()
@@ -70,8 +101,8 @@ public class HotPatchManager:IManager
             GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatched);
         }, (job) =>
         {
-            Debug.Log("Patch模块处理失败，请检查网络连接！");
-            GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatched);
+            Debug.Log("Patch模块处理失败！");
+            GameMgr.m_CallMgr.TriggerEvent(EventEnum.OnPatchedFail);
         });
     }
 
@@ -79,6 +110,8 @@ public class HotPatchManager:IManager
     void GetLocalVersion(Job job)
     {
         Debug.Log("开始获取本地版本信息...");
+        CurrentStep = PackageStep.Step1;
+        CurStepProgress = 0;
         SequenceJob seq = new SequenceJob();
         seq.AddChild(new Job((j) =>
         {
@@ -102,11 +135,12 @@ public class HotPatchManager:IManager
      void CheckLocalRes(Job job2)
     {
         Debug.Log("本地版本已获取，开始准备本地资源...");
-        m_State = PackageState.Error;
+        CurrentStep = PackageStep.Step2;
+        CurStepProgress = 0;
         Debug.Log("Streaming Version: " + m_streamingVersionData.Version);
         if (m_persistentVersionData is null)
         {
-            m_State = PackageState.FirstOrOverInstall;
+            State = PackageState.FirstOrOverInstall;
         }
         else
         {
@@ -116,10 +150,10 @@ public class HotPatchManager:IManager
             int contrastValue = ContrastNumVersion(pv, sv);
             if (contrastValue < 0)
             {
-                m_State = PackageState.FirstOrOverInstall;
+                State = PackageState.FirstOrOverInstall;
             }
         }
-        if (m_State == PackageState.FirstOrOverInstall)
+        if (State == PackageState.FirstOrOverInstall)
         {
             Debug.Log("首次安装开始解压资源...");
             var seqJob = new SequenceJob();
@@ -128,9 +162,9 @@ public class HotPatchManager:IManager
                 string key = item.Key;
                 string srcPath = $"{Application.streamingAssetsPath}/{item.Value.Name}";
                 string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
+                bool j1 = m_persistentVersionData != null && m_persistentVersionData.FileInfoDict != null && m_persistentVersionData.FileInfoDict.ContainsKey(key) && m_persistentVersionData.FileInfoDict[key] != null && m_persistentVersionData.FileInfoDict[key] == item.Value;
                 bool judge =
-                    !(m_persistentVersionData != null && m_persistentVersionData.FileInfoDict.ContainsKey(key) &&
-                      m_persistentVersionData.FileInfoDict[key] == item.Value) && srcPath != m_streamingVersionPath &&
+                    ! j1 && srcPath != m_streamingVersionPath &&
                     !CheckLocalMD5(item.Value.MD5, destPath);
                 if (judge)
                 {
@@ -142,6 +176,7 @@ public class HotPatchManager:IManager
             seqJob.Run((j) => { job2.Success(); }, (j)=>{ job2.Fail(); }, (j) =>
             {
                 Debug.Log("进度：" + j.Progress);
+                CurStepProgress = j.Progress;
             });
         }
         else
@@ -154,6 +189,14 @@ public class HotPatchManager:IManager
     void GetPersistentAndServerInfo(Job job)
     {
         Debug.Log("本地资源处理完毕，开始获取服务器资源信息...");
+        CurrentStep = PackageStep.Step3;
+        CurStepProgress = 0;
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            State = PackageState.NetWorkError;
+            job.Fail();
+            Debug.Log("Error, 无网络连接...");
+        }
         SequenceJob seq = new SequenceJob();
         var s1 = new Job((j) =>
         {
@@ -178,15 +221,21 @@ public class HotPatchManager:IManager
     void  RunPatch(Job job)
     {
         Debug.Log("开始向服务器获取Path...");
-        m_State = PackageState.Error;
+        CurrentStep = PackageStep.Step4;
+        CurStepProgress = 0;
         if (m_serverVersionData is null)
         {
-            m_State = PackageState.Error;
+            Debug.Log("ServerVersionData 读取失败！");
+            State = PackageState.ServerVersionError;
+            job.Fail();
+            return;
         }
         else if (m_persistentVersionData is null)
         {
             Debug.Log("PersistentVersionData 读取失败！");
-            m_State = PackageState.Error;
+            State = PackageState.PersistentVersionError;
+            job.Fail();
+            return;
         }
         else
         {
@@ -195,29 +244,26 @@ public class HotPatchManager:IManager
             int[] pv = GetNumVersion(m_persistentVersionData.Version);
             int[] sv = GetNumVersion(m_serverVersionData.Version);
             int contrastValue = ContrastNumVersion(pv, sv);
-            m_State = PackageState.Normal;
+            State = PackageState.Normal;
             if (contrastValue < 0)
             {
-                m_State = PackageState.NeedPatch;
+                State = PackageState.NeedPatch;
             }
             if (pv[0] < sv[0])
             {
-                m_State = PackageState.NeedFullInstall;
+                State = PackageState.NeedFullInstallError;
             }
+            
         }
-        if (m_State == PackageState.Error)
-        {
-            Debug.Log("连接服务器失败");
-            job.Fail();
-        }
-        else if (m_State == PackageState.Normal)
+        if (State == PackageState.Normal)
         {
             Debug.Log($"已是最新版本，不需要热更。");
             job.Success();
         }
-        else if(m_State == PackageState.NeedFullInstall)
+        else if(State == PackageState.NeedFullInstallError)
         {
             Debug.Log("版本差距过大，需要整包更新，不需要热更。");
+            State = PackageState.NeedFullInstallError;
             job.Fail();
         }
         else
@@ -229,7 +275,7 @@ public class HotPatchManager:IManager
             foreach (var item in m_serverVersionData.FileInfoDict)
             {
                 string key = item.Key;
-                string srcPath = m_AssetBundlePrePath + "/" + item.Value.Name;
+                string srcPath = m_ServerPatchPath + "/" + item.Value.Name;
                 string destPath = $"{ABUtility.PersistentDataFilePath}/{item.Value.Name}";
                 if (!(m_persistentVersionData.FileInfoDict.ContainsKey(key) && m_persistentVersionData.FileInfoDict[key] == item.Value) && destPath != m_persistentWriteVersionPath && !CheckLocalMD5(item.Value.MD5, destPath))
                 {
@@ -239,7 +285,7 @@ public class HotPatchManager:IManager
                 }
             }
             seq.AddChild(new DownloadPatch(m_serverVersionPath, m_persistentWriteVersionPath));
-            seq.Run((j) => { job.Success();}, (j) => { job.Fail();});
+            seq.Run((j) => { job.Success();}, (j) => { job.Fail();}, (j) => { CurStepProgress = j.Progress;});
             Debug.Log($"总下载大小：{allSize}KB。");
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -20,9 +21,38 @@ public class HotPatchPanel : Window
 
     protected override void OnShow(params object[] args)
     {
+        m_GameObject.transform.SetAsLastSibling();
+        GameManager.Instance.m_CallMgr.RegisterEvent(EventEnum.OnPatchInfoUpdate, UpdateInfo);
+        GameManager.Instance.m_CallMgr.RegisterEvent(EventEnum.OnPatchedFail, PatchError);
     }
 
-    protected override void OnDestroy()
+    protected override void OnHide()
     {
+        GameManager.Instance.m_CallMgr.RemoveEvent(EventEnum.OnPatchInfoUpdate, UpdateInfo);
+        GameManager.Instance.m_CallMgr.RemoveEvent(EventEnum.OnPatchedFail, PatchError);
+    }
+
+    void UpdateInfo(params object[] args)
+    {
+        var step = GameManager.Instance.m_HotPatchMgr.CurrentStep;
+        var progress = GameManager.Instance.m_HotPatchMgr.CurStepProgress;
+        var strs = $"当前状态：{step.ToString()}   进度：{progress*100}%";
+        m_Text.text = strs;
+        m_Slider.value = progress;
+    }
+
+    void PatchError(params object[] args)
+    {
+        string info = "";
+        var patchManager = GameManager.Instance.m_HotPatchMgr;
+        info = "Patch错误：" + patchManager.State.ToString();
+        
+        var win = GameManager.Instance.m_UIMgr.GetOrCreateWindow("confirm");
+        Action func = () =>
+        {
+            Debug.Log("点击了确认按钮！");
+            GameManager.Instance.m_UIMgr.SwitchSingleWindow("menu");
+        };
+        win.Show(info, func);
     }
 }

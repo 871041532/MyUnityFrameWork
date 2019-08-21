@@ -19,6 +19,8 @@ public static class EventEnum
     public static string BeginChangeScene = "BeginChangeScene";
     public static string OnChangeScene = "OnChangeScene";
     public static string OnPatched = "OnPatched";
+    public static string OnPatchedFail = "OnPatchedFail";
+    public static string OnPatchInfoUpdate = "OnPatchInfoUpdate";
 }
 
 public class CallManager : IManager

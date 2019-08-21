@@ -21,10 +21,10 @@ public class ABManager:IManager
 
     public ABManager()
     {
-        SpriteAtlasManager.atlasRequested += OnAtlasRequested;
         GameMgr.m_ObjectMgr.CreateOrGetClassPool<ABItem>();
         GameMgr.m_ObjectMgr.CreateOrGetClassPool<AssetItem>();
         PreHotFix();
+        SpriteAtlasManager.atlasRequested += OnAtlasRequested;
     }
 
     public void PreHotFix()
