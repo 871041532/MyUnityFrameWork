@@ -49,12 +49,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        m_CallMgr.RegisterEvent(EventEnum.OnPatched, OnPatched);
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
             iter.Current.Start();
         }
-        m_CallMgr.RegisterEvent(EventEnum.OnPatched, OnPatched);
     }
 
     private void OnPatched(params object[] args)

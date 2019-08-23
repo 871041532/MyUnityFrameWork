@@ -25,6 +25,7 @@ public class UIManager : IManager
     private CoreCompositePool m_Pool = new CoreCompositePool();
     private List<Window> m_TempList = new List<Window>();
 
+    private Window m_HotPatchWin;
     public override void Awake()
     {
         m_UIRoot = GameMgr.gameObject.transform.Find("UIRoot") as RectTransform;
@@ -44,18 +45,16 @@ public class UIManager : IManager
     {
         if (ABUtility.LoadMode == LoadModeEnum.DeviceFullAotAB)
         {
-            SwitchSingleWindow("hotPatch");
-        }
-        else
-        {
-            SwitchSingleWindow("menu");
+            m_HotPatchWin = SwitchSingleWindow("hotPatch");
         }
     }
 
     public override void OnPatched()
     {
-        DestroyAllWindow();
-        SwitchSingleWindow("menu");
+        if (!(m_HotPatchWin is null))
+        {
+            DestroyWindow(m_HotPatchWin);
+        }
     }
 
     public override void Update()

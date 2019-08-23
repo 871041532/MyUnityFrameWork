@@ -52,6 +52,12 @@ public static class ExampleGenConfig
                 typeof(ABManager),
                 typeof(GameManager),
                 typeof(UIManager),
+                typeof(CallManager),
+                typeof(CutSceneManager),
+                typeof(HotPatchManager),
+                typeof(LuaManager),
+                typeof(ObjectManager),
+                typeof(ResourceManager),
                 typeof(Window),
             };
 

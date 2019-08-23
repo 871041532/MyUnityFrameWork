@@ -55,7 +55,7 @@ public class LuaManager : IManager
         byte[] data;
         if (ABUtility.LoadMode == LoadModeEnum.EditorOrigin)
         {
-            string path = Path.Combine(ABUtility.StreamingAssetsFilePath, "Scripts", filepath);
+            string path = $"{m_PrePath}/{filepath}";
             data = File.ReadAllBytes(path);
         }
         else

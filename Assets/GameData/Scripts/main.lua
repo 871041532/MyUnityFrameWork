@@ -1,13 +1,14 @@
-require("step.lua")
-
 itemCfgs = require("Datas/Item.lua")
 Datas = {
     itemCfgs = itemCfgs
 }
 
-local GameMgr = CS.GameManager.Instance
-local ABMgr = GameMgr.m_ABMgr
-local UIMgr = GameMgr.m_UIMgr
-local GameObject = CS.UnityEngine.GameObject
-local Window = CS.Window
-local SportToolPanel = CS.SportToolPanel
+GameMgr = CS.GameManager.Instance
+ABMgr = GameMgr.m_ABMgr
+UIMgr = GameMgr.m_UIMgr
+GameObject = CS.UnityEngine.GameObject
+Window = CS.Window
+SportToolPanel = CS.SportToolPanel
+Class = require("ClassUtil.lua")
+
+local menu = require("wins/menu.lua")
