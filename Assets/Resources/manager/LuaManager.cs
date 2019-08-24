@@ -43,7 +43,7 @@ public class LuaManager : IManager
         //    UIMgr:RegisterWindow('window1', function() 
         //        return Window()
         //    end)
-        //    local win = UIMgr:GetOrCreateWindow('window1')
+        //    local win = UIMgrGetOrCreateWindow:('window1')
         //    win:Show()
         //    UIMgr:UnRegisterWindow('window1');
         //");

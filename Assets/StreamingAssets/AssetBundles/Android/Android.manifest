@@ -1,0 +1,43 @@
+ManifestFileVersion: 0
+CRC: 1790824808
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: configs
+      Dependencies: {}
+    Info_1:
+      Name: ui_common
+      Dependencies: {}
+    Info_2:
+      Name: c1
+      Dependencies:
+        Dependency_0: ui_common
+    Info_3:
+      Name: menupanel
+      Dependencies:
+        Dependency_0: ui_common
+    Info_4:
+      Name: sporttoolpanel
+      Dependencies: {}
+    Info_5:
+      Name: uiroot
+      Dependencies: {}
+    Info_6:
+      Name: loadingpanel
+      Dependencies: {}
+    Info_7:
+      Name: c2
+      Dependencies:
+        Dependency_0: c1
+    Info_8:
+      Name: audio/one
+      Dependencies: {}
+    Info_9:
+      Name: lua
+      Dependencies: {}
+    Info_10:
+      Name: hotpatchpanel
+      Dependencies: {}
+    Info_11:
+      Name: confirmsure
+      Dependencies: {}

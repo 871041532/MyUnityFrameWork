@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine.Experimental.PlayerLoop;
 
 public enum EventType
@@ -21,6 +22,7 @@ public static class EventEnum
     public static string OnPatched = "OnPatched";
     public static string OnPatchedFail = "OnPatchedFail";
     public static string OnPatchInfoUpdate = "OnPatchInfoUpdate";
+    public static string OnDestroy = "OnDestroy";
 }
 
 public class CallManager : IManager
@@ -144,9 +146,10 @@ public class EventManager
         m_Registers.TryGetValue(eventName, out eventRegisters);
         if (!(eventRegisters is null))
         {
-            foreach (var item in eventRegisters)
+            var keys = new List<int>(eventRegisters.Keys);
+            for (int i = 0; i < keys.Count; i++)
             {
-                item.Value(args);
+                eventRegisters[keys[i]](args);
             }
         }
     }

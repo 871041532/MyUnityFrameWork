@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        m_CallMgr.TriggerEvent(EventEnum.OnDestroy);
         m_CallMgr.RemoveEvent(EventEnum.OnPatched, OnPatched);
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())

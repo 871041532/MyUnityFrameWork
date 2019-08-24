@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 2404631011
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fbb3da7d77a5d5fcc6edbec5e3b5595b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 237fbd7ced9b99a0bf6c4a138bc9b32b
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: da2be4555d8db524298c0b17d2f5f922, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+Assets:
+- Assets/GameData/Prefabs/c2.prefab
+Dependencies:
+- C:/Users/Administrator/Desktop/MyUnityFrameWork/AssetBundles/Android/c1

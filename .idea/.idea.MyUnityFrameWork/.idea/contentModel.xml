@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\zhoukaibing\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\zhoukaibing\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-37434432.00" t="ExcludeRecursive" />
-    <e p="C:\Users\zhoukaibing\Desktop\MyUnityFrameWork" t="IncludeRecursive">
+    <e p="C:\Users\Administrator\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Administrator\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-1877999858.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Administrator\Desktop\MyUnityFrameWork" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -205,6 +205,9 @@
               <e p="Loader" t="Include">
                 <e p="CustomLoader.cs" t="Include" />
               </e>
+            </e>
+            <e p="LuaCallCSharp" t="Include">
+              <e p="LuaCallCs.cs" t="Include" />
             </e>
           </e>
         </e>
