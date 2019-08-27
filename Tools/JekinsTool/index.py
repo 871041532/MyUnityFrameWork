@@ -3,17 +3,17 @@ import  subprocess
 import os
 import sys
 import time
-subprocess.check_call("svn cleanup --remove-unversioned")
-subprocess.check_call("svn revert . -R")
-subprocess.check_call("svn update")
+# subprocess.check_call("svn cleanup --remove-unversioned")
+# subprocess.check_call("svn revert . -R")
+# subprocess.check_call("svn update")
 
 # Unity安装目录
-unity_exe = r'"C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Unity.exe"'
+unity_exe = r'"D:\Unity\2019.1.8f1\Editor\Unity.exe"'
 # unity工程目录
-project_path = r'C:\Users\zhoukaibing\Desktop\MyUnityFrameWork'
+project_path = r'C:\Users\Administrator\Desktop\MyUnityFrameWork'
 # 日志
 # log_file = os.getcwd() + '/unity_log.log'
-log_file = r'C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Tools\JekinsTool\log.txt'
+log_file = r'C:\Users\Administrator\Desktop\MyUnityFrameWork\Tools\JekinsTool\log.txt'
 
 def clear_log():
 	f = open(log_file, "w+")
