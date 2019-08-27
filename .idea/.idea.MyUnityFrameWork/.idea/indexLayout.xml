@@ -15,6 +15,7 @@
     <explicitExcludes>
       <Path>.git</Path>
       <Path>.idea</Path>
+      <Path>.svn</Path>
       <Path>.vs</Path>
       <Path>AssetBundles</Path>
       <Path>Build</Path>

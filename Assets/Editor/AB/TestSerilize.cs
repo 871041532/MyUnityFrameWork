@@ -34,7 +34,7 @@ public class TestSerilize
     static void TestAES()
     {
         string key = "12345";
-        string s1 = AES.EncryptString("卧槽", key);
+        string s1 = AES.EncryptString("kkkkkkkkkkkk", key);
         string s2 = AES.DecryptString(s1, key);
         Debug.Log(s1);
         Debug.Log(s2);

@@ -1,0 +1,317 @@
+
+LICENSE SYSTEM [2019827 20:51:1] Next license update check is after 2019-08-28T11:11:48
+
+Built from '2019.1/staging' branch; Version is '2019.1.8f1 (7938dd008a75) revision 7944413'; Using compiler version '191627012'
+OS: 'Windows 10  (10.0.0) 64bit' Language: 'zh' Physical Memory: 16297 MB
+BatchMode: 0, IsHumanControllingUs: 1, StartBugReporterOnCrash: 1, Is64bit: 1, IsPro: 0
+[Package Manager] Server::Start -- Port 53065 was selected
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Unity.exe
+-projectPath
+C:\Users\zhoukaibing\Desktop\MyUnityFrameWork
+-quit
+-logFile
+C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Tools\JekinsTool\log.txt
+-executeMethod
+TestSerilize.TestAES
+Successfully changed project path to: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork
+C:/Users/zhoukaibing/Desktop/MyUnityFrameWork
+Using Asset Import Pipeline V1.
+Loading GUID <-> Path mappings...0.000116 seconds
+Loading Asset Database...0.007974 seconds
+AssetDatabase consistency checks...0.032715 seconds
+[Package Manager] Done resolving packages in 0.47s seconds
+[Package Manager] Registering 39 packages:
+[Package Manager]  * Package :  com.unity.ads@2.0.8
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.ads@2.0.8)
+[Package Manager]  * Package :  com.unity.analytics@3.3.2
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.analytics@3.3.2)
+[Package Manager]  * Package :  com.unity.assetbundlebrowser@1.7.0
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.assetbundlebrowser@1.7.0)
+[Package Manager]  * Package :  com.unity.collab-proxy@1.2.16
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.collab-proxy@1.2.16)
+[Package Manager]  * Package :  com.unity.package-manager-ui@2.1.2
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.package-manager-ui)
+[Package Manager]  * Package :  com.unity.purchasing@2.0.6
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.purchasing@2.0.6)
+[Package Manager]  * Package :  com.unity.textmeshpro@2.0.1
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.textmeshpro@2.0.1)
+[Package Manager]  * Package :  com.unity.timeline@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.timeline)
+[Package Manager]  * Package :  com.unity.modules.ai@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai)
+[Package Manager]  * Package :  com.unity.modules.animation@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+[Package Manager]  * Package :  com.unity.modules.assetbundle@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle)
+[Package Manager]  * Package :  com.unity.modules.audio@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+[Package Manager]  * Package :  com.unity.modules.cloth@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth)
+[Package Manager]  * Package :  com.unity.modules.director@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director)
+[Package Manager]  * Package :  com.unity.modules.imageconversion@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+[Package Manager]  * Package :  com.unity.modules.imgui@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+[Package Manager]  * Package :  com.unity.modules.jsonserialize@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+[Package Manager]  * Package :  com.unity.modules.particlesystem@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+[Package Manager]  * Package :  com.unity.modules.physics@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+[Package Manager]  * Package :  com.unity.modules.physics2d@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d)
+[Package Manager]  * Package :  com.unity.modules.screencapture@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture)
+[Package Manager]  * Package :  com.unity.modules.terrain@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+[Package Manager]  * Package :  com.unity.modules.terrainphysics@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics)
+[Package Manager]  * Package :  com.unity.modules.tilemap@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap)
+[Package Manager]  * Package :  com.unity.modules.ui@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+[Package Manager]  * Package :  com.unity.modules.uielements@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements)
+[Package Manager]  * Package :  com.unity.modules.umbra@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra)
+[Package Manager]  * Package :  com.unity.modules.unityanalytics@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics)
+[Package Manager]  * Package :  com.unity.modules.unitywebrequest@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest)
+[Package Manager]  * Package :  com.unity.modules.unitywebrequestassetbundle@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle)
+[Package Manager]  * Package :  com.unity.modules.unitywebrequestaudio@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio)
+[Package Manager]  * Package :  com.unity.modules.unitywebrequesttexture@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture)
+[Package Manager]  * Package :  com.unity.modules.unitywebrequestwww@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww)
+[Package Manager]  * Package :  com.unity.modules.vehicles@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles)
+[Package Manager]  * Package :  com.unity.modules.video@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video)
+[Package Manager]  * Package :  com.unity.modules.vr@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr)
+[Package Manager]  * Package :  com.unity.modules.wind@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind)
+[Package Manager]  * Package :  com.unity.modules.xr@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr)
+[Package Manager]  * Package :  com.unity.ugui@1.0.0
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.ugui)
+[Package Manager] Done registering packages in 0.00s seconds
+Refreshing native plugins compatible for Editor in 27.10 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+IsTimeToCheckForNewEditor: Update time 0 current 1566910263
+Initialize engine version: 2019.1.8f1 (7938dd008a75)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1060 5GB (ID=0x1c04)
+    Vendor:   
+    VRAM:     5030 MB
+    Driver:   24.21.13.9811
+[EnlightenBakeManager] m_Clear = false;
+WARNING: Shader Unsupported: 'AR/TangoARRender' - Pass '' has no vertex shader
+WARNING: Shader Unsupported: 'AR/TangoARRender' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Pass 'Flip_RGBARect_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56552
+Begin MonoManager ReloadAssembly
+Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
+Registering precompiled unity dll's ...
+Register platform support module: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\PlaybackEngines\windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\PlaybackEngines\AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.003238 seconds.
+Registering platform support modules:
+Registered platform support modules in: 0.0684866s.
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Refreshing native plugins compatible for Editor in 0.31 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.932 seconds
+Registering precompiled user dll's ...
+Registered in 0.083434 seconds.
+Platform modules already initialized, skipping
+Begin MonoManager ReloadAssembly
+Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
+Registering platform support modules:
+Registered platform support modules in: 0.0411822s.
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Refreshing native plugins compatible for Editor in 0.38 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.167 seconds
+Platform modules already initialized, skipping
+Validating Project structure ... 0.010591 seconds.
+Refresh: detecting if any assets need to be imported or removed ...
+Refreshing native plugins compatible for Editor in 0.37 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Refresh: detecting if any assets need to be imported or removed ...
+
+Refresh Completed time: 0.043458s
+	Asset Scan time: 0.038971s
+	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Scripting) time: 0.000000s (count: 0)
+	Post Processs Assets (Scripting) time: 0.000000s
+	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Non Scripting) time: 0.000000s (count: 0)
+	Post Process Assets (Non Scripting) time: 0.000000s
+	Dependent Assets to Import Queue time: 0.000000s
+
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Pass 'Flip_RGBARect_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Setting to default shader.
+WARNING: Shader Unsupported: 'AR/TangoARRender' - Pass '' has no vertex shader
+WARNING: Shader Unsupported: 'AR/TangoARRender' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
+Warming cache for 1298 main assets: 0.001767 seconds elapsed
+Initializing Unity extensions:
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/portable/nunit.framework.dll'  GUID: 405b9b51bb344a128608d968297df79c
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll'  GUID: f70555f144d8491a825f0804e09c671c
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'  GUID: f5f67c52d1564df4a8936ccd202a3bd8
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll'  GUID: 53ebcfaa2e1e4e2dbc85882cd5a73fa1
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll'  GUID: 4ba2329b63d54f0187bcaa12486b1b0f
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll'  GUID: 80a3616ca19596e4da0f10f14d241e9f
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll'  GUID: 4113173d5e95493ab8765d7b08371de4
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll'  GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
+Load scene 'Assets/GameData/Scenes/SampleScene.unity' time: 0.027268 ms 
+Unloading 719 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 138.7 MB.
+System memory in use after: 137.5 MB.
+
+Unloading 134 unused Assets to reduce memory usage. Loaded Objects now: 1388.
+Total: 4.157903 ms (FindLiveObjects: 0.432440 ms CreateObjectMapping: 0.043950 ms MarkObjects: 2.769155 ms  DeleteObjects: 0.911717 ms)
+
+<RI> Initialized touch support.
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+<RI> Initialized touch support.
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+<RI> Initialized touch support.
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+<RI> Initialized touch support.
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+<RI> Initialized touch support.
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+<RI> Initialized touch support.
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=32 h=32 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+읙뼘⒅⍦軎㼴渽䭞씷ᆱ弐ꈿꦌ舗곟
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+TestSerilize:TestAES() (at Assets\Editor\AB\TestSerilize.cs:39)
+ 
+(Filename: Assets/Editor/AB/TestSerilize.cs Line: 39)
+
+kkkkkkkkkkkk
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+TestSerilize:TestAES() (at Assets\Editor\AB\TestSerilize.cs:40)
+ 
+(Filename: Assets/Editor/AB/TestSerilize.cs Line: 40)
+
+Batchmode quit successfully invoked - shutting down!
+[Performance] CurlRequestCheck                                  :        1 samples, Peak.  13.2 ms (1.0x), Avg.  13.2 ms, Total. 13.23 ms (0.2%)
+[Performance] PackageManager::RunRequestSynchronously           :        9 samples, Peak.  1.27 ms (6.4x), Avg.   199 us, Total. 1.791 ms (0.0%)
+[Performance] SceneVisibilityState::GameObjectChangedScene_Impl :        6 samples, Peak.   321 ns (6.0x), Avg.  53.5 ns, Total. 320.8 ns (0.0%)
+Refresh: detecting if any assets need to be imported or removed ...
+
+Refresh Completed time: 0.043064s
+	Asset Scan time: 0.037952s
+	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Scripting) time: 0.000000s (count: 0)
+	Post Processs Assets (Scripting) time: 0.000000s
+	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Non Scripting) time: 0.000000s (count: 0)
+	Post Process Assets (Non Scripting) time: 0.000000s
+	Dependent Assets to Import Queue time: 0.000000s
+
+Refresh: detecting if any assets need to be imported or removed ...
+
+Refresh Completed time: 0.042738s
+	Asset Scan time: 0.038233s
+	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Scripting) time: 0.000000s (count: 0)
+	Post Processs Assets (Scripting) time: 0.000000s
+	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Non Scripting) time: 0.000000s (count: 0)
+	Post Process Assets (Non Scripting) time: 0.000000s
+	Dependent Assets to Import Queue time: 0.000000s
+
+[Package Manager] Server::Kill -- Server was shutdown
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0
