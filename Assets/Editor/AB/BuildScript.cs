@@ -82,16 +82,16 @@ public class MyBuildApp : ScriptableObject
 #if UNITY_TVOS
             shouldCheckODR |= EditorUserBuildSettings.activeBuildTarget == BuildTarget.tvOS;
 #endif
-        if (shouldCheckOdr)
-        {
-#if ENABLE_IOS_ON_DEMAND_RESOURCES
-                if (PlayerSettings.iOS.useOnDemandResources)
-                    options |= BuildAssetBundleOptions.UncompressedAssetBundle;
-#endif
-#if ENABLE_IOS_APP_SLICING
-                options |= BuildAssetBundleOptions.UncompressedAssetBundle;
-#endif
-        }
+//        if (shouldCheckOdr)
+//        {
+//#if ENABLE_IOS_ON_DEMAND_RESOURCES
+//                if (PlayerSettings.iOS.useOnDemandResources)
+//                    options |= BuildAssetBundleOptions.UncompressedAssetBundle;
+//#endif
+//#if ENABLE_IOS_APP_SLICING
+//                options |= BuildAssetBundleOptions.UncompressedAssetBundle;
+//#endif
+//        }
 
         try
         {

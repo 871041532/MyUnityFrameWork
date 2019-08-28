@@ -67,75 +67,7 @@ SpriteAtlas:
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 4343727234628468602, guid: 847ab131af8415048adb1c367276bf85,
     type: 2}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: 172774604c1bee84185a69041576525b, type: 3}
-  - {fileID: 21300000, guid: 970324311431c794ca338446ea889948, type: 3}
-  - {fileID: 21300000, guid: 69631e817ae2477439fc4e527eece5c0, type: 3}
-  - {fileID: 21300000, guid: 3676a0b185daeb54fb257f700ba7ead4, type: 3}
-  - {fileID: 21300000, guid: a86d33b149e1eed429d2d8a7097d262d, type: 3}
-  - {fileID: 21300000, guid: da09804303305f542a686824630e7269, type: 3}
-  - {fileID: 21300000, guid: fe025e83f69d0b54f8a4fe3c7c128fd7, type: 3}
-  - {fileID: 21300000, guid: fd6e4fc32c78509458fc45ea4a478ba8, type: 3}
-  - {fileID: 21300000, guid: 3e4fcc84a0ac95b429c56452575f6021, type: 3}
-  - {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
-  - {fileID: 21300000, guid: 6592b916f86b19e428db6f6847c7b6dd, type: 3}
-  - {fileID: 21300000, guid: 895d4047ccbf1d14a83343d2952c1ffd, type: 3}
-  - {fileID: 21300000, guid: 5d9ba4e7d0964044ea54abe409d81dfd, type: 3}
-  - {fileID: 21300000, guid: f5cc5db8e2df60a4683f4e7aacbc49d0, type: 3}
-  - {fileID: 21300000, guid: b97c91e8b348f3f4ebdc11f5c82182cd, type: 3}
-  - {fileID: 21300000, guid: ed1074391f139544d941ae0870937dc0, type: 3}
-  - {fileID: 21300000, guid: d603d079acdc5bd4aa45ae64fe798bf6, type: 3}
-  - {fileID: 21300000, guid: e7d29a79bc7fae248887c8a08a160303, type: 3}
-  - {fileID: 21300000, guid: e52ea25af699fd445b7046374f81a5b9, type: 3}
-  - {fileID: 21300000, guid: 2f7e749a8562b2347aedb715feff49f4, type: 3}
-  - {fileID: 21300000, guid: 2f1eaeeaad36ee5469eff7ff158f37ba, type: 3}
-  - {fileID: 21300000, guid: 4a39cb4b272639541b7bd5ac0649acf7, type: 3}
-  - {fileID: 21300000, guid: db427fab3e94daf4caa704d9314a77a1, type: 3}
-  - {fileID: 21300000, guid: b8fb302c5768e334ca82005f50e58121, type: 3}
-  - {fileID: 21300000, guid: e420c5bc93cb2604695a893500c897e3, type: 3}
-  - {fileID: 21300000, guid: 5d7061fc7da05ce44add317708ec7215, type: 3}
-  - {fileID: 21300000, guid: ae496f5dad56ea645b72d374a0376368, type: 3}
-  - {fileID: 21300000, guid: 221c097dbfe21ed4e9e414bb57b49225, type: 3}
-  - {fileID: 21300000, guid: 6fc27c9d7fc2d9448af6851bf935e6d2, type: 3}
-  - {fileID: 21300000, guid: 70a77abda853dd941a0c8debf1de9b04, type: 3}
-  - {fileID: 21300000, guid: 0e123cfdc54a3ca4684816a34167a566, type: 3}
-  - {fileID: 21300000, guid: d4f5634edede200468fc1ccf30e6f3a1, type: 3}
-  - {fileID: 21300000, guid: f126324fd2486a641842ea5a8244c2d1, type: 3}
-  - {fileID: 21300000, guid: 784f00cfdf5d6514f812fea31e29cbc7, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - axe
-  - rings
-  - the_great_stick
-  - coins
-  - button_long
-  - belts
-  - bag
-  - helmets
-  - ingots
-  - sword
-  - mp
-  - heavy_steel_gloves
-  - apple
-  - button_square
-  - shield
-  - f
-  - steel_gloves
-  - gem
-  - hp
-  - panel
-  - armor
-  - Meat
-  - scroll
-  - pants
-  - boots
-  - b_t_01
-  - book
-  - iron_gloves
-  - cloaks
-  - bracers
-  - necklace
-  - gloves
-  - shoulders
-  - steel_sword
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_Tag: common
   m_IsVariant: 1

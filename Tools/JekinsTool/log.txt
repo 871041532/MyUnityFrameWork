@@ -1,10 +1,10 @@
 
-LICENSE SYSTEM [2019828 11:41:3] Next license update check is after 2019-08-28T11:11:48
+LICENSE SYSTEM [2019828 14:57:27] Next license update check is after 2019-08-28T11:11:48
 
 Built from '2019.1/staging' branch; Version is '2019.1.8f1 (7938dd008a75) revision 7944413'; Using compiler version '191627012'
 OS: 'Windows 10  (10.0.0) 64bit' Language: 'zh' Physical Memory: 16297 MB
 BatchMode: 0, IsHumanControllingUs: 1, StartBugReporterOnCrash: 1, Is64bit: 1, IsPro: 0
-[Package Manager] Server::Start -- Port 51607 was selected
+[Package Manager] Server::Start -- Port 54534 was selected
 
  COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Unity.exe
@@ -18,10 +18,10 @@ MyBuildApp.BuildIos
 Successfully changed project path to: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork
 C:/Users/zhoukaibing/Desktop/MyUnityFrameWork
 Using Asset Import Pipeline V1.
-Loading GUID <-> Path mappings...0.000074 seconds
-Loading Asset Database...0.006977 seconds
-AssetDatabase consistency checks...0.031043 seconds
-[Package Manager] Done resolving packages in 0.47s seconds
+Loading GUID <-> Path mappings...0.000087 seconds
+Loading Asset Database...0.010861 seconds
+AssetDatabase consistency checks...0.031149 seconds
+[Package Manager] Done resolving packages in 0.24s seconds
 [Package Manager] Registering 39 packages:
 [Package Manager]  * Package :  com.unity.ads@2.0.8
     (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.ads@2.0.8)
@@ -102,9 +102,9 @@ AssetDatabase consistency checks...0.031043 seconds
 [Package Manager]  * Package :  com.unity.ugui@1.0.0
     (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.ugui)
 [Package Manager] Done registering packages in 0.00s seconds
-Refreshing native plugins compatible for Editor in 25.05 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 14.57 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-IsTimeToCheckForNewEditor: Update time 0 current 1566963665
+IsTimeToCheckForNewEditor: Update time 0 current 1566975449
 Initialize engine version: 2019.1.8f1 (7938dd008a75)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -126,35 +126,38 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56528
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56860
 Begin MonoManager ReloadAssembly
 Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
 Registering precompiled unity dll's ...
 Register platform support module: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\PlaybackEngines\windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\PlaybackEngines\AndroidPlayer/UnityEditor.Android.Extensions.dll
-Registered in 0.002957 seconds.
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Registered in 0.004348 seconds.
 Registering platform support modules:
-Registered platform support modules in: 0.0668422s.
+Registered platform support modules in: 0.0664421s.
 Native extension for WindowsStandalone target not found
 Native extension for Android target not found
+Native extension for iOS target not found
 Refreshing native plugins compatible for Editor in 0.31 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.886 seconds
+- Completed reload, in  1.915 seconds
 Registering precompiled user dll's ...
-Registered in 0.080454 seconds.
+Registered in 0.080976 seconds.
 Platform modules already initialized, skipping
 Begin MonoManager ReloadAssembly
 Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
 Registering platform support modules:
-Registered platform support modules in: 0.0351056s.
+Registered platform support modules in: 0.0361126s.
 Native extension for WindowsStandalone target not found
 Native extension for Android target not found
-Refreshing native plugins compatible for Editor in 0.33 ms, found 1 plugins.
+Native extension for iOS target not found
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Refreshing native plugins compatible for Editor in 0.31 ms, found 1 plugins.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.043 seconds
+- Completed reload, in  1.023 seconds
 Platform modules already initialized, skipping
 [ScriptCompilation] Recompiling all scripts because: Reload of assemblies failed, assemblies are invalid or forced recompiled
 - Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
@@ -163,26 +166,27 @@ Platform modules already initialized, skipping
 - Starting compile Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
 - Starting compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
 - Starting compile Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll
-- Finished compile Library/ScriptAssemblies/Unity.Timeline.dll
-- Starting compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
 - Finished compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
 - Finished compile Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
-- Finished compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
 - Finished compile Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
 - Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
 - Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
-- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
 - Finished compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
 Begin MonoManager ReloadAssembly
 Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
 Registering platform support modules:
-Registered platform support modules in: 0.04076s.
+Registered platform support modules in: 0.0374773s.
 Native extension for WindowsStandalone target not found
 Native extension for Android target not found
-Refreshing native plugins compatible for Editor in 0.34 ms, found 1 plugins.
+Native extension for iOS target not found
+Refreshing native plugins compatible for Editor in 0.37 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.120 seconds
+- Completed reload, in  1.007 seconds
 Platform modules already initialized, skipping
 - Starting compile Library/ScriptAssemblies/Assembly-CSharp.dll
 - Finished compile Library/ScriptAssemblies/Assembly-CSharp.dll
@@ -197,22 +201,23 @@ Reloading assemblies after script compilation.
 Begin MonoManager ReloadAssembly
 Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
 Registering platform support modules:
-Registered platform support modules in: 0.0417577s.
+Registered platform support modules in: 0.0422672s.
 Native extension for WindowsStandalone target not found
 Native extension for Android target not found
+Native extension for iOS target not found
 Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.022 seconds
+- Completed reload, in  1.024 seconds
 Platform modules already initialized, skipping
-Validating Project structure ... 0.009855 seconds.
+Validating Project structure ... 0.010608 seconds.
 Refresh: detecting if any assets need to be imported or removed ...
-Refreshing native plugins compatible for Editor in 0.34 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.35 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Refresh: detecting if any assets need to be imported or removed ...
 
-Refresh Completed time: 0.039095s
-	Asset Scan time: 0.034830s
+Refresh Completed time: 0.038877s
+	Asset Scan time: 0.036822s
 	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
 	Asset Import (Scripting) time: 0.000000s (count: 0)
 	Post Processs Assets (Scripting) time: 0.000000s
@@ -229,8 +234,8 @@ WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Pass 'RGBAExternal_To
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default shader.
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
-Warming cache for 1268 main assets: 0.001736 seconds elapsed
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Warming cache for 1337 main assets: 0.002322 seconds elapsed
 Initializing Unity extensions:
  'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/portable/nunit.framework.dll'  GUID: 405b9b51bb344a128608d968297df79c
  'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll'  GUID: f70555f144d8491a825f0804e09c671c
@@ -240,13 +245,12 @@ Initializing Unity extensions:
  'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll'  GUID: 80a3616ca19596e4da0f10f14d241e9f
  'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll'  GUID: 4113173d5e95493ab8765d7b08371de4
  'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll'  GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
-Load scene 'Assets/GameData/Scenes/SampleScene.unity' time: 0.027910 ms 
-Unloading 719 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 138.9 MB.
-System memory in use after: 137.6 MB.
+Unloading 787 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 156.1 MB.
+System memory in use after: 154.7 MB.
 
-Unloading 138 unused Assets to reduce memory usage. Loaded Objects now: 1390.
-Total: 3.950666 ms (FindLiveObjects: 0.336200 ms CreateObjectMapping: 0.037855 ms MarkObjects: 2.644685 ms  DeleteObjects: 0.930644 ms)
+Unloading 140 unused Assets to reduce memory usage. Loaded Objects now: 1408.
+Total: 3.596181 ms (FindLiveObjects: 0.307648 ms CreateObjectMapping: 0.028872 ms MarkObjects: 2.296615 ms  DeleteObjects: 0.962403 ms)
 
 <RI> Initialized touch support.
 Assertion failed on expression: 'SUCCEEDED(hr)'
@@ -314,6 +318,12 @@ Assertion failed on expression: 'SUCCEEDED(hr)'
 
 d3d11: swap chain: w=32 h=32 fmt=28
 d3d11: failed to create swap chain [0x887a0022]
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.011 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.023 MB)
@@ -328,21 +338,15 @@ Hashing assets (1 files)... 0.001 seconds
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
-  file read: 0.000 seconds (0.003 MB)
+  file read: 0.000 seconds (0.011 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
   wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
-Hashing assets (0 files)... 0.000 seconds
-  file read: 0.000 seconds (0.000 MB)
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.003 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
-  hash: 0.000 seconds
-
-Hashing assets (0 files)... 0.000 seconds
-  file read: 0.000 seconds (0.000 MB)
-  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
 Hashing assets (0 files)... 0.000 seconds
@@ -366,7 +370,7 @@ Hashing assets (1 files)... 0.001 seconds
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.007 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
@@ -381,16 +385,16 @@ Hashing assets (1 files)... 0.001 seconds
   wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
-Hashing assets (1 files)... 0.001 seconds
-  file read: 0.000 seconds (0.011 MB)
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
-Hashing assets (1 files)... 0.001 seconds
-  file read: 0.000 seconds (0.011 MB)
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 已设置过，不再重复设置; 或是C#文件不需要设置：Assets/GameData/UI/res/common/items/axe.png
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
@@ -488,6 +492,12 @@ Hashing assets (0 files)... 0.000 seconds
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.011 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.003 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
   wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
@@ -496,13 +506,7 @@ Hashing assets (1 files)... 0.001 seconds
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.011 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
-  hash: 0.000 seconds
-
-Hashing assets (1 files)... 0.001 seconds
-  file read: 0.000 seconds (0.011 MB)
-  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
@@ -514,7 +518,7 @@ Hashing assets (1 files)... 0.001 seconds
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.017 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
@@ -526,24 +530,24 @@ Hashing assets (1 files)... 0.001 seconds
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.023 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.022 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
 
 Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.007 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
-  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
   hash: 0.000 seconds
-Refreshing native plugins compatible for Editor in 0.37 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.35 ms, found 1 plugins.
 Refresh: detecting if any assets need to be imported or removed ...
 
-Hashing assets (1 files)... 0.002 seconds
+Hashing assets (1 files)... 0.001 seconds
   file read: 0.000 seconds (0.006 MB)
   wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
   wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
@@ -551,12 +555,12 @@ Hashing assets (1 files)... 0.002 seconds
 ----- Compute hash(es) for 1 asset(s).
 ----- Asset named Assets/GameData/Configs/AssetBundleConfig.json is skipped as no actual change.
 
-Refreshing native plugins compatible for Editor in 0.52 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.57 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 
-Refresh Completed time: 0.061895s
-	Asset Scan time: 0.046806s
-	Asset Hashing: 0.001856s [6.1 KB, 3.217952 mb/s]
+Refresh Completed time: 0.052409s
+	Asset Scan time: 0.043038s
+	Asset Hashing: 0.001013s [6.1 KB, 5.856179 mb/s]
 	Asset Import (Scripting) time: 0.000000s (count: 0)
 	Post Processs Assets (Scripting) time: 0.000000s
 	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
@@ -575,52 +579,52 @@ MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
 (Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 141)
 
 Refresh: detecting if any assets need to be imported or removed ...
-Refresh: trashing asset 8082c3e17c049144da893d6a8135e3b4
-Refresh: trashing asset 756c6507b29ed3e47b30824833fd1696
-Refresh: trashing asset ea39999aafd301b4eb4a512ed5018872
-Refresh: trashing asset deddb7fe94b268946a6d58b9b3bce6f0
-Updating Assets/GameData/Scripts/Datas/Item.lua.txt - GUID: 00ad06f8c1911bf458914c339f7e8800...
------ Compute hash for Assets/GameData/Scripts/Datas/Item.lua.txt.
- done. [Time: 47.996661 ms] 
-Updating Assets/GameData/Scripts/main.lua.txt - GUID: 393607c299768b7499936ba4c5af557c...
------ Compute hash for Assets/GameData/Scripts/main.lua.txt.
- done. [Time: 47.706978 ms] 
-Updating Assets/GameData/Scripts/wins/menu.lua.txt - GUID: 6c2fac446a751b04fbcd9b53c6d08c3d...
+Refresh: trashing asset 1b74d802629c7ed43ac59e5a3d7a2d31
+Refresh: trashing asset 42fc9d4e61f7e48479f7de97fd973319
+Refresh: trashing asset da49a6fe0a493c948b69b92de4e59622
+Refresh: trashing asset e753d9cf12bf54f478e0ab68d07d9863
+Updating Assets/GameData/Scripts/wins/menu.lua.txt - GUID: 91fd41098f366e44b801b329c65fca1f...
 ----- Compute hash for Assets/GameData/Scripts/wins/menu.lua.txt.
- done. [Time: 42.193048 ms] 
-Updating Assets/GameData/Scripts/ClassUtil.lua.txt - GUID: a3595b80c1932374f9d6cfb19d199a6d...
+ done. [Time: 24.420024 ms] 
+Updating Assets/GameData/Scripts/Datas/Item.lua.txt - GUID: ad422542b9325654aa1c3044ffc616e7...
+----- Compute hash for Assets/GameData/Scripts/Datas/Item.lua.txt.
+ done. [Time: 15.545381 ms] 
+Updating Assets/GameData/Scripts/main.lua.txt - GUID: dbc1f3041de94c8498b593106aec48f4...
+----- Compute hash for Assets/GameData/Scripts/main.lua.txt.
+ done. [Time: 15.891205 ms] 
+Updating Assets/GameData/Scripts/ClassUtil.lua.txt - GUID: ed5aff542cbd3d842ae315010c5454e4...
 ----- Compute hash for Assets/GameData/Scripts/ClassUtil.lua.txt.
- done. [Time: 48.423968 ms] 
+ done. [Time: 17.005989 ms] 
 [C# Project] Writing C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj because it has changed
-[C# Project] First difference on line 139
+[C# Project] First difference on line 212
 
 [C# Project] Current C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
-[C# Project]   139:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
-[C# Project]   140:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
-[C# Project]   141:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
-[C# Project]   142:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
-[C# Project]   143:     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
+[C# Project]   212:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   213:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+[C# Project]   214:     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
+[C# Project]   215:     <None Include="Assets\XLua\Gen\link.xml" />
+[C# Project]   216:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\coruntine_test.lua.txt" />
 
 [C# Project] New C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
-[C# Project]   139:     <None Include="Assets\GameData\Scripts\ClassUtil.lua.txt" />
-[C# Project]   140:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
-[C# Project]   141:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
-[C# Project]   142:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
-[C# Project]   143:     <None Include="Assets\GameData\Scripts\main.lua.txt" />
-Refreshing native plugins compatible for Editor in 0.39 ms, found 1 plugins.
+[C# Project]   212:     <None Include="Assets\GameData\Scripts\Datas\Item.lua.txt" />
+[C# Project]   213:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   214:     <None Include="Assets\GameData\Scripts\main.lua.txt" />
+[C# Project]   215:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+[C# Project]   216:     <None Include="Assets\GameData\Scripts\ClassUtil.lua.txt" />
+Refreshing native plugins compatible for Editor in 0.35 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Refreshing native plugins compatible for Editor in 0.38 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.27 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 
-Refresh Completed time: 0.540962s
-	Asset Scan time: 0.049546s
+Refresh Completed time: 0.266572s
+	Asset Scan time: 0.037912s
 	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
-	Asset Import (Scripting) time: 0.022721s (count: 2)
+	Asset Import (Scripting) time: 0.006692s (count: 2)
 	Post Processs Assets (Scripting) time: 0.000000s
 	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
-	Asset Import (Non Scripting) time: 0.225886s (count: 4)
-	Post Process Assets (Non Scripting) time: 0.070283s
-	Dependent Assets to Import Queue time: 0.000513s
+	Asset Import (Non Scripting) time: 0.077904s (count: 4)
+	Post Process Assets (Non Scripting) time: 0.078324s
+	Dependent Assets to Import Queue time: 0.000515s
 
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Pass 'Flip_RGBARect_To_RGBA' has no vertex shader
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Setting to default shader.
@@ -628,16 +632,40 @@ WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Pass 'RGBAExternal_To
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default shader.
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
-Building an AssetBundle for target 'iOSSupport' is not allowed because the required module is not installed.
+[ScriptCompilation] Recompiling all scripts because: Recompiling scripts for player build.
+BuildPlayer: start building target 9
+- Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Finished compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Assembly-CSharp.dll
+- Finished compile Library/ScriptAssemblies/Assembly-CSharp.dll
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0660: 'FileMD5' defines operator == or operator != but does not override Object.Equals(object o)
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0661: 'FileMD5' defines operator == or operator != but does not override Object.GetHashCode()
+Assets\XLua\Examples\ExampleGenConfig.cs(46,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\06_Coroutine\Coroutine_Runner.cs(24,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\08_Hotfix\StatefullTest.cs(41,49): warning CS0067: The event 'StatefullTest.AEvent' is never used
+Exception: ExtractPlayerRuntimeInitializeOnLoadMethods: Failed to process Library/ScriptAssemblies/Unity.TextMeshPro.dll, System.IO.IOException: Sharing violation on path C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\ScriptAssemblies\Unity.TextMeshPro.dll
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.Boolean anonymous, System.IO.FileOptions options) [0x0019e] in <1f0c1ef1ad524c38bbc5536809c46b48>:0 
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) [0x00000] in <1f0c1ef1ad524c38bbc5536809c46b48>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.FileStream..ctor(string,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)
+  at Mono.Cecil.ModuleDefinition.GetFileStream (System.String fileName, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share) [0x00006] in <28cdca1704d2491781795499c297b78b>:0 
+  at Mono.Cecil.ModuleDefinition.ReadModule (System.String fileName, Mono.Cecil.ReaderParameters parameters) [0x00008] in <28cdca1704d2491781795499c297b78b>:0 
+  at Mono.Cecil.AssemblyDefinition.ReadAssembly (System.String fileName, Mono.Cecil.ReaderParameters parameters) [0x00000] in <28cdca1704d2491781795499c297b78b>:0 
+  at UnityEditor.AssemblyHelper.ExtractPlayerRuntimeInitializeOnLoadMethods (UnityEditor.BuildTarget targetPlatform, System.String[] assemblyPaths, System.String[] searchDirs) [0x00089] in C:\buildslave\unity\build\Editor\Mono\AssemblyHelper.cs:436 
+  at UnityEditor.AssemblyHelper.ExtractPlayerRuntimeInitializeOnLoadMethods (UnityEditor.BuildTarget targetPlatform, System.String[] assemblyPaths, System.String[] searchDirs) [0x00154] in C:\buildslave\unity\build\Editor\Mono\AssemblyHelper.cs:456 
 UnityEditor.BuildPipeline:BuildAssetBundlesInternal(String, BuildAssetBundleOptions, BuildTargetGroup, BuildTarget)
 UnityEditor.BuildPipeline:BuildAssetBundles(String, BuildAssetBundleOptions, BuildTargetGroup, BuildTarget) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:454)
 UnityEditor.BuildPipeline:BuildAssetBundles(String, BuildAssetBundleOptions, BuildTarget) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:443)
 MyBuildApp:BuildAssetBundles(BuildTarget, AssetBundleBuild[]) (at Assets\Editor\AB\BuildScript.cs:101)
 MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:49)
-
-[C:\buildslave\unity\build\Modules/BuildReportingEditor/Public/BuildReport.cpp line 547] 
+ 
 (Filename: Assets/Editor/AB/BuildScript.cs Line: 101)
 
+DisplayProgressNotification: Build Failed
+Unable to extract RuntimeInitializeOnLoadMethod attributes
 Build AssetBundle Done!
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
@@ -660,8 +688,8 @@ MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
  
 (Filename: Assets/Editor/AB/BuildScript.cs Line: 204)
 
-Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
-Version写入完毕。包名：com.Default.Default； 平台：iOS； 版本：0.0.84
+Unloading 11 Unused Serialized files (Serialized files now loaded: 0)
+Version写入完毕。包名：com.Default.Default； 平台：iOS； 版本：0.0.90
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
@@ -672,7 +700,7 @@ MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
  
 (Filename: Assets/Editor/AB/BundleHotFix.cs Line: 120)
 
-开始部署热更文件，Version:0.0.84  PackageName:com.Default.Default
+开始部署热更文件，Version:0.0.90  PackageName:com.Default.Default
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
@@ -682,6 +710,149 @@ MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs
 MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
  
 (Filename: Assets/Editor/AB/BundleHotFix.cs Line: 46)
+
+已部署：AssetBundles/iOS/c1
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/c2
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/configs
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/confirmsure
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/hotpatchpanel
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/iOS
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/loadingpanel
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/lua
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/menupanel
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/sporttoolpanel
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/uiroot
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/ui_common
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+已部署：AssetBundles/iOS/audio/one
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
 
 已部署：version.json
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
@@ -706,24 +877,148 @@ MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
 (Filename: Assets/Editor/AB/BundleHotFix.cs Line: 75)
 
 Updating ProjectSettings/ProjectSettings.asset - GUID: 00000000000000004000000000000000...
- done. [Time: 35.142160 ms] 
+ done. [Time: 10.856873 ms] 
 Updating ProjectSettings/UnityConnectSettings.asset - GUID: 0000000000000000a100000000000000...
- done. [Time: 29.688541 ms] 
-Refreshing native plugins compatible for Editor in 0.36 ms, found 1 plugins.
+ done. [Time: 10.535751 ms] 
+Refreshing native plugins compatible for Editor in 0.31 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-DisplayProgressNotification: Build Failed
-Error building player because build target was unsupported
-System memory in use before: 145.0 MB.
-System memory in use after: 145.1 MB.
+[ScriptCompilation] Recompiling all scripts because: Recompiling scripts for player build.
+BuildPlayer: start building target 9
+- Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Finished compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Assembly-CSharp.dll
+- Finished compile Library/ScriptAssemblies/Assembly-CSharp.dll
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0660: 'FileMD5' defines operator == or operator != but does not override Object.Equals(object o)
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0661: 'FileMD5' defines operator == or operator != but does not override Object.GetHashCode()
+Assets\XLua\Examples\ExampleGenConfig.cs(46,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\06_Coroutine\Coroutine_Runner.cs(24,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\08_Hotfix\StatefullTest.cs(41,49): warning CS0067: The event 'StatefullTest.AEvent' is never used
+System memory in use before: 145.9 MB.
+System memory in use after: 146.0 MB.
 
-Unloading 1478 unused Assets to reduce memory usage. Loaded Objects now: 1494.
-Total: 6.819911 ms (FindLiveObjects: 0.452971 ms CreateObjectMapping: 0.115488 ms MarkObjects: 5.743303 ms  DeleteObjects: 0.507507 ms)
+Unloading 1563 unused Assets to reduce memory usage. Loaded Objects now: 1524.
+Total: 6.643791 ms (FindLiveObjects: 0.433723 ms CreateObjectMapping: 0.096240 ms MarkObjects: 5.580336 ms  DeleteObjects: 0.532851 ms)
+
+System memory in use before: 144.6 MB.
+System memory in use after: 144.6 MB.
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1524.
+Total: 5.700315 ms (FindLiveObjects: 0.331067 ms CreateObjectMapping: 0.027589 ms MarkObjects: 5.320487 ms  DeleteObjects: 0.020210 ms)
+
+Opening scene 'Assets/GameData/Scenes/SampleScene.unity'
+System memory in use before: 146.5 MB.
+System memory in use after: 146.4 MB.
+
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 1527.
+Total: 6.135322 ms (FindLiveObjects: 0.263057 ms CreateObjectMapping: 0.023739 ms MarkObjects: 5.643854 ms  DeleteObjects: 0.204030 ms)
+
+Load scene 'Assets/GameData/Scenes/SampleScene.unity' time: 0.018606 ms 
+Unloading 54 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 144.4 MB.
+System memory in use after: 144.5 MB.
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 1561.
+Total: 6.000906 ms (FindLiveObjects: 0.315348 ms CreateObjectMapping: 0.026947 ms MarkObjects: 5.631343 ms  DeleteObjects: 0.026947 ms)
+
+Created GICache directory at C:/windows/system32/config/systemprofile/AppData/LocalLow/Unity/Caches/GiCache. Took: 0.059s, timestamps: [18.270 - 18.329]
+[00:00:00] Enlighten: Precompute started.
+[00:00:00] Enlighten: Finished 1 Layout Systems job (0.00s execute, 0.00s integrate, 0.01s wallclock)
+[00:00:00] Enlighten: Finished 1 Tetrahedralize Probes job (0.01s execute, 0.00s integrate, 0.01s wallclock)
+[00:00:00] Enlighten: Precompute took 0.021957 seconds.
+Enlighten scene contents:   0 geometries.   0 instances.   0 systems.   0 probe groups.   0 cube maps. Scene is up-to-date.
+[00:00:00] Enlighten: Bake started.
+Setting up 3 worker threads for Enlighten.
+  Thread -> id: 587c -> priority: 1 
+  Thread -> id: 1a58 -> priority: 1 
+  Thread -> id: 10c0 -> priority: 1 
+TrimDiskCacheJob: Current cache size 0mb
+[00:00:00] Enlighten: Finished 1 Create Input Lighting job (0.00s execute, 0.00s integrate, 0.01s wallclock)
+[PathTracer] building lightmap data asset.
+[PathTracer] m_Clear = false;
+[PathTracer] Total bake time: 0.010091, raw bake time: 0.000000
+gi::BakeBackendSwitch: Clear() active clients.
+[EnlightenBakeManager] m_Clear = false;
+[PathTracer] building lightmap data asset.
+[PathTracer] m_Clear = false;
+gi::BakeBackendSwitch: switching bake backend from 3 to 1.
+[00:00:00] Enlighten: Finished 1 Bake Runtime job (0.06s execute, 0.00s integrate, 0.08s wallclock)
+[00:00:00] Enlighten: Finished 1 Create Input Lighting job (0.00s execute, 0.00s integrate, 0.01s wallclock)
+[00:00:00] Enlighten: Finished 1 Bake Runtime job (0.06s execute, 0.00s integrate, 0.06s wallclock)
+[00:00:00] Enlighten: Bake took 0.158595 seconds.
+[PathTracer] building lightmap data asset.
+[00:00:00] Enlighten: LightingDataAsset started.
+> Collecting Enlighten data
+Opening scene 'Assets/GameData/Scenes/scene2.unity'
+Load scene 'Assets/GameData/Scenes/scene2.unity' time: 0.032722 ms 
+Unloading 18 Unused Serialized files (Serialized files now loaded: 0)
+[00:00:00] Enlighten: LightingDataAsset took 0.094402 seconds. Cancelled, so not done yet.
+System memory in use before: 153.4 MB.
+System memory in use after: 153.5 MB.
+
+Unloading 84 unused Assets to reduce memory usage. Loaded Objects now: 1528.
+Total: 6.492052 ms (FindLiveObjects: 0.312139 ms CreateObjectMapping: 0.027589 ms MarkObjects: 6.040685 ms  DeleteObjects: 0.110997 ms)
+
+
+
+Mono dependencies included in the build
+Dependency assembly - System.Diagnostics.StackTrace.dll
+Dependency assembly - System.Globalization.Extensions.dll
+Dependency assembly - System.Runtime.Serialization.Xml.dll
+Dependency assembly - System.Xml.XPath.XDocument.dll
+Dependency assembly - netstandard.dll
+Dependency assembly - Mono.Security.dll
+Dependency assembly - System.ComponentModel.Composition.dll
+Dependency assembly - System.Configuration.dll
+Dependency assembly - System.Core.dll
+Dependency assembly - System.Data.dll
+Dependency assembly - System.Drawing.dll
+Dependency assembly - System.EnterpriseServices.dll
+Dependency assembly - System.IO.Compression.FileSystem.dll
+Dependency assembly - System.IO.Compression.dll
+Dependency assembly - System.Net.Http.dll
+Dependency assembly - System.Numerics.dll
+Dependency assembly - System.Runtime.Serialization.dll
+Dependency assembly - System.ServiceModel.Internals.dll
+Dependency assembly - System.Transactions.dll
+Dependency assembly - System.Xml.Linq.dll
+Dependency assembly - System.Xml.dll
+Dependency assembly - System.dll
+Dependency assembly - mscorlib.dll
+Dependency assembly - UnityEngine.UI.dll
+Dependency assembly - Assembly-CSharp.dll
+Dependency assembly - Unity.Analytics.DataPrivacy.dll
+Dependency assembly - Unity.TextMeshPro.dll
+Dependency assembly - Unity.Timeline.dll
+Dependency assembly - UnityEngine.Purchasing.dll
+
+Unloading 24 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 157.9 MB.
+System memory in use after: 157.7 MB.
+
+Unloading 33 unused Assets to reduce memory usage. Loaded Objects now: 1517.
+Total: 7.073986 ms (FindLiveObjects: 0.621071 ms CreateObjectMapping: 0.064481 ms MarkObjects: 6.110941 ms  DeleteObjects: 0.275889 ms)
 
 Assertion failed on expression: 'SUCCEEDED(hr)'
  
 (Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
 
 d3d11: swap chain: w=950 h=30 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=206 h=290 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=467 h=290 fmt=28
 d3d11: failed to create swap chain [0x887a0022]
 Assertion failed on expression: 'SUCCEEDED(hr)'
  
@@ -741,29 +1036,428 @@ Assertion failed on expression: 'SUCCEEDED(hr)'
  
 (Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
 
-d3d11: swap chain: w=467 h=290 fmt=28
+d3d11: swap chain: w=950 h=20 fmt=28
 d3d11: failed to create swap chain [0x887a0022]
-Assertion failed on expression: 'SUCCEEDED(hr)'
+[EnlightenBakeManager] m_Clear = false;
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 165.5 MB.
+System memory in use after: 165.5 MB.
+
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 1719.
+Total: 6.092013 ms (FindLiveObjects: 0.339408 ms CreateObjectMapping: 0.033043 ms MarkObjects: 5.712185 ms  DeleteObjects: 0.006737 ms)
+
+WARNING: Shader Unsupported: 'AR/TangoARRender' - Pass '' has no vertex shader
+WARNING: Shader Unsupported: 'AR/TangoARRender' - Setting to default shader.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 166.6 MB.
+System memory in use after: 165.3 MB.
+
+Unloading 63 unused Assets to reduce memory usage. Loaded Objects now: 1698.
+Total: 8.469150 ms (FindLiveObjects: 0.352240 ms CreateObjectMapping: 0.032080 ms MarkObjects: 7.241765 ms  DeleteObjects: 0.841782 ms)
+
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+UserBlackList: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Assets\link.xml
+UserBlackList: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Assets\XLua\Gen\link.xml
+Invoking UnityLinker with arguments: -out=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/tempStrip -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Core.xml" -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/../platform_native_link.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/TypesInScenes.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Assets/link.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Assets/XLua/Gen/link.xml -d=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --include-unity-root-assembly=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll --include-unity-root-assembly=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/UnityEngine.UI.dll --dotnetruntime=il2cpp --dotnetprofile=unityaot --use-editor-options --include-directory=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --rule-set=Conservative --engine-stripping-flag=EnableUnityConnect --engine-modules-asset-file="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/../modules.asset"
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\il2cpp\build/UnityLinker.exe exited after 3287 ms.
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Tools/InternalCallRegistrationWriter/InternalCallRegistrationWriter.exe exited after 233 ms.
+UserBlackList: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Assets\link.xml
+UserBlackList: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Assets\XLua\Gen\link.xml
+Invoking UnityLinker with arguments: -out=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/tempStrip -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Core.xml" -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/../platform_native_link.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/TypesInScenes.xml -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Animation.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/AssetBundle.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Audio.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Core.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/ParticleSystem.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Physics.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/TextRendering.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UI.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UnityConnect.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/IMGUI.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UnityWebRequest.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/GameCenter.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/SharedInternals.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/HotReload.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/TLS.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/ImageConversion.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UnityAnalytics.xml" -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Assets/link.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Assets/XLua/Gen/link.xml -d=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --include-unity-root-assembly=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll --include-unity-root-assembly=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/UnityEngine.UI.dll --dotnetruntime=il2cpp --dotnetprofile=unityaot --use-editor-options --include-directory=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --rule-set=Conservative --engine-stripping-flag=EnableUnityConnect --engine-modules-asset-file="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/../modules.asset"
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\il2cpp\build/UnityLinker.exe exited after 3293 ms.
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Tools/InternalCallRegistrationWriter/InternalCallRegistrationWriter.exe exited after 230 ms.
+UserBlackList: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Assets\link.xml
+UserBlackList: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Assets\XLua\Gen\link.xml
+Invoking UnityLinker with arguments: -out=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/tempStrip -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Core.xml" -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/../platform_native_link.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/TypesInScenes.xml -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Animation.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/AssetBundle.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Audio.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Core.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/ParticleSystem.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/Physics.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/TextRendering.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UI.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UnityConnect.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/IMGUI.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UnityWebRequest.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/GameCenter.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/SharedInternals.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/HotReload.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/TLS.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/ImageConversion.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/UnityAnalytics.xml" -x="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/JSONSerialize.xml" -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Assets/link.xml -x=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Assets/XLua/Gen/link.xml -d=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --include-unity-root-assembly=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll --include-unity-root-assembly=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed/UnityEngine.UI.dll --dotnetruntime=il2cpp --dotnetprofile=unityaot --use-editor-options --include-directory=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --rule-set=Conservative --engine-stripping-flag=EnableUnityConnect --engine-modules-asset-file="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/PlaybackEngines/iOSSupport/Whitelists/../modules.asset"
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\il2cpp\build/UnityLinker.exe exited after 3249 ms.
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Tools/InternalCallRegistrationWriter/InternalCallRegistrationWriter.exe exited after 223 ms.
+Invoking il2cpp with arguments: --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile="unityaot" --profiler-report --map-file-parser="C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/Tools/MapFileParser/MapFileParser.exe" --directory=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/StagingArea/Data/Managed --generatedcppdir=C:/Users/zhoukaibing/Desktop/MyUnityFrameWork/Temp/il2cppOutput/il2cppOutput 
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\il2cpp/build/il2cpp.exe exited after 18043 ms.
+Splash screen images not provided: iPhone 3.5'' (640x960px), iPhone 4'' (640x1136px), iPhone 4.7'' (750x1334px), iPhone 5.5'' (1242x2208px), iPhone 5.5'' (2208x1242px) Landscape, iiPhone 5.8'' (1125x2436px), iPhone 5.8'' (2436x1125px) Landscape, iPhone 6.5'' (1242x2688px), iPhone 6.5'' (828x1792px) Landscape, iPhone 6.1'' (828x1792px), iPhone 6.1'' (1792x828px) Landscape, iPad (768x1024px) Portrait, iPad (1024x768px) Landscape, iPad (1536x2048px) Portrait, iPad (2048x1536px) Landscape
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:LogWarning(Object)
+UnityEditor.iOS.PostProcessiPhonePlayer:WarnAboutMissingSplashscreens(ProjectPaths, BuildSettings) (at C:\buildslave\unity\build\PlatformDependent\iPhonePlayer\Extensions\Common\BuildPostProcessor.cs:1586)
+UnityEditor.iOS.PostProcessiPhonePlayer:UpdateInstallLocation(ProjectPaths, BuildSettings, IncludedFileList, BuildReport) (at C:\buildslave\unity\build\PlatformDependent\iPhonePlayer\Extensions\Common\BuildPostProcessor.cs:1459)
+UnityEditor.iOS.PostProcessiPhonePlayer:PostProcess(BuildSettings, ProjectPaths, RuntimeClassRegistry, BuildReport) (at C:\buildslave\unity\build\PlatformDependent\iPhonePlayer\Extensions\Common\BuildPostProcessor.cs:742)
+UnityEditor.iOS.PostProcessiPhonePlayer:PostProcess(PostProcessorSettings, BuildPostProcessArgs) (at C:\buildslave\unity\build\PlatformDependent\iPhonePlayer\Extensions\Common\BuildPostProcessor.cs:581)
+UnityEditor.iOS.iOSBuildPostprocessor:PostProcess(BuildPostProcessArgs) (at C:\buildslave\unity\build\PlatformDependent\iPhonePlayer\Extensions\Common\ExtensionModule.cs:48)
+UnityEditor.Modules.DefaultBuildPostprocessor:PostProcess(BuildPostProcessArgs, BuildProperties&) (at C:\buildslave\unity\build\Editor\Mono\Modules\DefaultBuildPostprocessor.cs:27)
+UnityEditor.PostprocessBuildPlayer:Postprocess(BuildTargetGroup, BuildTarget, String, String, String, Int32, Int32, BuildOptions, RuntimeClassRegistry, BuildReport) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline\PostprocessBuildPlayer.cs:281)
+UnityEditor.BuildPipeline:BuildPlayerInternalNoCheck(String[], String, String, BuildTargetGroup, BuildTarget, BuildOptions, Boolean)
+UnityEditor.BuildPipeline:BuildPlayerInternal(String[], String, String, BuildTargetGroup, BuildTarget, BuildOptions) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:364)
+UnityEditor.BuildPipeline:BuildPlayer(String[], String, String, BuildTargetGroup, BuildTarget, BuildOptions) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:263)
+UnityEditor.BuildPipeline:BuildPlayer(BuildPlayerOptions) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:246)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:190)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
  
-(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+(Filename: Assets/Editor/AB/BuildScript.cs Line: 190)
 
-d3d11: swap chain: w=206 h=290 fmt=28
-d3d11: failed to create swap chain [0x887a0022]
-Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 151.3 MB.
-System memory in use after: 151.4 MB.
 
-Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 1677.
-Total: 8.578543 ms (FindLiveObjects: 0.358656 ms CreateObjectMapping: 0.031118 ms MarkObjects: 8.177542 ms  DeleteObjects: 0.010586 ms)
+-------------------------------------------------------------------------------
+Build Report
+Uncompressed usage by category (Percentages based on user generated assets only):
+Textures               53.8 kb	 1.6% 
+Meshes                 0.0 kb	 0.0% 
+Animations             0.0 kb	 0.0% 
+Sounds                 0.0 kb	 0.0% 
+Shaders                15.8 kb	 0.5% 
+Other Assets           30.0 kb	 0.9% 
+Levels                 11.6 kb	 0.3% 
+Scripts                498.0 kb	 14.7% 
+Included DLLs          2.7 mb	 81.4% 
+File headers           20.4 kb	 0.6% 
+Total User Assets      3.3 mb	 100.0% 
+Complete build size    659.5 mb
+Used Assets and files from the Resources folder, sorted by uncompressed size:
+ 44.0 kb	 0.0% Assets/GameData/UI/res/common/items/bag.png
+ 28.4 kb	 0.0% Resources/unity_builtin_extra
+ 6.1 kb	 0.0% Assets/XLua/Resources/xlua/util.lua.txt
+ 4.4 kb	 0.0% Assets/XLua/Resources/perf/profiler.lua.txt
+ 4.1 kb	 0.0% C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
+ 4.1 kb	 0.0% C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll
+ 3.9 kb	 0.0% Assets/XLua/Examples/07_AsyncTest/Resources/ConfirmBox.prefab
+ 3.2 kb	 0.0% Assets/XLua/Resources/tdr/tdr.lua.txt
+ 2.6 kb	 0.0% Assets/XLua/Examples/07_AsyncTest/Resources/AlertBox.prefab
+ 1.6 kb	 0.0% Assets/XLua/Examples/07_AsyncTest/Resources/async_test.lua.txt
+ 1.3 kb	 0.0% Assets/XLua/Examples/06_Coroutine/Resources/coruntine_test.lua.txt
+ 1.1 kb	 0.0% Assets/XLua/Examples/07_AsyncTest/Resources/message_box.lua.txt
+ 1.1 kb	 0.0% Assets/XLua/Examples/06_Coroutine/Resources/cs_coroutine.lua.txt
+ 0.9 kb	 0.0% Assets/XLua/Resources/perf/memory.lua.txt
+ 0.9 kb	 0.0% C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll
+ 0.3 kb	 0.0% Packages/com.unity.analytics/Unity.Analytics.Tracker.dll
+ 0.3 kb	 0.0% Packages/com.unity.ads/UnityEngine.Advertisements.dll
+ 0.2 kb	 0.0% Assets/XLua/Examples/10_SignatureLoader/Resources/signatured1.lua.bytes
+ 0.2 kb	 0.0% Assets/XLua/Examples/10_SignatureLoader/Resources/signatured3.lua.bytes
+ 0.2 kb	 0.0% Assets/XLua/Examples/10_SignatureLoader/Resources/signatured2.lua.bytes
+ 0.2 kb	 0.0% Packages/com.unity.timeline/Runtime/AssetUpgrade/AnimationPlayableAssetUpgrade.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineSkinnedMeshRendererWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/TutorialDerivedClassExtensionsWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/SystemCollectionsIEnumeratorBridge.cs
+ 0.1 kb	 0.0% Packages/com.unity.analytics/Unity.Analytics.Editor.dll
+ 0.1 kb	 0.0% Assets/XLua/Gen/SystemCollectionsGenericList1SystemInt32Wrap.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/AssetUpgrade/AnimationTrackUpgrade.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Animation/AnimationOutputWeightProcessor.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineWaitForSecondsWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineParticleSystemWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineAnimationCurveWrap.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/TimeNotificationBehaviour.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/ActivationControlPlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.analytics/DataPrivacy/DataPrivacyButton.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestInvokeLuaICalcBridge.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineQuaternionWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineMonoBehaviourWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineGameObjectWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineAnimationClipWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/TutorialCSCallLuaItfDBridge.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Tests/PlayMode/TimelinePlaymodeTests.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/TimelineCreateUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/NotificationUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/PrefabControlPlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/ParticleControlPlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/DirectorControlPlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/Signals/CustomSignalEventDrawer.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Animation/AnimationPlayableAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Activation/ActivationPlayableAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Activation/ActivationMixerPlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_ScrollbarEventHandler.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_PackageResourceImporter.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_EditorResourceManager.cs
+ 0.1 kb	 0.0% Packages/com.unity.purchasing/Tests/Runtime/PurchasingRuntimeTest.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestLuaBehaviourWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestIExchangerBridge.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestFooExtensionWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestFoo2ParentWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestFoo2ChildWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestFoo1ParentWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestFoo1ChildWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineVector4Wrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineVector3Wrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineVector2Wrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineTransformWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineTextAssetWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineResourcesWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineRendererWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineObjectWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineKeyframeWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineComponentWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineBoundsWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineBehaviourWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/TutorialDerivedClassWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/TutorialBaseClassWrap.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/TimeControlPlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Evaluation/ScheduleRuntimeClip.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Evaluation/InfiniteRuntimeClip.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Control/ControlPlayableAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Audio/AudioPlayableAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Audio/AudioMixerProperties.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Audio/AudioClipProperties.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Attributes/TrackColorAttribute.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMPro_ExtensionMethods.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_TextParsingUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_TextElement_Legacy.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SpriteAssetImportFormats.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAssetUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/MaterialReferenceManager.cs
+ 0.1 kb	 0.0% Packages/com.unity.analytics/Tests/Runtime/DataPrivacy/JsonSerialization.cs
+ 0.1 kb	 0.0% Packages/com.unity.analytics/DataPrivacy/DataPrivacy.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestPeddingWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestMyStructWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestBaseTestWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineTimeWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineRayWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineRay2DWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineMathfWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineLightWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineDebugWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UnityEngineColorWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/TutorialICalcWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/ResourceManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/ObjectManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/HotPatchManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/CutSceneManagerWrap.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/TimelineAsset_CreateRemove.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/INotificationOptionProvider.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/WeightUtility.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/Extrapolation.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/TimelinePlayable.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/TimelineAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Scripting/PlayableTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/Signals/SignalReceiver.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/Signals/SignalEmitter.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Evaluation/RuntimeElement.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Evaluation/RuntimeClipBase.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Animation/AnimationTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Activation/ActivationTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMPro_EventManager.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_UpdateManager.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_TextUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SpriteCharacter.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SpriteAnimator.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SelectionCaret.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_RichTextTagsCommon.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_MaterialManager.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_InputValidator.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontFeaturesCommon.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontFeatureTable.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_DefaultControls.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_ColorGradient.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestNoGcWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaTestFooWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/UIManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/SystemObjectWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/MenuPanelWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/LuaManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/ItemCfgBridge.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/GameManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/CallManagerWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/AssetItemWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/ABManagerWrap.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Tests/Runtime/TMP_RuntimeTests.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/GenericDelegateBridge.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/10_SignatureLoader/SignatureLoaderTest.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/09_GenericMethod/GenericMethodExample.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/TimelineUndo.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/TimeUtility.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/HashUtility.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/TrackAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/TimelineClip.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/GroupTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/Signals/SignalAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/SignalTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/MarkerTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Evaluation/RuntimeClip.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Control/ControlTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Audio/AudioTrack.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TextMeshProUGUI.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TextContainer.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMPro_UGUI_Private.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMPro_MeshUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_UpdateRegistery.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_TextElement.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SubMeshUI.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_StyleSheet.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SpriteGlyph.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SpriteAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_ShaderUtilities.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_RichTextTagStack.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_InputField.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAssetCommon.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_FontAsset.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_CoroutineTween.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_CharacterInfo.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Character.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/StaticLuaCallbacks.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/ObjectTranslatorPool.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/WindowWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/CfgsBridge.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/IPropertyCollector.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/TimelineAttributes.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Timeline.deprecated.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/NotificationFlags.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/BasicScriptPlayable.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/XLuaGenAutoRegister.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/DelegatesGensBridge.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/12_ReImplementInLua/ReImplementInLua.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/11_RawObject/RawObjectTest.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/08_Hotfix/StatefullTest.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/06_Coroutine/Coroutine_Runner.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/06_Coroutine/CoroutineTest.cs
+ 0.1 kb	 0.0% Assets/Resources/OfflineData/OfflineEffectData.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/Marker.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TextMeshPro.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMPro_Private.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_TextInfo.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_SubMesh.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Style.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Sprite.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Settings.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_ObjectPool.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Dropdown.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Asset.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/FastAction.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/AssemblyInfo.cs.cs
+ 0.1 kb	 0.0% Packages/com.unity.analytics/DataPrivacy/AssemblyInfo.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/TypeExtensions.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/SignatureLoader.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/RawObject.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/ObjectTranslator.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/ObjectCasters.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/InternalGlobals.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/DelegateBridge.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Utilities/IPropertyPreview.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/IDirectorDriver.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Extensions/TrackExtensions.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/AssetUpgrade/TimelineUpgrade.cs
+ 0.1 kb	 0.0% Assets/XLua/Tutorial/LoadLuaScript/Loader/CustomLoader.cs
+ 0.1 kb	 0.0% Assets/XLua/Tutorial/CSharpCallLua/CSCallLua.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/TemplateEngine/TemplateEngine.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/MethodWarpsCache.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/GenAttributes.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/ExampleGenConfig.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/08_Hotfix/HotfixTest2.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/08_Hotfix/HotfixTest.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/07_AsyncTest/MessageBox.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/07_AsyncTest/AsyncTest.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/04_LuaObjectOrented/InvokeLua.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/02_U3DScripting/LuaBehaviour.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/01_Helloworld/Helloworld.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/ResourceManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/ObjectManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/HotPatchManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/CutSceneManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/ClassObjectPool.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/Panel/SportToolPanel.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/Panel/HotPatchPanel.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/Panel/ConfirmSurePanel.cs
+ 0.1 kb	 0.0% Assets/Resources/Patch/DownloadPatch.cs
+ 0.1 kb	 0.0% Assets/Resources/OfflineData/OfflineUIData.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_Text.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_MeshInfo.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_ListPool.cs
+ 0.1 kb	 0.0% Packages/com.unity.textmeshpro/Scripts/Runtime/TMP_LineInfo.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/ObjectPool.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/LuaFunction.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/LuaException.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/CopyByValue.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Properties/AssemblyInfo.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Playables/ITimeControl.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/MarkerList.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Evaluation/IntervalTree.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/DiscreteTime.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/AssetUpgrade/TrackUpgrade.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/AssetUpgrade/ClipUpgrade.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Animation/ICurvesOwner.cs
+ 0.1 kb	 0.0% Assets/XLua/Tutorial/LuaCallCSharp/LuaCallCs.cs
+ 0.1 kb	 0.0% Assets/XLua/Tutorial/LoadLuaScript/ByString/ByString.cs
+ 0.1 kb	 0.0% Assets/XLua/Tutorial/LoadLuaScript/ByFile/ByFile.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/WrapPusher.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/PackUnpack.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/UIManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/LuaManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/GameManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/CallManager.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/ABManager.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/Panel/MenuPanel.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/Panel/LoadingPanel.cs
+ 0.1 kb	 0.0% Assets/Resources/Patch/VersionData.cs
+ 0.1 kb	 0.0% Assets/Resources/Patch/DownloadBase.cs
+ 0.1 kb	 0.0% Assets/Resources/OfflineData/OfflineData.cs
+ 0.1 kb	 0.0% Assets/Resources/AB/ABUtility.cs
+ 0.1 kb	 0.0% Assets/PassEvent.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/Utils.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/LuaTable.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/LuaEnv.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/LuaBase.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/CodeEmit.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/Events/IMarker.cs
+ 0.1 kb	 0.0% Packages/com.unity.timeline/Runtime/ClipCaps.cs
+ 0.1 kb	 0.0% Assets/XLua/Src/LuaDLL.cs
+ 0.1 kb	 0.0% Assets/XLua/Gen/EnumWrap.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/09_GenericMethod/Foo.cs
+ 0.1 kb	 0.0% Assets/XLua/Examples/05_NoGc/NoGc.cs
+ 0.1 kb	 0.0% Assets/Resources/manager/zstring.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/Window.cs
+ 0.1 kb	 0.0% Assets/Resources/UGUI/BaseItem.cs
+ 0.1 kb	 0.0% Assets/Resources/AB/Console.cs
+ 0.1 kb	 0.0% Assets/Resources/AB/ABConfig.cs
+ 0.1 kb	 0.0% Assets/Resources/Patch/Job.cs
+ 0.1 kb	 0.0% Assets/Resources/Patch/AES.cs
+ 0.0 kb	 0.0% Assets/XLua/Tutorial/LoadLuaScript/ByFile/Resources/byfile.lua.txt
+-------------------------------------------------------------------------------
+Unloading 53 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 167.6 MB.
+System memory in use after: 167.3 MB.
 
-Load scene 'Temp/__Backupscenes/0.backup' time: 0.044271 ms 
+Unloading 112 unused Assets to reduce memory usage. Loaded Objects now: 1726.
+Total: 7.019129 ms (FindLiveObjects: 0.393623 ms CreateObjectMapping: 0.034005 ms MarkObjects: 6.326840 ms  DeleteObjects: 0.264340 ms)
+
+DisplayProgressNotification: Build Successful
+Load scene 'Temp/__Backupscenes/0.backup' time: 0.045554 ms 
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 150.7 MB.
-System memory in use after: 150.8 MB.
+System memory in use before: 166.0 MB.
+System memory in use after: 166.1 MB.
 
-Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 1665.
-Total: 8.481340 ms (FindLiveObjects: 0.377583 ms CreateObjectMapping: 0.047158 ms MarkObjects: 8.016499 ms  DeleteObjects: 0.039138 ms)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 1715.
+Total: 7.044472 ms (FindLiveObjects: 0.330425 ms CreateObjectMapping: 0.029193 ms MarkObjects: 6.673626 ms  DeleteObjects: 0.010266 ms)
 
+[ScriptCompilation] Recompiling all scripts because: Recompiling scripts for editor after player build.
+- Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Starting compile Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
+- Starting compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
+- Starting compile Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
+- Starting compile Library/ScriptAssemblies/Assembly-CSharp.dll
+- Finished compile Library/ScriptAssemblies/Assembly-CSharp.dll
+- Starting compile Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+- Finished compile Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0660: 'FileMD5' defines operator == or operator != but does not override Object.Equals(object o)
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0661: 'FileMD5' defines operator == or operator != but does not override Object.GetHashCode()
+Assets\XLua\Examples\ExampleGenConfig.cs(46,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\06_Coroutine\Coroutine_Runner.cs(24,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\08_Hotfix\StatefullTest.cs(41,49): warning CS0067: The event 'StatefullTest.AEvent' is never used
 Build Player Done!
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
@@ -775,77 +1469,92 @@ MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
 (Filename: Assets/Editor/AB/BuildScript.cs Line: 194)
 
 Batchmode quit successfully invoked - shutting down!
-[Performance] CurlRequestCheck                                  :        1 samples, Peak.  10.6 ms (1.0x), Avg.  10.6 ms, Total. 10.59 ms (0.1%)
-[Performance] PackageManager::RunRequestSynchronously           :        9 samples, Peak.   505 us (4.6x), Avg.   109 us, Total. 984.5 us (0.0%)
-[Performance] SceneVisibilityState::GameObjectChangedScene_Impl :        9 samples, Peak.   321 ns (4.5x), Avg.  71.3 ns, Total. 641.6 ns (0.0%)
-[Performance] GUIView.RepaintAll.PlayerLoopController           :        1 samples, Peak.   370 ms (1.0x), Avg.   370 ms, Total. 370.2 ms (1.9%)
-[Performance] Toolbar.Paint                                     :        1 samples, Peak.   162 ms (1.0x), Avg.   162 ms, Total. 162.2 ms (0.8%)
-[Performance] ConsoleWindow.Paint                               :        1 samples, Peak.  53.7 ms (1.0x), Avg.  53.7 ms, Total. 53.73 ms (0.3%)
-[Performance] ConsoleWindow.OnGUI.Layout                        :        1 samples, Peak.  18.1 ms (1.0x), Avg.  18.1 ms, Total. 18.06 ms (0.1%)
-[Performance] ConsoleWindow.OnGUI.repaint                       :        1 samples, Peak.  7.44 ms (1.0x), Avg.  7.44 ms, Total. 7.440 ms (0.0%)
-[Performance] InspectorWindow.Paint                             :        1 samples, Peak.  31.4 ms (1.0x), Avg.  31.4 ms, Total. 31.43 ms (0.2%)
-[Performance] InspectorWindow.OnGUI.Layout                      :        1 samples, Peak.  3.08 ms (1.0x), Avg.  3.08 ms, Total. 3.076 ms (0.0%)
-[Performance] InspectorWindow.OnGUI.repaint                     :        1 samples, Peak.  36.3 us (1.0x), Avg.  36.3 us, Total. 36.25 us (0.0%)
-[Performance] SceneView.Paint                                   :        1 samples, Peak.  93.9 ms (1.0x), Avg.  93.9 ms, Total. 93.95 ms (0.5%)
-[Performance] SceneView.OnGUI.Layout                            :        1 samples, Peak.  56.9 ms (1.0x), Avg.  56.9 ms, Total. 56.94 ms (0.3%)
-[Performance] SceneView.OnGUI.repaint                           :        1 samples, Peak.  34.2 ms (1.0x), Avg.  34.2 ms, Total. 34.16 ms (0.2%)
-[Performance] SceneVisibilityState.IsGameObjectHidden           :       12 samples, Peak.   962 ns (4.5x), Avg.   214 ns, Total. 2.566 us (0.0%)
-[Performance] SceneHierarchyWindow.Paint                        :        1 samples, Peak.  28.5 ms (1.0x), Avg.  28.5 ms, Total. 28.52 ms (0.1%)
-[Performance] SceneHierarchyWindow.OnGUI.Layout                 :        1 samples, Peak.  21.0 ms (1.0x), Avg.  21.0 ms, Total. 20.95 ms (0.1%)
-[Performance] SceneVisibilityState.HasHiddenGameObjects         :        2 samples, Peak.   962 ns (1.2x), Avg.   802 ns, Total. 1.604 us (0.0%)
-[Performance] SceneHierarchyWindow.OnGUI.repaint                :        1 samples, Peak.  3.10 ms (1.0x), Avg.  3.10 ms, Total. 3.099 ms (0.0%)
+[Performance] CurlRequestCheck                                  :        3 samples, Peak.  11.2 ms (2.5x), Avg.  4.49 ms, Total. 13.46 ms (0.0%)
+[Performance] PackageManager::RunRequestSynchronously           :        5 samples, Peak.   502 us (3.3x), Avg.   152 us, Total. 762.2 us (0.0%)
+[Performance] SceneVisibilityState::GameObjectChangedScene_Impl :       16 samples, Peak.   642 ns (4.6x), Avg.   140 ns, Total. 2.246 us (0.0%)
+[Performance] GUIView.RepaintAll.PlayerLoopController           :        4 samples, Peak.   322 ms (3.7x), Avg.  86.9 ms, Total. 347.7 ms (0.5%)
+[Performance] SceneVisibilityState.ClearScene                   :        3 samples, Peak.   321 ns (1.5x), Avg.   214 ns, Total. 641.6 ns (0.0%)
+[Performance] Toolbar.Paint                                     :        2 samples, Peak.   168 ms (2.0x), Avg.  84.8 ms, Total. 169.7 ms (0.2%)
+[Performance] SceneHierarchyWindow.Paint                        :        3 samples, Peak.  49.4 ms (2.7x), Avg.  18.6 ms, Total. 55.73 ms (0.1%)
+[Performance] SceneHierarchyWindow.OnGUI.Layout                 :        3 samples, Peak.  21.5 ms (2.7x), Avg.  7.96 ms, Total. 23.89 ms (0.0%)
+[Performance] SceneVisibilityState.IsGameObjectHidden           :       19 samples, Peak.  1.28 us (3.6x), Avg.   355 ns, Total. 6.737 us (0.0%)
+[Performance] SceneVisibilityState.HasHiddenGameObjects         :        6 samples, Peak.  2.89 us (2.2x), Avg.  1.34 us, Total. 8.020 us (0.0%)
+[Performance] SceneHierarchyWindow.OnGUI.repaint                :        3 samples, Peak.  2.76 ms (2.2x), Avg.  1.25 ms, Total. 3.762 ms (0.0%)
+[Performance] SceneView.Paint                                   :        3 samples, Peak.  60.2 ms (2.5x), Avg.  24.4 ms, Total. 73.27 ms (0.1%)
+[Performance] SceneView.OnGUI.Layout                            :        3 samples, Peak.  38.1 ms (3.0x), Avg.  12.9 ms, Total. 38.65 ms (0.1%)
+[Performance] SceneView.OnGUI.repaint                           :        3 samples, Peak.  19.8 ms (2.7x), Avg.  7.33 ms, Total. 21.98 ms (0.0%)
+[Performance] ConsoleWindow.Paint                               :        2 samples, Peak.  18.2 ms (1.8x), Avg.  10.1 ms, Total. 20.13 ms (0.0%)
+[Performance] ConsoleWindow.OnGUI.Layout                        :        2 samples, Peak.  10.6 ms (2.0x), Avg.  5.37 ms, Total. 10.74 ms (0.0%)
+[Performance] ConsoleWindow.OnGUI.repaint                       :        2 samples, Peak.  4.01 ms (1.8x), Avg.  2.23 ms, Total. 4.465 ms (0.0%)
+[Performance] InspectorWindow.Paint                             :        2 samples, Peak.  24.0 ms (1.9x), Avg.  12.7 ms, Total. 25.49 ms (0.0%)
+[Performance] InspectorWindow.OnGUI.Layout                      :        2 samples, Peak.  60.6 us (1.6x), Avg.  37.5 us, Total. 75.07 us (0.0%)
+[Performance] InspectorWindow.OnGUI.repaint                     :        2 samples, Peak.  21.5 us (1.2x), Avg.  18.1 us, Total. 36.25 us (0.0%)
+[Performance] AppStatusBar.Paint                                :        2 samples, Peak.  1.94 ms (1.5x), Avg.  1.27 ms, Total. 2.530 ms (0.0%)
+[Performance] SceneVisibilityState.AreAllChildrenVisible        :        4 samples, Peak.   321 ns (4.0x), Avg.  80.2 ns, Total. 320.8 ns (0.0%)
 Refresh: detecting if any assets need to be imported or removed ...
-Refresh: trashing asset a3595b80c1932374f9d6cfb19d199a6d
-Refresh: trashing asset 393607c299768b7499936ba4c5af557c
-Refresh: trashing asset 6c2fac446a751b04fbcd9b53c6d08c3d
-Refresh: trashing asset 00ad06f8c1911bf458914c339f7e8800
-Updating Assets/GameData/Scripts/main.lua - GUID: deddb7fe94b268946a6d58b9b3bce6f0...
+Refresh: trashing asset ad422542b9325654aa1c3044ffc616e7
+Refresh: trashing asset dbc1f3041de94c8498b593106aec48f4
+Refresh: trashing asset ed5aff542cbd3d842ae315010c5454e4
+Refresh: trashing asset 91fd41098f366e44b801b329c65fca1f
+Updating Assets/GameData/Scripts/main.lua - GUID: 42fc9d4e61f7e48479f7de97fd973319...
 ----- Compute hash for Assets/GameData/Scripts/main.lua.
- done. [Time: 84.584672 ms] 
-Updating Assets/GameData/Scripts/ClassUtil.lua - GUID: ea39999aafd301b4eb4a512ed5018872...
+ done. [Time: 26.475396 ms] 
+Updating Assets/GameData/Scripts/ClassUtil.lua - GUID: da49a6fe0a493c948b69b92de4e59622...
 ----- Compute hash for Assets/GameData/Scripts/ClassUtil.lua.
- done. [Time: 48.137493 ms] 
-Updating Assets/GameData/Scripts/Datas/Item.lua - GUID: 756c6507b29ed3e47b30824833fd1696...
+ done. [Time: 14.695900 ms] 
+Updating Assets/GameData/Scripts/Datas/Item.lua - GUID: 1b74d802629c7ed43ac59e5a3d7a2d31...
 ----- Compute hash for Assets/GameData/Scripts/Datas/Item.lua.
- done. [Time: 41.016670 ms] 
-Updating Assets/GameData/Scripts/wins/menu.lua - GUID: 8082c3e17c049144da893d6a8135e3b4...
+ done. [Time: 14.358417 ms] 
+Updating Assets/GameData/Scripts/wins/menu.lua - GUID: e753d9cf12bf54f478e0ab68d07d9863...
 ----- Compute hash for Assets/GameData/Scripts/wins/menu.lua.
- done. [Time: 53.870209 ms] 
+ done. [Time: 13.110501 ms] 
 [C# Project] Writing C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj because it has changed
-[C# Project] First difference on line 139
+[C# Project] First difference on line 212
 
 [C# Project] Current C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
-[C# Project]   139:     <None Include="Assets\GameData\Scripts\ClassUtil.lua.txt" />
-[C# Project]   140:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
-[C# Project]   141:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
-[C# Project]   142:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
-[C# Project]   143:     <None Include="Assets\GameData\Scripts\main.lua.txt" />
+[C# Project]   212:     <None Include="Assets\GameData\Scripts\Datas\Item.lua.txt" />
+[C# Project]   213:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   214:     <None Include="Assets\GameData\Scripts\main.lua.txt" />
+[C# Project]   215:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+[C# Project]   216:     <None Include="Assets\GameData\Scripts\ClassUtil.lua.txt" />
 
 [C# Project] New C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
-[C# Project]   139:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
-[C# Project]   140:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
-[C# Project]   141:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
-[C# Project]   142:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
-[C# Project]   143:     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
-Refreshing native plugins compatible for Editor in 0.45 ms, found 1 plugins.
+[C# Project]   212:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   213:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+[C# Project]   214:     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
+[C# Project]   215:     <None Include="Assets\XLua\Gen\link.xml" />
+[C# Project]   216:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\coruntine_test.lua.txt" />
+Refreshing native plugins compatible for Editor in 0.35 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Refreshing native plugins compatible for Editor in 0.38 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.29 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 
-Refresh Completed time: 0.556589s
-	Asset Scan time: 0.040992s
+Refresh Completed time: 0.251783s
+	Asset Scan time: 0.038020s
 	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
-	Asset Import (Scripting) time: 0.019560s (count: 2)
+	Asset Import (Scripting) time: 0.005309s (count: 2)
 	Post Processs Assets (Scripting) time: 0.000000s
 	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
-	Asset Import (Non Scripting) time: 0.265894s (count: 4)
-	Post Process Assets (Non Scripting) time: 0.093554s
-	Dependent Assets to Import Queue time: 0.000540s
+	Asset Import (Non Scripting) time: 0.073486s (count: 4)
+	Post Process Assets (Non Scripting) time: 0.079776s
+	Dependent Assets to Import Queue time: 0.000457s
 
+
+Hashing assets (2 files)... 0.001 seconds
+  file read: 0.000 seconds (0.004 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+Updating Assets/GameData/UI/res/common/common.spriteatlas - GUID: 847ab131af8415048adb1c367276bf85...
+ done. [Time: 16.701869 ms] 
+Updating Assets/GameData/UI/res/common/common_sd.spriteatlas - GUID: e195dc0f5e22fba4ea9e085218b96750...
+ done. [Time: 15.746844 ms] 
+Refreshing native plugins compatible for Editor in 0.41 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
 Refresh: detecting if any assets need to be imported or removed ...
 
-Refresh Completed time: 0.041324s
-	Asset Scan time: 0.036741s
+Refresh Completed time: 0.038776s
+	Asset Scan time: 0.036098s
 	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
 	Asset Import (Scripting) time: 0.000000s (count: 0)
 	Post Processs Assets (Scripting) time: 0.000000s
@@ -856,29 +1565,29 @@ Refresh Completed time: 0.041324s
 
 [Package Manager] Server::Kill -- Server was shutdown
 Cleanup mono
+A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
+ 
+(Filename:  Line: 0)
+
 GarbageCollector disposing of ComputeBuffer allocated in C:\buildslave\unity\build\Modules\UIElements\Renderer\UIRenderer\UIRenderDevice.cs at line 325. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
  
 (Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 48)
+
+A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
+ 
+(Filename:  Line: 0)
+
+A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
+ 
+(Filename:  Line: 0)
 
 GarbageCollector disposing of ComputeBuffer allocated in C:\buildslave\unity\build\Modules\UIElements\Renderer\UIRenderer\UIRenderDevice.cs at line 800. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
  
 (Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 48)
 
-A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
- 
-(Filename:  Line: 0)
-
-A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
- 
-(Filename:  Line: 0)
-
 GarbageCollector disposing of ComputeBuffer allocated in C:\buildslave\unity\build\Modules\UIElements\Renderer\UIRenderer\UIRenderDevice.cs at line 310. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
  
 (Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 48)
-
-A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
- 
-(Filename:  Line: 0)
 
 Exiting batchmode successfully now!
 Exiting without the bug reporter. Application will terminate with return code 0
