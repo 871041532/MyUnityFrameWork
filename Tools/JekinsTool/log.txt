@@ -1,118 +1,118 @@
 
-LICENSE SYSTEM [2019828 0:32:17] Next license update check is after 2019-08-28T16:22:40
+LICENSE SYSTEM [2019828 11:41:3] Next license update check is after 2019-08-28T11:11:48
 
 Built from '2019.1/staging' branch; Version is '2019.1.8f1 (7938dd008a75) revision 7944413'; Using compiler version '191627012'
-OS: 'Windows 10  (10.0.0) 64bit' Language: 'zh' Physical Memory: 8045 MB
+OS: 'Windows 10  (10.0.0) 64bit' Language: 'zh' Physical Memory: 16297 MB
 BatchMode: 0, IsHumanControllingUs: 1, StartBugReporterOnCrash: 1, Is64bit: 1, IsPro: 0
-[Package Manager] Server::Start -- Port 60607 was selected
+[Package Manager] Server::Start -- Port 51607 was selected
 
  COMMAND LINE ARGUMENTS:
-D:\Unity\2019.1.8f1\Editor\Unity.exe
+C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Unity.exe
 -projectPath
-C:\Users\Administrator\Desktop\MyUnityFrameWork
+C:\Users\zhoukaibing\Desktop\MyUnityFrameWork
 -quit
 -logFile
-C:\Users\Administrator\Desktop\MyUnityFrameWork\Tools\JekinsTool\log.txt
+C:\Users\zhoukaibing\Desktop\MyUnityFrameWork/Tools/JekinsTool/log.txt
 -executeMethod
-TestSerilize.TestAES
-Successfully changed project path to: C:\Users\Administrator\Desktop\MyUnityFrameWork
-C:/Users/Administrator/Desktop/MyUnityFrameWork
+MyBuildApp.BuildIos
+Successfully changed project path to: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork
+C:/Users/zhoukaibing/Desktop/MyUnityFrameWork
 Using Asset Import Pipeline V1.
-Loading GUID <-> Path mappings...0.000182 seconds
-Loading Asset Database...0.011510 seconds
-AssetDatabase consistency checks...0.025158 seconds
-[Package Manager] Done resolving packages in 8.89s seconds
+Loading GUID <-> Path mappings...0.000074 seconds
+Loading Asset Database...0.006977 seconds
+AssetDatabase consistency checks...0.031043 seconds
+[Package Manager] Done resolving packages in 0.47s seconds
 [Package Manager] Registering 39 packages:
 [Package Manager]  * Package :  com.unity.ads@2.0.8
-    (location: C:\Users\Administrator\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.ads@2.0.8)
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.ads@2.0.8)
 [Package Manager]  * Package :  com.unity.analytics@3.3.2
-    (location: C:\Users\Administrator\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.analytics@3.3.2)
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.analytics@3.3.2)
 [Package Manager]  * Package :  com.unity.assetbundlebrowser@1.7.0
-    (location: C:\Users\Administrator\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.assetbundlebrowser@1.7.0)
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.assetbundlebrowser@1.7.0)
 [Package Manager]  * Package :  com.unity.collab-proxy@1.2.16
-    (location: C:\Users\Administrator\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.collab-proxy@1.2.16)
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.collab-proxy@1.2.16)
 [Package Manager]  * Package :  com.unity.package-manager-ui@2.1.2
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.package-manager-ui)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.package-manager-ui)
 [Package Manager]  * Package :  com.unity.purchasing@2.0.6
-    (location: C:\Users\Administrator\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.purchasing@2.0.6)
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.purchasing@2.0.6)
 [Package Manager]  * Package :  com.unity.textmeshpro@2.0.1
-    (location: C:\Users\Administrator\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.textmeshpro@2.0.1)
+    (location: C:\Users\zhoukaibing\Desktop\MyUnityFrameWork\Library\PackageCache\com.unity.textmeshpro@2.0.1)
 [Package Manager]  * Package :  com.unity.timeline@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.timeline)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.timeline)
 [Package Manager]  * Package :  com.unity.modules.ai@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ai)
 [Package Manager]  * Package :  com.unity.modules.animation@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.animation)
 [Package Manager]  * Package :  com.unity.modules.assetbundle@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.assetbundle)
 [Package Manager]  * Package :  com.unity.modules.audio@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.audio)
 [Package Manager]  * Package :  com.unity.modules.cloth@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.cloth)
 [Package Manager]  * Package :  com.unity.modules.director@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.director)
 [Package Manager]  * Package :  com.unity.modules.imageconversion@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imageconversion)
 [Package Manager]  * Package :  com.unity.modules.imgui@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.imgui)
 [Package Manager]  * Package :  com.unity.modules.jsonserialize@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.jsonserialize)
 [Package Manager]  * Package :  com.unity.modules.particlesystem@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.particlesystem)
 [Package Manager]  * Package :  com.unity.modules.physics@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics)
 [Package Manager]  * Package :  com.unity.modules.physics2d@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.physics2d)
 [Package Manager]  * Package :  com.unity.modules.screencapture@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.screencapture)
 [Package Manager]  * Package :  com.unity.modules.terrain@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrain)
 [Package Manager]  * Package :  com.unity.modules.terrainphysics@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.terrainphysics)
 [Package Manager]  * Package :  com.unity.modules.tilemap@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.tilemap)
 [Package Manager]  * Package :  com.unity.modules.ui@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.ui)
 [Package Manager]  * Package :  com.unity.modules.uielements@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.uielements)
 [Package Manager]  * Package :  com.unity.modules.umbra@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.umbra)
 [Package Manager]  * Package :  com.unity.modules.unityanalytics@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unityanalytics)
 [Package Manager]  * Package :  com.unity.modules.unitywebrequest@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequest)
 [Package Manager]  * Package :  com.unity.modules.unitywebrequestassetbundle@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestassetbundle)
 [Package Manager]  * Package :  com.unity.modules.unitywebrequestaudio@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestaudio)
 [Package Manager]  * Package :  com.unity.modules.unitywebrequesttexture@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequesttexture)
 [Package Manager]  * Package :  com.unity.modules.unitywebrequestwww@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.unitywebrequestwww)
 [Package Manager]  * Package :  com.unity.modules.vehicles@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vehicles)
 [Package Manager]  * Package :  com.unity.modules.video@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.video)
 [Package Manager]  * Package :  com.unity.modules.vr@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.vr)
 [Package Manager]  * Package :  com.unity.modules.wind@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.wind)
 [Package Manager]  * Package :  com.unity.modules.xr@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.modules.xr)
 [Package Manager]  * Package :  com.unity.ugui@1.0.0
-    (location: D:\Unity\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.ugui)
+    (location: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.ugui)
 [Package Manager] Done registering packages in 0.00s seconds
-Refreshing native plugins compatible for Editor in 21.75 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 25.05 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-IsTimeToCheckForNewEditor: Update time 0 current 1566923553
+IsTimeToCheckForNewEditor: Update time 0 current 1566963665
 Initialize engine version: 2019.1.8f1 (7938dd008a75)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: Intel(R) HD Graphics 520 (ID=0x1916)
+    Renderer: NVIDIA GeForce GTX 1060 5GB (ID=0x1c04)
     Vendor:   
-    VRAM:     2139 MB
-    Driver:   22.20.16.4815
+    VRAM:     5030 MB
+    Driver:   24.21.13.9811
 [EnlightenBakeManager] m_Clear = false;
 WARNING: Shader Unsupported: 'AR/TangoARRender' - Pass '' has no vertex shader
 WARNING: Shader Unsupported: 'AR/TangoARRender' - Setting to default shader.
@@ -123,50 +123,96 @@ WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default sh
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
 Initialize mono
-Mono path[0] = 'D:/Unity/2019.1.8f1/Editor/Data/Managed'
-Mono path[1] = 'D:/Unity/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
-Mono config path = 'D:/Unity/2019.1.8f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56028
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56528
 Begin MonoManager ReloadAssembly
 Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
 Registering precompiled unity dll's ...
-Register platform support module: D:\Unity\2019.1.8f1\Editor\Data\PlaybackEngines\windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
-Register platform support module: D:\Unity\2019.1.8f1\Editor\Data\PlaybackEngines\WebGLSupport/UnityEditor.WebGL.Extensions.dll
-Register platform support module: D:\Unity\2019.1.8f1\Editor\Data\PlaybackEngines\AndroidPlayer/UnityEditor.Android.Extensions.dll
-Registered in 0.002746 seconds.
+Register platform support module: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\PlaybackEngines\windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Data\PlaybackEngines\AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.002957 seconds.
 Registering platform support modules:
-Registered platform support modules in: 0.1426628s.
+Registered platform support modules in: 0.0668422s.
 Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
 Native extension for Android target not found
-Refreshing native plugins compatible for Editor in 0.42 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.31 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  3.167 seconds
+- Completed reload, in  1.886 seconds
 Registering precompiled user dll's ...
-Registered in 0.069843 seconds.
+Registered in 0.080454 seconds.
 Platform modules already initialized, skipping
 Begin MonoManager ReloadAssembly
 Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
 Registering platform support modules:
-Registered platform support modules in: 0.1311325s.
+Registered platform support modules in: 0.0351056s.
 Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
 Native extension for Android target not found
-Refreshing native plugins compatible for Editor in 0.97 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.33 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Refreshing native plugins compatible for Editor in 0.41 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.31 ms, found 1 plugins.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.168 seconds
+- Completed reload, in  1.043 seconds
 Platform modules already initialized, skipping
-Validating Project structure ... 0.011196 seconds.
+[ScriptCompilation] Recompiling all scripts because: Reload of assemblies failed, assemblies are invalid or forced recompiled
+- Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Starting compile Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
+- Starting compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
+- Starting compile Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.dll
+- Starting compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll
+- Finished compile Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.AssetBundleBrowser.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.dll
+- Starting compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll
+- Finished compile Library/ScriptAssemblies/Unity.Timeline.Editor.dll
+Begin MonoManager ReloadAssembly
+Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
+Registering platform support modules:
+Registered platform support modules in: 0.04076s.
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Refreshing native plugins compatible for Editor in 0.34 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.120 seconds
+Platform modules already initialized, skipping
+- Starting compile Library/ScriptAssemblies/Assembly-CSharp.dll
+- Finished compile Library/ScriptAssemblies/Assembly-CSharp.dll
+- Starting compile Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+- Finished compile Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0660: 'FileMD5' defines operator == or operator != but does not override Object.Equals(object o)
+Assets\Resources\Patch\VersionData.cs(18,14): warning CS0661: 'FileMD5' defines operator == or operator != but does not override Object.GetHashCode()
+Assets\XLua\Examples\ExampleGenConfig.cs(46,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\06_Coroutine\Coroutine_Runner.cs(24,24): warning CS0618: 'WWW' is obsolete: 'Use UnityWebRequest, a fully featured replacement which is more efficient and has additional features'
+Assets\XLua\Examples\08_Hotfix\StatefullTest.cs(41,49): warning CS0067: The event 'StatefullTest.AEvent' is never used
+Reloading assemblies after script compilation.
+Begin MonoManager ReloadAssembly
+Initializing Extension Manager v2019.1.8 for Unity v2019.1.8f1
+Registering platform support modules:
+Registered platform support modules in: 0.0417577s.
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.022 seconds
+Platform modules already initialized, skipping
+Validating Project structure ... 0.009855 seconds.
 Refresh: detecting if any assets need to be imported or removed ...
-Refreshing native plugins compatible for Editor in 0.46 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 0.34 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Refresh: detecting if any assets need to be imported or removed ...
 
-Refresh Completed time: 0.036754s
-	Asset Scan time: 0.034959s
+Refresh Completed time: 0.039095s
+	Asset Scan time: 0.034830s
 	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
 	Asset Import (Scripting) time: 0.000000s (count: 0)
 	Post Processs Assets (Scripting) time: 0.000000s
@@ -175,48 +221,32 @@ Refresh Completed time: 0.036754s
 	Post Process Assets (Non Scripting) time: 0.000000s
 	Dependent Assets to Import Queue time: 0.000000s
 
-WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
-WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Pass 'Flip_RGBARect_To_RGBA' has no vertex shader
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Setting to default shader.
 WARNING: Shader Unsupported: 'AR/TangoARRender' - Pass '' has no vertex shader
 WARNING: Shader Unsupported: 'AR/TangoARRender' - Setting to default shader.
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
 WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default shader.
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Warming cache for 1297 main assets: 0.004628 seconds elapsed
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
+Warming cache for 1268 main assets: 0.001736 seconds elapsed
 Initializing Unity extensions:
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/portable/nunit.framework.dll'  GUID: 405b9b51bb344a128608d968297df79c
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll'  GUID: f70555f144d8491a825f0804e09c671c
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'  GUID: f5f67c52d1564df4a8936ccd202a3bd8
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll'  GUID: 53ebcfaa2e1e4e2dbc85882cd5a73fa1
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll'  GUID: 4ba2329b63d54f0187bcaa12486b1b0f
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll'  GUID: 80a3616ca19596e4da0f10f14d241e9f
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll'  GUID: 4113173d5e95493ab8765d7b08371de4
- 'D:/Unity/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll'  GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
-[C# Project] Writing C:/Users/Administrator/Desktop/MyUnityFrameWork\Assembly-CSharp-Editor.csproj because it has changed
-[C# Project] First difference on line 334
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/portable/nunit.framework.dll'  GUID: 405b9b51bb344a128608d968297df79c
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll'  GUID: f70555f144d8491a825f0804e09c671c
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'  GUID: f5f67c52d1564df4a8936ccd202a3bd8
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll'  GUID: 53ebcfaa2e1e4e2dbc85882cd5a73fa1
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll'  GUID: 4ba2329b63d54f0187bcaa12486b1b0f
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll'  GUID: 80a3616ca19596e4da0f10f14d241e9f
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/Editor/UnityEditor.TestRunner.dll'  GUID: 4113173d5e95493ab8765d7b08371de4
+ 'C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll'  GUID: 4b3fa4bde7f1451a8218c03ee6a8ded8
+Load scene 'Assets/GameData/Scenes/SampleScene.unity' time: 0.027910 ms 
+Unloading 719 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 138.9 MB.
+System memory in use after: 137.6 MB.
 
-[C# Project] Current C:/Users/Administrator/Desktop/MyUnityFrameWork\Assembly-CSharp-Editor.csproj:
-[C# Project]   334:     <Reference Include="mscorlib">
-[C# Project]   335:       <HintPath>D:/Unity/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
-[C# Project]   336:     </Reference>
-[C# Project]   337:     <Reference Include="System">
-[C# Project]   338:       <HintPath>D:/Unity/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.dll</HintPath>
-
-[C# Project] New C:/Users/Administrator/Desktop/MyUnityFrameWork\Assembly-CSharp-Editor.csproj:
-[C# Project]   334:     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-[C# Project]   335:       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-[C# Project]   336:     </Reference>
-[C# Project]   337:     <Reference Include="mscorlib">
-[C# Project]   338:       <HintPath>D:/Unity/2019.1.8f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
-Load scene 'Assets/GameData/Scenes/SampleScene.unity' time: 0.031000 ms 
-Unloading 720 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 138.3 MB.
-System memory in use after: 137.0 MB.
-
-Unloading 139 unused Assets to reduce memory usage. Loaded Objects now: 1385.
-Total: 5.202700 ms (FindLiveObjects: 0.481200 ms CreateObjectMapping: 0.037600 ms MarkObjects: 3.282900 ms  DeleteObjects: 1.400100 ms)
+Unloading 138 unused Assets to reduce memory usage. Loaded Objects now: 1390.
+Total: 3.950666 ms (FindLiveObjects: 0.336200 ms CreateObjectMapping: 0.037855 ms MarkObjects: 2.644685 ms  DeleteObjects: 0.930644 ms)
 
 <RI> Initialized touch support.
 Assertion failed on expression: 'SUCCEEDED(hr)'
@@ -284,33 +314,249 @@ Assertion failed on expression: 'SUCCEEDED(hr)'
 
 d3d11: swap chain: w=32 h=32 fmt=28
 d3d11: failed to create swap chain [0x887a0022]
-읙뼘⒅⍦軎㼴渽䭞씷ᆱ弐ꈿꦌ舗곟
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.023 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.012 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.003 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.017 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.007 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.014 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.022 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.011 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.011 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/GameData/UI/res/common/items/axe.png
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-TestSerilize:TestAES() (at Assets\Editor\AB\TestSerilize.cs:39)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
  
-(Filename: Assets/Editor/AB/TestSerilize.cs Line: 39)
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
 
-kkkkkkkkkkkk
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/Resources/OfflineData/OfflineData.cs
 UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
 UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
 UnityEngine.Logger:Log(LogType, Object)
 UnityEngine.Debug:Log(Object)
-TestSerilize:TestAES() (at Assets\Editor\AB\TestSerilize.cs:40)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
  
-(Filename: Assets/Editor/AB/TestSerilize.cs Line: 40)
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
 
-Batchmode quit successfully invoked - shutting down!
-[Performance] CurlRequestCheck                                  :        4 samples, Peak.  12.1 ms (3.9x), Avg.  3.11 ms, Total. 12.42 ms (0.1%)
-[Performance] PackageManager::RunRequestSynchronously           :      155 samples, Peak.  2.29 ms (19.2x), Avg.   120 us, Total. 18.54 ms (0.1%)
-[Performance] SceneVisibilityState::GameObjectChangedScene_Impl :        6 samples, Peak.   200 ns (2.0x), Avg. 100.0 ns, Total. 600.0 ns (0.0%)
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/GameData/UI/res/common/items/axe.png
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
+ 
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
+
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/GameData/Material/1.mat
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
+ 
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
+
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/Resources/OfflineData/OfflineData.cs
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
+ 
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
+
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/GameData/UI/res/common/background/f.PNG
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
+ 
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
+
+已设置过，不再重复设置; 或是C#文件不需要设置：Assets/GameData/UI/res/common/items/hp.png
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:109)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
+ 
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 109)
+
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (0 files)... 0.000 seconds
+  file read: 0.000 seconds (0.000 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.000 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.003 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.011 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.011 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.012 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.017 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.014 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.023 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.022 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+
+Hashing assets (1 files)... 0.001 seconds
+  file read: 0.000 seconds (0.007 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+Refreshing native plugins compatible for Editor in 0.37 ms, found 1 plugins.
 Refresh: detecting if any assets need to be imported or removed ...
 
-Refresh Completed time: 0.064365s
-	Asset Scan time: 0.056078s
-	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
+Hashing assets (1 files)... 0.002 seconds
+  file read: 0.000 seconds (0.006 MB)
+  wait for write: 0.000 seconds (I/O thread blocked by consumer, aka CPU bound)
+  wait for read: 0.001 seconds (CPUT thread waiting for I/O thread, aka disk bound)
+  hash: 0.000 seconds
+----- Compute hash(es) for 1 asset(s).
+----- Asset named Assets/GameData/Configs/AssetBundleConfig.json is skipped as no actual change.
+
+Refreshing native plugins compatible for Editor in 0.52 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+
+Refresh Completed time: 0.061895s
+	Asset Scan time: 0.046806s
+	Asset Hashing: 0.001856s [6.1 KB, 3.217952 mb/s]
 	Asset Import (Scripting) time: 0.000000s (count: 0)
 	Post Processs Assets (Scripting) time: 0.000000s
 	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
@@ -318,10 +564,288 @@ Refresh Completed time: 0.064365s
 	Post Process Assets (Non Scripting) time: 0.000000s
 	Dependent Assets to Import Queue time: 0.000000s
 
+Clear and Set All Bundle Tag done.
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+ClearAndSetTag:ClearAndSetAllBundleTag() (at Assets\Editor\AB\ClearAndSetTag.cs:141)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:48)
+ 
+(Filename: Assets/Editor/AB/ClearAndSetTag.cs Line: 141)
+
+Refresh: detecting if any assets need to be imported or removed ...
+Refresh: trashing asset 8082c3e17c049144da893d6a8135e3b4
+Refresh: trashing asset 756c6507b29ed3e47b30824833fd1696
+Refresh: trashing asset ea39999aafd301b4eb4a512ed5018872
+Refresh: trashing asset deddb7fe94b268946a6d58b9b3bce6f0
+Updating Assets/GameData/Scripts/Datas/Item.lua.txt - GUID: 00ad06f8c1911bf458914c339f7e8800...
+----- Compute hash for Assets/GameData/Scripts/Datas/Item.lua.txt.
+ done. [Time: 47.996661 ms] 
+Updating Assets/GameData/Scripts/main.lua.txt - GUID: 393607c299768b7499936ba4c5af557c...
+----- Compute hash for Assets/GameData/Scripts/main.lua.txt.
+ done. [Time: 47.706978 ms] 
+Updating Assets/GameData/Scripts/wins/menu.lua.txt - GUID: 6c2fac446a751b04fbcd9b53c6d08c3d...
+----- Compute hash for Assets/GameData/Scripts/wins/menu.lua.txt.
+ done. [Time: 42.193048 ms] 
+Updating Assets/GameData/Scripts/ClassUtil.lua.txt - GUID: a3595b80c1932374f9d6cfb19d199a6d...
+----- Compute hash for Assets/GameData/Scripts/ClassUtil.lua.txt.
+ done. [Time: 48.423968 ms] 
+[C# Project] Writing C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj because it has changed
+[C# Project] First difference on line 139
+
+[C# Project] Current C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
+[C# Project]   139:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
+[C# Project]   140:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
+[C# Project]   141:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   142:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+[C# Project]   143:     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
+
+[C# Project] New C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
+[C# Project]   139:     <None Include="Assets\GameData\Scripts\ClassUtil.lua.txt" />
+[C# Project]   140:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
+[C# Project]   141:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
+[C# Project]   142:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   143:     <None Include="Assets\GameData\Scripts\main.lua.txt" />
+Refreshing native plugins compatible for Editor in 0.39 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Refreshing native plugins compatible for Editor in 0.38 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+
+Refresh Completed time: 0.540962s
+	Asset Scan time: 0.049546s
+	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Scripting) time: 0.022721s (count: 2)
+	Post Processs Assets (Scripting) time: 0.000000s
+	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Non Scripting) time: 0.225886s (count: 4)
+	Post Process Assets (Non Scripting) time: 0.070283s
+	Dependent Assets to Import Queue time: 0.000513s
+
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Pass 'Flip_RGBARect_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeOSX' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeAndroid' - Setting to default shader.
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Pass 'RGBAExternal_To_RGBA' has no vertex shader
+WARNING: Shader Unsupported: 'Hidden/VideoDecodeML' - Setting to default shader.
+Building an AssetBundle for target 'iOSSupport' is not allowed because the required module is not installed.
+UnityEditor.BuildPipeline:BuildAssetBundlesInternal(String, BuildAssetBundleOptions, BuildTargetGroup, BuildTarget)
+UnityEditor.BuildPipeline:BuildAssetBundles(String, BuildAssetBundleOptions, BuildTargetGroup, BuildTarget) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:454)
+UnityEditor.BuildPipeline:BuildAssetBundles(String, BuildAssetBundleOptions, BuildTarget) (at C:\buildslave\unity\build\Editor\Mono\BuildPipeline.bindings.cs:443)
+MyBuildApp:BuildAssetBundles(BuildTarget, AssetBundleBuild[]) (at Assets\Editor\AB\BuildScript.cs:101)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:49)
+
+[C:\buildslave\unity\build\Modules/BuildReportingEditor/Public/BuildReport.cpp line 547] 
+(Filename: Assets/Editor/AB/BuildScript.cs Line: 101)
+
+Build AssetBundle Done!
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+MyBuildApp:BuildAssetBundles(BuildTarget, AssetBundleBuild[]) (at Assets\Editor\AB\BuildScript.cs:114)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:49)
+ 
+(Filename: Assets/Editor/AB/BuildScript.cs Line: 114)
+
+PlayerSettings.applicationIdentifier only changes the identifier for the currently active platform. Please use SetApplicationIdentifier to set it for any platform
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:LogWarning(Object)
+UnityEditor.PlayerSettings:set_applicationIdentifier(String) (at C:\buildslave\unity\build\Editor\Mono\PlayerSettings.bindings.cs:989)
+MyBuildApp:SetPlayerInfoBeforeBuildPlayer() (at Assets\Editor\AB\BuildScript.cs:204)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:168)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BuildScript.cs Line: 204)
+
+Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
+Version写入完毕。包名：com.Default.Default； 平台：iOS； 版本：0.0.84
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:SaveVersionToStreamingAssetsWhenBuildPlayer(String, String) (at Assets\Editor\AB\BundleHotFix.cs:120)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:176)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 120)
+
+开始部署热更文件，Version:0.0.84  PackageName:com.Default.Default
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:46)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 46)
+
+已部署：version.json
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:73)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 73)
+
+部署完毕。路径：Hot/com.Default.Default/iOS/
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+BundleHotFix:DeployStreamingAssetsToHotWhenBuildPlayer() (at Assets\Editor\AB\BundleHotFix.cs:75)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:178)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BundleHotFix.cs Line: 75)
+
+Updating ProjectSettings/ProjectSettings.asset - GUID: 00000000000000004000000000000000...
+ done. [Time: 35.142160 ms] 
+Updating ProjectSettings/UnityConnectSettings.asset - GUID: 0000000000000000a100000000000000...
+ done. [Time: 29.688541 ms] 
+Refreshing native plugins compatible for Editor in 0.36 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+DisplayProgressNotification: Build Failed
+Error building player because build target was unsupported
+System memory in use before: 145.0 MB.
+System memory in use after: 145.1 MB.
+
+Unloading 1478 unused Assets to reduce memory usage. Loaded Objects now: 1494.
+Total: 6.819911 ms (FindLiveObjects: 0.452971 ms CreateObjectMapping: 0.115488 ms MarkObjects: 5.743303 ms  DeleteObjects: 0.507507 ms)
+
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=950 h=30 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=673 h=272 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=277 h=562 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=467 h=290 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Assertion failed on expression: 'SUCCEEDED(hr)'
+ 
+(Filename: C:\buildslave\unity\build\Runtime/GfxDevice/d3d11/D3D11Window.cpp Line: 70)
+
+d3d11: swap chain: w=206 h=290 fmt=28
+d3d11: failed to create swap chain [0x887a0022]
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 151.3 MB.
+System memory in use after: 151.4 MB.
+
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 1677.
+Total: 8.578543 ms (FindLiveObjects: 0.358656 ms CreateObjectMapping: 0.031118 ms MarkObjects: 8.177542 ms  DeleteObjects: 0.010586 ms)
+
+Load scene 'Temp/__Backupscenes/0.backup' time: 0.044271 ms 
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 150.7 MB.
+System memory in use after: 150.8 MB.
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 1665.
+Total: 8.481340 ms (FindLiveObjects: 0.377583 ms CreateObjectMapping: 0.047158 ms MarkObjects: 8.016499 ms  DeleteObjects: 0.039138 ms)
+
+Build Player Done!
+UnityEngine.DebugLogHandler:Internal_Log(LogType, LogOption, String, Object)
+UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
+UnityEngine.Logger:Log(LogType, Object)
+UnityEngine.Debug:Log(Object)
+MyBuildApp:BuildPlayer(BuildTarget, Boolean) (at Assets\Editor\AB\BuildScript.cs:194)
+MyBuildApp:BuildIos() (at Assets\Editor\AB\BuildScript.cs:50)
+ 
+(Filename: Assets/Editor/AB/BuildScript.cs Line: 194)
+
+Batchmode quit successfully invoked - shutting down!
+[Performance] CurlRequestCheck                                  :        1 samples, Peak.  10.6 ms (1.0x), Avg.  10.6 ms, Total. 10.59 ms (0.1%)
+[Performance] PackageManager::RunRequestSynchronously           :        9 samples, Peak.   505 us (4.6x), Avg.   109 us, Total. 984.5 us (0.0%)
+[Performance] SceneVisibilityState::GameObjectChangedScene_Impl :        9 samples, Peak.   321 ns (4.5x), Avg.  71.3 ns, Total. 641.6 ns (0.0%)
+[Performance] GUIView.RepaintAll.PlayerLoopController           :        1 samples, Peak.   370 ms (1.0x), Avg.   370 ms, Total. 370.2 ms (1.9%)
+[Performance] Toolbar.Paint                                     :        1 samples, Peak.   162 ms (1.0x), Avg.   162 ms, Total. 162.2 ms (0.8%)
+[Performance] ConsoleWindow.Paint                               :        1 samples, Peak.  53.7 ms (1.0x), Avg.  53.7 ms, Total. 53.73 ms (0.3%)
+[Performance] ConsoleWindow.OnGUI.Layout                        :        1 samples, Peak.  18.1 ms (1.0x), Avg.  18.1 ms, Total. 18.06 ms (0.1%)
+[Performance] ConsoleWindow.OnGUI.repaint                       :        1 samples, Peak.  7.44 ms (1.0x), Avg.  7.44 ms, Total. 7.440 ms (0.0%)
+[Performance] InspectorWindow.Paint                             :        1 samples, Peak.  31.4 ms (1.0x), Avg.  31.4 ms, Total. 31.43 ms (0.2%)
+[Performance] InspectorWindow.OnGUI.Layout                      :        1 samples, Peak.  3.08 ms (1.0x), Avg.  3.08 ms, Total. 3.076 ms (0.0%)
+[Performance] InspectorWindow.OnGUI.repaint                     :        1 samples, Peak.  36.3 us (1.0x), Avg.  36.3 us, Total. 36.25 us (0.0%)
+[Performance] SceneView.Paint                                   :        1 samples, Peak.  93.9 ms (1.0x), Avg.  93.9 ms, Total. 93.95 ms (0.5%)
+[Performance] SceneView.OnGUI.Layout                            :        1 samples, Peak.  56.9 ms (1.0x), Avg.  56.9 ms, Total. 56.94 ms (0.3%)
+[Performance] SceneView.OnGUI.repaint                           :        1 samples, Peak.  34.2 ms (1.0x), Avg.  34.2 ms, Total. 34.16 ms (0.2%)
+[Performance] SceneVisibilityState.IsGameObjectHidden           :       12 samples, Peak.   962 ns (4.5x), Avg.   214 ns, Total. 2.566 us (0.0%)
+[Performance] SceneHierarchyWindow.Paint                        :        1 samples, Peak.  28.5 ms (1.0x), Avg.  28.5 ms, Total. 28.52 ms (0.1%)
+[Performance] SceneHierarchyWindow.OnGUI.Layout                 :        1 samples, Peak.  21.0 ms (1.0x), Avg.  21.0 ms, Total. 20.95 ms (0.1%)
+[Performance] SceneVisibilityState.HasHiddenGameObjects         :        2 samples, Peak.   962 ns (1.2x), Avg.   802 ns, Total. 1.604 us (0.0%)
+[Performance] SceneHierarchyWindow.OnGUI.repaint                :        1 samples, Peak.  3.10 ms (1.0x), Avg.  3.10 ms, Total. 3.099 ms (0.0%)
+Refresh: detecting if any assets need to be imported or removed ...
+Refresh: trashing asset a3595b80c1932374f9d6cfb19d199a6d
+Refresh: trashing asset 393607c299768b7499936ba4c5af557c
+Refresh: trashing asset 6c2fac446a751b04fbcd9b53c6d08c3d
+Refresh: trashing asset 00ad06f8c1911bf458914c339f7e8800
+Updating Assets/GameData/Scripts/main.lua - GUID: deddb7fe94b268946a6d58b9b3bce6f0...
+----- Compute hash for Assets/GameData/Scripts/main.lua.
+ done. [Time: 84.584672 ms] 
+Updating Assets/GameData/Scripts/ClassUtil.lua - GUID: ea39999aafd301b4eb4a512ed5018872...
+----- Compute hash for Assets/GameData/Scripts/ClassUtil.lua.
+ done. [Time: 48.137493 ms] 
+Updating Assets/GameData/Scripts/Datas/Item.lua - GUID: 756c6507b29ed3e47b30824833fd1696...
+----- Compute hash for Assets/GameData/Scripts/Datas/Item.lua.
+ done. [Time: 41.016670 ms] 
+Updating Assets/GameData/Scripts/wins/menu.lua - GUID: 8082c3e17c049144da893d6a8135e3b4...
+----- Compute hash for Assets/GameData/Scripts/wins/menu.lua.
+ done. [Time: 53.870209 ms] 
+[C# Project] Writing C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj because it has changed
+[C# Project] First difference on line 139
+
+[C# Project] Current C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
+[C# Project]   139:     <None Include="Assets\GameData\Scripts\ClassUtil.lua.txt" />
+[C# Project]   140:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
+[C# Project]   141:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
+[C# Project]   142:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   143:     <None Include="Assets\GameData\Scripts\main.lua.txt" />
+
+[C# Project] New C:/Users/zhoukaibing/Desktop/MyUnityFrameWork\Assembly-CSharp.csproj:
+[C# Project]   139:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\message_box.lua.txt" />
+[C# Project]   140:     <None Include="Assets\XLua\Examples\06_Coroutine\Resources\cs_coroutine.lua.txt" />
+[C# Project]   141:     <None Include="Assets\XLua\Examples\02_U3DScripting\LuaTestScript.lua.txt" />
+[C# Project]   142:     <None Include="Assets\XLua\Examples\07_AsyncTest\Resources\async_test.lua.txt" />
+[C# Project]   143:     <None Include="Assets\XLua\Tutorial\LoadLuaScript\ByFile\Resources\byfile.lua.txt" />
+Refreshing native plugins compatible for Editor in 0.45 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Refreshing native plugins compatible for Editor in 0.38 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+
+Refresh Completed time: 0.556589s
+	Asset Scan time: 0.040992s
+	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Scripting) time: 0.019560s (count: 2)
+	Post Processs Assets (Scripting) time: 0.000000s
+	Asset Rehashing: 0.000000s [0 B, 0.000000 mb/s]
+	Asset Import (Non Scripting) time: 0.265894s (count: 4)
+	Post Process Assets (Non Scripting) time: 0.093554s
+	Dependent Assets to Import Queue time: 0.000540s
+
 Refresh: detecting if any assets need to be imported or removed ...
 
-Refresh Completed time: 0.043822s
-	Asset Scan time: 0.041847s
+Refresh Completed time: 0.041324s
+	Asset Scan time: 0.036741s
 	Asset Hashing: 0.000000s [0 B, 0.000000 mb/s]
 	Asset Import (Scripting) time: 0.000000s (count: 0)
 	Post Processs Assets (Scripting) time: 0.000000s
@@ -332,5 +856,29 @@ Refresh Completed time: 0.043822s
 
 [Package Manager] Server::Kill -- Server was shutdown
 Cleanup mono
+GarbageCollector disposing of ComputeBuffer allocated in C:\buildslave\unity\build\Modules\UIElements\Renderer\UIRenderer\UIRenderDevice.cs at line 325. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 48)
+
+GarbageCollector disposing of ComputeBuffer allocated in C:\buildslave\unity\build\Modules\UIElements\Renderer\UIRenderer\UIRenderDevice.cs at line 800. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 48)
+
+A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
+ 
+(Filename:  Line: 0)
+
+A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
+ 
+(Filename:  Line: 0)
+
+GarbageCollector disposing of ComputeBuffer allocated in C:\buildslave\unity\build\Modules\UIElements\Renderer\UIRenderer\UIRenderDevice.cs at line 310. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Export/Debug/Debug.bindings.h Line: 48)
+
+A Native Collection has not been disposed, resulting in a memory leak. Enable Full StackTraces to get more details.
+ 
+(Filename:  Line: 0)
+
 Exiting batchmode successfully now!
 Exiting without the bug reporter. Application will terminate with return code 0

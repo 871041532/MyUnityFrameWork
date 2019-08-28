@@ -8,12 +8,12 @@ import time
 # subprocess.check_call("svn update")
 
 # Unity安装目录
-unity_exe = r'"D:\Unity\2019.1.8f1\Editor\Unity.exe"'
+# unity_exe = r'"D:\Unity\2019.1.8f1\Editor\Unity.exe"'
+unity_exe = r'"C:\Program Files\Unity\Hub\Editor\2019.1.8f1\Editor\Unity.exe"'
 # unity工程目录
-project_path = r'C:\Users\Administrator\Desktop\MyUnityFrameWork'
+project_path = os.getcwd()
 # 日志
-# log_file = os.getcwd() + '/unity_log.log'
-log_file = r'C:\Users\Administrator\Desktop\MyUnityFrameWork\Tools\JekinsTool\log.txt'
+log_file = os.getcwd() + '/Tools/JekinsTool/log.txt'
 
 def clear_log():
 	f = open(log_file, "w+")
@@ -42,6 +42,6 @@ def debug_log():
 	
 
 if __name__ == '__main__':
-	call_unity_static_func('TestSerilize.TestAES')
+	call_unity_static_func('MyBuildApp.BuildIos')
 	debug_log()
 	print('done')
