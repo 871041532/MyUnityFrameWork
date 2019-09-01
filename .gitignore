@@ -10,6 +10,8 @@ MyUnityFrameWork.sln
 /AssetBundles
 /.vs
 /Temp
+/Assets/StreamingAssets/AssetBundles/
+/Assets/StreamingAssets/version.json
 /Assets/!assets
 /Assets/!assets.meta
 /Build

@@ -18,7 +18,7 @@ public enum LoadModeEnum
 public static class ABUtility
 {
     // AB包加载模式
-    public static LoadModeEnum LoadMode = LoadModeEnum.DeviceFullAotAB;
+    public static LoadModeEnum LoadMode = LoadModeEnum.StandaloneAB;
     // 当前平台名字
     public static string PlatformName = "Windows";
     public static string ServerURL = "10.231.10.87";

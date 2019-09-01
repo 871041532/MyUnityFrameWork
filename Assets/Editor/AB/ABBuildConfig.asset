@@ -21,6 +21,10 @@ MonoBehaviour:
     Path: Assets/GameData/UI/res/common
   - ABName: lua
     Path: Assets/GameData/Scripts
+  - ABName: animations
+    Path: Assets/GameData/Animations
+  - ABName: animators
+    Path: Assets/GameData/Animators
   m_AllPrefabPath:
   - Assets/GameData/Prefabs
   - Assets/GameData/UI/prefabs
