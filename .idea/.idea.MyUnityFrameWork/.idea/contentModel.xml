@@ -32,6 +32,7 @@
             <e p="AIManager.cs" t="Include" />
             <e p="StateMechine" t="Include">
               <e p="scripts" t="Include">
+                <e p="MyTankAI.cs" t="Include" />
                 <e p="SelectWaypointState.cs" t="Include" />
                 <e p="TankAi.cs" t="Include" />
                 <e p="TankPatrolState.cs" t="Include" />

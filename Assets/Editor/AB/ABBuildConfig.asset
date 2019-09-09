@@ -21,10 +21,6 @@ MonoBehaviour:
     Path: Assets/GameData/UI/res/common
   - ABName: lua
     Path: Assets/GameData/Scripts
-  - ABName: recycle1
-    Path: Assets/GameData/Recycle1
-  - ABName: recycle2
-    Path: Assets/GameData/Recycle2
   m_AllPrefabPath:
   - Assets/GameData/Prefabs
   - Assets/GameData/UI/prefabs
