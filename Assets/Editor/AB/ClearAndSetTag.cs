@@ -137,7 +137,8 @@ public static class ClearAndSetTag
         DeleteUselessAssetBundle();
         // s8.生成资源配置
         GenerateResourceCfg();
-
+        // s9.检测是否有循环引用
+        CheckRecycleReference.CheckRecycleAB();
         Debug.Log("Clear and Set All Bundle Tag done.");
     }
 
