@@ -19,6 +19,7 @@
           </e>
           <e p="OfflineDataEditor.cs" t="Include" />
         </e>
+        <e p="FollowTarget.cs" t="Include" />
         <e p="link.xml" t="Include" />
         <e p="MyPatrol.cs" t="Include" />
         <e p="PassEvent.cs" t="Include" />

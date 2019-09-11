@@ -19,7 +19,8 @@ public class MyTankAI : MonoBehaviour {
     private int currentTarget;
     private float distanceFromTarget;
     private Transform[] waypoints = null;
-
+    
+    
     private void Awake() {
         player = GameObject.FindWithTag("Player");
         animator = gameObject.GetComponent<Animator>();
