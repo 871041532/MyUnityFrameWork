@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 6594276}
   - component: {fileID: 2371036}
   - component: {fileID: 19522710}
-  - component: {fileID: 11435088}
   m_Layer: 0
   m_Name: EnemyTankPlaceholder
   m_TagString: Untagged
@@ -136,21 +135,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &11435088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 155148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8138ac4946b34ca45995973e30c3c75c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointA: {fileID: 0}
-  pointB: {fileID: 0}
-  navMeshAgent: {fileID: 0}
 --- !u!1 &197886
 GameObject:
   m_ObjectHideFlags: 0
