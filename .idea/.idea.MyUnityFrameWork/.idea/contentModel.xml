@@ -30,12 +30,19 @@
             <e p="Console.cs" t="Include" />
           </e>
           <e p="AI" t="Include">
-            <e p="AIManager.cs" t="Include" />
+            <e p="Sensor" t="Include">
+              <e p="Aspect.cs" t="Include" />
+              <e p="Perspective.cs" t="Include" />
+              <e p="PlayerTank.cs" t="Include" />
+              <e p="Sense.cs" t="Include" />
+              <e p="Target.cs" t="Include" />
+              <e p="Touch.cs" t="Include" />
+              <e p="Wander.cs" t="Include" />
+            </e>
             <e p="StateMechine" t="Include">
-              <e p="scripts" t="Include">
-                <e p="MyPatrol.cs" t="Include" />
-                <e p="MyTankAI.cs" t="Include" />
-              </e>
+              <e p="MyPatrol.cs" t="Include" />
+              <e p="MySelectWaypointState.cs" t="Include" />
+              <e p="MyTankAI.cs" t="Include" />
             </e>
           </e>
           <e p="manager" t="Include">
@@ -51,7 +58,6 @@
             <e p="UIManager.cs" t="Include" />
             <e p="zstring.cs" t="Include" />
           </e>
-          <e p="MySelectWaypointState.cs" t="Include" />
           <e p="OfflineData" t="Include">
             <e p="OfflineData.cs" t="Include" />
             <e p="OfflineEffectData.cs" t="Include" />
