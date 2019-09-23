@@ -51,14 +51,16 @@ public class Perspective : Sense
         {
             return;
         }
-        Debug.DrawLine(transform.position, m_playerTransform.position, new Color(1f, 0.83f, 0.24f));
-        Vector3 frontRayPoint = transform.position + transform.forward * m_viewDistance;
+
+        var position = transform.position;
+        Debug.DrawLine(position, m_playerTransform.position, new Color(1f, 0.83f, 0.24f));
+        Vector3 frontRayPoint = position + transform.forward * m_viewDistance;
         Vector3 leftRayPoint = frontRayPoint;
         leftRayPoint.x += m_fieldOfView * 0.5f;
         Vector3 rightRayPoint = frontRayPoint;
         rightRayPoint.x -= m_fieldOfView * 0.5f;
-        Debug.DrawLine(transform.position, frontRayPoint, new Color(1f, 0.83f, 0.24f));
-        Debug.DrawLine(transform.position, leftRayPoint, new Color(1f, 0.83f, 0.24f));
-        Debug.DrawLine(transform.position, rightRayPoint, new Color(1f, 0.83f, 0.24f));
+        Debug.DrawLine(position, frontRayPoint, new Color(1f, 0.83f, 0.24f));
+        Debug.DrawLine(position, leftRayPoint, new Color(1f, 0.83f, 0.24f));
+        Debug.DrawLine(position, rightRayPoint, new Color(1f, 0.83f, 0.24f));
     }
 }
