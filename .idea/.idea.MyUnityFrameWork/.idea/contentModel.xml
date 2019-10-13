@@ -160,6 +160,13 @@
                 </e>
               </e>
             </e>
+            <e p="Crowds" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="Crowd" t="Include">
+                  <e p="CrowdAgent.cs" t="Include" />
+                </e>
+              </e>
+            </e>
             <e p="Flocking" t="Include">
               <e p="Scripts" t="Include">
                 <e p="Boid.cs" t="Include" />
