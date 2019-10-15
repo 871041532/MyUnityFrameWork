@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Administrator\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Administrator\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-1877999858.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Administrator\Desktop\MyUnityFrameWork" t="IncludeRecursive">
+    <e p="C:\Users\zhoukaibing\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\zhoukaibing\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-37434432.00" t="ExcludeRecursive" />
+    <e p="C:\Users\zhoukaibing\Desktop\MyUnityFrameWork" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -17,6 +17,9 @@
             <e p="ClearAndSetTag.cs" t="Include" />
             <e p="LaunchAssetBundleServer.cs" t="Include" />
             <e p="TestSerilize.cs" t="Include" />
+          </e>
+          <e p="EvaluateBTEditor" t="Include">
+            <e p="EvaluateBTEditor.cs" t="Include" />
           </e>
           <e p="OfflineDataEditor.cs" t="Include" />
         </e>
@@ -167,6 +170,11 @@
                 </e>
               </e>
             </e>
+            <e p="EvaluateBT" t="Include">
+              <e p="Action.cs" t="Include" />
+              <e p="Enum.cs" t="Include" />
+              <e p="Node.cs" t="Include" />
+            </e>
             <e p="Flocking" t="Include">
               <e p="Scripts" t="Include">
                 <e p="Boid.cs" t="Include" />
@@ -210,6 +218,7 @@
           </e>
           <e p="manager" t="Include">
             <e p="ABManager.cs" t="Include" />
+            <e p="AIManager.cs" t="Include" />
             <e p="CallManager.cs" t="Include" />
             <e p="ClassObjectPool.cs" t="Include" />
             <e p="CutSceneManager.cs" t="Include" />
