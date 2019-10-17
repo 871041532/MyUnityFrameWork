@@ -39,7 +39,7 @@ namespace EvaluateBT
             return this;
         }
 
-        protected override void OnTransition()
+        public override void OnTransition()
         {
             if (m_needExit)
             {
@@ -50,7 +50,7 @@ namespace EvaluateBT
             m_needExit = false;
         }
 
-        protected override EStatusBTRunning OnTick()
+        public override EStatusBTRunning OnTick()
         {
             EStatusBTRunning status = EStatusBTRunning.Finish;
             

@@ -15,7 +15,7 @@ namespace EvaluateBT
         protected Node m_activeNode = null;
         protected Node m_lastActiveNode = null;
         protected Func<bool> m_precondition = null;
-        protected string m_debugName = "defaultName";
+        protected string m_debugName = "rdefaultName";
 
         public Node(Node parentNode)
         {
@@ -86,16 +86,17 @@ namespace EvaluateBT
         }
 
         #region 模板方法
-        protected virtual bool OnEvaluate()
+
+        public virtual bool OnEvaluate()
         {
             return true;
         }
-        
-        protected virtual void OnTransition()
+
+        public virtual void OnTransition()
         {
         }
-        
-        protected virtual EStatusBTRunning OnTick()
+
+        public virtual EStatusBTRunning OnTick()
         {
             return EStatusBTRunning.Finish;
         }
