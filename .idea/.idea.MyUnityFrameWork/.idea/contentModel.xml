@@ -260,6 +260,9 @@
             <e p="Window.cs" t="Include" />
           </e>
         </e>
+        <e p="ShaderLearn" t="Include">
+          <e p="NewSurfaceShader.shader" t="Include" />
+        </e>
         <e p="XLua" t="Include">
           <e p="CHANGELOG.txt" t="Include" />
           <e p="Editor" t="Include">

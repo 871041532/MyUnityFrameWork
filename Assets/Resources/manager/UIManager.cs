@@ -9,23 +9,31 @@ public class UIManager : IManager
 {
     // UI根节点
     private RectTransform m_UIRoot;
+
     // winRoot
     private RectTransform m_WinRoot;
+
     // UICamera
     private Camera m_UICamera;
+
     // EventSystem
     private EventSystem m_EventSystem;
+
     // 分辨率
     private Vector2 m_ReferenceResolution;
+
     // 注册字典
     public Dictionary<string, Func<Window>> m_RegisterDic = new Dictionary<string, Func<Window>>();
+
     // 打开的窗口
     private Dictionary<string, Window> m_WinDic = new Dictionary<string, Window>();
+
     // 对象池
     private CoreCompositePool m_Pool = new CoreCompositePool();
     private List<Window> m_TempList = new List<Window>();
 
     private Window m_HotPatchWin;
+
     public override void Awake()
     {
         m_UIRoot = GameMgr.gameObject.transform.Find("UIRoot") as RectTransform;
@@ -68,9 +76,7 @@ public class UIManager : IManager
     // 注册 name -> window
     private void RegisterWindow(System.Type type)
     {
-        RegisterWindow(type.Name, () => {
-            return Activator.CreateInstance(type) as Window;
-        });
+        RegisterWindow(type.Name, () => { return Activator.CreateInstance(type) as Window; });
     }
 
     public void RegisterWindow(string windowName, Func<Window> createAction)
@@ -105,7 +111,7 @@ public class UIManager : IManager
         Window win = FindWindowByName(windowName);
         if (win is null)
         {
-            Func<Window> createCall= null;
+            Func<Window> createCall = null;
             m_RegisterDic.TryGetValue(windowName, out createCall);
             if (!(createCall is null))
             {
@@ -115,6 +121,7 @@ public class UIManager : IManager
             {
                 Debug.LogError(windowName + "窗口名对应的Window创建函数未注册！");
             }
+
             GameObject obj = m_Pool.Spawn(win.PrefabPath, m_WinRoot);
             win.SetGameObjectAndName(obj, windowName);
             if (!m_WinDic.ContainsKey(windowName))
@@ -122,6 +129,7 @@ public class UIManager : IManager
                 m_WinDic.Add(windowName, win);
             }
         }
+
         return win;
     }
 
@@ -157,7 +165,7 @@ public class UIManager : IManager
     /// </summary>
     /// <param name="win"></param>
     /// <param name="destroy"></param>
-    public void  DestroyWindow(Window win)
+    public void DestroyWindow(Window win)
     {
         win.Hide();
         m_Pool.Recycle(win.PrefabPath, win.m_GameObject);
