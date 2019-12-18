@@ -19,7 +19,7 @@ end
 
 function menu:dispose()
 	CallMgr:RemoveEvent('OnDestroy', self.cs_dispose_call)
-	-- UIMgr:DestroyWindow(self.cs_win)
+	UIMgr:DestroyWindow(self.cs_win)
 	UIMgr:UnRegisterWindow('NewMenu')
 end 
 
