@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Administrator\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Administrator\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-1877999858.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Administrator\Desktop\MyUnityFrameWork" t="IncludeRecursive">
+    <e p="C:\Users\PC\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\PC\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-419085935.00" t="ExcludeRecursive" />
+    <e p="C:\Users\PC\Documents\GitHub\MyUnityFrameWork" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -261,7 +261,7 @@
           </e>
         </e>
         <e p="ShaderLearn" t="Include">
-          <e p="NewSurfaceShader.shader" t="Include" />
+          <e p="FalseColor.shader" t="Include" />
         </e>
         <e p="XLua" t="Include">
           <e p="CHANGELOG.txt" t="Include" />
