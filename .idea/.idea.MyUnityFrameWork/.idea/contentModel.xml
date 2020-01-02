@@ -261,6 +261,7 @@
           </e>
         </e>
         <e p="ShaderLearn" t="Include">
+          <e p="ColorPicker.cs" t="Include" />
           <e p="FalseColor.shader" t="Include" />
         </e>
         <e p="XLua" t="Include">

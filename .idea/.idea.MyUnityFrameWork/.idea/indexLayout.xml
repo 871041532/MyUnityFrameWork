@@ -26,6 +26,7 @@
       <Path>Hot</Path>
       <Path>Library</Path>
       <Path>Logs</Path>
+      <Path>Temp</Path>
       <Path>Tools</Path>
       <Path>Version</Path>
       <Path>obj</Path>
