@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\PC\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\PC\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_MyUnityFrameWork.-419085935.00" t="ExcludeRecursive" />
+    <e p="\app" t="IncludeRecursive" />
+    <e p="\b958f31a" t="IncludeRecursive" />
+    <e p="C:\Users\PC\.Rider2018.2\config\extensions" t="IncludeRecursive" />
+    <e p="C:\Users\PC\.Rider2018.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\PC\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_MyUnityFrameWork.-419085935.00" t="ExcludeRecursive" />
     <e p="C:\Users\PC\Documents\GitHub\MyUnityFrameWork" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
@@ -261,6 +264,10 @@
           </e>
         </e>
         <e p="ShaderLearn" t="Include">
+          <e p="BasicLight" t="Include">
+            <e p="BasicFragmentDiffuse.shader" t="Include" />
+            <e p="BasicVertexDiffuse.shader" t="Include" />
+          </e>
           <e p="ColorPicker.cs" t="Include" />
           <e p="FalseColor.shader" t="Include" />
         </e>
@@ -483,10 +490,13 @@
           </e>
         </e>
       </e>
+      <e p="Library" t="ExcludeRecursive" />
       <e p="MyUnityFrameWork.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="Packages" t="ExcludeRecursive" />
-      <e p="Temp\bin" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
     </e>
   </component>
 </project>
