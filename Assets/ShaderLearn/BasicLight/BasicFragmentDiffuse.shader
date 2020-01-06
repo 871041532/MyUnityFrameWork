@@ -1,53 +1,43 @@
-﻿Shader "Custom/BasicFragmentDiffuse"
+﻿Shader "ShaderLearn/BasicFragmentDiffuse"
 {
-    Properties
-    {
-        _Color ("Color", Color) = (1,1,1,1)
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
+    Properties{
+    	m_DiffuseColor("Diffuse Color", Color) = (1,1,1,1)
     }
-    SubShader
-    {
-        Tags { "RenderType"="Opaque" }
-        LOD 200
 
-        CGPROGRAM
-        // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard fullforwardshadows
-
-        // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
-
-        sampler2D _MainTex;
-
-        struct Input
-        {
-            float2 uv_MainTex;
-        };
-
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
-
-        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-        // #pragma instancing_options assumeuniformscaling
-        UNITY_INSTANCING_BUFFER_START(Props)
-            // put more per-instance properties here
-        UNITY_INSTANCING_BUFFER_END(Props)
-
-        void surf (Input IN, inout SurfaceOutputStandard o)
-        {
-            // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            o.Albedo = c.rgb;
-            // Metallic and smoothness come from slider variables
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
-            o.Alpha = c.a;
-        }
-        ENDCG
+    SubShader{
+    	Pass{
+    		Tags{"LightMode" = "ForwardBase"}
+    		CGPROGRAM
+    		#include "UnityCG.cginc"
+    		#include "Lighting.cginc"
+    		#pragma vertex vert
+    		#pragma fragment frag 
+    		fixed4 m_DiffuseColor;
+    		
+    		struct v2f {
+    		    float4 pos:SV_POSITION;
+    		    float3 worldNormal:TEXCOORD0;
+    		};
+    		
+    		v2f vert(appdata_base v) {
+    		     v2f  o;
+    		     o.pos = UnityObjectToClipPos(v.vertex);
+    		     o.worldNormal = UnityObjectToWorldNormal(v.normal);
+    		     return o;
+    		}
+    		
+    		 fixed4 frag(v2f i):SV_Target {
+    		      fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+    		      fixed3 worldNormal = normalize(i.worldNormal);
+    		      // 光源方向
+    		      fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
+//    		      fixed3 diffuse = _LightColor0.rgb * m_DiffuseColor.rgb * saturate(dot(worldNormal, worldLight));
+    		      // 半兰伯特
+    		      fixed3 diffuse = _LightColor0.rgb * m_DiffuseColor.rgb * (0.5 * dot(worldNormal, worldLight) + 0.5);
+    		      return fixed4(ambient + diffuse, 1.0);
+    		 }
+    		ENDCG
+    	}
     }
-    FallBack "Diffuse"
+     Fallback off
 }
