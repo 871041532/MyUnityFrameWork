@@ -25,6 +25,9 @@
             <e p="EvaluateBTEditor.cs" t="Include" />
           </e>
           <e p="OfflineDataEditor.cs" t="Include" />
+          <e p="Tools" t="Include">
+            <e p="AnimationCompressTool.cs" t="Include" />
+          </e>
         </e>
         <e p="FollowTarget.cs" t="Include" />
         <e p="link.xml" t="Include" />
