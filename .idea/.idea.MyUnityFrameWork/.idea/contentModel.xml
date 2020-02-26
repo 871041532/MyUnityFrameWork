@@ -274,6 +274,9 @@
             <e p="BasicVertexDiffuse.shader" t="Include" />
             <e p="BasicVertexSpecular.shader" t="Include" />
           </e>
+          <e p="BasicTexture" t="Include">
+            <e p="SingleSimple.shader" t="Include" />
+          </e>
           <e p="ColorPicker.cs" t="Include" />
           <e p="FalseColor.shader" t="Include" />
         </e>

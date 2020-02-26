@@ -1,4 +1,4 @@
-﻿// 逐像素高光
+﻿// 逐像素高光 Phong
 Shader "ShaderLearn/BasicFragmentSpecular"
 {
     Properties

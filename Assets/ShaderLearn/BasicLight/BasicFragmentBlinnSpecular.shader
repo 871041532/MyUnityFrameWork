@@ -1,4 +1,4 @@
-﻿// 逐像素高光
+﻿// 逐像素高光Blinn-Phong
 Shader "ShaderLearn/BasicFragmentBlinnSpecular"
 {
     Properties

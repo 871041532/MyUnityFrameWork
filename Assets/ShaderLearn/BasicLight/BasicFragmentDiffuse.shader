@@ -1,4 +1,5 @@
-﻿Shader "ShaderLearn/BasicFragmentDiffuse"
+﻿// 逐像素漫反射和半兰伯特
+Shader "ShaderLearn/BasicFragmentDiffuse"
 {
     Properties{
     	m_DiffuseColor("Diffuse Color", Color) = (1,1,1,1)
