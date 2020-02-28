@@ -275,6 +275,8 @@
             <e p="BasicVertexSpecular.shader" t="Include" />
           </e>
           <e p="BasicTexture" t="Include">
+            <e p="NormalMapInTangentSpace.shader" t="Include" />
+            <e p="NormalMapInWorldSpace.shader" t="Include" />
             <e p="SingleSimple.shader" t="Include" />
           </e>
           <e p="ColorPicker.cs" t="Include" />
