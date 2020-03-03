@@ -279,6 +279,7 @@
             <e p="NormalMapInWorldSpace.shader" t="Include" />
             <e p="Ramp.shader" t="Include" />
             <e p="SingleSimple.shader" t="Include" />
+            <e p="SpecularMask.shader" t="Include" />
           </e>
           <e p="ColorPicker.cs" t="Include" />
           <e p="FalseColor.shader" t="Include" />
