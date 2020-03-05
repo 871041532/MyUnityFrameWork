@@ -285,6 +285,7 @@
           <e p="FalseColor.shader" t="Include" />
           <e p="Transparency" t="Include">
             <e p="AlphaBlend.shader" t="Include" />
+            <e p="AlphaBlendZWrite.shader" t="Include" />
             <e p="AlphaTest.shader" t="Include" />
           </e>
         </e>
