@@ -1,3 +1,5 @@
+---
+--- 类似学分系统升级时，需要按照一定时序弹UI飘字，封装一下避免死代码
 --- Job是一个类似于Pipeline的工具类，节点可以动态添加，节点可以复用
 --- 也类似于Cocos中的action
 --- 也类似于DoTween中的Sequence动画与Parallel动画
@@ -13,13 +15,18 @@ function Job:ctor(context)  -- runProcess可空
     self.m_IsRunning = false
 
     self.m_OnRun = context  -- Action<Job>
+    self.m_IsDestroyed = false
     self:_OnInit()
 end
 
 -- Action<Job>
 function Job:Run(successCall, errorCall, processChangeCall,   _runId)
+    if self.m_IsDestroyed then
+        log.error("Job is destroyed, do not run!")
+        return
+    end
     if self.m_IsRunning then
-        log.error("Job is on running, do not repeat.")
+        log.error("Job is on running, do not repeat!")
         return
     end
     self.m_SuccessCall = successCall
@@ -36,6 +43,9 @@ function Job:Run(successCall, errorCall, processChangeCall,   _runId)
 end
 
 function Job:Success()
+    if self.m_IsDestroyed then
+        return
+    end
     if not self.m_IsRunning then
         return
     end
@@ -48,6 +58,9 @@ function Job:Success()
 end
 
 function Job:Fail()
+    if self.m_IsDestroyed then
+        return
+    end
     if not self.m_IsRunning then
         return
     end
@@ -59,6 +72,9 @@ function Job:Fail()
 end
 
 function Job:ProgressChange(progress)
+    if self.m_IsDestroyed then
+        return
+    end
     if math.abs(progress - self.m_Progress) >= 0.001 then
         self.m_Progress = progress
         if self.m_ProgressChangeCall then
@@ -81,6 +97,7 @@ function Job:Reset()
 end
 
 function Job:Destroy()
+    self.m_IsDestroyed = true
     self:_OnDestroy()
 end
 
