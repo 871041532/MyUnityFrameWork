@@ -283,6 +283,10 @@
           </e>
           <e p="ColorPicker.cs" t="Include" />
           <e p="FalseColor.shader" t="Include" />
+          <e p="Transparency" t="Include">
+            <e p="AlphaBlend.shader" t="Include" />
+            <e p="AlphaTest.shader" t="Include" />
+          </e>
         </e>
         <e p="XLua" t="Include">
           <e p="CHANGELOG.txt" t="Include" />
