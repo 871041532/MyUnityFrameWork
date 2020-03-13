@@ -39,7 +39,7 @@ Shader "ShaderLearn/AlphaBlend"
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.worldNormal = UnityObjectToWorldNormal(v.vertex);
+                o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.uv = v.texcoord.xy * m_MainTex_ST.xy + m_MainTex_ST.zw;
                 return o;
             }
