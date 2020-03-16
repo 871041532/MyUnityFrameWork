@@ -283,6 +283,9 @@
             <e p="SpecularMask.shader" t="Include" />
           </e>
           <e p="ColorPicker.cs" t="Include" />
+          <e p="ComplexLight" t="Include">
+            <e p="ForwardRendering.shader" t="Include" />
+          </e>
           <e p="FalseColor.shader" t="Include" />
           <e p="Transparency" t="Include">
             <e p="AlphaBlend.shader" t="Include" />
