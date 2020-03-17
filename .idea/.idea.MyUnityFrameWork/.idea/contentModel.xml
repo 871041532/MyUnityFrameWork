@@ -285,6 +285,7 @@
           <e p="ColorPicker.cs" t="Include" />
           <e p="ComplexLight" t="Include">
             <e p="ForwardRendering.shader" t="Include" />
+            <e p="Shadow.shader" t="Include" />
           </e>
           <e p="FalseColor.shader" t="Include" />
           <e p="Transparency" t="Include">

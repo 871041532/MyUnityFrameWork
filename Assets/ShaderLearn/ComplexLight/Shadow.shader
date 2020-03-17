@@ -1,12 +1,45 @@
-﻿// Blinn-Phong 前向渲染
-Shader "ShaderLearn/ForwardRendering" {
+﻿// Blinn-Phong 带阴影的前向渲染
+Shader "ShaderLearn/Shadow" {
 	Properties {
 		_Diffuse ("Diffuse", Color) = (1, 1, 1, 1)
 		_Specular ("Specular", Color) = (1, 1, 1, 1)
 		_Gloss ("Gloss", Range(8.0, 256)) = 20
 	}
+	
 	SubShader {
 		Tags { "RenderType"="Opaque" }
+		
+		// 处理阴影的pass
+		Pass
+        {
+	        Name "ShadowCaster"
+	        Tags{ "LightMode" = "ShadowCaster" }
+
+	        CGPROGRAM
+	        #pragma vertex vert
+	        #pragma fragment frag
+	        #pragma multi_compile_shadowcaster
+	        #include "unityCG.cginc"
+
+	        struct v2f {
+		        V2F_SHADOW_CASTER;
+	        };
+
+	        v2f vert(appdata_base v)
+	        {
+		        v2f o;
+		        TRANSFER_SHADOW_CASTER_NORMALOFFSET(o);
+		        return o;
+	        }
+
+	        float4 frag(v2f i) :SV_Target
+	        {
+		        SHADOW_CASTER_FRAGMENT(i);
+	        }
+	        ENDCG
+        }
+
+        // 前向渲染基础pass
 		Pass {
 			Tags { "LightMode"="ForwardBase" }
 			CGPROGRAM
@@ -54,6 +87,7 @@ Shader "ShaderLearn/ForwardRendering" {
 			ENDCG
 		}
 	
+	    // 前向渲染逐像素pass
 		Pass {
 			// Pass for other pixel lights
 			Tags { "LightMode"="ForwardAdd" }
@@ -113,7 +147,7 @@ Shader "ShaderLearn/ForwardRendering" {
 				        // 聚光灯
 				        float4 lightCoord = mul(unity_WorldToLight, float4(i.worldPos, 1));
 				        fixed atten = (lightCoord.z > 0) * tex2D(_LightTexture0, lightCoord.xy / lightCoord.w + 0.5).w * tex2D(_LightTextureB0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
-				    #else
+				    #else                
 				        fixed atten = 1.0;
 				    #endif
 				#endif
@@ -122,5 +156,5 @@ Shader "ShaderLearn/ForwardRendering" {
 			ENDCG
 		}
 	}
-	FallBack "Specular"
+	FallBack Off
 }
