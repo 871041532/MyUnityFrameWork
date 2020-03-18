@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 38b79daf42ee19d48ba1601332c27eca, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -353,7 +353,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dba103d80d0f12d4fb4b007d16170a49, type: 2}
+  - {fileID: 2100000, guid: 1aa20ebcc1404fa4e8887be06b160998, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -445,7 +445,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dba103d80d0f12d4fb4b007d16170a49, type: 2}
+  - {fileID: 2100000, guid: 1aa20ebcc1404fa4e8887be06b160998, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -524,7 +524,7 @@ Camera:
   m_GameObject: {fileID: 1644232279}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.7887148, g: 0.79021, b: 0.7924528, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -565,8 +565,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644232279}
-  m_LocalRotation: {x: -0.055849362, y: 0.78984183, z: -0.072705336, w: -0.60641956}
-  m_LocalPosition: {x: 5.970356, y: 3.2689633, z: 3.1597738}
+  m_LocalRotation: {x: 0.14955056, y: -0.05130741, z: 0.007575022, w: 0.9873929}
+  m_LocalPosition: {x: 17.942299, y: 53.524357, z: -172.07874}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
