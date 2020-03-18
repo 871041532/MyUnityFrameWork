@@ -287,6 +287,8 @@
             <e p="AlphaBlendShadow.shader" t="Include" />
             <e p="AlphaTestShadow.shader" t="Include" />
             <e p="AttenuationAndShadowUseBuildInFunctions.shader" t="Include" />
+            <e p="BumpedDiffuse.shader" t="Include" />
+            <e p="BumpedSpecular.shader" t="Include" />
             <e p="ForwardRendering.shader" t="Include" />
             <e p="ShadowCast.shader" t="Include" />
             <e p="ShadowReceive.shader" t="Include" />

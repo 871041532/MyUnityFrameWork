@@ -3,7 +3,6 @@
 --- Job是一个类似于Pipeline的工具类，节点可以动态添加，节点可以复用
 --- 也类似于Cocos中的action
 --- 也类似于DoTween中的Sequence动画与Parallel动画
-
 local Job = class("Job")
 
 function Job:ctor(context)  -- runProcess可空
@@ -309,12 +308,89 @@ end
        self:ProgressChange(childrenProgress)
     end
 
+----------------------------------生产者消费者：瞬间生产, seq方式依次消费----------------------------------
+local Queue = class("Queue")
 
+function Queue:ctor()
+	self._data = {}
+	self._tailIndex = 1
+	self._headIndex = 1
+end
+
+function Queue:IsEmpty()
+	return self._headIndex == self._tailIndex
+end
+
+function Queue:NotEmpty()
+	return self._headIndex ~= self._tailIndex
+end
+
+function Queue:Enqueue(item)
+	self._headIndex = self._headIndex + 1
+	self._data[self._headIndex] = item
+end
+
+function Queue:Dequeue()
+	if self._headIndex == self._tailIndex then
+		return nil
+	else
+		self._tailIndex = self._tailIndex + 1
+		return self._data[self._tailIndex]
+	end
+end
+
+local ProducerConsumerSeq = class("ProducerConsumerSeq", Job)
+
+function ProducerConsumerSeq:_OnInit()
+    self.seqJob = nil
+    self._queue = Queue.New()
+end
+
+-- 外部接口： 生产
+function ProducerConsumerSeq:Product(data)
+    self._queue:Enqueue(data)
+end
+
+-- 外部接口：消费
+-- 参数类型：Action<Job, data>， data是本次消费的数据，job是本次消费的job，调用job:Success() 表示一次消费结束
+function ProducerConsumerSeq:Consume(context)
+    -- 数据中没东西直接不处理
+    if self._queue:IsEmpty() then
+        return
+    end
+
+    local consumer = function(item)
+        local data = self._queue:Dequeue()
+        if data then
+            context(item, data)
+        else
+            item:Fail()
+        end
+    end
+
+    if not self.seqJob then
+        -- 没有消费者在消费中
+        self.seqJob = SequenceJob.New()
+        self.seqJob:AddAction(consumer)
+        self.seqJob:Run(function(item2)
+            self.seqJob:Destroy()
+            self.seqJob = nil
+        end, function(item2)
+            self.seqJob:Destroy()
+            self.seqJob = nil
+        end)
+    else
+        -- 已有消费者在消费中
+        self.seqJob:AddAction(consumer)
+    end
+end
+---------------------------------------------------------------------------------------------------------
 local JobLib = {
     -- 类在这里，方便继承扩展
     JobClass = Job,
     SequenceJobClass = SequenceJob,
     ParallelJobClass = ParallelJob,
+    ProducerConsumerSeqClass = ProducerConsumerSeq,
 }
 
 -- 新建一个动作节点
@@ -346,6 +422,11 @@ function JobLib.AddParalChild(parent)
     local child = ParallelJob.New()
     parent:AddChild(child)
     return child
+end
+
+-- 获取一个生产者消费者对象
+function JobLib.ProducerConsumerSeq()
+    return ProducerConsumerSeq.New()
 end
 
 return JobLib
