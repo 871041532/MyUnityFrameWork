@@ -1,5 +1,5 @@
 ﻿// Blinn-Phong 带阴影的前向渲染
-Shader "ShaderLearn/Shadow" {
+Shader "ShaderLearn/ShadowCast" {
 	Properties {
 		_Diffuse ("Diffuse", Color) = (1, 1, 1, 1)
 		_Specular ("Specular", Color) = (1, 1, 1, 1)
