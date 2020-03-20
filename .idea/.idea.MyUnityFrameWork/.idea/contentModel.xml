@@ -269,7 +269,9 @@
         </e>
         <e p="ShaderLearn" t="Include">
           <e p="AdvancedTexture" t="Include">
+            <e p="FresnelSchlick.shader" t="Include" />
             <e p="Reflection.shader" t="Include" />
+            <e p="Refraction.shader" t="Include" />
             <e p="RenderCubemapRuntime.cs" t="Include" />
             <e p="RenderCubemapWizard.cs" t="Include" />
           </e>
