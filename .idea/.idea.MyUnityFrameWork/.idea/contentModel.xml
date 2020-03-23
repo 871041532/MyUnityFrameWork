@@ -270,7 +270,9 @@
         <e p="ShaderLearn" t="Include">
           <e p="AdvancedTexture" t="Include">
             <e p="FresnelSchlick.shader" t="Include" />
+            <e p="GlassRefraction.shader" t="Include" />
             <e p="Mirror.shader" t="Include" />
+            <e p="ProceduralTextureGeneration.cs" t="Include" />
             <e p="Reflection.shader" t="Include" />
             <e p="Refraction.shader" t="Include" />
             <e p="RenderCubemapRuntime.cs" t="Include" />
