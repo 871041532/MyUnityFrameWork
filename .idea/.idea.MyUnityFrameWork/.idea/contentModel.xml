@@ -278,6 +278,12 @@
             <e p="RenderCubemapRuntime.cs" t="Include" />
             <e p="RenderCubemapWizard.cs" t="Include" />
           </e>
+          <e p="Animation" t="Include">
+            <e p="DrawMatchLine.cs" t="Include" />
+            <e p="DrawMatchLine.shader" t="Include" />
+            <e p="ImageSequenceAnimation.shader" t="Include" />
+            <e p="ScrollingBackground.shader" t="Include" />
+          </e>
           <e p="BasicLight" t="Include">
             <e p="BasicFragmentBlinnSpecular.shader" t="Include" />
             <e p="BasicFragmentDiffuse.shader" t="Include" />
