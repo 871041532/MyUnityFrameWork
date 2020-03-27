@@ -314,6 +314,7 @@
           </e>
           <e p="FalseColor.shader" t="Include" />
           <e p="PostEffect" t="Include">
+            <e p="BrightnessSaturationAndContrast.cs" t="Include" />
             <e p="PostEffectsBase.cs" t="Include" />
           </e>
           <e p="Transparency" t="Include">

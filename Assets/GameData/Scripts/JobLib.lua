@@ -3,6 +3,40 @@
 --- Job是一个类似于Pipeline的工具类，节点可以动态添加，节点可以复用
 --- 也类似于Cocos中的action
 --- 也类似于DoTween中的Sequence动画与Parallel动画
+--- 目前有Sequence、Parallel、Selector三种节点
+--- Job目前只是执行Function，也可以继承Job类扩展支持各种复杂效果
+--- 最下面有demo，放开注释，然后单独运行此文件
+
+local class = function(name, super)
+    if super ~= nil then
+        if type(super) ~= "table" then
+            return
+        end
+    end
+
+    local class_type = nil
+    if super then
+        class_type = {}
+        setmetatable(class_type, {__index = super})
+        class_type.__super = super
+        class_type.super = super
+    else
+        class_type = {}
+    end
+    class_type.__index = class_type
+    class_type.__cname = name
+    class_type.__ctype = 2
+
+    class_type.New = function(...)
+        local instance = setmetatable({}, class_type)
+        instance.class = class_type
+        instance:ctor(...)
+        return instance
+    end
+    class_type.new = class_type.New
+    return class_type
+end
+
 local Job = class("Job")
 
 function Job:ctor(context)  -- runProcess可空
@@ -175,12 +209,16 @@ function SequenceJob:NextJob()
 end
 
 function SequenceJob:_OnRun()
-    if not self.m_ProgressChangeCall then
-        -- 如果不需要知道进度，就不再计算
-        self.m_ChildProgressChangeHandler = nil
+    if #self.m_Children == 0 then
+        self:Success()
+    else
+        if not self.m_ProgressChangeCall then
+            -- 如果不需要知道进度，就不再计算
+            self.m_ChildProgressChangeHandler = nil
+        end
+        self.m_CurIdx = 1
+        self:NextJob()
     end
-    self.m_CurIdx = 1
-    self:NextJob()
 end
 
 function SequenceJob:_OnReset()
@@ -308,6 +346,35 @@ end
        self:ProgressChange(childrenProgress)
     end
 
+-- 分支选择节点
+-- 首先运行分支1，成功则返回成功，失败则尝尝试下个分支
+-- 全部失败返回失败
+local SelectorJob = class("SelectorJob", SequenceJob)
+
+function SelectorJob:ChildSuccessHandler(child)
+      self:Success()
+end
+
+function SelectorJob:ChildFailHandler(child)
+    self.m_CurIdx = self.m_CurIdx + 1
+    self:NextJob()
+end
+
+function SelectorJob:ChildProgressChangeHandler(child)
+    self:ProgressChange(child.m_Progress)
+end
+
+function SelectorJob:NextJob()
+    if not self.m_IsRunning then
+        return
+    end
+    if #self.m_Children >= self.m_CurIdx then
+        self.m_Children[self.m_CurIdx]:Run(self.m_ChildSuccessHandler, self.m_ChildFailHandler, self.m_ChildProgressChangeHandler, self.m_CurIdx)
+    else
+        self:Fail()
+    end
+end
+
 ----------------------------------生产者消费者：瞬间生产, seq方式依次消费----------------------------------
 local Queue = class("Queue")
 
@@ -384,6 +451,7 @@ function ProducerConsumerSeq:Consume(context)
         self.seqJob:AddAction(consumer)
     end
 end
+
 ---------------------------------------------------------------------------------------------------------
 local JobLib = {
     -- 类在这里，方便继承扩展
@@ -391,6 +459,12 @@ local JobLib = {
     SequenceJobClass = SequenceJob,
     ParallelJobClass = ParallelJob,
     ProducerConsumerSeqClass = ProducerConsumerSeq,
+    SelectorJobClass = SelectorJob,
+    Type = {
+        Seq = nil,
+        Paral = 1,
+        Selector = 2,
+    },
 }
 
 -- 新建一个动作节点
@@ -400,14 +474,19 @@ function JobLib.Job(context)
     return Job.New(context)
 end
 
--- 新建一个串行节点，子节点顺序执行，遇到错误则直接FailCallback，全部正确SuccessCallback
+-- 新建一个串行节点，子节点顺序执行，遇到错误则直接Fail，全部正确Success
 function JobLib.Seq()
     return SequenceJob.New()
 end
 
--- 新建一个并行节点，子节点并行执行，全部执行完毕，有错则FailCallback，全部正确SuccessCallback
+-- 新建一个并行节点，子节点并行执行，全部执行完毕，有错则Fail，全部正确Success
 function JobLib.Paral()
     return ParallelJob.New()
+end
+
+-- 新建一个选择节点，先执行子节点1，成功则执行完毕，失败执行子节点2，全部错误则Fail
+function JobLib.Selector()
+    return SelectorJob.New()
 end
 
 -- 新建一个串行节点，并添加到parent上
@@ -424,9 +503,175 @@ function JobLib.AddParalChild(parent)
     return child
 end
 
+-- 新建一个选择节点添加到parent上
+function JobLib.AddSelectorChild(parent)
+    local child = SelectorJob.New()
+    parent:AddChild(child)
+    return child
+end
+
 -- 获取一个生产者消费者对象
 function JobLib.ProducerConsumerSeq()
     return ProducerConsumerSeq.New()
 end
+
+-- 直接用funcDictbuild出一个组合job
+function JobLib.BuildBuyFuncDict(curData)
+    if (not curData) or (not next(curData)) then
+        return
+    end
+    local root = JobLib._createJobBuyType(curData.type)
+    if root then
+        JobLib._buildFunc(curData, root)
+        return root
+    end
+end
+
+function JobLib._buildFunc(curData, root)
+    local dataType = type(curData)
+    if dataType == "function" then
+        root:AddAction(curData)
+    elseif dataType == "table" then
+        local curJob = JobLib._createJobBuyType(curData.type)
+        root:AddChild(curJob)
+        for _,v in ipairs(curData) do
+            JobLib._buildFunc(v, curJob)
+        end
+    end
+end
+
+function JobLib._createJobBuyType(type)
+    local curJob
+    if type == JobLib.Type.Seq then
+        curJob = SequenceJob.New()
+    elseif type == JobLib.Type.Paral then
+        curJob = ParallelJob.New()
+    elseif type == JobLib.Type.Selector then
+        curJob = SelectorJob.New()
+    end
+    return curJob
+end
+
+
+--local demo = function()
+--    -- function声明
+--    local f1 = function(item)
+--        print("向南1米")
+--        item:Success()
+--    end
+--
+--    local f2 = function(item)
+--        print("向东1米")
+--        item:Success()
+--    end
+--
+--    local f3 = function(item)
+--        print("向北1米")
+--        item:Success()
+--    end
+--
+--    local f4 = function(item)
+--        print("向西1米")
+--        item:Success()
+--    end
+--
+--    local f5 = function(item)
+--        print("向上1米")
+--        item:Success()
+--    end
+--
+--    local successFind = function(item)
+--        print("发现宝藏.")
+--        item:Success()
+--    end
+--
+--    local failFind = function(item)
+--        print("没有宝藏.")
+--        item:Fail()
+--    end
+--
+--    -- 实现需求：
+--    -- s1.并行执行任务1、2    s2.前面都ok后串行执行后续任务
+--    -- 翻译一下：1.同时向东又向南一米 2.然后向北1米 3.然后向西1米 4.然后向上1米
+--
+--    -- 实现方式1: 先创建所有job，再组合，写法比较繁琐
+--    local j1 = JobLib.Job(f1)
+--    local j2 = JobLib.Job(f2)
+--    local j3 = JobLib.Job(f3)
+--    local j4 = JobLib.Job(f4)
+--    local j5 = JobLib.Job(f5)
+--    local root1 = JobLib.Seq()
+--    local p1 = JobLib.Paral()
+--    p1:AddChild(j1)
+--    p1:AddChild(j2)
+--    root1:AddChild(p1)
+--    root1:AddChild(j3)
+--    root1:AddChild(j4)
+--    root1:AddChild(j5)
+--    print("\n\n")
+--    root1:Run()
+--
+--    -- 实现方式2：边创建边组合，写法简洁一些
+--    local root2 = JobLib.Seq()
+--    local p2 = JobLib.AddParalChild(root2)
+--    p2:AddAction(f1)
+--    p2:AddAction(f2)
+--    root2:AddAction(f3)
+--    root2:AddAction(f4)
+--    root2:AddAction(f5)
+--    print("\n\n")
+--    root2:Run()
+--
+--    -- 实现方式3：通过配置直接生成，写法最简洁易懂
+--    local d1 = {
+--        {f1, f2, type = JobLib.Type.Paral},  -- type为nil是串行，JobLib.Type.Paral是并行
+--        f3,
+--        f4,
+--        f5
+--    }
+--    print("\n\n")
+--    local root3 = JobLib.BuildBuyFuncDict(d1)
+--    root3:Run()
+--
+--    -- 下面是复杂逻辑：
+--    -- 从A、B两个路线依次寻找宝藏：A.先往南走1米，然后往东1米，寻找  B.找不到则往北1米，往西1米，再找  3.找不到宝藏就此结束，找到则再向上走1米
+--    -- 情景1：B路线找到了宝藏
+--    local d2 =
+--    {
+--        {
+--            {f1, f2, failFind},
+--            {f3, f4, successFind},
+--            type = JobLib.Type.Selector
+--        },
+--        f5,
+--    }
+--    local root4 = JobLib.BuildBuyFuncDict(d2)
+--    print("\n\n")
+--    root4:Run(function()
+--        print("最终成功")
+--    end, function()
+--        print("最终失败")
+--    end)
+--
+--    -- 情景2：AB路线都没找到
+--    local d3 =
+--    {
+--        {
+--            {f1, f2, failFind},
+--            {f3, f4, failFind},
+--            type = JobLib.Type.Selector
+--        },
+--        f5,
+--    }
+--    local root5 = JobLib.BuildBuyFuncDict(d3)
+--    print("\n\n")
+--    root5:Run(function()
+--        print("最终成功")
+--    end, function()
+--        print("最终失败")
+--    end)
+--end
+--
+--demo()
 
 return JobLib
