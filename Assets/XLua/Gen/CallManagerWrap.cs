@@ -21,9 +21,10 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(CallManager);
-			Utils.BeginObjectRegister(type, L, translator, 0, 7, 0, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 8, 0, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Update", _m_Update);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddInvoke", _m_AddInvoke);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddUpdate", _m_AddUpdate);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RemoveUpdate", _m_RemoveUpdate);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RegisterEvent", _m_RegisterEvent);
@@ -93,6 +94,35 @@ namespace XLua.CSObjectWrap
                 {
                     
                     gen_to_be_invoked.Update(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_AddInvoke(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                CallManager gen_to_be_invoked = (CallManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    System.Action _call = translator.GetDelegate<System.Action>(L, 2);
+                    float _time = (float)LuaAPI.lua_tonumber(L, 3);
+                    
+                    gen_to_be_invoked.AddInvoke( _call, _time );
                     
                     
                     

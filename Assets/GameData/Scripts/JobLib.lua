@@ -19,11 +19,13 @@ SeqSelectorJob:
 ParallerJob:
   并行复合类。同时执行所有子节点，等待所有子节点执行完毕。如果子节点全部执行成功，则parallel执行成功；如果有子节点执行失败，则parallel执行失败。
 
-ParalSelectorJob(未实现):
+ParalSelectorJob:
   并行选择复合类。同时执行所有子节点，等待第一个执行成功的子节点。当第一个子节点执行成功时paralSelector完成且成功。如果子节点全部执行失败，则paralSelector执行失败。
 
+demo: 将文件底部的注释放开，可单独运行此文件。
 --]]
 
+-- 为了可以单独执行此lua文件搞个local class
 local class = function(name, super)
     if super ~= nil then
         if type(super) ~= "table" then
@@ -314,7 +316,7 @@ end
 
 function ParallelJob:AddChild(job)
   ParallelJob.super.AddChild(self, job)
- if self.m_IsRunning then
+  if self.m_IsRunning then
     job:Run(self.m_ChildSuccessHandler, self.m_ChildFailHandler, self.m_ChildProgressChangeHandler, #self.m_Children)
   end
 end
@@ -383,6 +385,32 @@ function ParallelJob:_OnChildProgressChange(child)
   end
   childrenProgress = childrenProgress / #self.m_Children
   self:ProgressChange(childrenProgress)
+end
+
+------------- 并行选择------------------
+local ParalSelectorJob = class("ParalSelectorJob", ParallelJob)
+
+function ParalSelectorJob:TryEnd()
+  if #self.m_Children == 0 then
+    self:Success()
+  else
+    if self.m_SuccessCount > 0 then
+        self:Success()
+    elseif self.m_ErrorCount == #self.m_Children then
+       self:Fail()
+    end
+  end
+end
+
+function ParalSelectorJob:_OnChildProgressChange(child)
+  if not self.m_IsRunning then
+    return
+  end
+  if not self.__childMaxProgress then
+    self.__childMaxProgress = 0
+  end
+  self.__childMaxProgress = math.max(self.__childMaxProgress, child.m_Progress);
+  self:ProgressChange(self.__childMaxProgress)
 end
 
 -------------生产者消费者：瞬间生产, seq方式依次消费-----------------
@@ -468,12 +496,14 @@ local Lib = {
   Seq = SequenceJob,
   Paral = ParallelJob,
   SeqSelector = SeqSelectorJob,
+  ParalSelector = ParalSelectorJob,
   PCSeq = PCSeq,
 
   Type = {
     Seq = nil,
     Paral = 1,
     SeqSelector = 2,
+    ParalSelector = 3,
   },
 }
 
@@ -538,131 +568,133 @@ _createJobBuyType = function(type)
         curJob = ParallelJob.New()
     elseif type == Lib.Type.SeqSelector then
         curJob = SeqSelectorJob.New()
+    elseif type == Lib.Type.ParalSelector then
+        curJob = ParalSelectorJob.New()
     end
     return curJob
 end
 
 
-local demo = function()
-   -- function声明
-   local f1 = function(item)
-       print("向南1米")
-       item:Success()
-   end
+-- local demo = function()
+--    -- function声明
+--    local f1 = function(item)
+--        print("向南1米")
+--        item:Success()
+--    end
 
-   local f2 = function(item)
-       print("向东1米")
-       item:Success()
-   end
+--    local f2 = function(item)
+--        print("向东1米")
+--        item:Success()
+--    end
 
-   local f3 = function(item)
-       print("向北1米")
-       item:Success()
-   end
+--    local f3 = function(item)
+--        print("向北1米")
+--        item:Success()
+--    end
 
-   local f4 = function(item)
-       print("向西1米")
-       item:Success()
-   end
+--    local f4 = function(item)
+--        print("向西1米")
+--        item:Success()
+--    end
 
-   local f5 = function(item)
-       print("向上1米")
-       item:Success()
-   end
+--    local f5 = function(item)
+--        print("向上1米")
+--        item:Success()
+--    end
 
-   local successFind = function(item)
-       print("发现宝藏.")
-       item:Success()
-   end
+--    local successFind = function(item)
+--        print("发现宝藏.")
+--        item:Success()
+--    end
 
-   local failFind = function(item)
-       print("没有宝藏.")
-       item:Fail()
-   end
+--    local failFind = function(item)
+--        print("没有宝藏.")
+--        item:Fail()
+--    end
 
-   -- 需求：
-   -- s1.并行执行任务1、2    s2.前面都ok后串行执行后续任务
-   -- 翻译一下：1.同时向东又向南一米 2.然后向北1米 3.然后向西1米 4.然后向上1米
+--    -- 需求：
+--    -- s1.并行执行任务1、2    s2.前面都ok后串行执行后续任务
+--    -- 翻译一下：1.同时向东又向南一米 2.然后向北1米 3.然后向西1米 4.然后向上1米
 
-   -- 实现方式1: 先创建所有job，再组合，写法比较繁琐
-   local j1 = Lib.Job.New(f1)
-   local j2 = Lib.Job.New(f2)
-   local j3 = Lib.Job.New(f3)
-   local j4 = Lib.Job.New(f4)
-   local j5 = Lib.Job.New(f5)
-   local root1 = Lib.Seq.New()
-   local p1 = Lib.Paral.New()
-   p1:AddChild(j1)
-   p1:AddChild(j2)
-   root1:AddChild(p1)
-   root1:AddChild(j3)
-   root1:AddChild(j4)
-   root1:AddChild(j5)
-   print("\n\n")
-   root1:Run()
+--    -- 实现方式1: 先创建所有job，再组合，写法比较繁琐
+--    local j1 = Lib.Job.New(f1)
+--    local j2 = Lib.Job.New(f2)
+--    local j3 = Lib.Job.New(f3)
+--    local j4 = Lib.Job.New(f4)
+--    local j5 = Lib.Job.New(f5)
+--    local root1 = Lib.Seq.New()
+--    local p1 = Lib.Paral.New()
+--    p1:AddChild(j1)
+--    p1:AddChild(j2)
+--    root1:AddChild(p1)
+--    root1:AddChild(j3)
+--    root1:AddChild(j4)
+--    root1:AddChild(j5)
+--    print("\n\n")
+--    root1:Run()
 
-   -- 实现方式2：边创建边组合，写法简洁一些
-   local root2 = Lib.Seq.New()
-   local p2 = Lib.AddParalChild(root2)
-   p2:AddAction(f1)
-   p2:AddAction(f2)
-   root2:AddAction(f3)
-   root2:AddAction(f4)
-   root2:AddAction(f5)
-   print("\n\n")
-   root2:Run()
+--    -- 实现方式2：边创建边组合，写法简洁一些
+--    local root2 = Lib.Seq.New()
+--    local p2 = Lib.AddParalChild(root2)
+--    p2:AddAction(f1)
+--    p2:AddAction(f2)
+--    root2:AddAction(f3)
+--    root2:AddAction(f4)
+--    root2:AddAction(f5)
+--    print("\n\n")
+--    root2:Run()
 
-   -- 实现方式3：通过配置直接生成，写法最简洁易懂
-   local d1 = {
-    {f1, f2, type = Lib.Type.Paral},  -- type为nil是串行，Lib.Type.Paral是并行
-    f3,
-    f4,
-    f5
-   }
-   print("\n\n")
-   local root3 = Lib.BuildBuyFuncDict(d1)
-   root3:Run()
+--    -- 实现方式3：通过配置直接生成，写法最简洁易懂
+--    local d1 = {
+--     {f1, f2, type = Lib.Type.Paral},  -- type为nil或不写是串行
+--     f3,
+--     f4,
+--     f5
+--    }
+--    print("\n\n")
+--    local root3 = Lib.BuildBuyFuncDict(d1)
+--    root3:Run()
 
-   -- 下面是复杂逻辑：
-   -- 从A、B两个路线依次寻找宝藏：A.先往南走1米，然后往东1米，寻找  B.找不到则往北1米，往西1米，再找  3.找不到宝藏就此结束，找到则再向上走1米
-   -- 情景1：B路线找到了宝藏
-   local d2 =
-   {
-    {
-      type = Lib.Type.SeqSelector,
-      {f1, f2, failFind},
-      {f3, f4, successFind},
-      {f3, f4, successFind},
-    },
-    f5,
-   }
-   local root4 = Lib.BuildBuyFuncDict(d2)
-   print("\n\n")
-   root4:Run(function()
-       print("最终成功")
-   end, function()
-       print("最终失败")
-   end)
+--    -- 下面是复杂逻辑：
+--    -- 从A、B两个路线依次寻找宝藏：A.先往南走1米，然后往东1米，寻找  B.找不到则往北1米，往西1米，再找  3.找不到宝藏就此结束，找到则再向上走1米
+--    -- 情景1：B路线找到了宝藏
+--    local d2 =
+--    {
+--     {
+--       type = Lib.Type.SeqSelector,
+--       {f1, f2, failFind},
+--       {f3, f4, successFind},
+--       {f3, f4, successFind},
+--     },
+--     f5,
+--    }
+--    local root4 = Lib.BuildBuyFuncDict(d2)
+--    print("\n\n")
+--    root4:Run(function()
+--        print("最终成功")
+--    end, function()
+--        print("最终失败")
+--    end)
 
-   -- 情景2：AB路线都没找到
-   local d3 =
-   {
-    {
-      type = Lib.Type.SeqSelector,
-      {f1, f2, failFind},
-      {f3, f4, failFind},
-    },
-    f5,
-   }
-   local root5 = Lib.BuildBuyFuncDict(d3)
-   print("\n\n")
-   root5:Run(function()
-       print("最终成功")
-   end, function()
-       print("最终失败")
-   end)
-end
+--    -- 情景2：AB路线都没找到
+--    local d3 =
+--    {
+--     {
+--       type = Lib.Type.SeqSelector,
+--       {f1, f2, failFind},
+--       {f3, f4, failFind},
+--     },
+--     f5,
+--    }
+--    local root5 = Lib.BuildBuyFuncDict(d3)
+--    print("\n\n")
+--    root5:Run(function()
+--        print("最终成功")
+--    end, function()
+--        print("最终失败")
+--    end)
+-- end
 
-demo()
+-- demo()
 
 return Lib

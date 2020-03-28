@@ -45,6 +45,11 @@ public class CallManager : IManager
         m_CallbackManager.Update();
     }
 
+    public void AddInvoke(Action call, float time)
+    {
+        m_CallbackManager.AddInvoke(call, time);
+    }
+
     public void AddUpdate(Action call)
     {
         m_CallbackManager.AddUpdate(call);
@@ -77,13 +82,50 @@ public class CallManager : IManager
             m_EventManagers[i].TriggerEvent(eventName, args);
         }
     }
+
+    public override void OnDestroy() {
+        m_CallbackManager.Clear();
+        foreach (var item in m_EventManagers)
+        {
+            item.Clear();
+        }
+    }
 }
 
 public class CallBackManager
 {
-    public SortedDictionary<int, Action> m_TimeRegisters = new SortedDictionary<int, Action>();
+    public SortedDictionary<int, List<Action>> m_TimeRegisters = new SortedDictionary<int, List<Action>>();
     public Dictionary<int, Action> m_UpdateRegisters = new Dictionary<int, Action>();
 
+    public void AddInvoke(Action call, float time)
+    {
+        int targetFrame = Mathf.FloorToInt((Time.time + time) * 30);
+        List<Action> list;
+        m_TimeRegisters.TryGetValue(targetFrame, out list);
+        if (list is null)
+        {
+            int canUseKey = -1;
+            var iter = m_TimeRegisters.GetEnumerator();
+            if (iter.MoveNext())
+            {
+                if (iter.Current.Value.Count == 0)
+                {
+                    canUseKey = iter.Current.Key;
+                }
+            }
+            if (canUseKey != -1)
+            {
+                list = m_TimeRegisters[canUseKey];
+                m_TimeRegisters.Remove(canUseKey);
+            }
+            else
+            {
+                list = new List<Action>();
+            }
+            m_TimeRegisters.Add(targetFrame, list);
+        }
+        list.Add(call);
+    }
     public void AddUpdate(Action call)
     {
         int hashCode = call.GetHashCode();
@@ -95,14 +137,41 @@ public class CallBackManager
     {
         m_UpdateRegisters.Remove(call.GetHashCode());
     }
-    
-    
+
+    List<int> m_tempCallList = new List<int>();
     public void Update()
     {
         foreach (var item in m_UpdateRegisters)
         {
             item.Value();
         }
+
+        int targetFrame = Mathf.FloorToInt((Time.time) * 30);
+        m_tempCallList.AddRange(m_TimeRegisters.Keys);
+        foreach (var key in m_tempCallList)
+        {
+            var list = m_TimeRegisters[key];
+            var isCall = false;
+            if (key <= targetFrame)
+            {
+                foreach (var call in list)
+                {
+                    call();
+                }
+                isCall = true;
+            }
+            if (isCall)
+            {
+                list.Clear();
+            }
+        }
+        m_tempCallList.Clear();
+    }
+
+    public void Clear()
+    {
+        m_TimeRegisters.Clear();
+        m_UpdateRegisters.Clear();
     }
 }
 
@@ -152,5 +221,10 @@ public class EventManager
                 eventRegisters[keys[i]](args);
             }
         }
+    }
+
+    public void Clear()
+    {
+        m_Registers.Clear();
     }
 }

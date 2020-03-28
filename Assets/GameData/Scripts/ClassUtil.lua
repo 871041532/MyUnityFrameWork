@@ -25,6 +25,7 @@ local class = function(classname, super)
         instance:ctor(...)
         return instance
     end
+    cls.New = cls.new
     return cls
 end
 

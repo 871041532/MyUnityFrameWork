@@ -10,7 +10,16 @@ CallMgr = GameMgr.m_CallMgr
 GameObject = CS.UnityEngine.GameObject
 Window = CS.Window
 SportToolPanel = CS.SportToolPanel
-Class = require("ClassUtil.lua")
+class = require("ClassUtil.lua")
+Class = class
+local logIdx = 1
+log = function(str)
+	str = string.format("log%d：%s", logIdx, str)
+	CS.UnityEngine.Debug.Log(str)
+	logIdx = logIdx + 1
+end
+
 
 local menu = require("wins/menu.lua").new()
 menu:show()
+require("JobTest.lua")
