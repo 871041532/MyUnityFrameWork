@@ -29,7 +29,7 @@ public class BrightnessSaturationAndContrast : PostEffectsBase {
             material.SetFloat("_Brightness",brightness);
             material.SetFloat("_Saturation",saturation);
             material.SetFloat("_Contrast",contrast);
-            Graphics.Blit(source,destination,material);
+            Graphics.Blit(source, destination, material);
         }
         else
         {
