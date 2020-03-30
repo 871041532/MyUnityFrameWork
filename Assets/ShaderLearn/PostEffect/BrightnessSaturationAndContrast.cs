@@ -22,6 +22,7 @@ public class BrightnessSaturationAndContrast : PostEffectsBase {
     public float contrast = 1.0f;
 
     //每当OnRenderImage函数被调用时，它会检查材质是否可用。可用就把参数传递给材质，再调用Graphics.Blit进行处理；否则，直接把原图像显示到屏幕上，不做任何处理。
+    
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         if (material != null)
