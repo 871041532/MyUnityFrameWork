@@ -69,8 +69,8 @@ class Color:
 
 if __name__ == "__main__":
     clr = Color()
-    clr.print_red_text('red')
-    clr.print_green_text('green')
+    clr.print_red('red')
+    clr.print_green('green')
     clr.print_blue_text('blue')
     clr.print_red_text_with_blue_bg('background')
     while True:

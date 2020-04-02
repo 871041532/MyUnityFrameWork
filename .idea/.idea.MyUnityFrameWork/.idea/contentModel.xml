@@ -313,6 +313,7 @@
             <e p="ShadowReceive.shader" t="Include" />
           </e>
           <e p="DepthNormalTexture" t="Include">
+            <e p="ConsoleScript.cs" t="Include" />
             <e p="FogWithDepthTexture.cs" t="Include" />
             <e p="FogWithDepthTexture.shader" t="Include" />
             <e p="MotionBlurWithDepthTexture.cs" t="Include" />

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import os
 import sys
 import socket
 import _thread
@@ -51,8 +53,8 @@ class Color:
 
     def reset_color(self):
         self.set_cmd_color(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
-    
-    
+
+
     def print_green(self, print_text):
         self.set_cmd_color(FOREGROUND_GREEN | FOREGROUND_INTENSITY)
         print (print_text)
@@ -66,14 +68,14 @@ class Color:
     def print_red_text_with_blue_bg(self, print_text):
         self.set_cmd_color(FOREGROUND_RED | FOREGROUND_INTENSITY| BACKGROUND_BLUE | BACKGROUND_INTENSITY)
         print (print_text)
-        self.reset_color()  
+        self.reset_color()
 
 # 获取端口号
 try:
-	args = sys.argv[1:]
-	port = int(args[0])
+    args = sys.argv[1:]
+    port = int(args[0])
 except Exception as e:
-	print("请输入端口号！")
+    print("请输入端口号！")
 
 
 # GM相关指令
@@ -89,32 +91,34 @@ class LogType:
 color_log = Color()
 
 def switch_error():
-	color_log.set_red()
-	color_log.print("\nTrace or Error:")
+    color_log.set_red()
+    color_log.print("\nTrace or Error:")
 
 def switch_warning():
-	color_log.set_yellow()
-	color_log.print("\nWarning:")
+    color_log.set_yellow()
+    color_log.print("\nWarning:")
 
 def switch_normal():
-	color_log.print("")
-	color_log.set_white()
+    color_log.print("")
+    color_log.set_white()
 
 
 gm_dict = {
-	LogType.Error: switch_error,
-	LogType.Assert: switch_error,
-	LogType.Warning: switch_warning,
-	LogType.Log: switch_normal,
-	LogType.Exception: switch_error,
+    LogType.Error: switch_error,
+    LogType.Assert: switch_error,
+    LogType.Warning: switch_warning,
+    LogType.Log: switch_normal,
+    LogType.Exception: switch_error,
 }
 
 # 解析发来的字符串
 def prase_str(strs):
-	if strs in gm_dict:
-		gm_dict[strs]()
-	else:
-		color_log.print(strs)
+    # if strs == "Unity已断开服务器。":
+        # os.system('cls')
+    if strs in gm_dict:
+        gm_dict[strs]()
+    else:
+        color_log.print(strs)
 
 # 启动UDP服务端
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -124,14 +128,14 @@ is_init = False
 addr = 0
 
 def receive_input():
-	while True:
-		strs = input()
-		s.sendto(strs.encode("utf-8"), addr)
+    while True:
+        strs = input()
+        s.sendto(strs.encode("utf-8"), addr)
 
 while True:
- 	data, client_addr = s.recvfrom(8192)
- 	addr = client_addr
- 	prase_str(data.decode(encoding="utf-8"))
- 	if not is_init:
- 		is_init = True
- 		_thread.start_new_thread(receive_input, ())
+    data, client_addr = s.recvfrom(8192)
+    addr = client_addr
+    prase_str(data.decode(encoding="utf-8"))
+    if not is_init:
+        is_init = True
+        _thread.start_new_thread(receive_input, ())
