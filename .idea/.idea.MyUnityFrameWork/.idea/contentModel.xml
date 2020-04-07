@@ -322,6 +322,9 @@
             <e p="Translating.cs" t="Include" />
           </e>
           <e p="FalseColor.shader" t="Include" />
+          <e p="NPR" t="Include">
+            <e p="ToonShading.shader" t="Include" />
+          </e>
           <e p="PostEffect" t="Include">
             <e p="Bloom.cs" t="Include" />
             <e p="Bloom.shader" t="Include" />
