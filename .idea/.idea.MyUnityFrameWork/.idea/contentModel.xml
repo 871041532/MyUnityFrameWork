@@ -323,6 +323,7 @@
           </e>
           <e p="FalseColor.shader" t="Include" />
           <e p="NPR" t="Include">
+            <e p="Hatching.shader" t="Include" />
             <e p="ToonShading.shader" t="Include" />
           </e>
           <e p="PostEffect" t="Include">
