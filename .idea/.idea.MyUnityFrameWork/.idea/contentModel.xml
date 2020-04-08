@@ -322,6 +322,9 @@
             <e p="Translating.cs" t="Include" />
           </e>
           <e p="FalseColor.shader" t="Include" />
+          <e p="Noise" t="Include">
+            <e p="Dissolve.shader" t="Include" />
+          </e>
           <e p="NPR" t="Include">
             <e p="Hatching.shader" t="Include" />
             <e p="ToonShading.shader" t="Include" />
