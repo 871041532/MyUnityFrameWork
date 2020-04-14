@@ -1,4 +1,4 @@
-﻿// 水波效果。环境纹理做菲涅尔反射，GrabPass做折射
+﻿// 水波效果。环境纹理做菲涅尔反射，GrabPass做折射，水波中采样做偏移
 Shader "ShaderLearn/WaterWave"
 {
     Properties
@@ -13,17 +13,16 @@ Shader "ShaderLearn/WaterWave"
     }
     SubShader
     {
-         // We must be transparent, so other objects are drawn before this one.
+         // Queue设置为Transparent，确保其他物体在之前绘制完毕，RenderType设为Opaque，确保着色器替换时ok
         Tags { "RenderType"="Opaque" "Queue" = "Transparent"}
-        // This pass grabs the screen behind the object into a texture.    
-        // We can access the result in the next pass as _RefractionTex
+        // 获取屏幕图像，在后续pass中使用_RefractionTex即可获取
         GrabPass { "_RefractionTex" }
         Pass 
         {
             Tags{"LightMode" = "ForwardBase"}
             CGPROGRAM
             #include "Lighting.cginc"
-            #include "UnityCG.cginc"
+            #include "UnityCG.cginc"                                                
             #pragma multi_compile_fwdbase
             #pragma vertex vert
             #pragma fragment frag
@@ -79,7 +78,7 @@ Shader "ShaderLearn/WaterWave"
                 fixed3 bump = normalize(bump1 + bump2);
                 // 计算切线空间下的偏移，从而计算折射
                 float2 offset = bump.xy * _Distortion * _RefractionTex_TexelSize.xy;
-                i.scrPos.xy = offset * i.scrPos.z + i.scrPos.xy;
+                i.scrPos.xy = offset * i.scrPos.z + i.scrPos.xy;  // 和屏幕坐标的z分量相乘，这是为了模拟深度越大、折射程度越大的效果
                 fixed3 refrCol = tex2D(_RefractionTex, i.scrPos.xy / i.scrPos.w).rgb;
                 // 在世界空间下cube采样计算反射
                 bump = normalize(half3(dot(i.TtoW0.xyz, bump), dot(i.TtoW1.xyz, bump), dot(i.TtoW2.xyz, bump)));
@@ -94,5 +93,5 @@ Shader "ShaderLearn/WaterWave"
             ENDCG        
         }
     }
-    FallBack "Diffuse"
+    FallBack Off
 }
