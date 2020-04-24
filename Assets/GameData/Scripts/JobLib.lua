@@ -2,7 +2,7 @@
 --[[
 任务树
 介绍：
-  按一定时序执行异步任务。将Function按照一定方式组合执行，当策划需求更改时，可以方便快速地拆分组合。(如有需求可以支持可视化节点编辑。)
+  按一定时序执行异步任务。将Function按照一定方式组合执行，当策划需求更改时，可以方便快速地拆分组合。可以根据配置自动组合生成（底部有demo）。(如有需求可以支持可视化节点编辑。)
 
 与行为树和决策树的区别：
   行为树和决策树更偏向于AI的思考决策，倾向于顺时决策，靠Tick驱动。任务树偏向于行为，倾向于执行一系列时序逻辑，不靠Tick驱动，而是某个cell的成功succellCall或失败failCall时驱动，并且可以实时获取当前执行进度。
@@ -27,7 +27,9 @@ ParalSelectorJob:
   并行选择复合类。同时执行所有子节点，等待第一个执行成功的子节点。当第一个子节点执行成功时paralSelector完成且成功。如果子节点全部执行失败，则paralSelector执行失败。
    常用使用场景：同时执行所有子任务，当所有子任务都执行完毕时，此任务完毕。
 
-demo: 将文件底部的注释放开，可单独运行此文件。
+demo:
+   将文件底部的注释放开，可单独运行此文件。
+   底部有几个demo。
 --]]
 
 -- 为了可以单独执行此lua文件搞个local class
@@ -66,6 +68,7 @@ end
 local Job = class("Job")
 
 function Job:ctor(context)  -- runProcess可空
+    self.__identifier = "Job"
     self.m_SuccessCall = nil
     self.m_ErrorCall = nil
     self.m_ProgressChangeCall = nil
@@ -533,11 +536,6 @@ function Lib.AddSelectorChild(parent)
     return child
 end
 
--- 获取一个生产者消费者对象
-function Lib.PCSeq()
-    return PCSeq.New()
-end
-
 -- 直接用funcDictbuild出一个组合job
 local _buildFunc
 local _createJobBuyType
@@ -557,10 +555,14 @@ _buildFunc = function(curData, root)
     if dataType == "function" then
         root:AddAction(curData)
     elseif dataType == "table" then
-        local curJob = _createJobBuyType(curData.type)
-        root:AddChild(curJob)
-        for _,v in ipairs(curData) do
-            _buildFunc(v, curJob)
+        if curData.__identifier == "Job" then
+            root:AddChild(curData)
+        else
+            local curJob = _createJobBuyType(curData.type)
+            root:AddChild(curJob)
+            for _,v in ipairs(curData) do
+                _buildFunc(v, curJob)
+            end
         end
     end
 end
