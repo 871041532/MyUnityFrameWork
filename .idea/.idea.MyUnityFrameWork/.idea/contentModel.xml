@@ -345,6 +345,10 @@
             <e p="MotionBlur.shader" t="Include" />
             <e p="PostEffectsBase.cs" t="Include" />
           </e>
+          <e p="Surface" t="Include">
+            <e p="SurfaceBumped.shader" t="Include" />
+            <e p="SurfaceExpand.shader" t="Include" />
+          </e>
           <e p="Transparency" t="Include">
             <e p="AlphaBlend.shader" t="Include" />
             <e p="AlphaBlendBothSided.shader" t="Include" />
