@@ -60,8 +60,6 @@ public static class ExampleGenConfig
                 typeof(ResourceManager),
                 typeof(Window),
                 typeof(MenuPanel),
-                typeof(PositionGameObjectPool),
-                typeof(ActiveGameObjectPool),
                 typeof(CoreCompositePool),
                 typeof(CoreGameObjectPool),
                 typeof(ResourceCache),

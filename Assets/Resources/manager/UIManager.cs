@@ -14,7 +14,7 @@ public class UIManager : IManager
     private RectTransform m_WinRoot;
 
     // UICamera
-    private Camera m_UICamera;
+//    private Camera m_UICamera;
 
     // EventSystem
     private EventSystem m_EventSystem;
@@ -38,7 +38,7 @@ public class UIManager : IManager
     {
         m_UIRoot = GameMgr.gameObject.transform.Find("UIRoot") as RectTransform;
         m_WinRoot = m_UIRoot.Find("WinRoot") as RectTransform;
-        m_UICamera = m_UIRoot.Find("UICamera").GetComponent<Camera>();
+//        m_UICamera = m_UIRoot.Find("UICamera").GetComponent<Camera>();
         m_EventSystem = GameMgr.gameObject.transform.Find("EventSystem").GetComponent<EventSystem>();
         var canvasScaler = m_UIRoot.GetComponent<CanvasScaler>();
         m_ReferenceResolution = canvasScaler.referenceResolution;

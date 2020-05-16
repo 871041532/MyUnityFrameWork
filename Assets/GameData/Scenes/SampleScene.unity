@@ -420,16 +420,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 252114509}
     m_Modifications:
-    - target: {fileID: 6645303325703791736, guid: 8932ba8a43e3c6b49b28f0d21e3b948c,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6645303325703791737, guid: 8932ba8a43e3c6b49b28f0d21e3b948c,
-        type: 3}
-      propertyPath: m_MatchWidthOrHeight
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6645303325703791739, guid: 8932ba8a43e3c6b49b28f0d21e3b948c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -540,11 +530,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIRoot
       objectReference: {fileID: 0}
-    - target: {fileID: 6645303325703791740, guid: 8932ba8a43e3c6b49b28f0d21e3b948c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7069033689736315975, guid: 8932ba8a43e3c6b49b28f0d21e3b948c, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8932ba8a43e3c6b49b28f0d21e3b948c, type: 3}
