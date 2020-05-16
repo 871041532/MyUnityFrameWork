@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
+
 
 public class RenderCubemapWizard : ScriptableWizard {
 	
@@ -31,3 +33,4 @@ public class RenderCubemapWizard : ScriptableWizard {
 			"Render cubemap", "Render!");
 	}
 }
+#endif

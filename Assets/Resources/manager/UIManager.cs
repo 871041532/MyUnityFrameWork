@@ -168,7 +168,7 @@ public class UIManager : IManager
     public void DestroyWindow(Window win)
     {
         win.Hide();
-        m_Pool.Recycle(win.PrefabPath, win.m_GameObject);
+        m_Pool.Recycle(win.m_GameObject);
         m_Pool.DestroyOne(win.PrefabPath, true);
         win.DestroyCallByUIMgr();
         m_WinDic.Remove(win.Name);

@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/GameData/Scenes/scene2.unity
     guid: f2d278cde7d94ec42b8a3fd92b2766fd
-  - enabled: 1
+  - enabled: 0
     path: Assets/GameData/Scenes/animation/01normal.unity
     guid: e26e96e2a3dfd1f43838aa3e4f37d84c
   m_configObjects: {}

@@ -115,7 +115,7 @@ public class ResourceManager : IManager
     /// <param name="obj"></param>
     public void RecycleGameObject(string path, GameObject obj)
     {
-        m_CompositePool.Recycle(path, obj);
+        m_CompositePool.Recycle(obj);
     }
 
     /// <summary>
@@ -565,7 +565,7 @@ public class PositionGameObjectPool: ActiveGameObjectPool
     static Vector3 m_SpawnPosition = new Vector3(0, 0, 0);
     static Vector3 m_RecyclePosition = new Vector3(0, 1000, 0);
 
-    public PositionGameObjectPool(GameObject originalObject, Transform owner = null, string poolName = null):base(originalObject, owner, poolName) { }
+//    public PositionGameObjectPool(GameObject originalObject, Transform owner = null, string poolName = null):base(originalObject, owner, poolName) { }
 
     public PositionGameObjectPool(AssetItem originalAssetItem, Transform owner = null, string poolName = null) : base(originalAssetItem, owner, poolName) { }
 
@@ -596,10 +596,10 @@ public class ActiveGameObjectPool: CoreGameObjectPool
     protected Transform m_Owner;
     protected Transform m_Root;
 
-    public ActiveGameObjectPool(GameObject originalObject, Transform owner = null, string poolName = null) : base(originalObject)
-    {
-        Init(owner, poolName);
-    }
+//    public ActiveGameObjectPool(GameObject originalObject, Transform owner = null, string poolName = null) : base(originalObject)
+//    {
+//        Init(owner, poolName);
+//    }
 
     public ActiveGameObjectPool(AssetItem originalAssetItem, Transform owner = null, string poolName = null) :base(originalAssetItem)
     {
@@ -657,6 +657,10 @@ public class ActiveGameObjectPool: CoreGameObjectPool
     }
 }
 
+//public static class CoreCompositePoolFactory
+//{
+//    public CoreCompositePool
+//}
 
 /// <summary>
 /// 聚合Pool
@@ -667,6 +671,7 @@ public class CoreCompositePool
     private DoubleLinkedList<LoadGameObjectFunc> m_LambdaCache = new DoubleLinkedList<LoadGameObjectFunc>();
     private Dictionary<string, CoreGameObjectPool> m_Pools = new Dictionary<string, CoreGameObjectPool>();
     private List<string> m_TempList = new List<string>();
+    private string m_Name;
 
     public GameObject Spawn(string path, Transform parent = null)
     {
@@ -698,9 +703,19 @@ public class CoreCompositePool
         }
     }
 
-    public void Recycle(string path, GameObject obj)
+    public void Recycle(GameObject obj)
     {
-        m_Pools[path].Recycle(obj);
+        foreach (var item in m_Pools)
+        {
+            CoreGameObjectPool pool = item.Value;
+            if (pool.IsSpawnedObj(obj))
+            {
+                pool.Recycle(obj);
+                return;
+            }
+        }
+        UnityEngine.Debug.LogError("试图回收不在CoreCompositePool池中的GameObject、或重复回收！");
+//        m_Pools[path].Recycle(obj);
     }
 
     public void DestroyOne(string path, bool OnlyUnUsed = false)
@@ -741,6 +756,8 @@ public class CoreCompositePool
     {
         string m_AssetPath;
         Action<GameObject> m_Callback;
+        private GameObject m_Parent;
+        private string m_Name;
         CoreCompositePool m_Owner;
         public Action<AssetItem> m_LoadCall;
         public LoadGameObjectFunc()
@@ -763,16 +780,20 @@ public class CoreCompositePool
                 m_Callback?.Invoke(t);
                 m_Callback = null;
                 m_AssetPath = null;
+                m_Parent = null;
+                m_Name = null;
                 m_Owner.m_LambdaCache.AddLast(this);
                 m_Owner = null;
             };
         }
 
-        public void Init(CoreCompositePool owner, string assetPath, Action<GameObject> callback)
+        public void Init(CoreCompositePool owner, string assetPath, Action<GameObject> callback, GameObject parent=null, string name = null)
         {
             m_Owner = owner;
             m_AssetPath = assetPath;
             m_Callback = callback;
+            m_Parent = parent;
+            m_Name = name;
         }
     }
 }
@@ -791,13 +812,13 @@ public class CoreGameObjectPool
     protected DoubleLinkedList<GameObject> m_CacheObjects = new DoubleLinkedList<GameObject>();
     protected Dictionary<int, GameObject> m_SpawnedObjects = new Dictionary<int, GameObject>();
 
-    public CoreGameObjectPool(GameObject originalObject, Transform ObjParent = null)
-    {
-        m_OriginalObject = originalObject;
-        m_ObjectParent = ObjParent;
-    }
+//    public CoreGameObjectPool(GameObject originalObject, Transform ObjParent = null)
+//    {
+//        m_OriginalObject = originalObject;
+//        m_ObjectParent = ObjParent;
+//    }
 
-    public CoreGameObjectPool(AssetItem assetItem, Transform ObjParent = null)
+    public CoreGameObjectPool(AssetItem assetItem, Transform ObjParent = null, string poolName = null)
     {
         m_AssetItem = assetItem;
         m_ObjectParent = ObjParent;
@@ -843,6 +864,12 @@ public class CoreGameObjectPool
     }
 
     protected virtual void OnSpawn(GameObject obj) { }
+
+    public bool IsSpawnedObj(GameObject obj)
+    {
+        int hashCode = obj.GetHashCode();
+        return m_SpawnedObjects.ContainsKey(hashCode);
+    }
 
     public void Recycle(GameObject obj)
     {

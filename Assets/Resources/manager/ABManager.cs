@@ -42,7 +42,12 @@ public class ABManager:IManager
         PostHotFix();
     }
 
-    public void PostHotFix()
+     public override void OnPatchedFailed()
+     {
+         PostHotFix();
+     }
+
+     public void PostHotFix()
     {
         if (ABUtility.LoadMode != LoadModeEnum.DeviceFullAotAB)
         {

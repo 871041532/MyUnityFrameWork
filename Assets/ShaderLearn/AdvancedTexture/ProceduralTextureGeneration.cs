@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -185,3 +186,4 @@ public class SetPropertyDrawer : PropertyDrawer
         return GetParentObjectOfProperty(string.Join(".", fields, 1, fields.Length - 1), obj);
     }
 }
+#endif

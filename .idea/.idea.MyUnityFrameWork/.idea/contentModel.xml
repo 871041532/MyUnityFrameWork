@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="\2173ec0e" t="IncludeRecursive" />
     <e p="\app" t="IncludeRecursive" />
-    <e p="\b958f31a" t="IncludeRecursive" />
-    <e p="C:\Users\PC\.Rider2018.2\config\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\PC\.Rider2018.2\config\plugins\intellij-emmylua\lib\intellij-emmylua-1.3.2.142-IDEA182.jar!\std\Lua53" t="IncludeRecursive" />
-    <e p="C:\Users\PC\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\PC\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_MyUnityFrameWork.-419085935.00" t="ExcludeRecursive" />
-    <e p="C:\Users\PC\Documents\GitHub\MyUnityFrameWork" t="IncludeRecursive">
+    <e p="C:\Users\qqqqq\.Rider2018.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\qqqqq\.Rider2018.2\system\resharper-host\local\Transient\ReSharperHost\v182\SolutionCaches\_MyUnityFrameWork.1299669079.00" t="ExcludeRecursive" />
+    <e p="D:\GithubProjects\MyUnityFrameWork" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -210,8 +208,8 @@
                 <e p="Avodiance.cs" t="Include" />
               </e>
               <e p="Waypoint" t="Include">
-                <e p="WayPointPath.cs" t="Include" />
-                <e p="WayPointPathing.cs" t="Include" />
+                <e p="WaypointPath.cs" t="Include" />
+                <e p="WaypointPathing.cs" t="Include" />
               </e>
             </e>
             <e p="Sensor" t="Include">
@@ -578,8 +576,8 @@
       <e p="Library" t="ExcludeRecursive" />
       <e p="MyUnityFrameWork.sln" t="IncludeFlat" />
       <e p="obj" t="ExcludeRecursive" />
-      <e p="Packages" t="ExcludeRecursive" />
-      <e p="Temp" t="ExcludeRecursive">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="temp" t="ExcludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
       </e>
     </e>

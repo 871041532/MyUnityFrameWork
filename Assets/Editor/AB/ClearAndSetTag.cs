@@ -91,14 +91,18 @@ public static class ClearAndSetTag
                 string path = AssetDatabase.GUIDToAssetPath(allPrefabGUIDs[i]);
                 EditorUtility.DisplayProgressBar("Find Prefab", "Prefab:" + path,
                     (i + 1) * 1.0f / allPrefabGUIDs.Length);
+                // 防止路径被文件夹或其他prefab设置过
                 if (!HavenInFilterABPaths(path))
                 {
+                    // prefab路径加入有效路径m_DynamicLoadPaths
                     m_DynamicLoadPaths.Add(path);
                     string[] allDepends = AssetDatabase.GetDependencies(path);
+                    // 将此prefab的所有依赖项筛选没被使用的
                     List<string> allDependPath = new List<string>();
                     for (int j = 0; j < allDepends.Length; j++)
                     {
                         string dependItem = allDepends[j];
+                        // 此处剔除掉已经设置过的、已在文件夹中的或者cs文件
                         if (!HavenInFilterABPaths(dependItem) && !dependItem.EndsWith(".cs"))
                         {
                             m_FilterABPaths.Add(dependItem);
@@ -214,6 +218,7 @@ public static class ClearAndSetTag
                 string assetPath = inBundleAssetPaths[j];
                 if (!assetPath.EndsWith(".cs") && IsDynamicLoadPath(assetPath))
                 {
+                    // 只有在上面配置中的资源才会进入bundleName
                     res_to_bundle.Add(assetPath, bundleName);
                 }
             }

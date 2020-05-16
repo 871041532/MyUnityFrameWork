@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RIDER_MODULE" version="4">
   <component name="NewModuleRootManager">
+    <content url="file:///2173ec0e" />
     <content url="file:///app" />
-    <content url="file://$APPLICATION_CONFIG_DIR$/extensions" />
-    <content url="file://$APPLICATION_PLUGINS_DIR$/intellij-emmylua/lib/intellij-emmylua-1.3.2.142-IDEA182.jar!/std/Lua53" />
     <content url="file://$USER_HOME$/.Rider2018.2/system/extResources" />
     <content url="file://$MODULE_DIR$/../.." />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         m_CallMgr.RegisterEvent(EventEnum.OnPatched, OnPatched);
+        m_CallMgr.RegisterEvent(EventEnum.OnPatchedFail, OnPatchedFailed);
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {
@@ -63,6 +64,15 @@ public class GameManager : MonoBehaviour
         while (iter.MoveNext())
         {
             iter.Current.OnPatched();
+        }
+    }
+    
+    private void OnPatchedFailed(params object[] args)
+    {
+        var iter = m_Mgrs.GetEnumerator();
+        while (iter.MoveNext())
+        {
+            iter.Current.OnPatchedFailed();
         }
     }
     
@@ -98,6 +108,12 @@ public class IManager
     public virtual void Awake() { }
     public virtual void Start() { }
     public virtual void OnPatched() {}  // Start之后Patch之前
+
+    public virtual void OnPatchedFailed()
+    {
+        
+    }
+
     public virtual void Update() { }
 
     public virtual void OnDestroy() { }

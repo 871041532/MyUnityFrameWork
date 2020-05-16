@@ -60,6 +60,13 @@ public static class ExampleGenConfig
                 typeof(ResourceManager),
                 typeof(Window),
                 typeof(MenuPanel),
+                typeof(PositionGameObjectPool),
+                typeof(ActiveGameObjectPool),
+                typeof(CoreCompositePool),
+                typeof(CoreGameObjectPool),
+                typeof(ResourceCache),
+                typeof(ResourcePrioritizedCache),
+                typeof(ResourcePrioritizedCache.LoadPriority),
             };
 
     //C#静态调用Lua的配置（包括事件的原型），仅可以配delegate，interface

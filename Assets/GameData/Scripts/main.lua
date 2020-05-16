@@ -12,6 +12,7 @@ Window = CS.Window
 SportToolPanel = CS.SportToolPanel
 class = require("ClassUtil.lua")
 Class = class
+
 local logIdx = 1
 log = function(str)
 	str = string.format("log%d：%s", logIdx, str)
@@ -22,4 +23,4 @@ end
 
 local menu = require("wins/menu.lua").new()
 menu:show()
-require("JobTest.lua")
+--require("JobTest.lua")

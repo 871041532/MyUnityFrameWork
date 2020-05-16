@@ -15,7 +15,7 @@ MonoBehaviour:
   m_AllFileDirAB:
   - ABName: configs
     Path: Assets/GameData/Configs
-  - ABName: audio/one
+  - ABName: audio
     Path: Assets/GameData/Audio
   - ABName: ui_common
     Path: Assets/GameData/UI/res/common
