@@ -49,6 +49,11 @@ public class LuaManager : IManager
         //");
     }
 
+    public override void OnPatchedFailed()
+    {
+        m_luaEnv.DoString("require 'main.lua'");
+    }
+
     // 自定义lua加载
     byte[] MyLuaLoader(ref string filepath)
     {

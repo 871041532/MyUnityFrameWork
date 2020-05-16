@@ -13,9 +13,9 @@ using System.Threading;
 
 public static class Console
  {
-     static bool is_OpenDebug = false;
+     static bool is_OpenDebug = true;
      static string m_UDPServerURL = "127.0.0.1";
-     static string m_UDPServerPort = "10000";
+     static string m_UDPServerPort = "8633";
  
      static UdpClient m_UDPClient = null;
      static IPEndPoint m_EndPoint = null;

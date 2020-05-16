@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
         m_CutSceneMgr = new CutSceneManager();
         m_UIMgr = new UIManager();
         m_Mgrs.Add(m_CallMgr);
-        m_Mgrs.Add(m_LuaMgr);
         m_Mgrs.Add(m_ABMgr);
+        m_Mgrs.Add(m_LuaMgr);
         m_Mgrs.Add(m_CutSceneMgr);
         m_Mgrs.Add(m_ResMgr);
         m_Mgrs.Add(m_ObjectMgr);

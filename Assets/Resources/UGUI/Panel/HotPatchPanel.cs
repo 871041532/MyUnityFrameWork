@@ -51,7 +51,9 @@ public class HotPatchPanel : Window
         Action func = () =>
         {
             Debug.Log("点击了确认按钮！");
-            GameManager.Instance.m_UIMgr.SwitchSingleWindow("menu");
+            win.Destroy();
+           this.Destroy();
+//            GameManager.Instance.m_UIMgr.SwitchSingleWindow("menu");
         };
         win.Show(info, func);
     }
