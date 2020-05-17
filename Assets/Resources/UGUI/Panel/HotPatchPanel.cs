@@ -53,6 +53,7 @@ public class HotPatchPanel : Window
             Debug.Log("点击了确认按钮！");
             win.Destroy();
            this.Destroy();
+            GameManager.Instance.m_LuaMgr.PatchFaildeNextStep();
 //            GameManager.Instance.m_UIMgr.SwitchSingleWindow("menu");
         };
         win.Show(info, func);

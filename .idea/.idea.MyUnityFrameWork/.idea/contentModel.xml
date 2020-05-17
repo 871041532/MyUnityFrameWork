@@ -422,6 +422,8 @@
             <e p="AssetItemWrap.cs" t="Include" />
             <e p="CallManagerWrap.cs" t="Include" />
             <e p="CfgsBridge.cs" t="Include" />
+            <e p="CoreCompositePoolWrap.cs" t="Include" />
+            <e p="CoreGameObjectPoolWrap.cs" t="Include" />
             <e p="CutSceneManagerWrap.cs" t="Include" />
             <e p="DelegatesGensBridge.cs" t="Include" />
             <e p="EnumWrap.cs" t="Include" />
@@ -433,7 +435,9 @@
             <e p="MenuPanelWrap.cs" t="Include" />
             <e p="ObjectManagerWrap.cs" t="Include" />
             <e p="PackUnpack.cs" t="Include" />
+            <e p="ResourceCacheWrap.cs" t="Include" />
             <e p="ResourceManagerWrap.cs" t="Include" />
+            <e p="ResourcePrioritizedCacheWrap.cs" t="Include" />
             <e p="SystemCollectionsGenericList1SystemInt32Wrap.cs" t="Include" />
             <e p="SystemCollectionsIEnumeratorBridge.cs" t="Include" />
             <e p="SystemObjectWrap.cs" t="Include" />

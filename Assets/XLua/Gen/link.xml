@@ -15,6 +15,11 @@
 		<type fullname="ResourceManager" preserve="all"/>
 		<type fullname="Window" preserve="all"/>
 		<type fullname="MenuPanel" preserve="all"/>
+		<type fullname="CoreCompositePool" preserve="all"/>
+		<type fullname="CoreGameObjectPool" preserve="all"/>
+		<type fullname="ResourceCache" preserve="all"/>
+		<type fullname="ResourcePrioritizedCache" preserve="all"/>
+		<type fullname="ResourcePrioritizedCache+LoadPriority" preserve="all"/>
 		<type fullname="Tutorial.BaseClass" preserve="all"/>
 		<type fullname="Tutorial.TestEnum" preserve="all"/>
 		<type fullname="Tutorial.DerivedClass" preserve="all"/>

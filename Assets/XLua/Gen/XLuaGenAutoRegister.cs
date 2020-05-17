@@ -142,6 +142,21 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(MenuPanel), MenuPanelWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(CoreCompositePool), CoreCompositePoolWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(CoreGameObjectPool), CoreGameObjectPoolWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ResourceCache), ResourceCacheWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ResourcePrioritizedCache), ResourcePrioritizedCacheWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ResourcePrioritizedCache.LoadPriority), ResourcePrioritizedCacheLoadPriorityWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(Tutorial.BaseClass), TutorialBaseClassWrap.__Register);
         
         
@@ -159,6 +174,10 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(XLuaTest.LuaBehaviour), XLuaTestLuaBehaviourWrap.__Register);
         
+        }
+        
+        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
+        {
         
             translator.DelayWrapLoader(typeof(XLuaTest.Pedding), XLuaTestPeddingWrap.__Register);
         
@@ -174,10 +193,6 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.WaitForSeconds), UnityEngineWaitForSecondsWrap.__Register);
         
-        }
-        
-        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
-        {
         
             translator.DelayWrapLoader(typeof(XLuaTest.BaseTest), XLuaTestBaseTestWrap.__Register);
         

@@ -1,26 +1,14 @@
-itemCfgs = require("Datas/Item.lua")
-Datas = {
-    itemCfgs = itemCfgs
-}
 
-GameMgr = CS.GameManager.Instance
-ABMgr = GameMgr.m_ABMgr
-UIMgr = GameMgr.m_UIMgr
-CallMgr = GameMgr.m_CallMgr
-GameObject = CS.UnityEngine.GameObject
-Window = CS.Window
-SportToolPanel = CS.SportToolPanel
-class = require("ClassUtil.lua")
-Class = class
+require("FrameWork/Init/LuaGlobal.lua")
 
-local logIdx = 1
-log = function(str)
-	str = string.format("log%d：%s", logIdx, str)
-	CS.UnityEngine.Debug.Log(str)
-	logIdx = logIdx + 1
-end
+local uiManager =  require("FrameWork/UI/UIManager.lua").New()
+
+local mainBehavior = require("FrameWork/Init/MainBehavior.lua")
+mainBehavior.New({uiManager})
+
+local win = uiManager:CreateWindow("Assets/GameData/UI/prefabs/MenuPanel.prefab", Enum.LayerType.UI)
+--win:CreateUIByPath("Assets/GameData/UI/prefabs/LoadingPanel.prefab")
+--win:Close()
 
 
-local menu = require("wins/menu.lua").new()
-menu:show()
-----require("JobTest.lua")
+

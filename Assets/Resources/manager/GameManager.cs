@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
+        m_CallMgr.TriggerEvent(EventEnum.OnUpdate);
         var iter = m_Mgrs.GetEnumerator();
         while (iter.MoveNext())
         {

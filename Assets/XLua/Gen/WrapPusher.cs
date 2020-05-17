@@ -37,6 +37,7 @@ namespace XLua
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.Pedding>(translator.PushXLuaTestPedding, translator.Get, translator.UpdateXLuaTestPedding);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.MyStruct>(translator.PushXLuaTestMyStruct, translator.Get, translator.UpdateXLuaTestMyStruct);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.PushAsTableStruct>(translator.PushXLuaTestPushAsTableStruct, translator.Get, translator.UpdateXLuaTestPushAsTableStruct);
+				translator.RegisterPushAndGetAndUpdate<ResourcePrioritizedCache.LoadPriority>(translator.PushResourcePrioritizedCacheLoadPriority, translator.Get, translator.UpdateResourcePrioritizedCacheLoadPriority);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.TestEnum>(translator.PushTutorialTestEnum, translator.Get, translator.UpdateTutorialTestEnum);
 				translator.RegisterPushAndGetAndUpdate<XLuaTest.MyEnum>(translator.PushXLuaTestMyEnum, translator.Get, translator.UpdateXLuaTestMyEnum);
 				translator.RegisterPushAndGetAndUpdate<Tutorial.DerivedClass.TestEnumInner>(translator.PushTutorialDerivedClassTestEnumInner, translator.Get, translator.UpdateTutorialDerivedClassTestEnumInner);
@@ -771,6 +772,90 @@ namespace XLua
             }
         }
         
+        int ResourcePrioritizedCacheLoadPriority_TypeID = -1;
+		int ResourcePrioritizedCacheLoadPriority_EnumRef = -1;
+        
+        public void PushResourcePrioritizedCacheLoadPriority(RealStatePtr L, ResourcePrioritizedCache.LoadPriority val)
+        {
+            if (ResourcePrioritizedCacheLoadPriority_TypeID == -1)
+            {
+			    bool is_first;
+                ResourcePrioritizedCacheLoadPriority_TypeID = getTypeId(L, typeof(ResourcePrioritizedCache.LoadPriority), out is_first);
+				
+				if (ResourcePrioritizedCacheLoadPriority_EnumRef == -1)
+				{
+				    Utils.LoadCSTable(L, typeof(ResourcePrioritizedCache.LoadPriority));
+				    ResourcePrioritizedCacheLoadPriority_EnumRef = LuaAPI.luaL_ref(L, LuaIndexes.LUA_REGISTRYINDEX);
+				}
+				
+            }
+			
+			if (LuaAPI.xlua_tryget_cachedud(L, (int)val, ResourcePrioritizedCacheLoadPriority_EnumRef) == 1)
+            {
+			    return;
+			}
+			
+            IntPtr buff = LuaAPI.xlua_pushstruct(L, 4, ResourcePrioritizedCacheLoadPriority_TypeID);
+            if (!CopyByValue.Pack(buff, 0, (int)val))
+            {
+                throw new Exception("pack fail fail for ResourcePrioritizedCache.LoadPriority ,value="+val);
+            }
+			
+			LuaAPI.lua_getref(L, ResourcePrioritizedCacheLoadPriority_EnumRef);
+			LuaAPI.lua_pushvalue(L, -2);
+			LuaAPI.xlua_rawseti(L, -2, (int)val);
+			LuaAPI.lua_pop(L, 1);
+			
+        }
+		
+        public void Get(RealStatePtr L, int index, out ResourcePrioritizedCache.LoadPriority val)
+        {
+		    LuaTypes type = LuaAPI.lua_type(L, index);
+            if (type == LuaTypes.LUA_TUSERDATA )
+            {
+			    if (LuaAPI.xlua_gettypeid(L, index) != ResourcePrioritizedCacheLoadPriority_TypeID)
+				{
+				    throw new Exception("invalid userdata for ResourcePrioritizedCache.LoadPriority");
+				}
+				
+                IntPtr buff = LuaAPI.lua_touserdata(L, index);
+				int e;
+                if (!CopyByValue.UnPack(buff, 0, out e))
+                {
+                    throw new Exception("unpack fail for ResourcePrioritizedCache.LoadPriority");
+                }
+				val = (ResourcePrioritizedCache.LoadPriority)e;
+                
+            }
+            else
+            {
+                val = (ResourcePrioritizedCache.LoadPriority)objectCasters.GetCaster(typeof(ResourcePrioritizedCache.LoadPriority))(L, index, null);
+            }
+        }
+		
+        public void UpdateResourcePrioritizedCacheLoadPriority(RealStatePtr L, int index, ResourcePrioritizedCache.LoadPriority val)
+        {
+		    
+            if (LuaAPI.lua_type(L, index) == LuaTypes.LUA_TUSERDATA)
+            {
+			    if (LuaAPI.xlua_gettypeid(L, index) != ResourcePrioritizedCacheLoadPriority_TypeID)
+				{
+				    throw new Exception("invalid userdata for ResourcePrioritizedCache.LoadPriority");
+				}
+				
+                IntPtr buff = LuaAPI.lua_touserdata(L, index);
+                if (!CopyByValue.Pack(buff, 0,  (int)val))
+                {
+                    throw new Exception("pack fail for ResourcePrioritizedCache.LoadPriority ,value="+val);
+                }
+            }
+			
+            else
+            {
+                throw new Exception("try to update a data with lua type:" + LuaAPI.lua_type(L, index));
+            }
+        }
+        
         int TutorialTestEnum_TypeID = -1;
 		int TutorialTestEnum_EnumRef = -1;
         
@@ -1100,6 +1185,12 @@ namespace XLua
 				translator.PushXLuaTestPushAsTableStruct(L, array[index]);
 				return true;
 			}
+			else if (type == typeof(ResourcePrioritizedCache.LoadPriority[]))
+			{
+			    ResourcePrioritizedCache.LoadPriority[] array = obj as ResourcePrioritizedCache.LoadPriority[];
+				translator.PushResourcePrioritizedCacheLoadPriority(L, array[index]);
+				return true;
+			}
 			else if (type == typeof(Tutorial.TestEnum[]))
 			{
 			    Tutorial.TestEnum[] array = obj as Tutorial.TestEnum[];
@@ -1187,6 +1278,12 @@ namespace XLua
 			else if (type == typeof(XLuaTest.PushAsTableStruct[]))
 			{
 			    XLuaTest.PushAsTableStruct[] array = obj as XLuaTest.PushAsTableStruct[];
+				translator.Get(L, obj_idx, out array[array_idx]);
+				return true;
+			}
+			else if (type == typeof(ResourcePrioritizedCache.LoadPriority[]))
+			{
+			    ResourcePrioritizedCache.LoadPriority[] array = obj as ResourcePrioritizedCache.LoadPriority[];
 				translator.Get(L, obj_idx, out array[array_idx]);
 				return true;
 			}

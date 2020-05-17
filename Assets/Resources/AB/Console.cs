@@ -13,7 +13,7 @@ using System.Threading;
 
 public static class Console
  {
-     static bool is_OpenDebug = true;
+     static bool is_OpenDebug = false;
      static string m_UDPServerURL = "127.0.0.1";
      static string m_UDPServerPort = "8633";
  

@@ -21,10 +21,11 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(LuaManager);
-			Utils.BeginObjectRegister(type, L, translator, 0, 3, 2, 2);
+			Utils.BeginObjectRegister(type, L, translator, 0, 4, 2, 2);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Awake", _m_Awake);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OnPatched", _m_OnPatched);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "PatchFaildeNextStep", _m_PatchFaildeNextStep);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OnDestroy", _m_OnDestroy);
 			
 			
@@ -120,6 +121,33 @@ namespace XLua.CSObjectWrap
                 {
                     
                     gen_to_be_invoked.OnPatched(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_PatchFaildeNextStep(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                LuaManager gen_to_be_invoked = (LuaManager)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.PatchFaildeNextStep(  );
                     
                     
                     

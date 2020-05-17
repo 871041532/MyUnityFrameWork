@@ -21,6 +21,7 @@ public static class EventEnum
     public static string OnPatched = "OnPatched";
     public static string OnPatchedFail = "OnPatchedFail";
     public static string OnPatchInfoUpdate = "OnPatchInfoUpdate";
+    public static string OnUpdate = "OnUpdate";
     public static string OnDestroy = "OnDestroy";
 }
 

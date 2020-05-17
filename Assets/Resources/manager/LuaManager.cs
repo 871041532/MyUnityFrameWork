@@ -49,7 +49,7 @@ public class LuaManager : IManager
         //");
     }
 
-    public override void OnPatchedFailed()
+    public void PatchFaildeNextStep()
     {
         m_luaEnv.DoString("require 'main.lua'");
     }

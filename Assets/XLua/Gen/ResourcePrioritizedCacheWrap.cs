@@ -15,26 +15,27 @@ using System.Collections.Generic;
 namespace XLua.CSObjectWrap
 {
     using Utils = XLua.Utils;
-    public class ABManagerWrap 
+    public class ResourcePrioritizedCacheWrap 
     {
         public static void __Register(RealStatePtr L)
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			System.Type type = typeof(ABManager);
-			Utils.BeginObjectRegister(type, L, translator, 0, 8, 0, 0);
+			System.Type type = typeof(ResourcePrioritizedCache);
+			Utils.BeginObjectRegister(type, L, translator, 0, 7, 1, 1);
 			
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "PreHotFix", _m_PreHotFix);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OnPatched", _m_OnPatched);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OnPatchedFailed", _m_OnPatchedFailed);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "PostHotFix", _m_PostHotFix);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetABReferencedCount", _m_GetABReferencedCount);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UnloadAsset", _m_UnloadAsset);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAsset", _m_LoadAsset);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAssetAsync", _m_LoadAssetAsync);
-			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "PreLoadAsync", _m_PreLoadAsync);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAsync", _m_LoadAsync);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Preload", _m_Preload);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Load", _m_Load);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Recycle", _m_Recycle);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Clear", _m_Clear);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Destroy", _m_Destroy);
 			
 			
-			
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "m_MaxLoadingCount", _g_get_m_MaxLoadingCount);
+            
+			Utils.RegisterFunc(L, Utils.SETTER_IDX, "m_MaxLoadingCount", _s_set_m_MaxLoadingCount);
+            
 			
 			Utils.EndObjectRegister(type, L, translator, null, null,
 			    null, null, null);
@@ -58,7 +59,7 @@ namespace XLua.CSObjectWrap
 				if(LuaAPI.lua_gettop(L) == 1)
 				{
 					
-					ABManager gen_ret = new ABManager();
+					ResourcePrioritizedCache gen_ret = new ResourcePrioritizedCache();
 					translator.Push(L, gen_ret);
                     
 					return 1;
@@ -68,7 +69,7 @@ namespace XLua.CSObjectWrap
 			catch(System.Exception gen_e) {
 				return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
 			}
-            return LuaAPI.luaL_error(L, "invalid arguments to ABManager constructor!");
+            return LuaAPI.luaL_error(L, "invalid arguments to ResourcePrioritizedCache constructor!");
             
         }
         
@@ -80,20 +81,22 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_PreHotFix(RealStatePtr L)
+        static int _m_PreLoadAsync(RealStatePtr L)
         {
 		    try {
             
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
             
             
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
             
             
                 
                 {
+                    System.Collections.Generic.List<string> _assetPaths = (System.Collections.Generic.List<string>)translator.GetObject(L, 2, typeof(System.Collections.Generic.List<string>));
+                    System.Action _okCall = translator.GetDelegate<System.Action>(L, 3);
                     
-                    gen_to_be_invoked.PreHotFix(  );
+                    gen_to_be_invoked.PreLoadAsync( _assetPaths, _okCall );
                     
                     
                     
@@ -107,20 +110,66 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_OnPatched(RealStatePtr L)
+        static int _m_LoadAsync(RealStatePtr L)
         {
 		    try {
             
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
             
             
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
+            
+            
+			    int gen_param_count = LuaAPI.lua_gettop(L);
+            
+                if(gen_param_count == 4&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<System.Action<AssetItem>>(L, 3)&& translator.Assignable<ResourcePrioritizedCache.LoadPriority>(L, 4)) 
+                {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
+                    System.Action<AssetItem> _call = translator.GetDelegate<System.Action<AssetItem>>(L, 3);
+                    ResourcePrioritizedCache.LoadPriority _priority;translator.Get(L, 4, out _priority);
+                    
+                    gen_to_be_invoked.LoadAsync( _assetPath, _call, _priority );
+                    
+                    
+                    
+                    return 0;
+                }
+                if(gen_param_count == 3&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<System.Action<AssetItem>>(L, 3)) 
+                {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
+                    System.Action<AssetItem> _call = translator.GetDelegate<System.Action<AssetItem>>(L, 3);
+                    
+                    gen_to_be_invoked.LoadAsync( _assetPath, _call );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+            return LuaAPI.luaL_error(L, "invalid arguments to ResourcePrioritizedCache.LoadAsync!");
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Preload(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
             
             
                 
                 {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
                     
-                    gen_to_be_invoked.OnPatched(  );
+                    gen_to_be_invoked.Preload( _assetPath );
                     
                     
                     
@@ -134,132 +183,21 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_OnPatchedFailed(RealStatePtr L)
+        static int _m_Load(RealStatePtr L)
         {
 		    try {
             
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
             
             
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
             
             
                 
                 {
+                    string _assetPath = LuaAPI.lua_tostring(L, 2);
                     
-                    gen_to_be_invoked.OnPatchedFailed(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_PostHotFix(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    
-                    gen_to_be_invoked.PostHotFix(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_GetABReferencedCount(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    string _abName = LuaAPI.lua_tostring(L, 2);
-                    
-                        int gen_ret = gen_to_be_invoked.GetABReferencedCount( _abName );
-                        LuaAPI.xlua_pushinteger(L, gen_ret);
-                    
-                    
-                    
-                    return 1;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_UnloadAsset(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    AssetItem _item = (AssetItem)translator.GetObject(L, 2, typeof(AssetItem));
-                    
-                    gen_to_be_invoked.UnloadAsset( _item );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_LoadAsset(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    string _fullPath = LuaAPI.lua_tostring(L, 2);
-                    
-                        AssetItem gen_ret = gen_to_be_invoked.LoadAsset( _fullPath );
+                        AssetItem gen_ret = gen_to_be_invoked.Load( _assetPath );
                         translator.Push(L, gen_ret);
                     
                     
@@ -274,36 +212,21 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_LoadAssetAsync(RealStatePtr L)
+        static int _m_Recycle(RealStatePtr L)
         {
 		    try {
             
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
             
             
-                ABManager gen_to_be_invoked = (ABManager)translator.FastGetCSObj(L, 1);
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
             
             
-			    int gen_param_count = LuaAPI.lua_gettop(L);
-            
-                if(gen_param_count == 4&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<System.Action<AssetItem>>(L, 3)&& translator.Assignable<System.Action>(L, 4)) 
+                
                 {
-                    string _fullPath = LuaAPI.lua_tostring(L, 2);
-                    System.Action<AssetItem> _successCall = translator.GetDelegate<System.Action<AssetItem>>(L, 3);
-                    System.Action _failCall = translator.GetDelegate<System.Action>(L, 4);
+                    AssetItem _item = (AssetItem)translator.GetObject(L, 2, typeof(AssetItem));
                     
-                    gen_to_be_invoked.LoadAssetAsync( _fullPath, _successCall, _failCall );
-                    
-                    
-                    
-                    return 0;
-                }
-                if(gen_param_count == 3&& (LuaAPI.lua_isnil(L, 2) || LuaAPI.lua_type(L, 2) == LuaTypes.LUA_TSTRING)&& translator.Assignable<System.Action<AssetItem>>(L, 3)) 
-                {
-                    string _fullPath = LuaAPI.lua_tostring(L, 2);
-                    System.Action<AssetItem> _successCall = translator.GetDelegate<System.Action<AssetItem>>(L, 3);
-                    
-                    gen_to_be_invoked.LoadAssetAsync( _fullPath, _successCall );
+                    gen_to_be_invoked.Recycle( _item );
                     
                     
                     
@@ -314,14 +237,95 @@ namespace XLua.CSObjectWrap
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
             
-            return LuaAPI.luaL_error(L, "invalid arguments to ABManager.LoadAssetAsync!");
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Clear(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.Clear(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Destroy(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.Destroy(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
             
         }
         
         
         
         
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_m_MaxLoadingCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.m_MaxLoadingCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
+        
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_m_MaxLoadingCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ResourcePrioritizedCache gen_to_be_invoked = (ResourcePrioritizedCache)translator.FastGetCSObj(L, 1);
+                gen_to_be_invoked.m_MaxLoadingCount = LuaAPI.xlua_tointeger(L, 2);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
         
 		
 		

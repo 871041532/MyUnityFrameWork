@@ -50,6 +50,7 @@ public static class ExampleGenConfig
                 typeof(Action<string>),
                 typeof(UnityEngine.Debug),
                 typeof(ABManager),
+                typeof(AssetItem),
                 typeof(GameManager),
                 typeof(UIManager),
                 typeof(CallManager),
