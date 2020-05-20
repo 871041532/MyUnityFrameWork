@@ -5,11 +5,22 @@
 ---
 local Enum = {}
 
-Enum.LayerType = {
+local LayerType = {
     Buttom = 1,
     UI = 2,
     Tip = 3,
     Mask = 4,
 }
 
+local ReturnKeyOperation = {
+    Back = 1,
+}
+
+local WindowCfg = {
+    demo = {name = "demo", layerType = LayerType.UI, returnKeyOperation = ReturnKeyOperation.Back, uiCfg = nil},
+}
+
+Enum.LayerType = LayerType
+Enum.ReturnKeyOperation = ReturnKeyOperation
+Enum.WindowCfg = WindowCfg
 return Enum

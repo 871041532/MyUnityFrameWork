@@ -30,6 +30,10 @@ function UIManager:Init()
     }
 end
 
+function UIManager:GetLayerByType(type)
+    return self.enumToLayer[type]
+end
+
 function UIManager:Destroy()
     self.uiRoot = nil
     self.buttomLayer = nil
