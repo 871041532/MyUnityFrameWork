@@ -521,6 +521,7 @@ public class ResourceCache
         }
         m_CacheItems.Clear();
         m_CacheReference.Clear();
+        m_IsDestroyed = true;
         //Resources.UnloadUnusedAssets();
     }
 
