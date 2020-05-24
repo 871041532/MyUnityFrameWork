@@ -43,11 +43,22 @@ function UIManager:Destroy()
     self.enumToLayer = nil
 end
 
--- widgetClass可以为空，为空
-function UIManager:CreateWindow(path, LayerType, winCls)
-    local cls = winCls or Window
-    local window = cls.New(path, self.enumToLayer[LayerType])
-    return window
+function UIManager:CreateWindow(winCfg)
+    local windowClass = require(winCfg.luaPath)
+    local destroyFunc = function(w)
+        GameObject.Destroy(w.gameObject)
+    end
+    local win = windowClass.New(self.uiRoot, destroyFunc)
+    local cache = win:GetChache()
+    local layerType = win:GetLayerType()
+    local layerTrans = self:GetLayerByType(layerType)
+    local assetItem = cache:Load(winCfg.prefabPath)
+    local trans = GameObject.Instantiate(assetItem.GameObject, layerTrans).transform
+    win.transform = trans
+    win.gameObject = trans.gameObject
+    win.gameObject.name = win:GetName()
+    win:Init()
+    return win
 end
 
 return UIManager

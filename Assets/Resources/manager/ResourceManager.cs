@@ -392,6 +392,9 @@ public class ResourceCache
     private Action m_PreloadOkCall;
     private int m_PreloadTargetNum;
     private int m_PreloadCurNum;
+    private bool m_IsDestroyed = false;
+
+    public bool IsDestroyed => m_IsDestroyed;
 
     public ResourceCache()
     {
@@ -533,7 +536,14 @@ public class ResourceCache
             m_Owner = ache;
             m_AssetPath = ssetPath;
             m_LoadedCall = k_call;
-            m_Process = (AssetItem assetItem) => {
+            m_Process = (AssetItem assetItem) =>
+            {
+                if (m_Owner.IsDestroyed)
+                {
+                    // 如果缓存已经销毁过，直接舍弃
+                    GameManager.Instance.m_ABMgr.UnloadAsset(assetItem);
+                    return;
+                }
                 AssetItem innerItem = null;
                 m_Owner.m_CacheItems.TryGetValue(m_AssetPath, out innerItem);
                 if (innerItem is null)

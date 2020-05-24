@@ -4,9 +4,9 @@
 --- DateTime: 2020/5/17 13:22
 ---
 
-local Widget = class("Widget")
+local View = class("View")
 
-function Widget:ctor(trans)
+function View:ctor(trans)
     self.transform = trans
     self.gameObject = trans.gameObject
     self.__children = nil
@@ -15,11 +15,11 @@ function Widget:ctor(trans)
 end
 
 --------------- 下面是public方法 -------------------------
-function Widget:Init()
+function View:Init()
     self:_OnInit()
 end
 
-function Widget:Destroy()
+function View:Destroy()
     if self.__children then
         for _, v in ipairs(self.__children) do
             v:Destroy()
@@ -33,23 +33,26 @@ function Widget:Destroy()
     self:_OnDestroy()
 end
 
-function Widget:CreateUI(trans, widgetClass)
-    local cls = widgetClass or Widget
+function View:CreateUI(trans, ViewClass)
+    local cls = ViewClass or View
     local children = self:GetChildren()
     local child = cls.New(trans)
     child:Init()
+    if child:GetCacheType() == Enum.ViewCacheType.Root then
+        child:SetExternalCache(self:GetChache())
+    end
     table.insert(children, child)
     return child
 end
 
-function Widget:CreateUIByPath(path, widgetClass)
-    local cls = widgetClass or Widget
+function View:CreateUIByPath(path, ViewClass)
+    local cls = ViewClass or View
     local assetItem = self:GetChache():Load(path)
     local trans = GameObject.Instantiate(assetItem.GameObject, self.transform).transform
     return self:CreateUI(trans, cls)
 end
 
-function Widget:GetChache()
+function View:GetChache()
     if self.__externalCache then
         return self.__externalCache
     end
@@ -59,24 +62,32 @@ function Widget:GetChache()
     return self.__assetCache
 end
 
-function Widget:SetExternalCache(cache)
+function View:SetExternalCache(cache)
     self.__externalCache = cache
 end
 
-function Widget:GetChildren()
+function View:GetChildren()
     if not self.__children then
         self.__children = {}
     end
     return self.__children
 end
 
+function View:GetCacheType()
+    return self:_OnGetCacheType()
+end
+
 -------- 下面是虚方法 --------------------------
-function Widget:_OnInit()
+function View:_OnInit()
 
 end
 
-function Widget:_OnDestroy()
+function View:_OnDestroy()
 
 end
 
-return Widget
+function View:_OnGetCacheType()
+    return Enum.ViewCacheType.Root
+end
+
+return View

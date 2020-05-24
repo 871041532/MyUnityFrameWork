@@ -16,11 +16,17 @@ local ReturnKeyOperation = {
     Back = 1,
 }
 
-local WindowCfg = {
-    demo = {name = "demo", layerType = LayerType.UI, returnKeyOperation = ReturnKeyOperation.Back, uiCfg = nil},
+local WinCfg = {
+    demo = {luaPath = "FrameWork/UI/Window.lua", prefabPath = "Assets/GameData/UI/prefabs/SportToolPanel.prefab"},
+}
+
+local ViewCacheType = {
+    Root = 1,
+    This = 2,
 }
 
 Enum.LayerType = LayerType
 Enum.ReturnKeyOperation = ReturnKeyOperation
-Enum.WindowCfg = WindowCfg
+Enum.WinCfg = WinCfg
+Enum.ViewCacheType = ViewCacheType
 return Enum
