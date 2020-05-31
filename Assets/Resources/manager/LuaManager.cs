@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using XLua;
 using System.IO;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 [CSharpCallLua]
 public interface ItemCfg
@@ -47,6 +48,21 @@ public class LuaManager : IManager
         //    win:Show()
         //    UIMgr:UnRegisterWindow('window1');
         //");
+//        var s = SceneManager.GetActiveScene();
+//        SceneManager.sceneLoaded += (scene, mode) =>
+//        {
+//            Debug.Log("XXXXXXXXXXXXX加载场景XXXXXXXXXXXXX"+ scene.name);
+//            SceneManager.MergeScenes(scene, s);
+//        };
+//        SceneManager.sceneUnloaded += (scene) =>
+//        {
+//            Debug.Log("XXXXXXXXXXXXXX卸载场景XXXXXXXXXXX"+ scene.name);
+//        };
+//        var cache = new ResourceCache();
+//        var item = cache.Load("Assets/GameData/ABScenes/scene1.unity");
+//       
+//        SceneManager.LoadScene("scene1", LoadSceneMode.Additive);
+//        
     }
 
     public void PatchFaildeNextStep()

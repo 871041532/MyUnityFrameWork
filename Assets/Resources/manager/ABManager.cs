@@ -121,7 +121,7 @@ public class ABManager:IManager
     /// <param name="item"></param>
     public void UnloadAsset(AssetItem item)
     {
-        Assert.IsFalse(item is null || item.Object is null, "不可对AssetItem重复unload！");
+        Assert.IsFalse(item is null || item.IsDestroyed, "不可对AssetItem重复unload！");
         if (ABUtility.LoadMode != LoadModeEnum.EditorOrigin)
         {
             UnloadAssetBundle(item.ABName);
@@ -158,7 +158,11 @@ public class ABManager:IManager
             case LoadModeEnum.StandaloneAB:
             case LoadModeEnum.DeviceFullAotAB:
                 ABItem ABItem = LoadAssetBundleByAssetName(fullPath);
-                UnityEngine.Object obj2 = ABItem.AssetBundle.LoadAsset(fullPath);
+                UnityEngine.Object obj2 = null;
+                if (!fullPath.EndsWith(".unity"))
+                {
+                    obj2 = ABItem.AssetBundle.LoadAsset(fullPath);
+                }   
                 AssetItem assetItem2 = GameMgr.m_ObjectMgr.Spawn<AssetItem>();
                 assetItem2.Init(ABItem.ABName, fullPath, obj2);
                 return assetItem2;
@@ -397,11 +401,18 @@ public class AssetItem
 {
     private string m_ABName;
     private string m_AssetName;
+    private bool isScene = false;
+    public bool IsScene => isScene;
+    private bool isDestroyed = false;
+    public bool IsDestroyed => isDestroyed;
     private UnityEngine.Object m_Object;
 
     public void Init(string abName, string assertName, UnityEngine.Object obj)
     {
-        Assert.IsTrue(obj != null, "AssetItem的Init函数obj传了null！");
+        isDestroyed = false;
+        isScene = assertName.EndsWith(".unity");
+        bool right = (isScene && obj is null) || (!isScene && obj != null);
+        Assert.IsTrue(right, "AssetItem的Init函数obj传了null！");
         m_ABName = abName;
         m_AssetName = assertName;
         m_Object = obj;
@@ -409,6 +420,7 @@ public class AssetItem
 
     public void Unload()
     {
+        isDestroyed = true;
         m_AssetName = "";
         m_ABName = "";
         m_Object = null;
