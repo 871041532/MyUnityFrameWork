@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.U2D;
 using System.Runtime.Serialization.Json;
 using UnityEngine.Assertions;
 using XLua;
+using System.Xml.Serialization;
+using Object = UnityEngine.Object;
 
 public class ABManager:IManager
  {
@@ -72,12 +75,10 @@ public class ABManager:IManager
                 m_assetToABNames.Clear();
                 m_ABToDependence.Clear();
             }
+
             ABItem ab = LoadAssetBundle("configs");
-            TextAsset asset = ab.AssetBundle.LoadAsset<TextAsset>("AssetBundleConfig.json");
-            MemoryStream stream = new MemoryStream(asset.bytes);
-            DataContractJsonSerializer jsonSerializer2 = new DataContractJsonSerializer(typeof(AssetBundleConfig));
-            AssetBundleConfig cfg2 = jsonSerializer2.ReadObject(stream) as AssetBundleConfig;
-            stream.Close();
+            AssetBundleConfig cfg2 = ab.AssetBundle.LoadAsset<AssetBundleConfig>("AssetBundleConfig.asset");
+
             foreach (var item in cfg2.ResDict)
             {
                 m_assetToABNames.Add(item.Path, item.ABName);
@@ -411,7 +412,7 @@ public class AssetItem
     {
         isDestroyed = false;
         isScene = assertName.EndsWith(".unity");
-        bool right = (isScene && obj is null) || (!isScene && obj != null);
+        bool right = (isScene) || (!isScene && obj != null);
         Assert.IsTrue(right, "AssetItem的Init函数obj传了null！");
         m_ABName = abName;
         m_AssetName = assertName;

@@ -18,7 +18,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        // 配置
+        GeneralConfig.Init();
+        // 控制台
         Console.Init();
+        // AB工具
+        ABUtility.Init();
         Instance = this;
         Assert.raiseExceptions = true;
         DontDestroyOnLoad(gameObject);

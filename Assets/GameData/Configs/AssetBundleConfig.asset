@@ -1,0 +1,240 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da284acadeb8a44abfef674d620acfe, type: 3}
+  m_Name: AssetBundleConfig
+  m_EditorClassIdentifier: 
+  a: aaa
+  ResDict:
+  - Path: Assets/GameData/ABScenes/scene1.unity
+    ABName: abscenes
+    AssetName: scene1.unity
+  - Path: Assets/GameData/ABScenes/scene2.unity
+    ABName: abscenes
+    AssetName: scene2.unity
+  - Path: Assets/GameData/Audio/zhong.wav
+    ABName: audio
+    AssetName: zhong.wav
+  - Path: Assets/GameData/Prefabs/c1.prefab
+    ABName: c1
+    AssetName: c1.prefab
+  - Path: Assets/GameData/Prefabs/c2.prefab
+    ABName: c2
+    AssetName: c2.prefab
+  - Path: Assets/GameData/Configs/AssetBundleConfig.asset
+    ABName: configs
+    AssetName: AssetBundleConfig.asset
+  - Path: Assets/GameData/UI/prefabs/ConfirmSure.prefab
+    ABName: confirmsure
+    AssetName: ConfirmSure.prefab
+  - Path: Assets/GameData/Prefabs/environment/Env.prefab
+    ABName: env
+    AssetName: Env.prefab
+  - Path: Assets/GameData/UI/prefabs/HotPatchPanel.prefab
+    ABName: hotpatchpanel
+    AssetName: HotPatchPanel.prefab
+  - Path: Assets/GameData/UI/prefabs/LoadingPanel.prefab
+    ABName: loadingpanel
+    AssetName: LoadingPanel.prefab
+  - Path: Assets/GameData/Scripts/FrameWork/Init/Enum.lua.txt
+    ABName: lua
+    AssetName: Enum.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Init/LuaGlobal.lua.txt
+    ABName: lua
+    AssetName: LuaGlobal.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Init/MainBehavior.lua.txt
+    ABName: lua
+    AssetName: MainBehavior.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/UI/UIBriefInject.lua.txt
+    ABName: lua
+    AssetName: UIBriefInject.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/UI/UIManager.lua.txt
+    ABName: lua
+    AssetName: UIManager.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/UI/View.lua.txt
+    ABName: lua
+    AssetName: View.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/UI/Window.lua.txt
+    ABName: lua
+    AssetName: Window.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Utility/ClassUtil.lua.txt
+    ABName: lua
+    AssetName: ClassUtil.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Utility/FunctionUtil.lua.txt
+    ABName: lua
+    AssetName: FunctionUtil.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Utility/JobLib.lua.txt
+    ABName: lua
+    AssetName: JobLib.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Utility/JobTest.lua.txt
+    ABName: lua
+    AssetName: JobTest.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Utility/LogUtil.lua.txt
+    ABName: lua
+    AssetName: LogUtil.lua.txt
+  - Path: Assets/GameData/Scripts/FrameWork/Utility/StateMechineLib.lua.txt
+    ABName: lua
+    AssetName: StateMechineLib.lua.txt
+  - Path: Assets/GameData/Scripts/main.lua.txt
+    ABName: lua
+    AssetName: main.lua.txt
+  - Path: Assets/GameData/Scripts/wins/menu.lua.txt
+    ABName: lua
+    AssetName: menu.lua.txt
+  - Path: Assets/GameData/UI/prefabs/MenuPanel.prefab
+    ABName: menupanel
+    AssetName: MenuPanel.prefab
+  - Path: Assets/GameData/UI/prefabs/SportToolPanel.prefab
+    ABName: sporttoolpanel
+    AssetName: SportToolPanel.prefab
+  - Path: Assets/GameData/UI/res/common/background/button_long.png
+    ABName: ui_common
+    AssetName: button_long.png
+  - Path: Assets/GameData/UI/res/common/background/button_square.png
+    ABName: ui_common
+    AssetName: button_square.png
+  - Path: Assets/GameData/UI/res/common/background/f.PNG
+    ABName: ui_common
+    AssetName: f.PNG
+  - Path: Assets/GameData/UI/res/common/background/panel.png
+    ABName: ui_common
+    AssetName: panel.png
+  - Path: Assets/GameData/UI/res/common/common.spriteatlas
+    ABName: ui_common
+    AssetName: common.spriteatlas
+  - Path: Assets/GameData/UI/res/common/common_sd.spriteatlas
+    ABName: ui_common
+    AssetName: common_sd.spriteatlas
+  - Path: Assets/GameData/UI/res/common/items/apple.png
+    ABName: ui_common
+    AssetName: apple.png
+  - Path: Assets/GameData/UI/res/common/items/armor.png
+    ABName: ui_common
+    AssetName: armor.png
+  - Path: Assets/GameData/UI/res/common/items/axe.png
+    ABName: ui_common
+    AssetName: axe.png
+  - Path: Assets/GameData/UI/res/common/items/b_t_01.png
+    ABName: ui_common
+    AssetName: b_t_01.png
+  - Path: Assets/GameData/UI/res/common/items/bag.png
+    ABName: ui_common
+    AssetName: bag.png
+  - Path: Assets/GameData/UI/res/common/items/belts.png
+    ABName: ui_common
+    AssetName: belts.png
+  - Path: Assets/GameData/UI/res/common/items/book.PNG
+    ABName: ui_common
+    AssetName: book.PNG
+  - Path: Assets/GameData/UI/res/common/items/boots.png
+    ABName: ui_common
+    AssetName: boots.png
+  - Path: Assets/GameData/UI/res/common/items/bracers.PNG
+    ABName: ui_common
+    AssetName: bracers.PNG
+  - Path: Assets/GameData/UI/res/common/items/cloaks.PNG
+    ABName: ui_common
+    AssetName: cloaks.PNG
+  - Path: Assets/GameData/UI/res/common/items/coins.png
+    ABName: ui_common
+    AssetName: coins.png
+  - Path: Assets/GameData/UI/res/common/items/gem.png
+    ABName: ui_common
+    AssetName: gem.png
+  - Path: Assets/GameData/UI/res/common/items/gloves.PNG
+    ABName: ui_common
+    AssetName: gloves.PNG
+  - Path: Assets/GameData/UI/res/common/items/heavy_steel_gloves.png
+    ABName: ui_common
+    AssetName: heavy_steel_gloves.png
+  - Path: Assets/GameData/UI/res/common/items/helmets.png
+    ABName: ui_common
+    AssetName: helmets.png
+  - Path: Assets/GameData/UI/res/common/items/hp.png
+    ABName: ui_common
+    AssetName: hp.png
+  - Path: Assets/GameData/UI/res/common/items/ingots.png
+    ABName: ui_common
+    AssetName: ingots.png
+  - Path: Assets/GameData/UI/res/common/items/iron_gloves.png
+    ABName: ui_common
+    AssetName: iron_gloves.png
+  - Path: Assets/GameData/UI/res/common/items/Meat.png
+    ABName: ui_common
+    AssetName: Meat.png
+  - Path: Assets/GameData/UI/res/common/items/mp.png
+    ABName: ui_common
+    AssetName: mp.png
+  - Path: Assets/GameData/UI/res/common/items/necklace.PNG
+    ABName: ui_common
+    AssetName: necklace.PNG
+  - Path: Assets/GameData/UI/res/common/items/pants.png
+    ABName: ui_common
+    AssetName: pants.png
+  - Path: Assets/GameData/UI/res/common/items/rings.PNG
+    ABName: ui_common
+    AssetName: rings.PNG
+  - Path: Assets/GameData/UI/res/common/items/scroll.png
+    ABName: ui_common
+    AssetName: scroll.png
+  - Path: Assets/GameData/UI/res/common/items/shield.png
+    ABName: ui_common
+    AssetName: shield.png
+  - Path: Assets/GameData/UI/res/common/items/shoulders.png
+    ABName: ui_common
+    AssetName: shoulders.png
+  - Path: Assets/GameData/UI/res/common/items/steel_gloves.png
+    ABName: ui_common
+    AssetName: steel_gloves.png
+  - Path: Assets/GameData/UI/res/common/items/steel_sword.png
+    ABName: ui_common
+    AssetName: steel_sword.png
+  - Path: Assets/GameData/UI/res/common/items/sword.png
+    ABName: ui_common
+    AssetName: sword.png
+  - Path: Assets/GameData/UI/res/common/items/the_great_stick.png
+    ABName: ui_common
+    AssetName: the_great_stick.png
+  - Path: Assets/GameData/UI/prefabs/UIRoot.prefab
+    ABName: uiroot
+    AssetName: UIRoot.prefab
+  ABDict:
+  - Name: abscenes
+    DependenceNames: []
+  - Name: audio
+    DependenceNames: []
+  - Name: c1
+    DependenceNames:
+    - ui_common
+  - Name: c2
+    DependenceNames:
+    - c1
+  - Name: configs
+    DependenceNames: []
+  - Name: confirmsure
+    DependenceNames: []
+  - Name: env
+    DependenceNames: []
+  - Name: hotpatchpanel
+    DependenceNames: []
+  - Name: loadingpanel
+    DependenceNames: []
+  - Name: lua
+    DependenceNames: []
+  - Name: menupanel
+    DependenceNames:
+    - ui_common
+  - Name: sporttoolpanel
+    DependenceNames: []
+  - Name: ui_common
+    DependenceNames: []
+  - Name: uiroot
+    DependenceNames: []

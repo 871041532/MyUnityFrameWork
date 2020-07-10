@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a6679c32bc476680cd0d82ab2c0d86, type: 3}
+  m_Name: StaticConfig
+  m_EditorClassIdentifier: 
+  m_AllFileDirAB:
+  - k: LoadModeEnum
+    v: 3
+  - k: ConsoleOpen
+    v: false
+  - k: ConsoleURL
+    v: 192.168.12.178
+  - k: ConsolePort
+    v: 10086
+  - k: ABServerURL
+    v: 127.0.0.1

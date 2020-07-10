@@ -13,7 +13,7 @@ using System.Threading;
 
 public static class Console
  {
-     static bool is_OpenDebug = false;
+     static bool is_OpenDebug = true;
      static string m_UDPServerURL = "127.0.0.1";
      static string m_UDPServerPort = "8633";
  
@@ -26,10 +26,35 @@ public static class Console
      #region 外部接口
      public static void Init()
      {
+         // 覆写开关
+         string dynamicOpen = GeneralConfig.StaticCfg["ConsoleOpen"];
+         if (dynamicOpen != null)
+         {
+             if (dynamicOpen == "true")
+             {
+                 is_OpenDebug = true;
+             }
+             else
+             {
+                 is_OpenDebug = false;
+             }
+         }
          if (!is_OpenDebug)
          {
              return;
          }
+         // 覆写控制台地址与端口
+         if (GeneralConfig.StaticCfg["ConsoleURL"] != null)
+         {
+             m_UDPServerURL = GeneralConfig.StaticCfg["ConsoleURL"];
+         }
+
+         if (GeneralConfig.StaticCfg["ConsolePort"] != null)
+         {
+             m_UDPServerPort = GeneralConfig.StaticCfg["ConsolePort"];
+         }
+         var a = GeneralConfig.StaticCfg["xx"];
+
          if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
          {
              RunPythonConsole();

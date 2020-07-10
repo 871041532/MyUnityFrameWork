@@ -5,6 +5,8 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Reflection;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Serialization;
 
 public static class ClearAndSetTag
 {
@@ -228,7 +230,7 @@ public static class ClearAndSetTag
         }
 
         // 构造每个Res的依赖信息
-        AssetBundleConfig configs = new AssetBundleConfig();
+        AssetBundleConfig configs = ScriptableObject.CreateInstance<AssetBundleConfig>();
         configs.ResDict = new List<ResData>();
         foreach (var item in res_to_bundle)
         {
@@ -261,13 +263,10 @@ public static class ClearAndSetTag
         }
         
         // 依赖信息写入json
-        string filePath = Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.json");
+        string filePath = Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.asset");
         File.Delete(filePath);
-        FileStream fileStream =
-            new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-        DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(AssetBundleConfig));
-        jsonSerializer.WriteObject(fileStream, configs);
-        fileStream.Close();
+        AssetDatabase.CreateAsset(configs, filePath);
+        
         AssetDatabase.Refresh();
     }
 

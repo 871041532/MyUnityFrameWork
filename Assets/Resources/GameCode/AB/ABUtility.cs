@@ -18,7 +18,7 @@ public enum LoadModeEnum
 public static class ABUtility
 {
     // AB包加载模式
-    public static LoadModeEnum LoadMode = LoadModeEnum.EditorAB;
+    public static LoadModeEnum LoadMode = LoadModeEnum.EditorOrigin;
     // 当前平台名字
     public static string PlatformName = "Windows";
     public static string ServerURL = "10.231.10.87";
@@ -37,8 +37,29 @@ public static class ABUtility
     public static string PersistentDataURLPath;
     //  streamingAssetsPath File 访问目录
     public static string StreamingAssetsURLPath;
-    
-    
+
+    public static void Init()
+    {
+        if (GeneralConfig.StaticCfg["ABServerURL"] != null)
+        {
+            ServerURL = GeneralConfig.StaticCfg["ABServerURL"];
+        }
+
+        string abLoadMode = GeneralConfig.StaticCfg["LoadModeEnum"];
+        if (abLoadMode != null)
+        {
+            switch (abLoadMode)
+            {
+               case "1": LoadMode = LoadModeEnum.EditorOrigin; break;
+               case "2": LoadMode = LoadModeEnum.EditorAB; break;
+               case "3": LoadMode = LoadModeEnum.StandaloneAB; break;
+               case "4": LoadMode = LoadModeEnum.DeviceFullAotAB; break;
+               default: break;
+            }
+        }
+      
+    }
+
     // 设备上初始化各种信息，资源都ok后的处理
     public static void ResetInfoInDevice(RuntimePlatform platform, bool isDeviceFullAotABPreInRun = false)
     {
