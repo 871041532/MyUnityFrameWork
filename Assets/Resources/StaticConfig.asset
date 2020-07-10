@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AllFileDirAB:
   - k: LoadModeEnum
-    v: 3
+    v: 1
   - k: ConsoleOpen
     v: false
   - k: ConsoleURL

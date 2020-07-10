@@ -37,6 +37,13 @@ public static class ClearAndSetTag
     // 有效路径
     public static List<string> m_DynamicLoadPaths = new List<string>();
 
+//    [MenuItem("Assets/Build/Clear And Set Tag Test", priority = 1)]
+//    static public void ClearAndSetTagTest()
+//    {
+//        string[] allDepends = AssetDatabase.GetDependencies("Assets/GameData/Prefabs/xxxx.prefab");
+//        var a = 1;
+//    }
+
     [MenuItem("Assets/Build/Clear And Set Tag", priority = 1)]
     static public void ClearAndSetTagMenuItemFunc()
     {
@@ -137,13 +144,13 @@ public static class ClearAndSetTag
             EditorUtility.ClearProgressBar();
         }
 
-        // s6.设置AB签名
+        // s6.设置AB签名m_AllFileDir、m_AllPrefabDir（上面的步骤生成了abName -> path、prefabName(abName)->allDependPaths的映射）
         SetALLABName();
-        // s7.删除无用的AB包
+        // s7.删除无用的AB包（利用UnityAssetBundle相关API，基本不依赖上面流程）
         DeleteUselessAssetBundle();
-        // s8.生成资源配置
+        // s8.生成资源配置（利用UnityAssetBundle的API，基本不依赖上面流程）
         GenerateResourceCfg();
-        // s9.检测是否有循环引用
+        // s9.检测是否有循环引用（深度优先检测，不依赖上面流程）
         CheckRecycleReference.CheckRecycleAB();
         Debug.Log("Clear and Set All Bundle Tag done.");
     }
@@ -325,7 +332,7 @@ public static class ClearAndSetTag
     }
 
     /// <summary>
-    /// 是否需要动态加载
+    /// 是否需要动态加载， 目的是只记录想要关心的资源
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
