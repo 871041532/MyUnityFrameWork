@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: b23e824f86cac62449e170e8cd25a7d1
 ModelImporter:
-  serializedVersion: 19301
+  serializedVersion: 26
   internalIDToNameTable:
   - first:
       1: 100000
@@ -2543,7 +2543,7 @@ ModelImporter:
       name: lambert1
     second: {fileID: 2100000, guid: 9920a6c048ffdc24ba0de727f7daf1d5, type: 2}
   materials:
-    materialImportMode: 1
+    importMaterials: 1
     materialName: 1
     materialSearch: 1
     materialLocation: 0
@@ -2610,7 +2610,6 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
-    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
@@ -2637,6 +2636,7 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
+  copyAvatar: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -2654,10 +2654,8 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 1
   humanoidOversampling: 1
-  avatarSetup: 0
   additionalBone: 1
   userData: 
   assetBundleName: env

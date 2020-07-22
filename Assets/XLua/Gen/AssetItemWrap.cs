@@ -21,13 +21,15 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(AssetItem);
-			Utils.BeginObjectRegister(type, L, translator, 0, 2, 9, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 11, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Init", _m_Init);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Unload", _m_Unload);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "ABReferencedCount", _g_get_ABReferencedCount);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "IsScene", _g_get_IsScene);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "IsDestroyed", _g_get_IsDestroyed);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ABReferencedCount", _g_get_ABReferencedCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ABName", _g_get_ABName);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "AssetName", _g_get_AssetName);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Object", _g_get_Object);
@@ -141,6 +143,34 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_IsScene(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                AssetItem gen_to_be_invoked = (AssetItem)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.IsScene);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_IsDestroyed(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                AssetItem gen_to_be_invoked = (AssetItem)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.IsDestroyed);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_ABReferencedCount(RealStatePtr L)

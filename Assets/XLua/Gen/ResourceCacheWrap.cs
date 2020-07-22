@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ResourceCache);
-			Utils.BeginObjectRegister(type, L, translator, 0, 8, 0, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 8, 1, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "PreLoadAsync", _m_PreLoadAsync);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LoadAsync", _m_LoadAsync);
@@ -33,7 +33,8 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Destroy", _m_Destroy);
 			
 			
-			
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "IsDestroyed", _g_get_IsDestroyed);
+            
 			
 			
 			Utils.EndObjectRegister(type, L, translator, null, null,
@@ -307,6 +308,20 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_IsDestroyed(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ResourceCache gen_to_be_invoked = (ResourceCache)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.IsDestroyed);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         
         

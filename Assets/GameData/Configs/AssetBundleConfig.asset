@@ -14,12 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   a: aaa
   ResDict:
-  - Path: Assets/GameData/ABScenes/scene1.unity
-    ABName: abscenes
-    AssetName: scene1.unity
-  - Path: Assets/GameData/ABScenes/scene2.unity
-    ABName: abscenes
-    AssetName: scene2.unity
   - Path: Assets/GameData/Audio/zhong.wav
     ABName: audio
     AssetName: zhong.wav
