@@ -2,7 +2,7 @@
 
 <linker>
 
-	<assembly fullname="Assembly-CSharp">
+	<assembly fullname="Game">
 	    <type fullname="AssetItem" preserve="all"/>
 		<type fullname="ABManager" preserve="all"/>
 		<type fullname="GameManager" preserve="all"/>
