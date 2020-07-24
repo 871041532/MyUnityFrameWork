@@ -3,6 +3,7 @@ Assembly-CSharp-Editor.csproj
 MyUnityFrameWork.sln
 !*.exe
 !*.dll
+*.csproj
 /Library
 /Assets/AssetBundles
 /Assets/AssetBundles.meta
@@ -29,3 +30,4 @@ Assets/GameData/Scripts/.idea/workspace.xml
 .idea/.idea.MyUnityFrameWork/.idea/contentModel.xml
 .idea/.idea.MyUnityFrameWork/.idea/contentModel.xml
 .idea/.idea.MyUnityFrameWork/.idea/workspace.xml
+.idea
