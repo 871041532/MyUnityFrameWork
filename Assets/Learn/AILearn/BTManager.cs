@@ -1,54 +1,56 @@
-﻿#pragma once
-#include <unordered_map>
-#include "BTNode.hpp"
-#include "iostream"
-#define Export extern "C" _declspec(dllexport)
-using namespace std;
+﻿
 
-unordered_map<uint, BTNode*> BTRootNodes;
-unordered_map<uint, BTNode*> BTNormalNodes;
-uint BTCurrentIndex = 1;
-BTNodeInputParam* GlobalInput = nullptr;
-BTNodeOutputParam* GlobalOutput = nullptr;
+using System;
+using System.Collections.Generic;
 
-Export void TickOne(uint rootId)
+namespace AILearn
 {
-	BTNode* rootNode = BTRootNodes[rootId];
-	BTGlobal::RECURSION_OK = true;
-	if (rootNode ->Evaluate(*GlobalInput) && BTGlobal::RECURSION_OK)
-	{
-		rootNode ->Tick(*GlobalInput, *GlobalOutput);
-	}
-}
-
-Export void TickAll()
+	
+class BTManager
 {
-	for (auto&& it : BTRootNodes)
+	Dictionary<int, BTNode> BTRootNodes;
+	Dictionary<int, BTNode> BTNormalNodes;
+	int BTCurrentIndex = 1;
+
+	void TickOne(int rootId)
 	{
-		BTGlobal::RECURSION_OK = true;
-		if (it.second->Evaluate(*GlobalInput) && BTGlobal::RECURSION_OK)
+		BTNode rootNode = BTRootNodes[rootId];
+		BTGlobal.RECURSION_OK = true;
+		if (rootNode.Evaluate() && BTGlobal.RECURSION_OK)
 		{
-			it.second->Tick(*GlobalInput, *GlobalOutput);
+			rootNode.Tick();
+		}
+	}
+
+ void TickAll()
+{
+	foreach (var it in BTRootNodes)
+	{
+		BTGlobal.RECURSION_OK = true;
+		if (it.Value.Evaluate() && BTGlobal.RECURSION_OK)
+		{
+			it.Value.Tick();
 		}
 	}
 }
-Export uint CreateRootNode()
+	
+ int CreateRootNode()
 {
-	BTNode* root = new BTNodePrioritySelector(nullptr);
+	BTNode root = new BTNodePrioritySelector(null);
 	BTRootNodes[BTCurrentIndex] = root;
 	BTNormalNodes[BTCurrentIndex] = root;
 	return BTCurrentIndex++;
 }
 
-Export void NodeSetPreCondition(uint nodeId, bool(*dynamicjudge)())
+	void NodeSetPreCondition(int nodeId, Func<bool> dynamicjudge)
 {
-	BTNode* node = BTNormalNodes[nodeId];
-	node->SetPreCondition(dynamicjudge);
+	BTNode node = BTNormalNodes[nodeId];
+	node.SetPreCondition(dynamicjudge);
 }
 
-Export uint CreateTeminalNode(uint parentId, int(*dynamicOnExcute)())
+ int CreateTeminalNode(int parentId, Func<int> dynamicOnExcute)
 {
-	BTNode* parent = BTNormalNodes[parentId];
+	BTNode parent = BTNormalNodes[parentId];
 	BTNodeTerminal* node = new BTNodeTerminal(parent);
 	parent->AddChildNode(node);
 	node->SetDynamicOnExecute([dynamicOnExcute](const BTNodeInputParam&input, const BTNodeOutputParam&output) ->StatusBTRunning {
@@ -127,5 +129,10 @@ Export void BTDestoryOne(uint rootId)
 {
 	delete BTRootNodes[rootId];
 	BTRootNodes.erase(rootId);
+}	
 }
+}
+
+
+
 

@@ -1,704 +1,754 @@
-﻿
+﻿using System;
+using UnityEngine;
 
-using System;
-
-static class BTGlobal
+namespace AILearn
 {
-	public const int BT_MaxBTChildNodeNum = 16;
-	public const int BT_InvalidChildNodeIndex = BT_MaxBTChildNodeNum;
-	public static bool RECURSION_OK = true;
+    static class BTGlobal
+    {
+        public const int BT_MaxBTChildNodeNum = 16;
+        public const int BT_InvalidChildNodeIndex = BT_MaxBTChildNodeNum;
+        public static bool RECURSION_OK = true;
+    }
+
+    public enum E_ParallelFinishCondition
+    {
+        Or,
+        And
+    };
+
+    public enum StatusBTRunning
+    {
+        Executing,
+        Finish,
+        ErrorTransition = -1,
+    };
+
+    enum StausNodeTerminal
+    {
+        Ready,
+        Running,
+        Finish,
+    };
+
+    #region condition节点
+
+    class BTPrecondition
+    {
+        public virtual bool ExternalCondition()
+        {
+            return m_dynamicJudge == null || m_dynamicJudge();
+        }
+
+        public void SetDynamicJudge(Func<bool> call)
+        {
+            m_dynamicJudge = call;
+        }
+
+        private Func<bool> m_dynamicJudge = null;
+    };
+
+    class BTPreconditionAnd : BTPrecondition
+    {
+        public BTPreconditionAnd(BTPrecondition lhs, BTPrecondition rhs)
+        {
+            m_lhs = lhs;
+            m_rhs = rhs;
+        }
+
+        ~BTPreconditionAnd()
+        {
+        }
+
+        public override bool ExternalCondition()
+        {
+            return m_lhs.ExternalCondition() && m_rhs.ExternalCondition();
+        }
+
+        private readonly BTPrecondition m_lhs = null;
+        private readonly BTPrecondition m_rhs = null;
+    };
+
+    class BTPreconditionOr : BTPrecondition
+    {
+        public BTPreconditionOr(BTPrecondition lhs, BTPrecondition rhs)
+        {
+            m_lhs = lhs;
+            m_rhs = rhs;
+        }
+
+        public override bool ExternalCondition()
+        {
+            return m_lhs.ExternalCondition() || m_rhs.ExternalCondition();
+        }
+
+        private readonly BTPrecondition m_lhs = null;
+        private readonly BTPrecondition m_rhs = null;
+    };
+
+    class BTPreconditionXor : BTPrecondition
+    {
+        public BTPreconditionXor(BTPrecondition lhs, BTPrecondition rhs)
+
+        {
+            m_lhs = lhs;
+            m_rhs = rhs;
+        }
+
+        public override bool ExternalCondition()
+        {
+            return m_lhs.ExternalCondition() ^ m_rhs.ExternalCondition();
+        }
+
+        private readonly BTPrecondition m_lhs = null;
+        private readonly BTPrecondition m_rhs = null;
+    };
+
+    #endregion
+
+
+    public class BTNode
+    {
+        public BTNode(BTNode parentNode)
+        {
+            m_childNodeList = new BTNode[BTGlobal.BT_MaxBTChildNodeNum];
+            for (int i = 0; i < BTGlobal.BT_MaxBTChildNodeNum; ++i)
+                m_childNodeList[i] = null;
+
+            _SetParentNode(parentNode);
+        }
+
+        public void SetPreCondition(Func<bool> precondition)
+        {
+            m_precondition = precondition;
+        }
+
+        public bool Evaluate()
+        {
+            return (m_precondition == null || m_precondition()) && OnEvaluate();
+        }
+
+        public void Transition()
+        {
+            OnTransition();
+        }
+
+        public StatusBTRunning Tick()
+        {
+            return OnTick();
+        }
+
+        //---------------------------------------------------------------
+        public BTNode AddChildNode(BTNode childNode)
+        {
+            if (m_ChildNodeCount == BTGlobal.BT_MaxBTChildNodeNum)
+            {
+                Debug.LogError($"The number of child BTNodes is up to {BTGlobal.BT_MaxBTChildNodeNum}.");
+                return this;
+            }
+
+            m_childNodeList[m_ChildNodeCount] = childNode;
+            ++m_ChildNodeCount;
+            return this;
+        }
+
+        public BTNode SetDebugName(string debugName)
+        {
+            m_debugName = debugName;
+            return this;
+        }
+
+        public BTNode GetLastActiveNode()
+        {
+            return m_lastActiveNode;
+        }
+
+        public void SetActiveNode(BTNode node)
+        {
+            m_lastActiveNode = m_activeNode;
+            m_activeNode = node;
+            if (m_parentNode != null)
+                m_parentNode.SetActiveNode(node);
+        }
+
+        public string GetDebugName()
+        {
+            return m_debugName;
+        }
+
+        //--------------------------------------------------------------
+        // virtual function
+        //--------------------------------------------------------------
+        protected virtual bool OnEvaluate()
+        {
+            return true;
+        }
+
+        protected virtual void OnTransition()
+        {
+        }
+
+        protected virtual StatusBTRunning OnTick()
+        {
+            return StatusBTRunning.Finish;
+        }
+
+        protected void _SetParentNode(BTNode parentNode)
+        {
+            m_parentNode = parentNode;
+        }
+
+        protected bool _bCheckIndex(int index)
+        {
+            return index >= 0 && index < m_ChildNodeCount;
+        }
+
+        protected BTNode[] m_childNodeList = null;
+        protected int m_ChildNodeCount = 0;
+        protected BTNode m_parentNode = null;
+        protected BTNode m_activeNode = null;
+        protected BTNode m_lastActiveNode = null;
+        protected Func<bool> m_precondition = null;
+        protected string m_debugName = "defaultNodeName";
+    };
+
+    class BTNodePrioritySelector : BTNode
+    {
+        public BTNodePrioritySelector(BTNode parentNode) : base(parentNode)
+        {
+        }
+
+        public virtual bool OnEvaluate()
+        {
+            m_currentSelectIndex = BTGlobal.BT_InvalidChildNodeIndex;
+            for (int i = 0; i < m_ChildNodeCount; ++i)
+            {
+                BTNode child = m_childNodeList[i];
+                if (child.Evaluate())
+                {
+                    m_currentSelectIndex = i;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public virtual void OnTransition()
+        {
+            if (_bCheckIndex(m_currentSelectIndex))
+            {
+                BTNode child = m_childNodeList[m_currentSelectIndex];
+                child.Transition();
+            }
+
+            m_lastSelectIndex = BTGlobal.BT_InvalidChildNodeIndex;
+        }
+
+        public virtual StatusBTRunning OnTick()
+        {
+            StatusBTRunning bIsFinish = StatusBTRunning.Finish;
+            // 从cur_index和last_index中选出可用的，赋值给last_index
+            if (_bCheckIndex(m_currentSelectIndex))
+            {
+                if (m_lastSelectIndex != m_currentSelectIndex) //new select result
+                {
+                    if (_bCheckIndex(m_lastSelectIndex))
+                    {
+                        BTNode child = m_childNodeList[m_lastSelectIndex];
+                        child.Transition(); //we need transition
+                    }
+
+                    m_lastSelectIndex = m_currentSelectIndex;
+                }
+            }
+
+            if (_bCheckIndex(m_lastSelectIndex))
+            {
+                //Running node
+                BTNode child = m_childNodeList[m_lastSelectIndex];
+                bIsFinish = child.Tick();
+                //clear variable if finish
+                if (bIsFinish == StatusBTRunning.Finish)
+                    m_lastSelectIndex = BTGlobal.BT_InvalidChildNodeIndex;
+            }
+
+            return bIsFinish;
+        }
+
+        protected int m_currentSelectIndex = BTGlobal.BT_InvalidChildNodeIndex;
+        protected int m_lastSelectIndex = BTGlobal.BT_InvalidChildNodeIndex;
+    };
+
+// 在Evaluate时如果precondition过了就认为是true
+// 如果子节点Evaluate不过，那么树tick时不执行
+    class BTNodeNoRecursionPrioritySelector : BTNodePrioritySelector
+    {
+        public BTNodeNoRecursionPrioritySelector(BTNode parentNode) : base(parentNode)
+        {
+        }
+
+        public virtual bool OnEvaluate()
+        {
+            bool ret = base.OnEvaluate();
+            if (m_precondition != null)
+            {
+                // 走到这里证明前提条件已经通过，不需要子节点的递归结果参与判断
+                if (!ret)
+                {
+                    // 如果子节点evaluate没过，那么这个树本次tick不执行
+                    BTGlobal.RECURSION_OK = false;
+                }
+
+                ret = true;
+            }
+
+            return ret;
+        }
+    };
+
+    class BTNodeNonePrioritySelector : BTNodePrioritySelector
+    {
+        public BTNodeNonePrioritySelector(BTNode parentNode)
+            : base(parentNode)
+        {
+        }
+
+        public virtual bool OnEvaluate()
+        {
+            if (_bCheckIndex(m_currentSelectIndex))
+            {
+                BTNode child = m_childNodeList[m_currentSelectIndex];
+                if (child.Evaluate())
+                {
+                    return true;
+                }
+            }
+
+            return base.OnEvaluate();
+        }
+    };
+
+    class BTNodeSequence : BTNode
+    {
+        public BTNodeSequence(BTNode parentNode)
+            : base(parentNode)
+        {
+        }
+
+        public virtual bool OnEvaluate()
+        {
+            int testNode;
+            if (m_currentNodeIndex == BTGlobal.BT_InvalidChildNodeIndex)
+                testNode = 0;
+            else
+                testNode = m_currentNodeIndex;
+
+            if (_bCheckIndex(testNode))
+            {
+                BTNode child = m_childNodeList[testNode];
+                if (child.Evaluate())
+                    return true;
+            }
+
+            return false;
+        }
+
+        public virtual void OnTransition()
+        {
+            if (_bCheckIndex(m_currentNodeIndex))
+            {
+                BTNode child = m_childNodeList[m_currentNodeIndex];
+                child.Transition();
+            }
+
+            m_currentNodeIndex = BTGlobal.BT_InvalidChildNodeIndex;
+        }
+
+        public virtual StatusBTRunning OnTick()
+        {
+            StatusBTRunning bIsFinish = StatusBTRunning.Finish;
+
+            //First Time
+            if (m_currentNodeIndex == BTGlobal.BT_InvalidChildNodeIndex)
+                m_currentNodeIndex = 0;
+
+            BTNode child = m_childNodeList[m_currentNodeIndex];
+            if (child != null)
+            {
+                bIsFinish = child.Tick();
+            }
+
+            if (bIsFinish == StatusBTRunning.Finish)
+            {
+                ++m_currentNodeIndex;
+                //sequence is over
+                if (m_currentNodeIndex == m_ChildNodeCount)
+                {
+                    m_currentNodeIndex = BTGlobal.BT_InvalidChildNodeIndex;
+                }
+                else
+                {
+                    bIsFinish = StatusBTRunning.Executing;
+                }
+            }
+
+            if (bIsFinish == StatusBTRunning.ErrorTransition)
+            {
+                m_currentNodeIndex = BTGlobal.BT_InvalidChildNodeIndex;
+            }
+
+            return bIsFinish;
+        }
+
+        private int m_currentNodeIndex = BTGlobal.BT_InvalidChildNodeIndex;
+    };
+
+    public class BTNodeTerminal : BTNode
+    {
+        public BTNodeTerminal() : base(null)
+        {
+        }
+
+        public void SetParentNode(BTNode parent)
+        {
+            _SetParentNode(parent);
+        }
+
+        public BTNodeTerminal(BTNode parentNode)
+            : base(parentNode)
+        {
+        }
+
+        public BTNodeTerminal SetDynamicOnExecute(Func<StatusBTRunning> call)
+        {
+            m_dynamicOnExecute = call;
+            return this;
+        }
+
+        public BTNodeTerminal SetDynamicOnEnter(Action call)
+        {
+            m_dynamicOnEnter = call;
+            return this;
+        }
+
+        public BTNodeTerminal SetDynamicOnExit(Action<StatusBTRunning> call)
+        {
+            m_dynamicOnExit = call;
+            return this;
+        }
+
+        public virtual void OnTransition()
+        {
+            if (m_needExit) //call Exit if we have called Enter
+                OnExit(StatusBTRunning.ErrorTransition);
+
+            SetActiveNode(null);
+            m_Status = StausNodeTerminal.Ready;
+            m_needExit = false;
+        }
+
+        public virtual StatusBTRunning OnTick()
+        {
+            StatusBTRunning bIsFinish = StatusBTRunning.Finish;
+
+            if (m_Status == StausNodeTerminal.Ready)
+            {
+                OnEnter();
+                m_needExit = true;
+                m_Status = StausNodeTerminal.Running;
+                SetActiveNode(this);
+            }
+
+            if (m_Status == StausNodeTerminal.Running)
+            {
+                bIsFinish = OnExecute();
+                SetActiveNode(this);
+                if (bIsFinish == StatusBTRunning.Finish || bIsFinish == StatusBTRunning.ErrorTransition)
+                    m_Status = StausNodeTerminal.Finish;
+            }
+
+            if (m_Status == StausNodeTerminal.Finish)
+            {
+                if (m_needExit) //call Exit if we have called Enter
+                    OnExit(bIsFinish);
+                m_Status = StausNodeTerminal.Ready;
+                m_needExit = false;
+                SetActiveNode(null);
+                return bIsFinish;
+            }
+
+            return bIsFinish;
+        }
+
+        protected virtual bool OnEvaluate()
+        {
+            return true;
+        }
+
+        protected virtual void OnEnter()
+        {
+            if (m_dynamicOnEnter != null)
+            {
+                m_dynamicOnEnter();
+            }
+        }
+
+        protected virtual StatusBTRunning OnExecute()
+        {
+            StatusBTRunning returnStatus = StatusBTRunning.Finish;
+            if (m_dynamicOnExecute != null)
+            {
+                returnStatus = m_dynamicOnExecute();
+            }
+
+            return returnStatus;
+        }
+
+        protected virtual void OnExit(StatusBTRunning _ui_ExitID)
+        {
+            if (m_dynamicOnExit != null)
+            {
+                m_dynamicOnExit(_ui_ExitID);
+            }
+        }
+
+        private StausNodeTerminal m_Status = StausNodeTerminal.Ready;
+
+        private bool m_needExit = false;
+
+// 动态设置的OnExecute方法
+        private Func<StatusBTRunning> m_dynamicOnExecute = null;
+
+// 动态设置的OnEnter方法
+        private Action m_dynamicOnEnter = null;
+
+// 动态设置的OnExit方法
+        private Action<StatusBTRunning> m_dynamicOnExit = null;
+    };
+
+    class BTNodeParallel : BTNode
+    {
+        public BTNodeParallel(BTNode parentNode)
+            : base(parentNode)
+        {
+            for (uint i = 0; i < BTGlobal.BT_MaxBTChildNodeNum; ++i)
+                m_childNodeStatus[i] = StatusBTRunning.Executing;
+        }
+
+        public virtual bool OnEvaluate()
+        {
+            for (uint i = 0; i < m_ChildNodeCount; ++i)
+            {
+                BTNode child = m_childNodeList[i];
+                if (m_childNodeStatus[i] == StatusBTRunning.Executing)
+                {
+                    if (!child.Evaluate())
+                    {
+                        return false;
+                    }
+                }
+            }
+
+// 只要有一个子节点不通过则返回false，全部通过返回true
+            return true;
+        }
+
+        public virtual void OnTransition()
+        {
+            for (uint i = 0; i < BTGlobal.BT_MaxBTChildNodeNum; ++i)
+                m_childNodeStatus[i] = StatusBTRunning.Executing;
+
+            for (uint i = 0; i < m_ChildNodeCount; ++i)
+            {
+                BTNode child = m_childNodeList[i];
+                child.Transition();
+            }
+        }
+
+        public virtual StatusBTRunning OnTick()
+        {
+            int finishedChildCount = 0;
+            for (int i = 0; i < m_ChildNodeCount; ++i)
+            {
+                BTNode oBN = m_childNodeList[i];
+                if (m_finishCondition == E_ParallelFinishCondition.Or)
+                {
+                    if (m_childNodeStatus[i] == StatusBTRunning.Executing)
+                    {
+                        m_childNodeStatus[i] = oBN.Tick();
+                    }
+
+                    if (m_childNodeStatus[i] != StatusBTRunning.Executing)
+                    {
+                        for (int j = 0; j < BTGlobal.BT_MaxBTChildNodeNum; ++j)
+                            m_childNodeStatus[j] = StatusBTRunning.Executing;
+                        return StatusBTRunning.Finish;
+                    }
+                }
+                else if (m_finishCondition == E_ParallelFinishCondition.And)
+                {
+                    if (m_childNodeStatus[i] == StatusBTRunning.Executing)
+                    {
+                        m_childNodeStatus[i] = oBN.Tick();
+                    }
+
+                    if (m_childNodeStatus[i] != StatusBTRunning.Executing)
+                    {
+                        finishedChildCount++;
+                    }
+                }
+            }
+
+            if (finishedChildCount == m_ChildNodeCount)
+            {
+                for (uint i = 0; i < BTGlobal.BT_MaxBTChildNodeNum; ++i)
+                    m_childNodeStatus[i] = StatusBTRunning.Executing;
+                return StatusBTRunning.Finish;
+            }
+
+            return StatusBTRunning.Executing;
+        }
+
+        public BTNodeParallel SetFinishCondition(E_ParallelFinishCondition condition)
+        {
+            m_finishCondition = condition;
+            return this;
+        }
+
+        private E_ParallelFinishCondition m_finishCondition = E_ParallelFinishCondition.Or;
+        private StatusBTRunning[] m_childNodeStatus = new StatusBTRunning[BTGlobal.BT_MaxBTChildNodeNum];
+    };
+
+    class BTNodeLoop : BTNode
+    {
+        public BTNodeLoop(BTNode parentNode, int loopCount = BTNodeLoop.kInfiniteLoop)
+            : base(parentNode)
+        {
+            m_loopCount = loopCount;
+        }
+
+        public virtual bool OnEvaluate()
+        {
+            bool checkLoopCount = (m_loopCount == kInfiniteLoop) ||
+                                  m_currentCount < m_loopCount;
+
+            if (!checkLoopCount)
+                return false;
+
+            if (_bCheckIndex(0))
+            {
+                BTNode child = m_childNodeList[0];
+                if (child.Evaluate())
+                    return true;
+            }
+
+            return false;
+        }
+
+        public virtual void OnTransition()
+        {
+            if (_bCheckIndex(0))
+            {
+                BTNode child = m_childNodeList[0];
+                child.Transition();
+            }
+
+            m_currentCount = 0;
+        }
+
+        public virtual StatusBTRunning OnTick()
+        {
+            StatusBTRunning bIsFinish = StatusBTRunning.Finish;
+            if (_bCheckIndex(0))
+            {
+                BTNode oBN = m_childNodeList[0];
+                bIsFinish = oBN.Tick();
+
+                if (bIsFinish == StatusBTRunning.Finish)
+                {
+                    if (m_loopCount != kInfiniteLoop)
+                    {
+                        // 有限循环
+                        ++m_currentCount;
+                        if (m_currentCount < m_loopCount) // 作者原版是 ==  
+                        {
+                            bIsFinish = StatusBTRunning.Executing;
+                        }
+                    }
+                    else
+                    {
+// 无限循环
+                        bIsFinish = StatusBTRunning.Executing;
+                    }
+                }
+            }
+
+            if (bIsFinish != StatusBTRunning.Executing)
+            {
+                m_currentCount = 0;
+            }
+
+            return bIsFinish;
+        }
+
+        private int m_loopCount;
+        private int m_currentCount = 0;
+        public const int kInfiniteLoop = -1;
+    };
+
+
+    public static class BTNodeFactory
+    {
+        public static BTNode CreateParallelNode(BTNode parent, E_ParallelFinishCondition condition, string debugName)
+        {
+            BTNodeParallel pReturn = new BTNodeParallel(parent);
+            pReturn.SetFinishCondition(condition);
+            CreateNodeCommon(pReturn, parent, debugName);
+            return pReturn;
+        }
+
+        public static BTNode CreatePrioritySelectorNode(BTNode parent, string debugName)
+        {
+            BTNodePrioritySelector pReturn = new BTNodePrioritySelector(parent);
+            CreateNodeCommon(pReturn, parent, debugName);
+            return pReturn;
+        }
+
+        public static BTNode CreateNonePrioritySelectorNode(BTNode parent, string debugName)
+        {
+            BTNodeNonePrioritySelector pReturn = new BTNodeNonePrioritySelector(parent);
+            CreateNodeCommon(pReturn, parent, debugName);
+            return pReturn;
+        }
+
+        public static BTNode CreateSequenceNode(BTNode parent, string debugName)
+        {
+            BTNodeSequence pReturn = new BTNodeSequence(parent);
+            CreateNodeCommon(pReturn, parent, debugName);
+            return pReturn;
+        }
+
+        public static BTNode CreateLoopNode(BTNode parent, string debugName, int loopCount)
+        {
+            BTNodeLoop pReturn = new BTNodeLoop(parent, loopCount);
+            CreateNodeCommon(pReturn, parent, debugName);
+            return pReturn;
+        }
+
+        public static BTNodeTerminal CreateTemBTNodeTerminalinalNode<T>(BTNode parent, string debugName)
+            where T : BTNodeTerminal, new()
+        {
+            BTNodeTerminal pReturn = new T();
+            pReturn.SetParentNode(parent);
+            CreateNodeCommon(pReturn, parent, debugName);
+            return pReturn;
+        }
+
+        private static void CreateNodeCommon(BTNode me, BTNode parent, string debugName)
+        {
+            if (parent != null)
+                parent.AddChildNode(me);
+            me.SetDebugName(debugName);
+        }
+    };
 }
-
-enum E_ParallelFinishCondition
-{
-	Or,
-	And
-};
-
-enum StatusBTRunning
-{
-	Executing,
-	Finish,
-	ErrorTransition = -1,
-};
-
-enum StausNodeTerminal
-{
-	Ready,
-	Running,
-	Finish,
-};
-
-
-class BTPrecondition
-{
-	public virtual bool ExternalCondition()
-	{
-		return m_dynamicJudge == null || m_dynamicJudge();
-	}
-	
-	public void SetDynamicJudge(Func<bool> call)
-	{
-		m_dynamicJudge = call;
-	}
-	
-	private Func<bool> m_dynamicJudge = null;
-};
-
-class BTPreconditionAnd :  BTPrecondition
-{
-
-public BTPreconditionAnd(BTPrecondition lhs, BTPrecondition rhs)
-{
-	m_lhs = lhs;
-	m_rhs = rhs;
-}
-
-~BTPreconditionAnd() {
-}
-	
-public override bool ExternalCondition()
-{
-	return m_lhs.ExternalCondition() && m_rhs.ExternalCondition();
-}
-
-private readonly BTPrecondition m_lhs = null;
-private readonly BTPrecondition m_rhs = null;
-};
-
-class BTPreconditionOr: BTPrecondition
-{
-
-	public BTPreconditionOr(BTPrecondition lhs, BTPrecondition rhs)
-	{
-		m_lhs = lhs;
-		m_rhs = rhs;
-	}
-
-	public override bool ExternalCondition()  
-	{
-		return m_lhs.ExternalCondition() || m_rhs.ExternalCondition();
-	}
-
-private readonly BTPrecondition m_lhs = null;
-private readonly BTPrecondition m_rhs = null;
-};
-
-class BTPreconditionXor : public BTPrecondition
-{
-public:
-	BTPreconditionXor(BTPrecondition* lhs, BTPrecondition* rhs)
-		: m_lhs(lhs)
-		, m_rhs(rhs)
-	{
-		D_CHECK(m_lhs && m_rhs);
-	}
-	~BTPreconditionXor() {
-		D_SafeDelete(m_lhs);
-		D_SafeDelete(m_rhs);
-	}
-	virtual bool ExternalCondition(const BTNodeInputParam& input) const {
-		return m_lhs->ExternalCondition(input) ^ m_rhs->ExternalCondition(input);
-	}
-private:
-	BTPrecondition* m_lhs;
-	BTPrecondition* m_rhs;
-};
-
-class BTNode
-{
-public:
-	BTNode(BTNode* parentNode)
-	{
-		for (int i = 0; i < BT_MaxBTChildNodeNum; ++i)
-			m_childNodeList[i] = nullptr;
-
-		_SetParentNode(parentNode);
-	}
-	virtual ~BTNode()
-	{
-		for (unsigned int i = 0; i < m_ChildNodeCount; ++i)
-		{
-			D_SafeDelete(m_childNodeList[i]);
-		}
-	}
-	void SetPreCondition(std::function<bool()> precondition)
-	{
-		m_precondition = precondition;
-	}
-	bool Evaluate(const BTNodeInputParam& input)
-	{
-		return (m_precondition == nullptr || m_precondition()) && OnEvaluate(input);
-	}
-	void Transition(const BTNodeInputParam& input)
-	{
-		OnTransition(input);
-	}
-	StatusBTRunning Tick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-	{
-		return OnTick(input, output);
-	}
-	//---------------------------------------------------------------
-	BTNode& AddChildNode(BTNode* childNode)
-	{
-		if (m_ChildNodeCount == BT_MaxBTChildNodeNum)
-		{
-			D_Output("The number of child BTNodes is up to %d.", BT_MaxBTChildNodeNum);
-			D_CHECK(0);
-			return (*this);
-		}
-		m_childNodeList[m_ChildNodeCount] = childNode;
-		++m_ChildNodeCount;
-		return (*this);
-	}
-	BTNode& SetDebugName(const char* debugName)
-	{
-		m_debugName = debugName;
-		return (*this);
-	}
-	const BTNode* GetLastActiveNode() const
-	{
-		return m_lastActiveNode;
-	}
-	void SetActiveNode(BTNode* node)
-	{
-		m_lastActiveNode = m_activeNode;
-		m_activeNode = node;
-		if (m_parentNode != nullptr)
-			m_parentNode->SetActiveNode(node);
-	}
-	const char* GetDebugName() const
-	{
-		return m_debugName.c_str();
-	}
-protected:
-	//--------------------------------------------------------------
-	// virtual function
-	//--------------------------------------------------------------
-	virtual bool OnEvaluate(const BTNodeInputParam& input)
-	{ 
-		return true;
-	}
-	virtual void OnTransition(const BTNodeInputParam& input)
-	{
-	}
-	virtual StatusBTRunning OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-	{
-		return StatusBTRunning::Finish;
-	}
-protected:
-	void _SetParentNode(BTNode* parentNode)
-	{
-		m_parentNode = parentNode;
-	}
-	bool _bCheckIndex(uint index) const
-	{
-		return index >= 0 && index < m_ChildNodeCount;
-	}
-protected:
-	BTNode*                m_childNodeList[BT_MaxBTChildNodeNum];
-	readonly uint						  m_ChildNodeCount = 0;
-	BTNode*                m_parentNode = nullptr;
-	BTNode*                m_activeNode = nullptr;
-	BTNode*				   m_lastActiveNode = nullptr;
-	std::function<bool()> m_precondition = nullptr;
-	std::
-	readonly string				  m_debugName = "defaultNodeName";
-};
-
-class BTNodePrioritySelector : public BTNode
-{
-public:
-	BTNodePrioritySelector(BTNode* parentNode)
-		: BTNode(parentNode){}
-	virtual bool OnEvaluate(const BTNodeInputParam& input);
-	virtual void OnTransition(const BTNodeInputParam& input);
-	virtual StatusBTRunning OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output);
-
-protected:
-	uint m_currentSelectIndex = BT_InvalidChildNodeIndex;
-	uint m_lastSelectIndex = BT_InvalidChildNodeIndex;
-};
-bool BTNodePrioritySelector::OnEvaluate(const BTNodeInputParam& input)
-{
-	m_currentSelectIndex = BT_InvalidChildNodeIndex;
-	for (uint i = 0; i < m_ChildNodeCount; ++i)
-	{
-		BTNode* child = m_childNodeList[i];
-		if (child->Evaluate(input))
-		{
-			m_currentSelectIndex = i;
-			return true;
-		}
-	}
-	return false;
-}
-void BTNodePrioritySelector::OnTransition(const BTNodeInputParam& input)
-{
-	if (_bCheckIndex(m_currentSelectIndex))
-	{
-		BTNode* child = m_childNodeList[m_currentSelectIndex];
-		child->Transition(input);
-	}
-	m_lastSelectIndex = BT_InvalidChildNodeIndex;
-}
-StatusBTRunning BTNodePrioritySelector::OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-{
-	StatusBTRunning bIsFinish = StatusBTRunning::Finish;
-	// ��cur_index��last_index��ѡ�����õģ���ֵ��last_index
-	if (_bCheckIndex(m_currentSelectIndex))
-	{
-		if (m_lastSelectIndex != m_currentSelectIndex)  //new select result
-		{
-			if (_bCheckIndex(m_lastSelectIndex))
-			{
-				BTNode* child = m_childNodeList[m_lastSelectIndex];
-				child->Transition(input);   //we need transition
-			}
-			m_lastSelectIndex = m_currentSelectIndex;
-		}
-	}
-	if (_bCheckIndex(m_lastSelectIndex))
-	{
-		//Running node
-		BTNode* child = m_childNodeList[m_lastSelectIndex];
-		bIsFinish = child->Tick(input, output);
-		//clear variable if finish
-		if (bIsFinish == StatusBTRunning::Finish)
-			m_lastSelectIndex = BT_InvalidChildNodeIndex;
-	}
-	return bIsFinish;
-}
-
-// ��Evaluateʱ���precondition���˾���Ϊ��true
-// ����ӽڵ�Evaluate��������ô��tickʱ��ִ��
-class BTNodeNoRecursionPrioritySelector : public BTNodePrioritySelector
-{
-public:
-	BTNodeNoRecursionPrioritySelector(BTNode* parentNode) : BTNodePrioritySelector(parentNode) {}
-	virtual bool OnEvaluate(const BTNodeInputParam& input) final
-	{
-		bool ret = BTNodePrioritySelector::OnEvaluate(input);
-		if (m_precondition != nullptr)
-		{
-			// �ߵ�����֤��ǰ�������Ѿ�ͨ��������Ҫ�ӽڵ�ĵݹ��������ж�
-			if (!ret)
-			{
-				// ����ӽڵ�evaluateû������ô���������tick��ִ��
-				BTGlobal::RECURSION_OK = false;
-			}
-			ret = true;
-		}
-		return ret;
-	}
-};
-
-class BTNodeNonePrioritySelector : public BTNodePrioritySelector
-{
-public:
-	BTNodeNonePrioritySelector(BTNode* parentNode)
-		: BTNodePrioritySelector(parentNode){}
-	virtual bool OnEvaluate(const BTNodeInputParam& input);
-};
-bool BTNodeNonePrioritySelector::OnEvaluate(const BTNodeInputParam& input)
-{
-	if (_bCheckIndex(m_currentSelectIndex))
-	{
-		BTNode* child = m_childNodeList[m_currentSelectIndex];
-		if (child->Evaluate(input))
-		{
-			return true;
-		}
-	}
-	return BTNodePrioritySelector::OnEvaluate(input);
-}
-
-class BTNodeSequence : public BTNode
-{
-public:
-	BTNodeSequence(BTNode* parentNode)
-		: BTNode(parentNode){}
-	virtual bool OnEvaluate(const BTNodeInputParam& input);
-	virtual void OnTransition(const BTNodeInputParam& input);
-	virtual StatusBTRunning OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output);
-
-private:
-	uint m_currentNodeIndex = BT_InvalidChildNodeIndex;
-};
-bool BTNodeSequence::OnEvaluate(const BTNodeInputParam& input)
-{
-	uint testNode;
-	if (m_currentNodeIndex == BT_InvalidChildNodeIndex)
-		testNode = 0;
-	else
-		testNode = m_currentNodeIndex;
-		
-	if (_bCheckIndex(testNode))
-	{
-		BTNode* child = m_childNodeList[testNode];
-		if (child->Evaluate(input))
-			return true;
-	}
-	return false;
-}
-void BTNodeSequence::OnTransition(const BTNodeInputParam& input)
-{
-	if (_bCheckIndex(m_currentNodeIndex))
-	{
-		BTNode* child = m_childNodeList[m_currentNodeIndex];
-		child->Transition(input);
-	}
-	m_currentNodeIndex = BT_InvalidChildNodeIndex;
-}
-StatusBTRunning BTNodeSequence::OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-{
-	StatusBTRunning bIsFinish = StatusBTRunning::Finish;
-
-	//First Time
-	if (m_currentNodeIndex == BT_InvalidChildNodeIndex)
-		m_currentNodeIndex = 0;
-
-	BTNode* child = m_childNodeList[m_currentNodeIndex];
-	if (child != nullptr)
-	{
-		bIsFinish = child->Tick(input, output);
-	}
-	if (bIsFinish == StatusBTRunning::Finish)
-	{
-		++m_currentNodeIndex;
-		//sequence is over
-		if (m_currentNodeIndex == m_ChildNodeCount)
-		{
-			m_currentNodeIndex = BT_InvalidChildNodeIndex;
-		}
-		else
-		{
-			bIsFinish = StatusBTRunning::Executing;
-		}
-	}
-	if (bIsFinish == StatusBTRunning::ErrorTransition)
-	{
-		m_currentNodeIndex = BT_InvalidChildNodeIndex;
-	}
-	return bIsFinish;
-}
-
-class BTNodeTerminal : public BTNode
-{
-public:
-	BTNodeTerminal(BTNode* parentNode)
-		: BTNode(parentNode){}
-	BTNodeTerminal& SetDynamicOnExecute(std::function<StatusBTRunning(const BTNodeInputParam& input, BTNodeOutputParam& output)> call)
-	{
-		m_dynamicOnExecute = call;
-		return (*this);
-	}
-	BTNodeTerminal& SetDynamicOnEnter(std::function<void(const BTNodeInputParam&)> call)
-	{
-		m_dynamicOnEnter = call;
-		return (*this);
-	}
-	BTNodeTerminal& SetDynamicOnExit(std::function<void(const BTNodeInputParam&, StatusBTRunning)> call)
-	{
-		m_dynamicOnExit = call;
-		return (*this);
-	}
-	virtual void OnTransition(const BTNodeInputParam& input) override;
-	virtual StatusBTRunning OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output) override;
-
-protected:
-	virtual bool OnEvaluate(const BTNodeInputParam& input) final
-	{
-		return true;
-	}
-	virtual void OnEnter(const BTNodeInputParam& input) 
-	{
-		if (m_dynamicOnEnter != nullptr)
-		{
-			m_dynamicOnEnter(input);
-		}
-	}
-	virtual StatusBTRunning	OnExecute(const BTNodeInputParam& input, BTNodeOutputParam& output)
-	{ 
-		StatusBTRunning returnStatus = StatusBTRunning::Finish;
-		if (m_dynamicOnExecute != nullptr)
-		{
-			returnStatus = m_dynamicOnExecute(input, output);
-		}
-		return returnStatus;
-	}
-	virtual void OnExit(const BTNodeInputParam& input, StatusBTRunning _ui_ExitID) 
-	{
-		if (m_dynamicOnExit != nullptr)
-		{
-			m_dynamicOnExit(input, _ui_ExitID);
-		}
-	}
-
-private:
-	StausNodeTerminal m_Status = StausNodeTerminal::Ready;
-	bool m_needExit = false;
-	// ��̬���õ�OnExecute����
-	std::function<StatusBTRunning(const BTNodeInputParam&, BTNodeOutputParam&)> m_dynamicOnExecute = nullptr;
-	// ��̬���õ�OnEnter����
-	std::function<void(const BTNodeInputParam&)> m_dynamicOnEnter = nullptr;
-	// ��̬���õ�OnExit����
-	std::function<void(const BTNodeInputParam&, StatusBTRunning)> m_dynamicOnExit = nullptr;
-
-};
-void BTNodeTerminal::OnTransition(const BTNodeInputParam& input)
-{
-	if (m_needExit)     //call Exit if we have called Enter
-		OnExit(input, StatusBTRunning::ErrorTransition);
-
-	SetActiveNode(nullptr);
-	m_Status = StausNodeTerminal::Ready;
-	m_needExit = false;
-}
-StatusBTRunning BTNodeTerminal::OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-{
-	StatusBTRunning bIsFinish = StatusBTRunning::Finish;
-
-	if (m_Status == StausNodeTerminal::Ready)
-	{
-		OnEnter(input);
-		m_needExit = true;
-		m_Status = StausNodeTerminal::Running;
-		SetActiveNode(this);
-	}
-	if (m_Status == StausNodeTerminal::Running)
-	{
-		bIsFinish = OnExecute(input, output);
-		SetActiveNode(this);
-		if (bIsFinish == StatusBTRunning::Finish || bIsFinish == StatusBTRunning::ErrorTransition)
-			m_Status = StausNodeTerminal::Finish;
-	}
-	if (m_Status == StausNodeTerminal::Finish)
-	{
-		if (m_needExit)     //call Exit if we have called Enter
-			OnExit(input, bIsFinish);
-		m_Status = StausNodeTerminal::Ready;
-		m_needExit = false;
-		SetActiveNode(NULL);
-		return bIsFinish;
-	}
-	return bIsFinish;
-}
-
-class BTNodeParallel : public BTNode
-{
-public:
-	BTNodeParallel(BTNode* parentNode)
-		: BTNode(parentNode)
-	{
-		for (uint i = 0; i < BT_MaxBTChildNodeNum; ++i)
-			m_childNodeStatus[i] = StatusBTRunning::Executing;
-	}
-	virtual bool OnEvaluate(const BTNodeInputParam& input);
-	virtual void OnTransition(const BTNodeInputParam& input);
-	virtual StatusBTRunning OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output);
-	BTNodeParallel& SetFinishCondition(E_ParallelFinishCondition condition);
-private:
-	E_ParallelFinishCondition m_finishCondition = E_ParallelFinishCondition::Or;
-	StatusBTRunning		  m_childNodeStatus[BT_MaxBTChildNodeNum];
-};
-bool BTNodeParallel::OnEvaluate(const BTNodeInputParam& input)
-{
-	for (uint i = 0; i < m_ChildNodeCount; ++i)
-	{
-		BTNode* child = m_childNodeList[i];
-		if (m_childNodeStatus[i] == StatusBTRunning::Executing)
-		{
-			if (!child->Evaluate(input))
-			{
-				return false;
-			}
-		}
-	}
-	// ֻҪ��һ���ӽڵ㲻ͨ���򷵻�false��ȫ��ͨ������true
-	return true;
-}
-void BTNodeParallel::OnTransition(const BTNodeInputParam& input)
-{
-	for (uint i = 0; i < BT_MaxBTChildNodeNum; ++i)
-		m_childNodeStatus[i] = StatusBTRunning::Executing;
-
-	for (uint i = 0; i < m_ChildNodeCount; ++i)
-	{
-		BTNode* child = m_childNodeList[i];
-		child->Transition(input);
-	}
-}
-BTNodeParallel& BTNodeParallel::SetFinishCondition(E_ParallelFinishCondition condition)
-{
-	m_finishCondition = condition;
-	return (*this);
-}
-StatusBTRunning BTNodeParallel::OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-{
-	unsigned int finishedChildCount = 0;
-	for (unsigned int i = 0; i < m_ChildNodeCount; ++i)
-	{
-		BTNode* oBN = m_childNodeList[i];
-		if (m_finishCondition == E_ParallelFinishCondition::Or)
-		{
-			if (m_childNodeStatus[i] == StatusBTRunning::Executing)
-			{
-				m_childNodeStatus[i] = oBN->Tick(input, output);
-			}
-			if (m_childNodeStatus[i] != StatusBTRunning::Executing)
-			{
-				for (uint i = 0; i < BT_MaxBTChildNodeNum; ++i)
-					m_childNodeStatus[i] = StatusBTRunning::Executing;
-				return StatusBTRunning::Finish;
-			}
-		}
-		else if (m_finishCondition == E_ParallelFinishCondition::And)
-		{
-			if (m_childNodeStatus[i] == StatusBTRunning::Executing)
-			{
-				m_childNodeStatus[i] = oBN->Tick(input, output);
-			}
-			if (m_childNodeStatus[i] != StatusBTRunning::Executing)
-			{
-				finishedChildCount++;
-			}
-		}
-		else
-		{
-			D_CHECK(0);
-		}
-	}
-	if (finishedChildCount == m_ChildNodeCount)
-	{
-		for (uint i = 0; i < BT_MaxBTChildNodeNum; ++i)
-			m_childNodeStatus[i] = StatusBTRunning::Executing;
-		return StatusBTRunning::Finish;
-	}
-	return StatusBTRunning::Executing;
-}
-
-
-class BTNodeLoop : public BTNode
-{
-public:
-	static const int kInfiniteLoop = -1;
-public:
-	BTNodeLoop(BTNode* parentNode, int loopCount = kInfiniteLoop)
-		: BTNode(parentNode)
-		, m_loopCount(loopCount)
-	{}
-	virtual bool OnEvaluate(const BTNodeInputParam& input);
-	virtual void OnTransition(const BTNodeInputParam& input);
-	virtual StatusBTRunning OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output);
-private:
-	int m_loopCount;
-	int m_currentCount = 0;
-};
-bool BTNodeLoop::OnEvaluate(const BTNodeInputParam& input)
-{
-	bool checkLoopCount = (m_loopCount == kInfiniteLoop) ||
-		m_currentCount < m_loopCount;
-
-	if (!checkLoopCount)
-		return false;
-
-	if (_bCheckIndex(0))
-	{
-		BTNode* child = m_childNodeList[0];
-		if (child->Evaluate(input))
-			return true;
-	}
-	return false;
-}
-void BTNodeLoop::OnTransition(const BTNodeInputParam& input)
-{
-	if (_bCheckIndex(0))
-	{
-		BTNode* child = m_childNodeList[0];
-		child->Transition(input);
-	}
-	m_currentCount = 0;
-}
-StatusBTRunning BTNodeLoop::OnTick(const BTNodeInputParam& input, BTNodeOutputParam& output)
-{
-	StatusBTRunning bIsFinish = StatusBTRunning::Finish;
-	if (_bCheckIndex(0))
-	{
-		BTNode* oBN = m_childNodeList[0];
-		bIsFinish = oBN->Tick(input, output);
-
-		if (bIsFinish == StatusBTRunning::Finish)
-		{
-			if (m_loopCount != kInfiniteLoop)
-			{
-				// ����ѭ��
-				++m_currentCount;
-				if (m_currentCount < m_loopCount)  // ����ԭ���� == 
-				{
-					bIsFinish = StatusBTRunning::Executing;
-				}
-			}
-			else
-			{
-				// ����ѭ��
-				bIsFinish = StatusBTRunning::Executing;
-			}
-		}
-	}
-	if (bIsFinish != StatusBTRunning::Executing)
-	{
-		m_currentCount = 0;
-	}
-	return bIsFinish;
-}
-
-class BTNodeFactory
-{
-public:
-	static BTNode& CreateParallelNode(BTNode* parent, E_ParallelFinishCondition condition, const char* debugName)
-	{
-		BTNodeParallel* pReturn = new BTNodeParallel(parent);
-		pReturn->SetFinishCondition(condition);
-		CreateNodeCommon(pReturn, parent, debugName);
-		return (*pReturn);
-	}
-	static BTNode& CreatePrioritySelectorNode(BTNode* parent, const char* debugName)
-	{
-		BTNodePrioritySelector* pReturn = new BTNodePrioritySelector(parent);
-		CreateNodeCommon(pReturn, parent, debugName);
-		return (*pReturn);
-	}
-	static BTNode& CreateNonePrioritySelectorNode(BTNode* parent, const char* debugName)
-	{
-		BTNodeNonePrioritySelector* pReturn = new BTNodeNonePrioritySelector(parent);
-		CreateNodeCommon(pReturn, parent, debugName);
-		return (*pReturn);
-	}
-	static BTNode& CreateSequenceNode(BTNode* parent, const char* debugName)
-	{
-		BTNodeSequence* pReturn = new BTNodeSequence(parent);
-		CreateNodeCommon(pReturn, parent, debugName);
-		return (*pReturn);
-	}
-	static BTNode& CreateLoopNode(BTNode* parent, const char* debugName, int loopCount)
-	{
-		BTNodeLoop* pReturn = new BTNodeLoop(parent, loopCount);
-		CreateNodeCommon(pReturn, parent, debugName);
-		return (*pReturn);
-	}
-	template<typename T>
-	static BTNodeTerminal& CreateTeminalNode(BTNode* parent, const char* debugName)
-	{
-		BTNodeTerminal* pReturn = new T(parent);
-		CreateNodeCommon(pReturn, parent, debugName);
-		return (*pReturn);
-	}
-private:
-	static void CreateNodeCommon(BTNode* me, BTNode* parent, const char* debugName)
-	{
-		if (parent)
-			parent->AddChildNode(me);
-		me->SetDebugName(debugName);
-	}
-};
