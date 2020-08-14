@@ -4,40 +4,52 @@ using System.Collections.Generic;
 
 namespace MathLearn
 {
-    public class Vector3
+    public struct Vector3
     {
-        public float x = 0;
-        public float y = 0;
-        public float z = 0;
-        
-        private static readonly Vector3 m_zero = new Vector3(0, 0, 0);
-        public Vector3 zero => m_zero;
-        
-        private static readonly Vector3 m_up = new Vector3(0, 1f, 0);
-        public Vector3 up => m_up;
-        
-        private static readonly Vector3 m_down = new Vector3(0, -1f, 0);
-        public Vector3 down => m_down;
-        
-        private static readonly Vector3 m_left = new Vector3(-1f, 0, 0);
-        public Vector3 left => m_left;
-        
-        private static readonly Vector3 m_right = new Vector3(1f, 0, 0);
-        public Vector3 right => m_right;
-        
-        private static readonly Vector3 m_forward = new Vector3(0, 0, 1f);
-        public Vector3 forward => m_forward;
-        
-        private static readonly Vector3 m_back = new Vector3(0, 0, -1f);
-        public Vector3 back => m_back;
+        public float x;
+        public float y;
+        public float z;
 
-        public Vector3()
+        private static readonly Vector3 m_zero = new Vector3(0, 0, 0);
+        public static Vector3 zero => m_zero;
+
+        private static readonly Vector3 m_up = new Vector3(0, 1f, 0);
+        public static Vector3 up => m_up;
+
+        private static readonly Vector3 m_down = new Vector3(0, -1f, 0);
+        public static Vector3 down => m_down;
+
+        private static readonly Vector3 m_left = new Vector3(-1f, 0, 0);
+        public static Vector3 left => m_left;
+
+        private static readonly Vector3 m_right = new Vector3(1f, 0, 0);
+        public static Vector3 right => m_right;
+
+        private static readonly Vector3 m_forward = new Vector3(0, 0, 1f);
+        public static Vector3 forward => m_forward;
+
+        private static readonly Vector3 m_back = new Vector3(0, 0, -1f);
+        public static Vector3 back => m_back;
+
+        public bool Equals(Vector3 other)
         {
+            return x.Equals(other.x) && y.Equals(other.y) && z.Equals(other.z);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is Vector3 && Equals((Vector3) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.x.GetHashCode() ^ this.y.GetHashCode() << 2 ^ this.z.GetHashCode() >> 2;
+        }
+        
         public Vector3(float _x, float _y, float _z)
         {
-            this.x = x;
+            this.x = _x;
             this.y = _y;
             this.z = _z;
         }
@@ -102,6 +114,11 @@ namespace MathLearn
         public static float Magnitude(Vector3 vector)
         {
             return (float) Math.Sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+        }
+
+        public float Magnitude()
+        {
+            return Vector3.Magnitude(this);
         }
 
         // 叉乘
