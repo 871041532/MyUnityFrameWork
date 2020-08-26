@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MathLearn;
+using UnityEditor;
+using MVector3 = MathLearn.Vector3;
+using MQuaternion = MathLearn.Quaternion;
 
 public class MathLearnTest : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
+        var q1 = new MQuaternion(0, 1f, 0, 0);
+        var p = new MVector3(1f, 0, 0);
+        var p2 = q1 * p;
+        Debug.Log(p2);
 
-        var v = new MathLearn.Vector3(1, 2, 3);
-        var n = new MathLearn.Vector3(4, 5, 6);
-        Debug.Log(n.Magnitude() * n.Magnitude());
-        Debug.Log(n * n);
-        var target1 = n * (v * n / (n.Magnitude() * n.Magnitude()));
-        Debug.Log($"{target1.x}，{target1.y}，{target1.z}");
-        var target2 = v *  n * n / (n.Magnitude() * n.Magnitude());
-        Debug.Log($"{target2.x}，{target2.y}，{target2.z}");
+        var q2 = MQuaternion.AngleAxis(180, new MVector3(0, 1, 0));
+        print(q2);
     }
 
     // Update is called once per frame

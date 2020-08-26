@@ -139,5 +139,10 @@ namespace MathLearn
             float dz = lhs.z - rhs.z;
             return (float) Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
+        
+        public override string ToString()
+        {
+            return string.Format("(x:{0:F2}, y:{1:F2}, z:{2:F2})", this.x,  this.y, this.z);
+        }
     }
 }
