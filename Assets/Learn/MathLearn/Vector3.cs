@@ -47,7 +47,7 @@ namespace MathLearn
             return this.x.GetHashCode() ^ this.y.GetHashCode() << 2 ^ this.z.GetHashCode() >> 2;
         }
         
-        public Vector3(float _x, float _y, float _z)
+        public Vector3(float _x, float _y, float _z=0)
         {
             this.x = _x;
             this.y = _y;
