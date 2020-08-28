@@ -26,6 +26,14 @@ namespace MathLearn
             this.m22 = line2.y;
         }
 
+        public Matrix22(float[,] cells)
+        {
+            this.m11 = cells[0, 0];
+            this.m12 = cells[0, 1];
+            this.m21 = cells[1, 0];
+            this.m22 = cells[1, 1];
+        }
+
         public float Determinant()
         {
             return m11 * m22 - m12 * m21;

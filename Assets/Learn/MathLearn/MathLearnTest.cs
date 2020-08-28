@@ -9,23 +9,51 @@ using MQuaternion = MathLearn.Quaternion;
 
 public class MathLearnTest : MonoBehaviour
 {
+    public float mAngle = 3f;
+
+    private MVector3 mAxis = new MVector3(0, 0, 1);
+
+    private Mesh mMesh;
     // Start is called before the first frame update
     void Start()
     {
-        var p = new MVector3(1, 0, 0);
-        float cos = (float)Math.Cos(45 * Math.PI / 180);
-        float sin = (float)Math.Sin(45 * Math.PI / 180);
-        var composite = new Matrix33(cos, sin, 0, -sin, cos, 0, 0, 0, 1);
-        Debug.Log(composite.Determinant());
-        Debug.Log(MVector3.Cross(new MVector3(cos, sin, 0), new MVector3(-sin, cos, 0)) * new MVector3(0, 0, 1));
-        Debug.Log(p * Matrix22.Rotation(45));
+        var p = new MVector3(1, 0, 0);        
+        Matrix33 rotation = Matrix33.AngleAxis(45, new MVector3(0, 0, 1));
+        Matrix33 rotation2 = Matrix33.AngleAxis(-45, new MVector3(0, 0, 1));
+        Debug.Log(p * rotation);
+        Debug.Log(p * rotation * rotation2);
+        Debug.Log(p * (rotation * rotation2));
+
+        Debug.Log("-------------------------------------------------------------");
+        Matrix44 mul = Matrix44.AngleAxisTranslate(45, new MVector3(0, 0, 1), new MVector3(1, 1, 0));
+        Debug.Log(p * mul);
+        Debug.Log(p * (mul * mul.Inverse()));
+        
+        Debug.Log("-------------------------------------------------------------");
+        Matrix44 r = Matrix44.AngleAxis(45, new MVector3(0, 0, 1));
+        Matrix44 t = Matrix44.Translate(new MVector3(1, 1, 0));
+        Matrix44 composite = r * t;
+        Matrix44 composite2 = t.Inverse() * r.Inverse();
         Debug.Log(p * composite);
-        var temp = composite.Inverse();
+        Debug.Log(p * composite * composite2);
         Debug.Log(p * composite * composite.Inverse());
+        mMesh = GetComponent<MeshFilter>().mesh;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Matrix44 rotate = Matrix44.AngleAxis(mAngle, mAxis);
+        UnityEngine.Vector3[] vertices = mMesh.vertices;
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            var item = vertices[i];
+            var v = new MVector3(item.x, item.y, item.z);
+            var t = v * rotate;
+            vertices[i].x = t.x;
+            vertices[i].y = t.y;
+            vertices[i].z = t.z;
+        }
+        mMesh.vertices = vertices;
     }
 }

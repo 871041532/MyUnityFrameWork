@@ -7,7 +7,9 @@ namespace MathLearn
     public struct Matrix33
     {
         private float[,] myCells;
+        private static int mNumber = 3;
 
+        // 用vector构造矩阵 
         public Matrix33(Vector3 line1, Vector3 line2, Vector3 line3)
         {
             myCells = new float[,]{
@@ -17,6 +19,7 @@ namespace MathLearn
             };
         }
 
+        // 用离散的float数造矩阵
         public Matrix33(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33)
         {
             myCells = new float[,]{
@@ -26,54 +29,76 @@ namespace MathLearn
             }; 
         }
 
+        // 用数组构造矩阵
+        public Matrix33(float[,] cells = null)
+        {
+            if (cells == null)
+            {
+                myCells = new float[mNumber, mNumber];
+            }
+            else
+            {
+                myCells = cells;   
+            } 
+        }
+
+        // 下标运算符
+        public float this[int rowIndex, int colIndex]
+        {
+            get { return myCells[rowIndex, colIndex]; }
+            set { myCells[rowIndex, colIndex] = value; }
+        }
+
         // 计算行列式
         public float Determinant()
         {
             float det = 0f;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < mNumber; i++)
             {
-                Matrix22 remain = _GetRemian(0, i);
-                det = det + myCells[0,i] * remain.Determinant() * (float)Math.Pow(-1, i);
+                float remainValue = this._GetRemianValue(0, i);
+                det = det + myCells[0,i] * remainValue;
             }
             return det;
         }
         
-        // 获取余子式
-        public Matrix22 _GetRemian(int trimRow, int trimCol)
+        // 获取代数余子式
+        public float _GetRemianValue(int trimRow, int trimCol)
         {
-            float[,] cells = new float[2, 2];
+            int remainNumber = mNumber - 1;
+            float[,] cells = new float[remainNumber, remainNumber];
             int index = 0;
-            for (int row = 0; row < 3; row++)
+            for (int row = 0; row < mNumber; row++)
             {
-                for (int col = 0; col < 3; col++)
+                for (int col = 0; col < mNumber; col++)
                 {
                     if (row != trimRow && col != trimCol)
                     {
-                        int rowIndex = index / 2;
-                        int colIndex = index % 2;
+                        int rowIndex = index / remainNumber;
+                        int colIndex = index % remainNumber;
                         ++index;
                         cells[rowIndex, colIndex] = myCells[row, col];
                     }
                 }
             }
-            return new Matrix22(cells[0, 0], cells[0,1], cells[1, 0], cells[1, 1]);
+            // 余子式
+            Matrix22 remain = new Matrix22(cells);
+            // 代数余子式
+            float remainValue = remain.Determinant() * (float)Math.Pow(-1, trimRow + trimCol);
+            return remainValue;
         }
 
         // 获取伴随矩阵
         public Matrix33 _GetAdj()
         {
-            float[,] cells = new float[3, 3];
-            for (int i = 0; i < 3; i++)
+            float[,] cells = new float[mNumber, mNumber];
+            for (int i = 0; i < mNumber; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < mNumber; j++)
                 {
-                    Matrix22 remain = _GetRemian(i, j);
-                    float k = (float) Math.Pow(-1, i + j);
-                    cells[j, i] = remain.Determinant() * k;
+                    cells[j, i] = this._GetRemianValue(i, j);
                 }
             }
-            return new Matrix33(cells[0, 0], cells[0, 1], cells[0, 2], cells[1, 0], cells[1, 1], cells[1, 2],
-                cells[2, 0], cells[2, 1], cells[2, 2]);
+            return new Matrix33(cells);
         }
 
         // 获取逆矩阵
@@ -81,15 +106,20 @@ namespace MathLearn
         {
             float det = this.Determinant();
             Matrix33 adj = this._GetAdj();
-            return adj / det;
+            return adj * (1f / det);
         }
         
-        public static Matrix33 operator /(Matrix33 lhs, float k)
+        public static Matrix33 operator *(Matrix33 lhs, float k)
         {
-            Vector3 line1 = new Vector3(lhs.myCells[0,0] * k, lhs.myCells[0,1] * k, lhs.myCells[0,2] * k);
-            Vector3 line2 = new Vector3(lhs.myCells[1,0] * k, lhs.myCells[1,1] * k, lhs.myCells[1,2] * k);
-            Vector3 line3 = new Vector3(lhs.myCells[2,0] * k, lhs.myCells[2,1] * k, lhs.myCells[2,2] * k);
-            return new Matrix33(line1, line2, line3);
+            float[,] cells = new float[mNumber, mNumber];
+            for (int row = 0; row < mNumber; row++)
+            {
+                for (int col = 0; col < mNumber; col++)
+                {
+                    cells[row, col] = lhs[row, col] * k;
+                }
+            }
+            return new Matrix33(cells);
         }
         
         public static Vector3 operator *(Vector3 p, Matrix33 m)
@@ -100,24 +130,48 @@ namespace MathLearn
             float z = p.x * cells[0, 2] + p.y * cells[1, 2] + p.z * cells[2, 2];
             return new Vector3(x, y, z);
         }
-//
-//        public static Matrix33 operator *(Matrix33 lhs, Matrix33 rhs)
-//        {
-//            float t11 = lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21;
-//            float t12 = lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22;
-//            float t21 = lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21;
-//            float t22 = lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22;
-//            return new Matrix33(t11, t12, t21, t22);
-//        }
-//
+        
+        public static Matrix33 operator *(Matrix33 m1, Matrix33 m2)
+        {
+            var cells = new float[mNumber, mNumber];
+            for (int row = 0; row < mNumber; row++)
+            {
+                for (int col = 0; col < mNumber; col++)
+                {
+                    float value = 0;
+                    for (int i = 0; i < mNumber; i++)
+                    {
+                        value = value + m1[row, i] * m2[i, col];
+                    }
+                    cells[row, col] = value;
+                }
+            }
+            return new Matrix33(cells);
+        }
+        
+        // 用角度和旋转轴构造矩阵
+        public static Matrix33 AngleAxis(float angle, Vector3 axis)
+        {
+            float rad = angle * (float)Math.PI / 180f;
+            float S = (float)Math.Sin(rad);
+            float C = (float)Math.Cos(rad);
+            float C1  = 1 - C;
+            float x = axis.x;
+            float y = axis.y;
+            float z = axis.z;
+            float[,] cells = new float[mNumber, mNumber];
+            cells[0, 0] = x * x * C1 + C;
+            cells[0, 1] = x * y * C1 + z * S;
+            cells[0, 2] = x * z * C1 - y * S;
 
-//
-//        public static Matrix33 Rotation(float angle)
-//        {
-//            float rad = angle * (float)Math.PI / 180;
-//            float cosValue = (float)Math.Cos(rad);
-//            float sinValue = (float)Math.Sin(rad);
-//            return new Matrix33(cosValue, sinValue, -sinValue, cosValue);
-//        }
+            cells[1, 0] = x * y * C1 - z * S;
+            cells[1, 1] = y * y * C1 + C;
+            cells[1, 2] = y * z * C1 + x * S;
+
+            cells[2, 0] = x * z * C1 + y * S;
+            cells[2, 1] = y * z * C1 - x * S;
+            cells[2, 2] = z * z * C1 + C;
+            return new Matrix33(cells);
+        }
     }
 }
