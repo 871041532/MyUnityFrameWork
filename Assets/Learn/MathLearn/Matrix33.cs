@@ -7,46 +7,65 @@ namespace MathLearn
     public struct Matrix33
     {
         private float[,] myCells;
+        private float m00;
+        private float m01;
+        private float m02;
+        
+        private float m10;
+        private float m11;
+        private float m12;
+        
+        private float m20;
+        private float m21;
+        private float m22;
+        
         private static int mNumber = 3;
 
         // 用vector构造矩阵 
         public Matrix33(Vector3 line1, Vector3 line2, Vector3 line3)
         {
-            myCells = new float[,]{
-                {line1.x, line1.y, line1.z},
-                {line2.x, line2.y, line2.z},
-                {line3.x, line3.y, line3.z},
-            };
+            m00 = line1.x;
+            m01 = line1.y;
+            m02 = line1.z;
+
+            m10 = line2.x;
+            m11 = line2.y;
+            m12 = line2.z;
+
+            m20 = line3.x;
+            m21 = line3.y;
+            m22 = line3.z;
+            myCells = null;
         }
 
         // 用离散的float数造矩阵
-        public Matrix33(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33)
+        public Matrix33(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
         {
-            myCells = new float[,]{
-                {m11, m12, m13},
-                {m21, m22, m23},
-                {m31, m32, m33},
-            }; 
-        }
+            myCells = null;
+            this.m00 = m00;
+            this.m01 = m01;
+            this.m02 = m02;
 
-        // 用数组构造矩阵
-        public Matrix33(float[,] cells = null)
-        {
-            if (cells == null)
-            {
-                myCells = new float[mNumber, mNumber];
-            }
-            else
-            {
-                myCells = cells;   
-            } 
-        }
+            this.m10 = m10;
+            this.m11 = m11;
+            this.m12 = m12;
 
+            this.m20 = m20;
+            this.m21 = m21;
+            this.m22 = m22;
+        }
+        
         // 下标运算符
-        public float this[int rowIndex, int colIndex]
+        public float this[int r, int c]
         {
-            get { return myCells[rowIndex, colIndex]; }
-            set { myCells[rowIndex, colIndex] = value; }
+            get
+            {
+                if (r == 0 && c == 0)
+                {
+                    return m00;
+                }
+            }
+            set {; }
         }
 
         // 计算行列式

@@ -43,6 +43,7 @@ public class MathLearnTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var a = new Matrix33();
         Matrix44 rotate = Matrix44.AngleAxis(mAngle, mAxis);
         UnityEngine.Vector3[] vertices = mMesh.vertices;
         for (int i = 0; i < vertices.Length; i++)
