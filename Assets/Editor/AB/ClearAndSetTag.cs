@@ -25,16 +25,16 @@ public static class ClearAndSetTag
 
     public static string ABCONFIGPATH = "Assets/Editor/AB/ABBuildConfig.asset";
 
-    // key£ºABName  value:ÎÄ¼ş¼ĞÂ·¾¶£¬ËùÓĞÎÄ¼ş¼Ğ°üdict
+    // keyï¼šABName  value:æ–‡ä»¶å¤¹è·¯å¾„ï¼Œæ‰€æœ‰æ–‡ä»¶å¤¹åŒ…dict
     public static Dictionary<string, string> m_AllFileDir = new Dictionary<string, string>();
 
-    // ¹ıÂËlist
+    // è¿‡æ»¤list
     public static List<string> m_FilterABPaths = new List<string>();
 
-    // µ¥¸öprefabµÄab°ü
+    // å•ä¸ªprefabçš„abåŒ…
     public static Dictionary<string, List<string>> m_AllPrefabDir = new Dictionary<string, List<string>>();
 
-    // ÓĞĞ§Â·¾¶
+    // æœ‰æ•ˆè·¯å¾„
     public static List<string> m_DynamicLoadPaths = new List<string>();
 
 //    [MenuItem("Assets/Build/Clear And Set Tag Test", priority = 1)]
@@ -54,7 +54,7 @@ public static class ClearAndSetTag
     static public void ClearAndSetAllBundleTag()
     {
         ClearConsole();
-        // s1.ÏÈ°ÑËùÓĞ×ÊÔ´µÄabÇ©ÃûÖÃ¿Õ
+        // s1.å…ˆæŠŠæ‰€æœ‰èµ„æºçš„abç­¾åç½®ç©º
         string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
         foreach (string path in allAssetPaths)
         {
@@ -66,21 +66,21 @@ public static class ClearAndSetTag
             }
         }
 
-        // s2.Çå¿Õ»º´æ
+        // s2.æ¸…ç©ºç¼“å­˜
         m_AllFileDir.Clear();
         m_FilterABPaths.Clear();
         m_AllPrefabDir.Clear();
         m_DynamicLoadPaths.Clear();
 
-        // s3.¼ÓÔØÅäÖÃ
+        // s3.åŠ è½½é…ç½®
         BuildConfig abConfig = AssetDatabase.LoadAssetAtPath<BuildConfig>(ABCONFIGPATH);
 
-        // s4.½«ÎÄ¼ş¼ĞAB°ü¶ÁÈ¡³öÀ´
+        // s4.å°†æ–‡ä»¶å¤¹ABåŒ…è¯»å–å‡ºæ¥
         foreach (BuildConfig.FileDirABName item in abConfig.m_AllFileDirAB)
         {
             if (m_AllFileDir.ContainsKey(item.ABName))
             {
-                Debug.LogError("AB°üÃûÖØ¸´: " + item.ABName);
+                Debug.LogError("ABåŒ…åé‡å¤: " + item.ABName);
                 return;
             }
             else
@@ -91,7 +91,7 @@ public static class ClearAndSetTag
             }
         }
 
-        // s5.½«prefab´Óµ¥¸öprefabÎÄ¼ş¼ĞÖĞÕÒ³ö£¬²¢²éÕÒÒÀÀµ
+        // s5.å°†prefabä»å•ä¸ªprefabæ–‡ä»¶å¤¹ä¸­æ‰¾å‡ºï¼Œå¹¶æŸ¥æ‰¾ä¾èµ–
         if (abConfig.m_AllPrefabPath.Count > 0)
         {
             string[] allPrefabGUIDs = AssetDatabase.FindAssets("t:Prefab t:Scene", abConfig.m_AllPrefabPath.ToArray());
@@ -100,18 +100,18 @@ public static class ClearAndSetTag
                 string path = AssetDatabase.GUIDToAssetPath(allPrefabGUIDs[i]);
                 EditorUtility.DisplayProgressBar("Find Prefab", "Prefab:" + path,
                     (i + 1) * 1.0f / allPrefabGUIDs.Length);
-                // ·ÀÖ¹Â·¾¶±»ÎÄ¼ş¼Ğ»òÆäËûprefabÉèÖÃ¹ı
+                // é˜²æ­¢è·¯å¾„è¢«æ–‡ä»¶å¤¹æˆ–å…¶ä»–prefabè®¾ç½®è¿‡
                 if (!HavenInFilterABPaths(path))
                 {
-                    // prefabÂ·¾¶¼ÓÈëÓĞĞ§Â·¾¶m_DynamicLoadPaths
+                    // prefabè·¯å¾„åŠ å…¥æœ‰æ•ˆè·¯å¾„m_DynamicLoadPaths
                     m_DynamicLoadPaths.Add(path);
                     string[] allDepends = AssetDatabase.GetDependencies(path);
-                    // ½«´ËprefabµÄËùÓĞÒÀÀµÏîÉ¸Ñ¡Ã»±»Ê¹ÓÃµÄ
+                    // å°†æ­¤prefabçš„æ‰€æœ‰ä¾èµ–é¡¹ç­›é€‰æ²¡è¢«ä½¿ç”¨çš„
                     List<string> allDependPath = new List<string>();
                     for (int j = 0; j < allDepends.Length; j++)
                     {
                         string dependItem = allDepends[j];
-                        // ´Ë´¦ÌŞ³ıµôÒÑ¾­ÉèÖÃ¹ıµÄ¡¢ÒÑÔÚÎÄ¼ş¼ĞÖĞµÄ»òÕßcsÎÄ¼ş
+                        // æ­¤å¤„å‰”é™¤æ‰å·²ç»è®¾ç½®è¿‡çš„ã€å·²åœ¨æ–‡ä»¶å¤¹ä¸­çš„æˆ–è€…csæ–‡ä»¶
                         if (!HavenInFilterABPaths(dependItem) && !dependItem.EndsWith(".cs"))
                         {
                             m_FilterABPaths.Add(dependItem);
@@ -119,7 +119,7 @@ public static class ClearAndSetTag
                         }
                         else
                         {
-                            Debug.Log("ÒÑÉèÖÃ¹ı£¬²»ÔÙÖØ¸´ÉèÖÃ; »òÊÇC#ÎÄ¼ş²»ĞèÒªÉèÖÃ£º" + dependItem);
+                            Debug.Log("å·²è®¾ç½®è¿‡ï¼Œä¸å†é‡å¤è®¾ç½®; æˆ–æ˜¯C#æ–‡ä»¶ä¸éœ€è¦è®¾ç½®ï¼š" + dependItem);
                         }
                     }
 
@@ -127,7 +127,7 @@ public static class ClearAndSetTag
                     string prefabName = temp[temp.Length - 1].Split('.')[0];
                     if (m_AllPrefabDir.ContainsKey(prefabName) || m_AllFileDir.ContainsKey(prefabName))
                     {
-                        Debug.LogError("´æÔÚÍ¬Ãûprefab»òAB°üÃû: " + prefabName);
+                        Debug.LogError("å­˜åœ¨åŒåprefabæˆ–ABåŒ…å: " + prefabName);
                         return;
                     }
                     else
@@ -137,40 +137,40 @@ public static class ClearAndSetTag
                 }
                 else
                 {
-                    Debug.Log("ÒÑÉèÖÃ¹ı£¬²»ÔÙÖØ¸´ÉèÖÃ£º" + path);
+                    Debug.Log("å·²è®¾ç½®è¿‡ï¼Œä¸å†é‡å¤è®¾ç½®ï¼š" + path);
                 }
             }
 
             EditorUtility.ClearProgressBar();
         }
 
-        // s6.ÉèÖÃABÇ©Ãûm_AllFileDir¡¢m_AllPrefabDir£¨ÉÏÃæµÄ²½ÖèÉú³ÉÁËabName -> path¡¢prefabName(abName)->allDependPathsµÄÓ³Éä£©
+        // s6.è®¾ç½®ABç­¾åm_AllFileDirã€m_AllPrefabDirï¼ˆä¸Šé¢çš„æ­¥éª¤ç”Ÿæˆäº†abName -> pathã€prefabName(abName)->allDependPathsçš„æ˜ å°„ï¼‰
         SetALLABName();
-        // s7.É¾³ıÎŞÓÃµÄAB°ü£¨ÀûÓÃUnityAssetBundleÏà¹ØAPI£¬»ù±¾²»ÒÀÀµÉÏÃæÁ÷³Ì£©
+        // s7.åˆ é™¤æ— ç”¨çš„ABåŒ…ï¼ˆåˆ©ç”¨UnityAssetBundleç›¸å…³APIï¼ŒåŸºæœ¬ä¸ä¾èµ–ä¸Šé¢æµç¨‹ï¼‰
         DeleteUselessAssetBundle();
-        // s8.Éú³É×ÊÔ´ÅäÖÃ£¨ÀûÓÃUnityAssetBundleµÄAPI£¬»ù±¾²»ÒÀÀµÉÏÃæÁ÷³Ì£©
+        // s8.ç”Ÿæˆèµ„æºé…ç½®ï¼ˆåˆ©ç”¨UnityAssetBundleçš„APIï¼ŒåŸºæœ¬ä¸ä¾èµ–ä¸Šé¢æµç¨‹ï¼‰
         GenerateResourceCfg();
-        // s9.¼ì²âÊÇ·ñÓĞÑ­»·ÒıÓÃ£¨Éî¶ÈÓÅÏÈ¼ì²â£¬²»ÒÀÀµÉÏÃæÁ÷³Ì£©
+        // s9.æ£€æµ‹æ˜¯å¦æœ‰å¾ªç¯å¼•ç”¨ï¼ˆæ·±åº¦ä¼˜å…ˆæ£€æµ‹ï¼Œä¸ä¾èµ–ä¸Šé¢æµç¨‹ï¼‰
         CheckRecycleReference.CheckRecycleAB();
         Debug.Log("Clear and Set All Bundle Tag done.");
     }
 
     /// <summary>
-    /// É¾³ıÎŞÓÃµÄAB°ü
+    /// åˆ é™¤æ— ç”¨çš„ABåŒ…
     /// </summary>
     static void DeleteUselessAssetBundle()
     {
         DirectoryInfo directory = new DirectoryInfo(ABUtility.ABRelativePath);
         if (directory.Exists)
         {
-            // ¹¹ÔìAB°üÃû³ÆSet
+            // æ„é€ ABåŒ…åç§°Set
             string[] temp = AssetDatabase.GetAllAssetBundleNames();
             List<string> allBundleNames = new List<string>(temp);
             allBundleNames.Add(ABUtility.PlatformName);
             HashSet<string> allBundleNamesSet = new HashSet<string>();
             for (int i = 0; i < allBundleNames.Count; i++)
             {
-                // ABÇ©ÃûÉèÖÃµ½ÎÄ¼ş¼ĞÉÏ£¬ÀïÃæÊÇ¿ÕµÄ»°²»´ò°ü£¬ÕâÀï°ÑÖ®Ç°µÄÉ¾³ıµô
+                // ABç­¾åè®¾ç½®åˆ°æ–‡ä»¶å¤¹ä¸Šï¼Œé‡Œé¢æ˜¯ç©ºçš„è¯ä¸æ‰“åŒ…ï¼Œè¿™é‡ŒæŠŠä¹‹å‰çš„åˆ é™¤æ‰
                 if (AssetDatabase.GetAssetPathsFromAssetBundle(allBundleNames[i]).Length > 0 ||
                     allBundleNames[i] == ABUtility.PlatformName)
                 {
@@ -184,18 +184,18 @@ public static class ClearAndSetTag
                 }
             }
 
-            // É¾³ıÎÄ¼ş
+            // åˆ é™¤æ–‡ä»¶
             FileInfo[] files = directory.GetFiles("*", SearchOption.AllDirectories);
             for (int i = 0; i < files.Length; i++)
             {
                 if (!allBundleNamesSet.Contains(files[i].FullName))
                 {
-                    Debug.Log("É¾³ıÈßÓàAB°üÎÄ¼ş: " + files[i].FullName);
+                    Debug.Log("åˆ é™¤å†—ä½™ABåŒ…æ–‡ä»¶: " + files[i].FullName);
                     File.Delete(files[i].FullName);
                 }
             }
 
-            // É¾³ı¿ÕÎÄ¼ş¼Ğ
+            // åˆ é™¤ç©ºæ–‡ä»¶å¤¹
             DirectoryInfo[] directories = directory.GetDirectories("*.*", SearchOption.AllDirectories);
             foreach (DirectoryInfo itemDir in directories)
             {
@@ -203,18 +203,18 @@ public static class ClearAndSetTag
                 if (subFiles.Length == 0)
                 {
                     itemDir.Delete();
-                    Debug.Log("É¾³ı¿ÕÎÄ¼ş¼Ğ: " + itemDir.FullName);
+                    Debug.Log("åˆ é™¤ç©ºæ–‡ä»¶å¤¹: " + itemDir.FullName);
                 }
             }
         }
     }
 
     /// <summary>
-    /// Éú³É×ÊÔ´ÅäÖÃ±í
+    /// ç”Ÿæˆèµ„æºé…ç½®è¡¨
     /// </summary>
     static void GenerateResourceCfg()
     {
-        // resPath¶ÔÓ¦µÄAB°ü
+        // resPathå¯¹åº”çš„ABåŒ…
         Dictionary<string, string> res_to_bundle = new Dictionary<string, string>();
         Dictionary<string, string[]> ab_to_abDepences = new Dictionary<string, string[]>();
         string[] allBundleNames = AssetDatabase.GetAllAssetBundleNames();
@@ -227,7 +227,7 @@ public static class ClearAndSetTag
                 string assetPath = inBundleAssetPaths[j];
                 if (!assetPath.EndsWith(".cs") && IsDynamicLoadPath(assetPath))
                 {
-                    // Ö»ÓĞÔÚÉÏÃæÅäÖÃÖĞµÄ×ÊÔ´²Å»á½øÈëbundleName
+                    // åªæœ‰åœ¨ä¸Šé¢é…ç½®ä¸­çš„èµ„æºæ‰ä¼šè¿›å…¥bundleName
                     res_to_bundle.Add(assetPath, bundleName);
                 }
             }
@@ -236,7 +236,7 @@ public static class ClearAndSetTag
             ab_to_abDepences.Add(bundleName, dependBundleNames);
         }
 
-        // ¹¹ÔìÃ¿¸öResµÄÒÀÀµĞÅÏ¢
+        // æ„é€ æ¯ä¸ªResçš„ä¾èµ–ä¿¡æ¯
         AssetBundleConfig configs = ScriptableObject.CreateInstance<AssetBundleConfig>();
         configs.ResDict = new List<ResData>();
         foreach (var item in res_to_bundle)
@@ -249,7 +249,7 @@ public static class ClearAndSetTag
             configs.ResDict.Add(abBase);
         }
 
-        // ¹¹ÔìÃ¿¸öAB°üµÄÒÀÀµĞÅÏ¢
+        // æ„é€ æ¯ä¸ªABåŒ…çš„ä¾èµ–ä¿¡æ¯
         configs.ABDict = new List<ABData>();
         foreach (var item in ab_to_abDepences)
         {
@@ -259,7 +259,7 @@ public static class ClearAndSetTag
             configs.ABDict.Add(abData);
         }
         
-        // luaÎÄ¼ş¼Ó¸ö.txtºó×º
+        // luaæ–‡ä»¶åŠ ä¸ª.txtåç¼€
         foreach (var item in configs.ResDict)
         {
             if (item.Path.EndsWith(".lua"))
@@ -269,7 +269,7 @@ public static class ClearAndSetTag
             }
         }
         
-        // ÒÀÀµĞÅÏ¢Ğ´Èëjson
+        // ä¾èµ–ä¿¡æ¯å†™å…¥json
         string filePath = Path.Combine("Assets/GameData/Configs", "AssetBundleConfig.asset");
         File.Delete(filePath);
         AssetDatabase.CreateAsset(configs, filePath);
@@ -278,7 +278,7 @@ public static class ClearAndSetTag
     }
 
     /// <summary>
-    /// ÉèÖÃAB°üÇ©Ãû
+    /// è®¾ç½®ABåŒ…ç­¾å
     /// </summary>
     static void SetALLABName()
     {
@@ -303,7 +303,7 @@ public static class ClearAndSetTag
         AssetImporter importer = AssetImporter.GetAtPath(path);
         if (importer is null)
         {
-            Debug.LogError("ÎÄ¼ş²»´æÔÚ£º" + path);
+            Debug.LogError("æ–‡ä»¶ä¸å­˜åœ¨ï¼š" + path);
         }
         else
         {
@@ -312,15 +312,15 @@ public static class ClearAndSetTag
     }
 
     /// <summary>
-    /// ÊÇ·ñÒÑ¾­°üº¬ÁË´ËÂ·¾¶
+    /// æ˜¯å¦å·²ç»åŒ…å«äº†æ­¤è·¯å¾„
     /// </summary>
     /// <param name="path"></param>
-    /// <returns>Â·¾¶Ãû</returns>
+    /// <returns>è·¯å¾„å</returns>
     static bool HavenInFilterABPaths(string path)
     {
         for (int i = 0; i < m_FilterABPaths.Count; i++)
         {
-            // pathÒÑ¾­ÔÚÂ·¾¶ÖĞÁË£¬»òÕßÂ·¾¶ÊÇ¸öpathµÄ¸¸Ä¿Â¼
+            // pathå·²ç»åœ¨è·¯å¾„ä¸­äº†ï¼Œæˆ–è€…è·¯å¾„æ˜¯ä¸ªpathçš„çˆ¶ç›®å½•
             if (path == m_FilterABPaths[i] ||
                 (path.Contains(m_FilterABPaths[i]) && path.Replace(m_FilterABPaths[i], "")[0] == '/'))
             {
@@ -332,7 +332,7 @@ public static class ClearAndSetTag
     }
 
     /// <summary>
-    /// ÊÇ·ñĞèÒª¶¯Ì¬¼ÓÔØ£¬ Ä¿µÄÊÇÖ»¼ÇÂ¼ÏëÒª¹ØĞÄµÄ×ÊÔ´
+    /// æ˜¯å¦éœ€è¦åŠ¨æ€åŠ è½½ï¼Œ ç›®çš„æ˜¯åªè®°å½•æƒ³è¦å…³å¿ƒçš„èµ„æº
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>

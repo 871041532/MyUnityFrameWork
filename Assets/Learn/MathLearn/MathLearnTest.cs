@@ -14,6 +14,9 @@ public class MathLearnTest : MonoBehaviour
     private MVector3 mAxis = new MVector3(0, 0, 1);
 
     private Mesh mMesh;
+
+    private UnityEngine.Vector3[] mVertices;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -37,24 +40,24 @@ public class MathLearnTest : MonoBehaviour
         Debug.Log(p * composite);
         Debug.Log(p * composite * composite2);
         Debug.Log(p * composite * composite.Inverse());
+        
         mMesh = GetComponent<MeshFilter>().mesh;
+        mVertices = mMesh.vertices;
     }
 
     // Update is called once per frame
     void Update()
     {
-        var a = new Matrix33();
         Matrix44 rotate = Matrix44.AngleAxis(mAngle, mAxis);
-        UnityEngine.Vector3[] vertices = mMesh.vertices;
-        for (int i = 0; i < vertices.Length; i++)
+        for (int i = 0; i < mVertices.Length; i++)
         {
-            var item = vertices[i];
+            var item = mVertices[i];
             var v = new MVector3(item.x, item.y, item.z);
             var t = v * rotate;
-            vertices[i].x = t.x;
-            vertices[i].y = t.y;
-            vertices[i].z = t.z;
+            mVertices[i].x = t.x;
+            mVertices[i].y = t.y;
+            mVertices[i].z = t.z;
         }
-        mMesh.vertices = vertices;
+        mMesh.vertices = mVertices;
     }
 }

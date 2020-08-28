@@ -6,7 +6,6 @@ namespace MathLearn
 {
     public struct Matrix33
     {
-        private float[,] myCells;
         private float m00;
         private float m01;
         private float m02;
@@ -35,13 +34,11 @@ namespace MathLearn
             m20 = line3.x;
             m21 = line3.y;
             m22 = line3.z;
-            myCells = null;
         }
 
         // 用离散的float数造矩阵
         public Matrix33(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
         {
-            myCells = null;
             this.m00 = m00;
             this.m01 = m01;
             this.m02 = m02;
@@ -61,11 +58,45 @@ namespace MathLearn
             get
             {
                 if (r == 0 && c == 0)
-                {
                     return m00;
-                }
+                else if (r == 0 && c == 1)
+                    return m01;
+                else if (r == 0 && c == 2)
+                    return m02;
+                else if (r == 1 && c == 0)
+                    return m10;
+                else if (r == 1 && c == 1)
+                    return m11;
+                else if (r == 1 && c == 2)
+                    return m12;
+                else if (r == 2 && c == 0)
+                    return m20;
+                else if (r == 2 && c == 1)
+                    return m21;
+                else if (r == 2 && c == 2)
+                    return m22;
+                return 0;
             }
-            set {; }
+            set {                
+                if (r == 0 && c == 0)
+                    m00 = value;
+                else if (r == 0 && c == 1)
+                    m01 = value;
+                else if (r == 0 && c == 2)
+                    m02 = value;
+                else if (r == 1 && c == 0)
+                    m10 = value;
+                else if (r == 1 && c == 1)
+                    m11 = value;
+                else if (r == 1 && c == 2)
+                    m12 = value;
+                else if (r == 2 && c == 0)
+                    m20 = value;
+                else if (r == 2 && c == 1)
+                    m21 = value;
+                else if (r == 2 && c == 2)
+                    m22 = value;
+            }
         }
 
         // 计算行列式
@@ -75,7 +106,7 @@ namespace MathLearn
             for (int i = 0; i < mNumber; i++)
             {
                 float remainValue = this._GetRemianValue(0, i);
-                det = det + myCells[0,i] * remainValue;
+                det = det + this[0,i] * remainValue;
             }
             return det;
         }
@@ -95,7 +126,7 @@ namespace MathLearn
                         int rowIndex = index / remainNumber;
                         int colIndex = index % remainNumber;
                         ++index;
-                        cells[rowIndex, colIndex] = myCells[row, col];
+                        cells[rowIndex, colIndex] = this[row, col];
                     }
                 }
             }
@@ -109,15 +140,15 @@ namespace MathLearn
         // 获取伴随矩阵
         public Matrix33 _GetAdj()
         {
-            float[,] cells = new float[mNumber, mNumber];
+            Matrix33 matrix = new Matrix33();
             for (int i = 0; i < mNumber; i++)
             {
                 for (int j = 0; j < mNumber; j++)
                 {
-                    cells[j, i] = this._GetRemianValue(i, j);
+                    matrix[j, i] = this._GetRemianValue(i, j);
                 }
             }
-            return new Matrix33(cells);
+            return matrix;
         }
 
         // 获取逆矩阵
@@ -130,29 +161,28 @@ namespace MathLearn
         
         public static Matrix33 operator *(Matrix33 lhs, float k)
         {
-            float[,] cells = new float[mNumber, mNumber];
+            Matrix33 matrix = new Matrix33();
             for (int row = 0; row < mNumber; row++)
             {
                 for (int col = 0; col < mNumber; col++)
                 {
-                    cells[row, col] = lhs[row, col] * k;
+                    matrix[row, col] = lhs[row, col] * k;
                 }
             }
-            return new Matrix33(cells);
+            return matrix;
         }
         
         public static Vector3 operator *(Vector3 p, Matrix33 m)
         {
-            var cells = m.myCells;
-            float x = p.x * cells[0, 0] + p.y * cells[1, 0] + p.z * cells[2, 0];
-            float y = p.x * cells[0, 1] + p.y * cells[1, 1] + p.z * cells[2, 1];
-            float z = p.x * cells[0, 2] + p.y * cells[1, 2] + p.z * cells[2, 2];
+            float x = p.x * m[0, 0] + p.y * m[1, 0] + p.z * m[2, 0];
+            float y = p.x * m[0, 1] + p.y * m[1, 1] + p.z * m[2, 1];
+            float z = p.x * m[0, 2] + p.y * m[1, 2] + p.z * m[2, 2];
             return new Vector3(x, y, z);
         }
         
         public static Matrix33 operator *(Matrix33 m1, Matrix33 m2)
         {
-            var cells = new float[mNumber, mNumber];
+            Matrix33 matrix = new Matrix33();
             for (int row = 0; row < mNumber; row++)
             {
                 for (int col = 0; col < mNumber; col++)
@@ -162,10 +192,10 @@ namespace MathLearn
                     {
                         value = value + m1[row, i] * m2[i, col];
                     }
-                    cells[row, col] = value;
+                    matrix[row, col] = value;
                 }
             }
-            return new Matrix33(cells);
+            return matrix;
         }
         
         // 用角度和旋转轴构造矩阵
@@ -178,19 +208,20 @@ namespace MathLearn
             float x = axis.x;
             float y = axis.y;
             float z = axis.z;
-            float[,] cells = new float[mNumber, mNumber];
-            cells[0, 0] = x * x * C1 + C;
-            cells[0, 1] = x * y * C1 + z * S;
-            cells[0, 2] = x * z * C1 - y * S;
+            
+            Matrix33 matrix = new Matrix33();
+            matrix[0, 0] = x * x * C1 + C;
+            matrix[0, 1] = x * y * C1 + z * S;
+            matrix[0, 2] = x * z * C1 - y * S;
 
-            cells[1, 0] = x * y * C1 - z * S;
-            cells[1, 1] = y * y * C1 + C;
-            cells[1, 2] = y * z * C1 + x * S;
+            matrix[1, 0] = x * y * C1 - z * S;
+            matrix[1, 1] = y * y * C1 + C;
+            matrix[1, 2] = y * z * C1 + x * S;
 
-            cells[2, 0] = x * z * C1 + y * S;
-            cells[2, 1] = y * z * C1 - x * S;
-            cells[2, 2] = z * z * C1 + C;
-            return new Matrix33(cells);
+            matrix[2, 0] = x * z * C1 + y * S;
+            matrix[2, 1] = y * z * C1 - x * S;
+            matrix[2, 2] = z * z * C1 + C;
+            return matrix;
         }
     }
 }
