@@ -9,13 +9,14 @@ using MQuaternion = MathLearn.Quaternion;
 
 public class MathLearnTest : MonoBehaviour
 {
-    public float mAngle = 3f;
+    public float mAngle = 2f;
 
     private MVector3 mAxis = new MVector3(0, 0, 1);
 
     private Mesh mMesh;
 
     private UnityEngine.Vector3[] mVertices;
+    private UnityEngine.Vector3[] mNormals;
     
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,7 @@ public class MathLearnTest : MonoBehaviour
         
         mMesh = GetComponent<MeshFilter>().mesh;
         mVertices = mMesh.vertices;
+        mNormals = mMesh.normals;
     }
 
     // Update is called once per frame
@@ -57,7 +59,15 @@ public class MathLearnTest : MonoBehaviour
             mVertices[i].x = t.x;
             mVertices[i].y = t.y;
             mVertices[i].z = t.z;
+            
+            var item2 = mNormals[i];
+            var v2 = new MVector3(item2.x, item2.y, item2.z);
+            var t2 = v2 * rotate;
+            mNormals[i].x = t2.x;
+            mNormals[i].y = t2.y;
+            mNormals[i].z = t2.z;
         }
         mMesh.vertices = mVertices;
+        mMesh.normals = mNormals;
     }
 }
