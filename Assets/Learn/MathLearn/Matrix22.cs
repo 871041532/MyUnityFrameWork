@@ -5,63 +5,82 @@ namespace MathLearn
 {
     public struct Matrix22
     {
+        private float m00;
+        private float m01;
+        private float m10;
         private float m11;
-        private float m12;
-        private float m21;
-        private float m22;
 
-        public Matrix22(float m11, float m12, float m21, float m22)
+        public Matrix22(float m00, float m01, float m10, float m11)
         {
+            this.m00 = m00;
+            this.m01 = m01;
+            this.m10 = m10;
             this.m11 = m11;
-            this.m12 = m12;
-            this.m21 = m21;
-            this.m22 = m22;
         }
 
         public Matrix22(Vector3 line1, Vector3 line2)
         {
-            this.m11 = line1.x;
-            this.m12 = line1.y;
-            this.m21 = line2.x;
-            this.m22 = line2.y;
+            this.m00 = line1.x;
+            this.m01 = line1.y;
+            this.m10 = line2.x;
+            this.m11 = line2.y;
         }
-
-        public Matrix22(float[,] cells)
+        
+        // 下标运算符
+        public float this[int r, int c]
         {
-            this.m11 = cells[0, 0];
-            this.m12 = cells[0, 1];
-            this.m21 = cells[1, 0];
-            this.m22 = cells[1, 1];
+            get
+            {
+                if (r == 0 && c == 0)
+                    return m00;
+                else if (r == 0 && c == 1)
+                    return m01;
+                else if (r == 1 && c == 0)
+                    return m10;
+                else if (r == 1 && c == 1)
+                    return m11;
+                return 0;
+            }
+            set {                
+                if (r == 0 && c == 0)
+                    m00 = value;
+                else if (r == 0 && c == 1)
+                    m01 = value;
+                else if (r == 1 && c == 0)
+                    m10 = value;
+                else if (r == 1 && c == 1)
+                    m11 = value;
+            }
         }
-
+        
         public float Determinant()
         {
-            return m11 * m22 - m12 * m21;
+            return m00 * m11 - m01 * m10;
         }
 
         public Matrix22 Inverse()
         {
             float det = this.Determinant();
-            float t11 = m22 / det;
-            float t12 = -m12 / det;
-            float t21 = -m21 / det;
-            float t22 = m11 / det;
+            float t11 = m11 / det;
+            float t12 = -m01 / det;
+            float t21 = -m10 / det;
+            float t22 = m00 / det;
             return new Matrix22(t11, t12, t21, t22);
         }
 
         public static Matrix22 operator *(Matrix22 lhs, Matrix22 rhs)
         {
-            float t11 = lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21;
-            float t12 = lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22;
-            float t21 = lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21;
-            float t22 = lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22;
+            float t11 = lhs.m00 * rhs.m00 + lhs.m01 * rhs.m10;
+            float t12 = lhs.m00 * rhs.m01 + lhs.m01 * rhs.m11;
+            float t21 = lhs.m10 * rhs.m00 + lhs.m11 * rhs.m10;
+            float t22 = lhs.m10 * rhs.m01 + lhs.m11 * rhs.m11;
             return new Matrix22(t11, t12, t21, t22);
         }
 
         public static Vector3 operator *(Vector3 p, Matrix22 m)
         {
-            float x = p.x * m.m11 + p.y * m.m21;
-            float y = p.x * m.m12 + p.y * m.m22;
+            float x = p.x * m.m00 + p.y * m.m10;
+            float y = p.x * m.m01 + p.y * m.m11;
             return new Vector3(x, y, p.z);
         }
 

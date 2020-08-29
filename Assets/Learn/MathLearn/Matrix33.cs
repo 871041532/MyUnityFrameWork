@@ -115,7 +115,8 @@ namespace MathLearn
         public float _GetRemianValue(int trimRow, int trimCol)
         {
             int remainNumber = mNumber - 1;
-            float[,] cells = new float[remainNumber, remainNumber];
+            // 余子式
+            Matrix22 remain = new Matrix22();
             int index = 0;
             for (int row = 0; row < mNumber; row++)
             {
@@ -126,12 +127,10 @@ namespace MathLearn
                         int rowIndex = index / remainNumber;
                         int colIndex = index % remainNumber;
                         ++index;
-                        cells[rowIndex, colIndex] = this[row, col];
+                        remain[rowIndex, colIndex] = this[row, col];
                     }
                 }
             }
-            // 余子式
-            Matrix22 remain = new Matrix22(cells);
             // 代数余子式
             float remainValue = remain.Determinant() * (float)Math.Pow(-1, trimRow + trimCol);
             return remainValue;
