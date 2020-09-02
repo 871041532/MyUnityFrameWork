@@ -197,6 +197,7 @@ namespace MathLearn
             return matrix;
         }
         
+        // 默认乘法是点
         public static Vector3 operator *(Vector3 p, Matrix44 m)
         {
             float x = p.x * m[0, 0] + p.y * m[1, 0] + p.z * m[2, 0] + m[3, 0];
@@ -204,7 +205,15 @@ namespace MathLearn
             float z = p.x * m[0, 2] + p.y * m[1, 2] + p.z * m[2, 2] + m[3, 2];
             return new Vector3(x, y, z);
         }
-        
+
+        public Vector3 MulVector(Vector3 p)
+        {
+            float x = p.x * this[0, 0] + p.y * this[1, 0] + p.z * this[2, 0];
+            float y = p.x * this[0, 1] + p.y * this[1, 1] + p.z * this[2, 1];
+            float z = p.x * this[0, 2] + p.y * this[1, 2] + p.z * this[2, 2];
+            return new Vector3(x, y, z);
+        }
+
         public static Matrix44 operator *(Matrix44 m1, Matrix44 m2)
         {
             Matrix44 matrix = new Matrix44();
@@ -256,7 +265,7 @@ namespace MathLearn
             return matrix;
         }
         
-        // 绕axis旋转angle度，然后再平移translate
+        // 绕axis旋转angle度，然后再平移translate（一次仿射变换）
         public static Matrix44 AngleAxisTranslate(float angle, Vector3 axis, Vector3 translate)
         {
             Matrix44 matrix = AngleAxis(angle, axis);
