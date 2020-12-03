@@ -282,5 +282,12 @@ namespace MathLearn
             Matrix44 matrix = new Matrix44(1, 0, 0, 0,   0, 1, 0, 0,   0, 0, 1, 0,   translate.x, translate.y, translate.z, 1);
             return matrix;
         }
+        
+        // 缩放矩阵
+        public static Matrix44 Scale(Vector3 scale)
+        {
+            Matrix44 matrix = new Matrix44(scale.x,0,0,0,  0,scale.y,0,0, 0,0,scale.z,0, 0,0,0,1);
+            return matrix;
+        }
     }
 }
