@@ -53,6 +53,28 @@ namespace MathLearn
             return (num1 * num1 + num2 * num2) < 9.99999943962493E-11;
         }
 
+        // 两个分量都小于
+        public static bool operator <(Vector2 lhs, Vector2 rhs)
+        {
+            return lhs != rhs && lhs.x < rhs.x && lhs.y < rhs.y;
+        }
+        
+        public static bool operator <=(Vector2 lhs, Vector2 rhs)
+        {
+            return (lhs == rhs) || (lhs.x < rhs.x && lhs.y < rhs.y);
+        }
+
+        // 两个分量都大于
+        public static bool operator >(Vector2 lhs, Vector2 rhs)
+        {
+            return lhs != rhs && lhs.x > rhs.x && lhs.y > rhs.y;
+        }
+        
+        public static bool operator >=(Vector2 lhs, Vector2 rhs)
+        {
+            return (lhs == rhs) || (lhs.x > rhs.x && lhs.y > rhs.y);
+        }
+        
         public static bool operator !=(Vector2 lhs, Vector2 rhs)
         {
             return !(lhs == rhs);

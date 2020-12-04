@@ -5,10 +5,10 @@ namespace MathLearn
     public struct Ray2D
     {
         private Vector2 m_Origin;
-        public Vector2 Origin => m_Origin;
+        public Vector2 origin => m_Origin;
         
         private Vector2 m_Direction;
-        public Vector2 Direction => m_Direction;
+        public Vector2 direction => m_Direction;
 
 
         public Ray2D(Vector2 origin, Vector2 direction)
@@ -40,6 +40,11 @@ namespace MathLearn
             this.ComputeVectorStyle(out normal, out distance);
             Vector2 nearestPos = targetPos - (targetPos * normal - distance) * normal;
             return nearestPos;
+        }
+        
+        public override int GetHashCode()
+        {
+            return m_Origin.GetHashCode() ^ m_Direction.GetHashCode() << 2;
         }
     }
 }

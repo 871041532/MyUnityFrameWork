@@ -8,6 +8,7 @@ using MVector3 = MathLearn.Vector3;
 using MQuaternion = MathLearn.Quaternion;
 using MVector2 = MathLearn.Vector2;
 using MRay2D = MathLearn.Ray2D;
+using MRay = MathLearn.Ray;
 
 public class MathLearnTest : MonoBehaviour
 {
@@ -67,12 +68,9 @@ public class MathLearnTest : MonoBehaviour
         var p1 = p * s * r * t;
         p = p1 * t.Inverse() * r.Inverse() * s.Inverse();
 
-        var ray2d1 = new MRay2D(new MVector2(1, -1), new MVector2(1, 1));
-        MVector2 normal;
-        float d;
-        ray2d1.ComputeVectorStyle(out normal, out d);
+        var ray2d1 = new MRay(new MVector3(1, -1, 0), new MVector3(1, 1, 0));
 
-        var aaa = ray2d1.GetNearestPos(new MVector2(1, 1));
+        var aaa = ray2d1.GetNearestPos(new MVector3(1, 1, 0));
         float aaaa = 1;
     }
 

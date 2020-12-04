@@ -103,11 +103,25 @@ namespace MathLearn
             return new Vector3(a.x / d, a.y / d, a.z / d);
         }
 
-        // 标准化
-        public static Vector3 Normalize(Vector3 lhs)
+        // 标准化自身
+        public void Normalize()
         {
-            float num = Magnitude(lhs);
-            return lhs / num;
+            float magnitude = this.Magnitude();
+            if ((double) magnitude > 9.99999974737875E-06)
+                this = this / magnitude;
+            else
+                this = Vector3.zero;
+        }
+
+        // 返回标准化后的值，不改变自身的值
+        public Vector3 normalized
+        {
+            get
+            {
+                Vector3 vector3 = new Vector3(this.x, this.y);
+                vector3.Normalize();
+                return vector3;
+            }
         }
 
         // 模长
