@@ -9,6 +9,9 @@ using MQuaternion = MathLearn.Quaternion;
 using MVector2 = MathLearn.Vector2;
 using MRay2D = MathLearn.Ray2D;
 using MRay = MathLearn.Ray;
+using Bounds2D = MathLearn.Bounds2D;
+using MBounds = MathLearn.Bounds;
+using Bounds = UnityEngine.Bounds; 
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 
@@ -82,30 +85,36 @@ public class MathLearnTest : MonoBehaviour
 
         float minX = Random.Range(0, 10);
         float minY = Random.Range(0, 10);
+        float minZ = Random.Range(0, 10);
+        
         float maxX = Random.Range(10.1f, 20);
         float maxY = Random.Range(10.1f, 20);
+        float maxZ = Random.Range(10.1f, 20);
 
         float originX = Random.Range(0, 50);
         float originY = Random.Range(0, 50);
+        float originZ = Random.Range(0, 50);
+        
         float directionX = Random.Range(1, 10);
         float directionY = Random.Range(1, 10);
+        float directionZ = Random.Range(1, 10);
         
-        Bounds2D myB = new Bounds2D(MVector2.zero, MVector2.zero);
-        myB.SetMinMax(new MVector2(minX, minY), new MVector2(maxX, maxY));
+        MBounds myB = new MBounds(MVector3.zero, MVector3.zero);
+        myB.SetMinMax(new MVector3(minX, minY, minZ), new MVector3(maxX, maxY, maxZ));
         float mD = 0;
-        bool mR = myB.IntersectRay(new MRay2D(new MVector2(originX, originY), new MVector2(directionX, directionY)), out mD);
+        bool mR = myB.IntersectRay(new MRay(new MVector3(originX, originY, originZ), new MVector3(directionX, directionY, directionZ)), out mD);
         
         Bounds B = new Bounds(Vector3.zero, Vector3.zero);
-        B.SetMinMax(new Vector3(minX, minY, 0), new Vector3(maxX, maxY, 0));
+        B.SetMinMax(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         float D = 0;
-        bool R = B.IntersectRay(new UnityEngine.Ray(new Vector3(originX, originY, 0), new Vector3(directionX, directionY, 0)), out D);
+        bool R = B.IntersectRay(new UnityEngine.Ray(new Vector3(originX, originY, originZ), new Vector3(directionX, directionY, directionZ)), out D);
 
         if (Mathf.Abs(mD - D) < 0.00001f && mR == R)
         {
         }
         else
         {
-            if(originX < minX || originX > maxX || originY < minY || originY > maxY)
+            if(originX < minX || originX > maxX || originY < minY || originY > maxY || originZ < minZ || originZ > maxZ)
             {
                 var a = 1;
             }

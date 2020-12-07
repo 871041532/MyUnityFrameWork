@@ -3,10 +3,10 @@ namespace MathLearn
     public struct Ray
     {
         private Vector3 m_Origin;
-        public Vector3 Origin => m_Origin;
+        public Vector3 origin => m_Origin;
         
         private Vector3 m_Direction;
-        public Vector3 Direction => m_Direction;
+        public Vector3 direction => m_Direction;
 
 
         public Ray(Vector3 origin, Vector3 direction)

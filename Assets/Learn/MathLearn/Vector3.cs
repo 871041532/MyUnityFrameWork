@@ -47,7 +47,7 @@ namespace MathLearn
             return this.x.GetHashCode() ^ this.y.GetHashCode() << 2 ^ this.z.GetHashCode() >> 2;
         }
         
-        public Vector3(float _x, float _y, float _z=0)
+        public Vector3(float _x, float _y, float _z)
         {
             this.x = _x;
             this.y = _y;
@@ -67,6 +67,28 @@ namespace MathLearn
             return !(lhs == rhs);
         }
 
+        // 两个分量都小于
+        public static bool operator <(Vector3 lhs, Vector3 rhs)
+        {
+            return lhs != rhs && lhs.x < rhs.x && lhs.y < rhs.y && lhs.z < rhs.z;
+        }
+        
+        public static bool operator <=(Vector3 lhs, Vector3 rhs)
+        {
+            return (lhs == rhs) || (lhs.x < rhs.x && lhs.y < rhs.y && lhs.z < rhs.z);
+        }
+
+        // 两个分量都大于
+        public static bool operator >(Vector3 lhs, Vector3 rhs)
+        {
+            return lhs != rhs && lhs.x > rhs.x && lhs.y > rhs.y && lhs.z > rhs.z;
+        }
+        
+        public static bool operator >=(Vector3 lhs, Vector3 rhs)
+        {
+            return (lhs == rhs) || (lhs.x > rhs.x && lhs.y > rhs.y && lhs.z > rhs.z);
+        }
+        
         public static Vector3 operator -(Vector3 lhs, Vector3 rhs)
         {
             return new Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
@@ -129,7 +151,7 @@ namespace MathLearn
         {
             get
             {
-                Vector3 vector3 = new Vector3(this.x, this.y);
+                Vector3 vector3 = new Vector3(this.x, this.y, this.z);
                 vector3.Normalize();
                 return vector3;
             }
