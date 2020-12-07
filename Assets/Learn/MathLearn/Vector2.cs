@@ -162,6 +162,16 @@ namespace MathLearn
             return (float) Math.Sqrt(dx * dx + dy * dy);
         }
         
+        public static Vector2 Min(Vector2 lhs, Vector2 rhs)
+        {
+            return new Vector2(Math.Min(lhs.x, rhs.x), Math.Min(lhs.y, rhs.y));
+        }
+        
+        public static Vector2 Max(Vector2 lhs, Vector2 rhs)
+        {
+            return new Vector2(Math.Max(lhs.x, rhs.x), Math.Max(lhs.y, rhs.y));
+        }
+        
         public override string ToString()
         {
             return string.Format("(x:{0:F2}, y:{1:F2})", this.x,  this.y);

@@ -46,17 +46,100 @@ namespace MathLearn
             return m_Center.GetHashCode() ^ m_Extent.GetHashCode() << 2;
         }
         
+        // 扩张AABB使之包围住点
+        public void Encapsulate(Vector2 pos)
+        {
+           SetMinMax(Vector2.Min(min, pos), Vector2.Max(max, pos)); 
+        }
+        
+        // 两个AABB相交性判断
+        public bool Intersects(Bounds2D bounds)
+        {
+            return min.x <= bounds.max.x && max.x >= bounds.min.x && min.y <=  bounds.max.y && max.y >= bounds.min.y;
+        }
+        
+        // 判断AABB是否和射线相交
+        public bool IntersectRay(Ray2D ray)
+        {
+            float temp = 0;
+            return IntersectRay(ray, out temp);
+        }
+
         public bool IntersectRay(Ray2D ray, out float distance)
         {
-            // 点在包围盒里
-            if (ray.origin > min && ray.origin < max)
+            // 点在内部
+            if (ray.origin >= min && ray.origin <= max)
             {
                 distance = 0;
                 return true;
             } 
-            // minx
-            
-            return Bounds.IntersectRayAABB(ray, this, out distance);
+            // minX
+            if (ray.origin.x < min.x && ray.direction.x > 0)
+            {
+                float t = (min.x - ray.origin.x) / ray.direction.x;
+                Vector2 hitPos = ray.origin + ray.direction * t;
+                if (hitPos.y >= min.y && hitPos.y <= max.y)
+                {
+                    distance = t;
+                    return true;
+                }
+            }
+            // maxX
+            if (ray.origin.x > max.x && ray.direction.x < 0)
+            {
+                float t = (max.x - ray.origin.x) / ray.direction.x;
+                Vector2 hitPos = ray.origin + ray.direction * t;
+                if (hitPos.y >= min.y && hitPos.y <= max.y)
+                {
+                    distance = t;
+                    return true;
+                }
+            }
+            // minY
+            if (ray.origin.y < min.y && ray.direction.y > 0)
+            {
+                float t = (min.y - ray.origin.y) / ray.direction.y;
+                Vector2 hitPos = ray.origin + ray.direction * t;
+                if (hitPos.x >= min.x && hitPos.x <= max.x)
+                {
+                    distance = t;
+                    return true;
+                }
+            }
+            // maxY
+            if (ray.origin.y > max.y && ray.direction.y < 0)
+            {
+                float t = (max.y - ray.origin.y) / ray.direction.y;
+                Vector2 hitPos = ray.origin + ray.direction * t;
+                if (hitPos.x >= min.x && hitPos.x <= max.x)
+                {
+                    distance = t;
+                    return true;
+                }
+            }
+            distance = 0;
+            return false;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

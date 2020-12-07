@@ -102,6 +102,17 @@ namespace MathLearn
         {
             return new Vector3(a.x / d, a.y / d, a.z / d);
         }
+        
+        public static Vector3 Min(Vector3 lhs, Vector3 rhs)
+        {
+            return new Vector3(Math.Min(lhs.x, rhs.x), Math.Min(lhs.y, rhs.y), Math.Min(lhs.z, rhs.z));
+        }
+        
+        public static Vector3 Max(Vector3 lhs, Vector3 rhs)
+        {
+            return new Vector3(Math.Max(lhs.x, rhs.x), Math.Max(lhs.y, rhs.y), Math.Max(lhs.z, rhs.z));
+        }
+        
 
         // 标准化自身
         public void Normalize()
