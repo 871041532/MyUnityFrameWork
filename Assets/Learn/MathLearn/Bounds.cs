@@ -142,6 +142,11 @@ namespace MathLearn
             distance = 0;
             return false;
         }
+        
+        public override string ToString()
+        {
+            return string.Format("(min={0}, max={1})", min, max);
+        }
     }
 }
 

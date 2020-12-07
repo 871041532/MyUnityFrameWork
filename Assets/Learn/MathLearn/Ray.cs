@@ -34,5 +34,10 @@ namespace MathLearn
             Vector3 nearestPos = m_Origin + t * m_Direction;
             return nearestPos;
         }
+        
+        public override string ToString()
+        {
+            return string.Format("(origin={0}, direction={1})", origin, direction);
+        }
     }
 }

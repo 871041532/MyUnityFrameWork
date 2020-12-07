@@ -14,6 +14,7 @@ using MBounds = MathLearn.Bounds;
 using Bounds = UnityEngine.Bounds; 
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
+using MPlane = MathLearn.Plane;
 
 public class MathLearnTest : MonoBehaviour
 {
@@ -77,6 +78,20 @@ public class MathLearnTest : MonoBehaviour
 
         var aaa = ray2d1.GetNearestPos(new MVector3(1, 1, 0));
         float aaaa = 1;
+
+        var plane1 = new MPlane(new MVector3(1,1,1), 1);
+        var pos1 = plane1.GetNearestPos(new MVector3(5, 5, 5));
+        var pos2 = plane1.GetNearestPos(new MVector3(-5, -5, -5));
+        
+        var plane2 = new MPlane(new MVector3(-1,-1,-1), -1);
+        var pos3 = plane2.GetNearestPos(new MVector3(5, 5, 5));
+        var pos4 = plane2.GetNearestPos(new MVector3(-5, -5, -5));
+        
+        var plane3 = new MPlane(new MVector3(-1,-1,-1), 1);
+        var pos5 = plane3.GetNearestPos(new MVector3(5, 5, 5));
+        var pos6 = plane3.GetNearestPos(new MVector3(-5, -5, -5));
+
+        var tempxxx = 1;
     }
 
     // Update is called once per frame

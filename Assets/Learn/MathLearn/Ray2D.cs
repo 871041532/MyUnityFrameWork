@@ -46,5 +46,10 @@ namespace MathLearn
         {
             return m_Origin.GetHashCode() ^ m_Direction.GetHashCode() << 2;
         }
+        
+        public override string ToString()
+        {
+            return string.Format("(origin={0}, direction={1})", origin, direction);
+        }
     }
 }
