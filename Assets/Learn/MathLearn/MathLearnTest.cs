@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using MathLearn;
 using UnityEditor;
@@ -15,6 +16,8 @@ using Bounds = UnityEngine.Bounds;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
 using MPlane = MathLearn.Plane;
+using Plane = UnityEngine.Plane;
+using Ray = UnityEngine.Ray;
 
 public class MathLearnTest : MonoBehaviour
 {
@@ -91,9 +94,41 @@ public class MathLearnTest : MonoBehaviour
         var pos5 = plane3.GetNearestPos(new MVector3(5, 5, 5));
         var pos6 = plane3.GetNearestPos(new MVector3(-5, -5, -5));
 
-        var tempxxx = 1;
+        // 三角形测试
+        pos1 = new MVector3(0,0,3);
+        pos2 = new MVector3(0,1,3);
+        pos3 = new MVector3(1,0,3);
+        var triangle1 = new Triangle(pos1, pos2, pos3);
+        var result = triangle1.InclusionPos(pos1);
+        var targetPos = MVector3.zero;
+        result = triangle1.InclusionPos(pos2);
+        result = triangle1.GetGravityPos(pos2, out targetPos);
+        result = triangle1.InclusionPos(pos3);
+        result = triangle1.GetGravityPos(pos3, out targetPos);
+        float dis = 0;
+        result = triangle1.Raycast(new MRay(new MVector3(0.4f, 0.6f, -0.2567f), new MVector3(0,0,1)), out dis);
+        pos4 = new MVector3(0.5f, 0.5f, 3);
+        result = triangle1.InclusionPos(pos4);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        pos4 = new MVector3(0.4f, 0.4f, 0.1f);
+        result = triangle1.InclusionPos(pos4);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        pos4 = new MVector3(0.6f, 0.6f, 3);
+        result = triangle1.InclusionPos(pos4);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        pos4 = new MVector3(-0.1f, -0.1f, 3);
+        result = triangle1.InclusionPos(pos4);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        result = triangle1.GetGravityPos(pos4, out targetPos);
+        result = triangle1.InclusionPos(pos3);
+        result = triangle1.GetGravityPos(pos3, out targetPos);
+        result = triangle1.GetGravityPos(pos3, out targetPos);
+        var tempxxx = 0;
     }
-
+                                                                             
     // Update is called once per frame
     void Update()
     {
@@ -106,9 +141,9 @@ public class MathLearnTest : MonoBehaviour
         float maxY = Random.Range(10.1f, 20);
         float maxZ = Random.Range(10.1f, 20);
 
-        float originX = Random.Range(0, 50);
-        float originY = Random.Range(0, 50);
-        float originZ = Random.Range(0, 50);
+        float originX = Random.Range(0, 10);
+        float originY = Random.Range(0, 10);
+        float originZ = Random.Range(0, 10);
         
         float directionX = Random.Range(1, 10);
         float directionY = Random.Range(1, 10);
@@ -117,12 +152,15 @@ public class MathLearnTest : MonoBehaviour
         MBounds myB = new MBounds(MVector3.zero, MVector3.zero);
         myB.SetMinMax(new MVector3(minX, minY, minZ), new MVector3(maxX, maxY, maxZ));
         float mD = 0;
-        bool mR = myB.IntersectRay(new MRay(new MVector3(originX, originY, originZ), new MVector3(directionX, directionY, directionZ)), out mD);
+        var mRay = new MRay(new MVector3(originX, originY, originZ), new MVector3(directionX, directionY, directionZ));
+        bool mR = myB.IntersectRay(mRay, out mD);
         
         Bounds B = new Bounds(Vector3.zero, Vector3.zero);
         B.SetMinMax(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         float D = 0;
-        bool R = B.IntersectRay(new UnityEngine.Ray(new Vector3(originX, originY, originZ), new Vector3(directionX, directionY, directionZ)), out D);
+        var uRay = new UnityEngine.Ray(new Vector3(originX, originY, originZ),
+            new Vector3(directionX, directionY, directionZ));
+        bool R = B.IntersectRay(uRay, out D);
 
         if (Mathf.Abs(mD - D) < 0.00001f && mR == R)
         {
@@ -131,10 +169,34 @@ public class MathLearnTest : MonoBehaviour
         {
             if(originX < minX || originX > maxX || originY < minY || originY > maxY || originZ < minZ || originZ > maxZ)
             {
-                var a = 1;
+                mR = myB.IntersectRay(mRay, out mD);
             }
         }
+    
+        float normalX = Random.Range(1, 10);
+        float normalY = Random.Range(1, 10);
+        float normalZ = Random.Range(1, 10);
+        float distance = Random.Range(1, 10);
+        var ray = new Ray(new Vector3 (originX, originY, originZ), new Vector3(directionX, directionY, directionZ));
+        var mray = new MRay(new MVector3(originX, originY, originZ), new MVector3(directionX, directionY, directionZ));
+        var plane = new Plane(new Vector3(normalX, normalY, normalZ), -distance);
+        var mplane = new MPlane(new MVector3(normalX, normalY, normalZ), distance);
 
+        D = 0;
+        mD = 0;
+        R = false;
+        mR = false;
+        
+        R = plane.Raycast(ray, out D);
+        mR = mplane.Raycast(mray, out mD);
+        if (Mathf.Abs(mD - D) < 0.00001f && mR == R)
+        {
+        }
+        else
+        {
+            var a = 1;
+        }
+        
 
         Matrix44 rotate = Matrix44.AngleAxis(mAngle, mAxis);
         for (int i = 0; i < mVertices.Length; i++)

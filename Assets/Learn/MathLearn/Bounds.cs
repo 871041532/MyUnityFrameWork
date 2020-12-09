@@ -76,7 +76,7 @@ namespace MathLearn
             // minX
             if (ray.origin.x < min.x && ray.direction.x > 0)
             {
-                float t = (min.x - ray.origin.x) / ray.direction.x;
+                float t = (min.x - ray.origin.x) / ray.direction.x + (float)9.99999974737875E-07;
                 Vector3 hitPos = ray.origin + ray.direction * t;
                 if (hitPos.y >= min.y && hitPos.y <= max.y && hitPos.z >= min.z && hitPos.z <= max.z)
                 {
@@ -87,7 +87,7 @@ namespace MathLearn
             // maxX
             if (ray.origin.x > max.x && ray.direction.x < 0)
             {
-                float t = (max.x - ray.origin.x) / ray.direction.x;
+                float t = (max.x - ray.origin.x) / ray.direction.x + (float)9.99999974737875E-07;
                 Vector3 hitPos = ray.origin + ray.direction * t;
                 if (hitPos.y >= min.y && hitPos.y <= max.y && hitPos.z >= min.z && hitPos.z <= max.z)
                 {
@@ -98,7 +98,7 @@ namespace MathLearn
             // minY
             if (ray.origin.y < min.y && ray.direction.y > 0)
             {
-                float t = (min.y - ray.origin.y) / ray.direction.y;
+                float t = (min.y - ray.origin.y) / ray.direction.y + (float)9.99999974737875E-07;
                 Vector3 hitPos = ray.origin + ray.direction * t;
                 if (hitPos.x >= min.x && hitPos.x <= max.x && hitPos.z >= min.z && hitPos.z <= max.z)
                 {
@@ -109,7 +109,7 @@ namespace MathLearn
             // maxY
             if (ray.origin.y > max.y && ray.direction.y < 0)
             {
-                float t = (max.y - ray.origin.y) / ray.direction.y;
+                float t = (max.y - ray.origin.y) / ray.direction.y + (float)9.99999974737875E-07;
                 Vector3 hitPos = ray.origin + ray.direction * t;
                 if (hitPos.x >= min.x && hitPos.x <= max.x && hitPos.z >= min.z && hitPos.z <= max.z)
                 {
@@ -120,8 +120,8 @@ namespace MathLearn
             // minZ
             if (ray.origin.z < min.z && ray.direction.z > 0)
             {
-                float t = (min.z - ray.origin.z) / ray.direction.z;
-                Vector3 hitPos = ray.origin + ray.direction * t;
+                float t = (min.z - ray.origin.z) / ray.direction.z + (float)9.99999974737875E-07;
+                Vector3 hitPos = ray.origin + ray.direction * t ;
                 if (hitPos.x > min.x && hitPos.x < max.x && hitPos.y > min.y && hitPos.y < max.y)
                 {
                     distance = t;
@@ -131,7 +131,7 @@ namespace MathLearn
             // maxZ
             if (ray.origin.z > max.z && ray.direction.z < 0)
             {
-                float t = (max.z - ray.origin.z) / ray.direction.z;
+                float t = (max.z - ray.origin.z) / ray.direction.z + (float)9.99999974737875E-07;
                 Vector3 hitPos = ray.origin + ray.direction * t;
                 if (hitPos.x > min.x && hitPos.x < max.x && hitPos.y > min.y && hitPos.y < max.y)
                 {
