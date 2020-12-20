@@ -120,6 +120,36 @@ namespace MathLearn
             distance = 0;
             return false;
         }
+
+        /// <summary>
+        /// 获取Bounds上离某点最近的点，如果在内部返回自身
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public Vector2 GetNearestPos(Vector2 pos)
+        {
+            Vector2 _min = min;
+            Vector2 _max = max;
+            // 按一定顺序沿着每条轴将pos推向Bounds
+            if (pos.x < _min.x)
+            {
+                pos.x = _min.x;
+            }
+            else if (pos.x > _max.x)
+            {
+                pos.x = _max.x;
+            }
+
+            if (pos.y < _min.y)
+            {
+                pos.y = _min.y;
+            }
+            else if (pos.y > _max.y)
+            {
+                pos.y = _max.y;
+            }
+            return pos;
+        }
         
         public override string ToString()
         {

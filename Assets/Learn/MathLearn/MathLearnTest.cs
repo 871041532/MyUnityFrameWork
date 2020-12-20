@@ -127,6 +127,11 @@ public class MathLearnTest : MonoBehaviour
         result = triangle1.GetGravityPos(pos3, out targetPos);
         result = triangle1.GetGravityPos(pos3, out targetPos);
         var tempxxx = 0;
+        
+        Circle2D c1 = new Circle2D(MVector2.zero, 1);
+        var t1 = c1.GetNearestPos(new MVector2(2, 0));
+        var t2 = c1.GetNearestPos(new MVector2(0.5f, 0));
+        tempxxx = 0;
     }
                                                                              
     // Update is called once per frame
@@ -217,5 +222,16 @@ public class MathLearnTest : MonoBehaviour
         }
         mMesh.vertices = mVertices;
         mMesh.normals = mNormals;
+    }
+
+    private List<MVector3> points = new List<MVector3>();
+    private void OnDrawGizmos()
+    {
+        Sphere c = new Sphere(MVector3.zero, 20);
+        points.Add(c.GetInclusionRandomPos());
+        foreach (var v in points)
+        {
+            Gizmos.DrawSphere( new Vector3(v.x, v.y, v.z), 0.1f);
+        }
     }
 }
