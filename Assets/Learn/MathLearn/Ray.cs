@@ -26,7 +26,7 @@ namespace MathLearn
             return m_Origin + m_Direction * distance;
         }
 
-        // 获取平面上的最近点q, 利用点乘
+        // 获取直线上距离点P的最近点 P0
         // q = f(t) = Porg + td = Porg + (d * (Q - Porg)) * d
         public Vector3 GetNearestPos(Vector3 targetPos)
         {
