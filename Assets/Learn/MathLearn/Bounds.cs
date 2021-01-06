@@ -58,6 +58,53 @@ namespace MathLearn
             return min.x <= bounds.max.x && max.x >= bounds.min.x && min.y <=  bounds.max.y && max.y >= bounds.min.y && min.z <= bounds.max.z && max.z >= bounds.min.z;
         }
         
+        // AABB和平面的相交性检测
+        public bool IntersectPlane(Plane plane)
+        {
+            Vector3 minPos = Vector3.zero;
+            Vector3 maxPos = Vector3.zero;
+            Vector3 thisMin = min;
+            Vector3 thisMax = max;
+            
+            if (plane.normal.x > 0)
+            {   // 如果nx>0, 点积最小的顶点x=xmin，点积最大的顶点是x=xmax
+                minPos.x = thisMin.x;
+                maxPos.x = thisMax.x;
+            }
+            else
+            {   // 如果nx < 0，点积最小的顶点x=xmax，点积最大的顶点是x=xmin
+                minPos.x = thisMax.x;
+                maxPos.x = thisMin.x;
+            }
+
+            if (plane.normal.y > 0)
+            {   // 如果ny > 0，点积最小的顶点y=ymin，点积最大的顶点是y=ymax
+                minPos.y = thisMin.y;
+                maxPos.y = thisMax.y;
+            }
+            else
+            {
+                minPos.y = thisMax.y;
+                maxPos.y = thisMin.y;
+            }
+
+            if (plane.normal.z > 0)
+            {
+                // 如果nz > 0，点积最小的顶点z=zmin，点积最大的顶点是z=zmax
+                minPos.z = thisMin.z;
+                maxPos.z = thisMax.z;
+            }
+            else
+            {
+                minPos.z = thisMax.z;
+                maxPos.z = thisMin.z;
+            }
+
+            float distance1 = minPos * plane.normal;
+            float distance2 = maxPos * plane.normal;
+            return distance1 < plane.distance && plane.distance < distance2;
+        }
+        
         // 判断AABB是否和射线相交
         public bool IntersectRay(Ray ray)
         {
@@ -65,6 +112,7 @@ namespace MathLearn
             return IntersectRay(ray, out temp);
         }
 
+        // AABB和射线的相交性检测
         public bool IntersectRay(Ray ray, out float distance)
         {
             // 点在内部
