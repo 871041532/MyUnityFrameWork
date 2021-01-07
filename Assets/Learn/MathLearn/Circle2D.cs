@@ -103,6 +103,10 @@ namespace MathLearn
                 float fTwo = - (float)Math.Sqrt(f2);
                 distance1 = a - fOne;
                 distance2 = a - fTwo;
+                if (distance1 < 0 && distance2 < 0)
+                {
+                    return false;  // 射线负方向的不算相交
+                }
                 return true;
             }
         }
