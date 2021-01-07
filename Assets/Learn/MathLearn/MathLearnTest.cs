@@ -133,10 +133,13 @@ public class MathLearnTest : MonoBehaviour
         var t2 = c1.GetNearestPos(new MVector2(0.5f, 0));
         tempxxx = 0;
 
-        var r1 = new MRay2D(new MVector2(0, 0), new MVector2(0, 1));
+        var r1 = new MRay2D(new MVector2(1, 1), new MVector2(0, -1));
         var r2 = new MRay2D(new MVector2(10, 0), new MVector2(1, 0) );
         MVector2 r12v;
         bool r12r = r1.Interact(r2, out r12v);
+
+        float c10, c11;
+        bool r10 = c1.IntersectRay(r1, out c10, out c11);
         tempxxx = 0;
     }
                                                                              

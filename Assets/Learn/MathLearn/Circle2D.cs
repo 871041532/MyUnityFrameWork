@@ -75,5 +75,36 @@ namespace MathLearn
             pos.y += m_Radius * y;
             return pos;
         }
+
+        // 射线和圆的相交性检测
+        public bool IntersectRay(Ray2D ray)
+        {
+            float dis1 = 0;
+            float dis2 = 0;
+            bool result = IntersectRay(ray, out dis1, out dis2);
+            return result;
+        }
+        
+        // 射线和圆的相交性检测
+        public bool IntersectRay(Ray2D ray, out float distance1, out float distance2)
+        {
+            Vector2 e = m_Center - ray.origin;
+            float a = e * ray.direction;
+            float f2 = m_Radius * m_Radius + a * a - e * e;
+            if (f2 < 0)
+            {
+                distance1 = 0;
+                distance2 = 0;
+                return false;
+            }
+            else
+            {
+                float fOne = (float)Math.Sqrt(f2);
+                float fTwo = - (float)Math.Sqrt(f2);
+                distance1 = a - fOne;
+                distance2 = a - fTwo;
+                return true;
+            }
+        }
     }
 }
