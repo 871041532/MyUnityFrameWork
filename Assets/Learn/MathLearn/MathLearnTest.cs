@@ -33,7 +33,10 @@ public class MathLearnTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var p = new MVector3(1, 0, 0);        
+        var p = new MVector3(1, 0, 0);
+        var aaaaa = new UnityEngine.Quaternion(1, 1, 1, 1);
+        var ptemp = new UnityEngine.Vector3(0.5f, 0,0);
+        var a = aaaaa * aaaaa * aaaaa * ptemp;
         Matrix33 rotation = Matrix33.AngleAxis(45, new MVector3(0, 0, 1));
         Matrix33 rotation2 = Matrix33.AngleAxis(-45, new MVector3(0, 0, 1));
         Debug.Log(p * rotation);

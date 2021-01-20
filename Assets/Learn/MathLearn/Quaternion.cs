@@ -114,7 +114,7 @@ namespace MathLearn
             return new Quaternion(x, y, z, w);
         }
 
-        // 四元数变换点
+        // 四元数变换点（为了节省性能，多个变换时先左乘计算混合变换四元数，然后再右乘数）
         public static Vector3 operator *(Quaternion lhs, Vector3 p)
         {
             Quaternion pQua = new Quaternion(p.x, p.y, p.z, 0);
