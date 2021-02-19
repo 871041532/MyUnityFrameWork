@@ -57,10 +57,10 @@ namespace Flock
                     flockDirection += neighbor.Direction;
                     flockCenter += neighbor.transform.localPosition;
                     // separation 模型1
-                    var temp = - neighbor.transform.localPosition + boidPosition;
+                    var temp = boidPosition - neighbor.transform.localPosition;  // 离相近点的分离方向
                     var prop = temp.magnitude / m_aligmentWeight;
                     temp.Normalize();
-                    temp = temp * (1 / prop);
+                    temp = temp / prop;  // 距离越远，分离力越小
                     separation += temp;
                     // separation 模型2
 //                    separation += neighbor.transform.localPosition - boidPosition;
@@ -68,14 +68,23 @@ namespace Flock
                 }
             }
 
-            flockDirection /= m_flockSize;
+            flockDirection /= m_flockSize;        
             flockDirection = flockDirection.normalized * m_aligmentWeight;
-            flockCenter /= m_flockSize;
-            flockCenter = flockCenter.normalized * m_cohesionWeight;
-            separation /= m_flockSize;
-            separation = separation.normalized * m_separationWeight;
+            
             targetDirection = m_target.localPosition - boidPosition;
             targetDirection = targetDirection * m_followWeight;
+            
+//            flockCenter /= m_flockSize;
+//            flockCenter = flockCenter.normalized * m_cohesionWeight;
+            
+            // 老算法这里有点问题
+            flockCenter /= m_flockSize;
+            flockCenter = flockCenter - boidPosition;
+            flockCenter = flockCenter.normalized * m_cohesionWeight;
+            
+            separation /= m_flockSize;
+            separation = separation.normalized * m_separationWeight;
+             
             return flockDirection + flockCenter + separation + targetDirection;
         }
     }
