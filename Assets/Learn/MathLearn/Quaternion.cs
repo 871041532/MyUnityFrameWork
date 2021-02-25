@@ -96,6 +96,7 @@ namespace MathLearn
         }
         
         // 四元数叉乘四元数
+        // 四元数变换时和Unity一样从右向左
         public static Quaternion operator *(Quaternion lhs, Quaternion rhs)
         {
             float w1 = lhs.w;
@@ -114,12 +115,14 @@ namespace MathLearn
             return new Quaternion(x, y, z, w);
         }
 
-        // 四元数变换点（为了节省性能，多个变换时先左乘计算混合变换四元数，然后再右乘数）
+        // 四元数变换点（为了节省性能，多个变换时先左乘计算混合变换四元数，然后再右乘数，变换时和Unity一样从右向左）
+        // 标准四元数旋转是逆时针的，为了和欧拉角概念（Unity引擎）保持一致，这里转换成顺时针
         public static Vector3 operator *(Quaternion lhs, Vector3 p)
         {
             Quaternion pQua = new Quaternion(p.x, p.y, p.z, 0);
             Quaternion inverse = Quaternion.Inverse(lhs);
-            Quaternion target = lhs * pQua * inverse;
+            //Quaternion target = lhs * pQua * inverse;
+            Quaternion target = inverse * pQua * lhs;  // 标准四元数旋转是逆时针的，为了和欧拉角保持一致，这里转换成顺时针
             return  new Vector3(target.x, target.y, target.z);
         }
         
@@ -135,7 +138,7 @@ namespace MathLearn
             float halfAngle = angle * (float)Math.PI / 360f;
             float sin = (float)Math.Sin(halfAngle);
             float cos = (float)Math.Cos(halfAngle);
-            return new Quaternion(-axis.x * sin, -axis.y * sin, -axis.z * sin, cos);
+            return new Quaternion(axis.x * sin, axis.y * sin, axis.z * sin, cos);
         }
 
         public override string ToString()

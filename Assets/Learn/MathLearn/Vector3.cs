@@ -10,6 +10,9 @@ namespace MathLearn
         public float y;
         public float z;
 
+        private static readonly Vector3 m_one = new Vector3(1, 1, 1);
+        public static Vector3 one => m_one;
+
         private static readonly Vector3 m_zero = new Vector3(0, 0, 0);
         public static Vector3 zero => m_zero;
 
