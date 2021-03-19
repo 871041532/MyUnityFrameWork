@@ -23,5 +23,8 @@ namespace EditorLearn
             var rect = new Rect(100, 100, 300, 300);
             MyWindow window =  EditorWindow.GetWindowWithRect<MyWindow>(rect, false, "我的窗口Rect");
         }
+        
+        // 打开通知栏
+        
     }
 }

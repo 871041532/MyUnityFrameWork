@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace EditorLearn
 {
+    
+    // 自定义属性窗口
     //CustomEditor(typeof()) 用于关联你要自定义的脚本
     [CustomEditor(typeof(MyPropertyDraw))]
     public class MyPropertyDrawInspector : Editor
@@ -25,6 +27,11 @@ namespace EditorLearn
             //空两行
             EditorGUILayout.Space();
             EditorGUILayout.Space();
+            
+            // 绘制自定义对象
+            SerializedProperty persion = serializedObject.FindProperty("persion");
+            EditorGUILayout.PropertyField(persion, true);
+            serializedObject.ApplyModifiedProperties();  // 属性修改可以保存
 
             //绘制palyer的基本信息
             EditorGUILayout.LabelField("Base Info");

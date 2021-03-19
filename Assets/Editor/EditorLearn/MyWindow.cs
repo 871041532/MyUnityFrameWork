@@ -1,9 +1,18 @@
 using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace EditorLearn
 {
+    enum EnumOption
+    {
+        CUBE = 0,
+        SPHERE = 1,
+        PLANE = 2
+    }
+    
+    // 自定义窗口
     public class MyWindow : EditorWindow
     {
         string myString = "Hello World, Hello World";
@@ -13,6 +22,15 @@ namespace EditorLearn
         public Vector2 scrollPos = Vector2.zero;
         public Vector2 scrollPosBig = Vector2.zero;
         private bool foldOut = true;
+        private GameObject gameObjectField = null;
+        private Material materialField = null;
+        private string password;
+        private int optionIndex;
+        private EnumOption optionEnum = EnumOption.CUBE;
+        private int toolBarSelect;
+        private string filePath = "";
+        private int gridSelection;
+        private string rectString;
 
         private void Awake()
         {
@@ -38,6 +56,10 @@ namespace EditorLearn
         private void OnSelectionChange()
         {
             Debug.Log("MyWindow 选择发生变化");
+            if (Selection.objects.Length > 0)
+            {
+                Debug.Log(Selection.objects[0]);
+            }  
         }
 
         private void OnProjectChange()
@@ -60,18 +82,46 @@ namespace EditorLearn
             // 此处为实际窗口代码
             scrollPosBig = EditorGUILayout.BeginScrollView(scrollPosBig);
             
+            // ToolBar工具栏，横向选择
+            string[] toolBarStrs = {"Selection1","Selection2","Selection3"};
+            toolBarSelect = GUILayout.Toolbar(toolBarSelect, toolBarStrs, GUILayout.Height(25));
+            
+            // 非下拉选择网格，可以给横向或者纵向
+            string[] gridStrs = { "Message1", "Message2", "Message3", "Message4" };
+            gridSelection = GUILayout.SelectionGrid(gridSelection, gridStrs, 2);
+            
+            // 下拉选项菜单
+            string[] options = {"Popup选项一", "Popup选项二", "Popup选项三"};
+            var oldValue = optionIndex;
+            optionIndex = EditorGUILayout.Popup(optionIndex, options);
+            if (optionIndex != oldValue)
+            {
+                Debug.Log("选项发生变化：" + optionIndex); 
+            }
+            
+            // 整数下拉选项
+            string[] names = { "number1","number2","number4"};
+            int[] sizes = { 1,2,4};
+            int selectSize = 4;
+            EditorGUILayout.IntPopup("整数下拉: ", selectSize, names, sizes);
+            
+            // 枚举选项菜单
+            optionEnum = (EnumOption)EditorGUILayout.EnumPopup("枚举选项:", optionEnum);
+
             // 前缀标签，会和下面紧接的项一起被选中：
             EditorGUILayout.PrefixLabel("PreFixLabel");
             // 带箭头的折叠项
             foldOut = EditorGUILayout.Foldout(foldOut, "Foldout");
             if (foldOut)
             {  
-                // 标签字段（黑体）
-                GUILayout.Label ("Base Settings", EditorStyles.boldLabel);
+                // 标签字段
+                GUILayout.Label ("  隐藏项", EditorStyles.boldLabel);
             }
 
-            // 标签字段(普通字体)
-            EditorGUILayout.LabelField("Base Settings"); 
+            // 标签字段
+            GUIStyle fontStyle = new GUIStyle();
+            fontStyle.fontSize = 20;
+            EditorGUILayout.LabelField("Base Settings", fontStyle, GUILayout.MinHeight(25)); 
             
             // 整数字段
             EditorGUILayout.IntField("整数字段", 1);
@@ -85,15 +135,35 @@ namespace EditorLearn
             // 颜色字段
             EditorGUILayout.ColorField("颜色字段", Color.yellow);
             
+            // GameObject字段
+            gameObjectField = EditorGUILayout.ObjectField("gameObjectField", gameObjectField, typeof(GameObject), false) as GameObject;
+            if (gameObjectField != null)
+            {
+                string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObjectField);
+                EditorGUILayout.LabelField("prefab: " + prefabPath); 
+            }
+            
+            // tag拾取文本，给gameObject设置tag
+            EditorGUILayout.TagField("GameObjectTag:", "Untagged");
+            
+            // layer拾取文本，给gameObject设置layer
+            EditorGUILayout.LayerField("GameObjectLayer:", 0);
+            
+            // materialField字段
+            materialField = EditorGUILayout.ObjectField("materialField", materialField, typeof(Material), false) as Material;
+            
             // 文本输入框
-            myString = EditorGUILayout.TextField("文本输入框", myString);
+            myString = EditorGUILayout.TextField("账号：", myString);
+            
+            // 密码输入框
+            password = EditorGUILayout.PasswordField("Password：",password);
             
             // 文本输入区域
             EditorGUILayout.PrefixLabel("文本输入区域");
             myString = EditorGUILayout.TextArea(myString);
             
             // 禁用区域：当groupEnabled为true时才能修改group范围内的值
-            groupEnabled = EditorGUILayout.BeginToggleGroup ("Optional Settings", groupEnabled);           
+            groupEnabled = EditorGUILayout.BeginToggleGroup ("Optional Settings", groupEnabled);      
             // 单选框（如果没有myBool = 则不能修改）
             myBool = EditorGUILayout.Toggle ("Toggle", myBool);  
             // 进度条
@@ -112,8 +182,11 @@ namespace EditorLearn
             EditorGUILayout.HelpBox("伤害适中！！", MessageType.Info);
             
             // 焦点和光标
-            EditorGUILayout.LabelField("键盘焦点window："+EditorWindow.focusedWindow.ToString());
-            EditorGUILayout.LabelField("光标下的window:" + EditorWindow.focusedWindow.ToString());
+            if (EditorWindow.focusedWindow != null)
+            {
+                EditorGUILayout.LabelField("键盘焦点window："+EditorWindow.focusedWindow.ToString());
+                EditorGUILayout.LabelField("光标下的window:" + EditorWindow.focusedWindow.ToString());
+            }
             
             // 添加滚动区域（此处需要加scrollPos = ，才能改变值）
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.MinHeight(100), GUILayout.MaxHeight(220));
@@ -161,9 +234,41 @@ namespace EditorLearn
             if (e.commandName != "")
             {
                 Debug.Log("收到：" + e.commandName); 
-                e.commandName = "";
             }
             
+            // 路径选取面板
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("选则保存路径", GUILayout.ExpandWidth(false)))
+            {
+                filePath = EditorUtility.SaveFolderPanel("Path to Save Images", filePath, Application.dataPath);
+            }
+            EditorGUILayout.LabelField("当前路径："+filePath); 
+            EditorGUILayout.EndHorizontal();
+            
+            // 拖拽控制区域demo
+            EditorGUILayout.LabelField("文件拖拽框: ");
+            var rect = EditorGUILayout.GetControlRect(GUILayout.Height(30));
+            rectString = EditorGUI.TextField(rect, rectString);   
+            if ((Event.current.type == UnityEngine.EventType.DragExited || Event.current.type == UnityEngine.EventType.DragUpdated) && rect.Contains(Event.current.mousePosition))  //如果鼠标正在拖拽中或拖拽结束时，并且鼠标所在位置在文本输入框内  
+            {
+                DragAndDrop.visualMode = DragAndDropVisualMode.Generic;  //改变鼠标的外表  
+                if (DragAndDrop.paths != null && DragAndDrop.paths.Length > 0)
+                {
+                    rectString = DragAndDrop.paths[0];
+                }
+            }
+            
+            // 打开一个通知栏
+            if (GUILayout.Button("打开通知栏"))
+            {
+                this.ShowNotification(new GUIContent("This is a Notification"));
+            }
+            
+            // 关闭通知栏
+            if (GUILayout.Button("关闭"))
+            {
+                this.RemoveNotification();
+            }
             EditorGUILayout.EndScrollView(); 
         }
     }
