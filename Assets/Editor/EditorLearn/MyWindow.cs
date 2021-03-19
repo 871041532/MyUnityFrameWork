@@ -269,6 +269,18 @@ namespace EditorLearn
             {
                 this.RemoveNotification();
             }
+            
+            // 打开一个进度条弹窗
+            if (GUILayout.Button("打开进度条弹窗", GUILayout.MinHeight(30)))
+            {
+                EditorUtility.DisplayProgressBar("正在解压", "解压期间不消耗流量...", 0.56f);  
+            } 
+            
+            // 清空进度条
+            if (GUILayout.Button("清空进度条弹窗", GUILayout.MinHeight(30)))  
+            {  
+                EditorUtility.ClearProgressBar(); 
+            }
             EditorGUILayout.EndScrollView(); 
         }
     }
