@@ -32,6 +32,7 @@ namespace EditorLearn
         private int gridSelection;
         private string rectString;
         private GameObject dragObject;
+        private AnimationCurve curve;
 
         private void Awake()
         {
@@ -123,7 +124,10 @@ namespace EditorLearn
             GUIStyle fontStyle = new GUIStyle();
             fontStyle.fontSize = 20;
             EditorGUILayout.LabelField("Base Settings", fontStyle, GUILayout.MinHeight(25));
-
+            
+            // 曲线属性
+            curve = EditorGUILayout.CurveField("曲线属性", curve);
+            
             // 整数字段
             EditorGUILayout.IntField("整数字段", 1);
 
@@ -378,6 +382,8 @@ namespace EditorLearn
                 menu.ShowAsContext();
                 eventItem.Use();
             }
+            
+            
             EditorGUILayout.EndScrollView();
         }
     }
