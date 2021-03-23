@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using System.Collections.Generic;
 using XLua;
 using System.IO;
@@ -32,3 +33,4 @@ public class LinkXmlGen : ScriptableObject
         Generator.CustomGen(ScriptableObject.CreateInstance<LinkXmlGen>().Template.text, GetTasks);
     }
 }
+#endif

@@ -15,7 +15,7 @@ Shader "MathLearn/平移测试"
         Pass{
         	//设置光照模式，定义了正确的LightMode才能得到unity内置光照变量
             Tags{"LightMode"="ForwardBase"}
-            CGPROGRAM                              c
+            CGPROGRAM                              
             #include "UnityCg.cginc"
             // 导入此文件才能使用内置光照
             #include "Lighting.cginc"
