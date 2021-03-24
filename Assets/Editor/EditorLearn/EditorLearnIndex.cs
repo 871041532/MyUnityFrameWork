@@ -38,6 +38,13 @@ namespace EditorLearn
             EditorWindow.GetWindow<NodeWindow.NodeWindow>(false, "节点编辑demo", true);
         }
         
+        // 打开一个Odin窗口
+        [MenuItem("EditorLearn/打开Odin窗口")]
+        public static void ShowOdinWindow()
+        {
+            EditorWindow.GetWindow<MyOdinWindow>(false, "Odin窗口", true);
+        }
+        
         // 判断按钮什么时候显示，返回false时对应按钮不显示
         [MenuItem("EditorLearn/PrintSelect", true)]
         static bool IsShowPrintSelectButton()
