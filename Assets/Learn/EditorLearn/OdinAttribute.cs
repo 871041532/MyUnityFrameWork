@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-using UnityEditor;
 using UnityEngine;
 
 namespace EditorLearn
@@ -22,10 +19,43 @@ namespace EditorLearn
     // Odin属性demo
     public class OdinAttribute : MonoBehaviour
     {
+        /**********************************自定义属性****************************************/
+        // 血量进度条
+        [HealthBarAttribute(20), LabelText("自定义float进度条")]
+        public float health = 7.5f;
+
+        // 绘制自定义类1
+        [LabelText("自定义Struct1")]
+        public MyStruct myStruct1;
+        
+        // 绘制自定义类2
+        [MyStructAttribute, LabelText("自定义Struct1")]
+        public MyStruct myStruct2;
+
+        // 自定义带颜色的FoldoutGroup标签 
+        [ColoredFoldoutGroupAttribute("Green", 0, 1, 0)]
+        public string Name;
+        [ColoredFoldoutGroupAttribute("Green")]
+        public int AA;
+        [ColoredFoldoutGroupAttribute("Blue", 0, 0, 1)]
+        public float BB;
+        [ColoredFoldoutGroupAttribute("Blue", 0, 0, 1)]
+        [ProgressBar(0, 1), LabelText("进度条")]
+        public float progress1;
+        
         /**********************************普通属性描述*********************************************/
+        // 进度条
+        [ProgressBar(0, 1), LabelText("进度条")]
+        public float progress2;
+        
         // 文件路径属性
         [FilePath(Extensions = ".unity"), LabelText("文件路径属性")]
         public string ScenePath;
+        
+        // 字典属性
+        [ShowInInspector]
+        [LabelText("字典字典")]
+        public Dictionary<string, string> m_dict;
 
         // 按钮属性
         [Button("按钮属性", ButtonSizes.Large)]
@@ -57,6 +87,9 @@ namespace EditorLearn
         // 显示getset
         [ShowInInspector, LabelText("显示GetSet")]
         public ScriptableObject Property { get; set; }
+
+        [LabelText("序列化对象")]
+        public ScriptableObject Property2;
 
         // 不能为空的Project中的prefab
         [PreviewField, Required, AssetsOnly, LabelText("Project中的对象")]
@@ -234,5 +267,9 @@ namespace EditorLearn
         public string exampleString2;
         [TabGroup("Tabs1", "Tab 3")]
         public string exampleString3;
+
+        private void Awake()
+        {
+        }
     }
 }

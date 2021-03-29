@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Sirenix.Serialization;
 using UnityEngine;
 using UnityEditor;
 
@@ -72,5 +74,41 @@ namespace EditorLearn
             var guid = Selection.assetGUIDs[0];
             Debug.Log(AssetDatabase.GUIDToAssetPath(guid));
         }
+        
+        // Odin反序列化测试
+        [MenuItem("EditorLearn/Odin反序列化ScriptableObject")]
+        static void OdinUnserializedScriptableObject()
+        {
+            var data = AssetDatabase.LoadAssetAtPath<ExampleScriptableScript>("Assets/Editor/EditorLearn/Odin/SerializedTestExampleScriptableScript.asset");
+            
+            // 使用自定义类反序列化
+            byte[] serializeData = ScriptableObjectStringReferenceResolver.Serialize(data);
+            var deserializeData = ScriptableObjectStringReferenceResolver.Deserialize(serializeData) as ExampleScriptableScript;
+            Debug.Log(deserializeData == data);
+            Debug.Log(ReferenceEquals(deserializeData, data));
+        }
+
+        [MenuItem("EditorLearn/Odin序列化自定义类1")]
+        static void OdinUnserializedMyClass()
+        {
+            // 使用系统工具进行序列化反序列化
+            MyClass myClass = new MyClass();
+            myClass.SecondDictionary = new Dictionary<int, string>();
+            myClass.SecondDictionary[1] = "aaaa";
+            
+            var path = "Assets/Editor/EditorLearn/Odin/myClassSerializeTest.json"; 
+            var json = SerializationUtility.SerializeValue(myClass, DataFormat.JSON);
+            File.WriteAllBytes(path, json);
+            json = File.ReadAllBytes(path);
+            var data2 = SerializationUtility.DeserializeValue<MyClass>(json, DataFormat.JSON);
+            Debug.Log(data2 == myClass);
+        }
+
+        [MenuItem("EditorLearn/Odin序列化自定义类2")]
+        static void OdinUnserializedMyData()
+        {
+            MyData.SerializeDataDemo(); 
+        }
+        
     }
 }

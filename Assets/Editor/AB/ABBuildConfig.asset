@@ -15,12 +15,12 @@ MonoBehaviour:
   m_AllFileDirAB:
   - ABName: configs
     Path: Assets/GameData/Configs
-  - ABName: audio
-    Path: Assets/GameData/Audio
   - ABName: ui_common
     Path: Assets/GameData/UI/res/common
   - ABName: lua
     Path: Assets/GameData/Scripts
+  - ABName: audio
+    Path: Assets/GameData/Audio
   m_AllPrefabPath:
-  - Assets/GameData/Prefabs
   - Assets/GameData/UI/prefabs
+  - Assets/GameData/Prefabs

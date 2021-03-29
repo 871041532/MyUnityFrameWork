@@ -265,11 +265,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b1390050a344c0a463fa99b3038602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 20
+  myStruct1:
+    X: 0
+    Y: 0
+  myStruct2:
+    X: 0
+    Y: 0
+  Name: 231231
+  AA: 108
+  BB: 9.67
+  progress1: 0.21343714
+  progress2: 0.33091497
   ScenePath: 
-  exampleEnum1: 1
+  exampleEnum1: 0
   exampleEnum2: 0
-  exampleEnum3: 1
+  exampleEnum3: 0
   NormallyVisible: 0
+  Property2: {fileID: 11400000, guid: 5e46af2e7634ebe4d819a4f08938d6b0, type: 2}
   AssetsOnlyPrefab: {fileID: 0}
   SceneOnlyPrefab: {fileID: 0}
   Icon: {fileID: 0}
@@ -279,7 +292,7 @@ MonoBehaviour:
   IAmLabel: "\u6307\u5B9A\u5B57\u7B26\u4E32\u5C5E\u6027\u663E\u793A"
   FirstTab: 0
   FloatValue: 0
-  MyToggle: 1
+  MyToggle: 0
   A: 0
   B: 
   GuidList:
@@ -292,9 +305,9 @@ MonoBehaviour:
   myStr2: "Value\u5373\u662FLabelText"
   expandList: 0
   someList: 010000000200000003000000
-  exampleEnum: 1
+  exampleEnum: 0
   exampleList: []
-  selectedTab: 3
+  selectedTab: 1
   exampleString1: 
   exampleString2: 
   exampleString3: 
@@ -363,7 +376,7 @@ MonoBehaviour:
   id: 0
   playerName: 
   backStory: 
-  health: 50
+  health: 64
   damage: 11.54
   weaponDamage1: 0
   weaponDamage2: 0

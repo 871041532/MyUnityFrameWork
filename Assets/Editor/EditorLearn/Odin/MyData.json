@@ -1,0 +1,47 @@
+{
+    "$id": 0,
+    "$type": "0|EditorLearn.MyData, Assembly-CSharp-Editor",
+    "str": "|8^\u0093ac\u008bSel\u0093\u0085;G\u0086Wljq\u008b",
+    "numbers": {
+        "$id": 1,
+        "$type": "1|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib",
+        "$rlength": 10,
+        "$rcontent": [
+            69.35993,
+            88.0810852,
+            45.0837326,
+            36.3242226,
+            2.077496,
+            18.2481766,
+            59.9468422,
+            19.3701859,
+            99.40182,
+            36.0700531
+        ]
+    },
+    "unityObjectReference": $eref:0,
+    "reference": {
+        "$id": 2,
+        "$type": 0,
+        "str": "za\u00839CDp?\u0082U^Tm:=8A\u0083=",
+        "numbers": {
+            "$id": 3,
+            "$type": 1,
+            "$rlength": 10,
+            "$rcontent": [
+                64.9898758,
+                26.4444771,
+                66.69937,
+                1.4226079,
+                90.50819,
+                72.6324539,
+                78.31483,
+                44.26951,
+                3.54835987,
+                30.0309963
+            ]
+        },
+        "unityObjectReference": $eref:0,
+        "reference": $iref:0
+    }
+}
