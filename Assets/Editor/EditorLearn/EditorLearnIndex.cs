@@ -22,7 +22,7 @@ namespace EditorLearn
         public static void ShowMyWindow()
         {
             // 第一个参数为true，不可停靠，为false可停靠
-            MyWindow window =  EditorWindow.GetWindow<MyWindow>(false, "我的窗口", true);
+            MyWindow window =  EditorWindow.GetWindow<MyWindow>(false, "我的Unity窗口", true);
         }
         
         // 获取一个带Rect的Window
@@ -40,11 +40,18 @@ namespace EditorLearn
             EditorWindow.GetWindow<NodeWindow.NodeWindow>(false, "节点编辑demo", true);
         }
         
-        // 打开一个Odin窗口
+        // 打开Odin窗口
         [MenuItem("EditorLearn/打开Odin窗口")]
         public static void ShowOdinWindow()
         {
             EditorWindow.GetWindow<MyOdinWindow>(false, "Odin窗口", true);
+        }
+        
+        // 打开Odin菜单窗口
+        [MenuItem("EditorLearn/打开Odin菜单窗口")]
+        public static void ShowOdinMenuEditorWindow()
+        {
+            EditorWindow.GetWindow<MyOdinMenuWindow>(false, "Odin菜单窗口", true);
         }
         
         // 判断按钮什么时候显示，返回false时对应按钮不显示
@@ -110,5 +117,10 @@ namespace EditorLearn
             MyData.SerializeDataDemo(); 
         }
         
+        [MenuItem("EditorLearn/创建Odin节点窗口")]
+        static void CreateInstance()
+        {
+            var window =  EditorWindow.GetWindow<OdinNodeWin.OdinNodeWin>(false, "我的Odin节点窗口", true);
+        }
     }
 }

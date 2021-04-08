@@ -265,26 +265,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b1390050a344c0a463fa99b3038602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
+  isShowCustomeValue: 0
+  showCustomMessage: 1
+  HaveLabelName: "\u542Blabel\u7684\u5B57\u6BB5"
+  NoLabelName: "\u4E0D\u542Blabel\u7684\u5B57\u6BB5"
+  CustomDrawerArray:
+  - 1
+  - 2
+  - 3
+  health: 7.5
   myStruct1:
     X: 0
     Y: 0
   myStruct2:
     X: 0
     Y: 0
-  Name: 231231
-  AA: 108
-  BB: 9.67
-  progress1: 0.21343714
-  progress2: 0.33091497
+  Name: 
+  AA: 0
+  BB: 0
+  progress1: 0
+  odinMultiString: "\u591A\u884C\u6587\u672C\u5185\u5BB9...dasdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  dropDownValue1: 3
+  dropDownValue2: 2
+  progress2: 0
   ScenePath: 
-  exampleEnum1: 0
-  exampleEnum2: 0
-  exampleEnum3: 0
+  exampleEnum1: 3
+  exampleEnum2: 2
+  exampleEnum3: 3
   NormallyVisible: 0
-  Property2: {fileID: 11400000, guid: 5e46af2e7634ebe4d819a4f08938d6b0, type: 2}
-  AssetsOnlyPrefab: {fileID: 0}
-  SceneOnlyPrefab: {fileID: 0}
+  Property2: {fileID: 0}
+  AssetsOnlyPrefab: {fileID: 169187592576846791, guid: b3d64d32103e1fc4c9f62ff0cf5b9a49,
+    type: 3}
+  SceneOnlyPrefab: {fileID: 272216144}
+  ChildGameObject: {fileID: 0}
   Icon: {fileID: 0}
   MinionName: 
   Health: 0
@@ -292,9 +305,10 @@ MonoBehaviour:
   IAmLabel: "\u6307\u5B9A\u5B57\u7B26\u4E32\u5C5E\u6027\u663E\u793A"
   FirstTab: 0
   FloatValue: 0
-  MyToggle: 0
-  A: 0
-  B: 
+  InlineButtonField: 0
+  MyToggleGroup: 0
+  ToggleGroupA: 0
+  ToggleGroupB: 
   GuidList:
   - hello world!
   GreaterThanZero: 0

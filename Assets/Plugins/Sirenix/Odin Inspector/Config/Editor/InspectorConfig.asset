@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: InspectorConfig
   m_EditorClassIdentifier: 
   enableOdinInInspector: 1
-  defaultEditorBehaviour: 11
+  defaultEditorBehaviour: 15
   processMouseMoveInInspector: 1
   drawingConfig:
     configs:
+    - DrawnTypeName: AssetBundles.LaunchAssetBundleServer, Assembly-CSharp-Editor
+      EditorTypeName: Sirenix.OdinInspector.Editor.OdinEditor, Sirenix.OdinInspector.Editor
     - DrawnTypeName: BuildConfig, Assembly-CSharp-Editor
       EditorTypeName: Sirenix.OdinInspector.Editor.OdinEditor, Sirenix.OdinInspector.Editor
