@@ -117,10 +117,5 @@ namespace EditorLearn
             MyData.SerializeDataDemo(); 
         }
         
-        [MenuItem("EditorLearn/创建Odin节点窗口")]
-        static void CreateInstance()
-        {
-            var window =  EditorWindow.GetWindow<OdinNodeWin.OdinNodeWin>(false, "我的Odin节点窗口", true);
-        }
     }
 }
