@@ -4,6 +4,9 @@ using System.IO;
 using Sirenix.Serialization;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace EditorLearn
 {
@@ -116,6 +119,24 @@ namespace EditorLearn
         {
             MyData.SerializeDataDemo(); 
         }
+
         
+        [MenuItem("EditorLearn/序列化自定义类")]
+        static void OdinUnserializedMyTestData()
+        {
+        }
+        
+        static void timelineTest()
+        {
+            var a = new GameObject().AddComponent<PlayableDirector>();
+            
+            var b = typeof(PlayableAsset);
+            var asset = a.playableAsset as  TimelineAsset;
+            var track = asset.CreateTrack<PlayableTrack>(null, "tt");
+            var c = PlayableGraph.Create();
+            var d = typeof(AnimationClipPlayable);
+            var e = typeof(IPlayable);
+            var f = typeof(PlayableExtensions);
+        }
     }
 }

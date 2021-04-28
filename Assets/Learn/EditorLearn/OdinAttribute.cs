@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace EditorLearn
 {
@@ -21,6 +22,8 @@ namespace EditorLearn
     public class OdinAttribute : MonoBehaviour
     {
         /**********************************自定义属性****************************************/
+        public PlayableAsset asseet;
+        public PlayableGraph graph;
         [LabelText("是否显示自定义属性")] 
         [OnValueChanged("@#(health).State.Visible = $value")]
         [OnValueChanged("@#(myStruct1).State.Visible = $value")]

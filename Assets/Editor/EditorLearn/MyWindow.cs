@@ -81,6 +81,8 @@ namespace EditorLearn
 
         void OnGUI()
         {
+            
+            
             // 此处为实际窗口代码
             scrollPosBig = EditorGUILayout.BeginScrollView(scrollPosBig);
 
@@ -109,8 +111,6 @@ namespace EditorLearn
 
             // 枚举选项菜单
             optionEnum = (EnumOption) EditorGUILayout.EnumPopup("枚举选项:", optionEnum);
-
-            // 前缀标签，会和下面紧接的项一起被选中：
             EditorGUILayout.PrefixLabel("PreFixLabel");
             // 带箭头的折叠项
             foldOut = EditorGUILayout.Foldout(foldOut, "Foldout");
@@ -119,6 +119,8 @@ namespace EditorLearn
                 // 标签字段
                 GUILayout.Label("  隐藏项", EditorStyles.boldLabel);
             }
+
+           
 
             // 标签字段
             GUIStyle fontStyle = new GUIStyle();
@@ -183,7 +185,7 @@ namespace EditorLearn
             EditorGUI.ProgressBar(progressRect, myFloat, "生命值");
             GUI.color = Color.white;
             EditorGUILayout.EndToggleGroup();
-
+      
             // 帮助盒子
             EditorGUILayout.HelpBox("伤害太低了吧！！", MessageType.Error);
             EditorGUILayout.HelpBox("伤害有点高啊！！", MessageType.Warning);
