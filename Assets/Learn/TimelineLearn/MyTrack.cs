@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -49,6 +50,7 @@ public class LightControlAsset : PlayableAsset
 //            lightControlbehaviour.light = light.Resolve(graph.GetResolver());
         lightControlbehaviour.color = color;
         lightControlbehaviour.intensity = intensity;
+        var a = this.duration;
         return playable;
     }
 }
@@ -59,5 +61,13 @@ public class LightControlAsset : PlayableAsset
 // 绑定的Track对象的类型
 public class LightControlTrack : TrackAsset
 {
+    public string name;
+}
+
+//[TrackClipType(typeof(AnimationPlayableAsset), false)]
+//[TrackBindingType(typeof(Animator))]
+public class MyAnimatorTrack : AnimationTrack
+{
+    public string name;
 }
 
