@@ -8,7 +8,9 @@ using UnityEngine.Timeline;
 // 逻辑
 public class LightControlBehaviour : PlayableBehaviour
 {
-    // public Light light;
+    [NonSerialized]
+    private LightControlAsset asset;
+    public Light mLight;
     public Color color = Color.white;
     public float intensity = 1;
     public ulong startFrameId = 0;
@@ -29,6 +31,11 @@ public class LightControlBehaviour : PlayableBehaviour
             light.color = color;
             light.intensity = intensity;
         }
+        else if (mLight != null)
+        {
+            mLight.color = color;
+            mLight.intensity = intensity;
+        }
     }
 }
 
@@ -39,6 +46,7 @@ public class LightControlAsset : PlayableAsset
     public ExposedReference<Light> light;
     public Color color = Color.white;
     public float intensity = 1;
+    public LightControlBehaviour behaviour;
 
     public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
     {
@@ -47,10 +55,11 @@ public class LightControlAsset : PlayableAsset
         var lightControlbehaviour = playable.GetBehaviour();
         // 获取到light的对象（通过playable.SetReferenceValue设置过来）
         var light2 = light.Resolve(graph.GetResolver());
-//            lightControlbehaviour.light = light.Resolve(graph.GetResolver());
+        lightControlbehaviour.mLight = light2;
         lightControlbehaviour.color = color;
         lightControlbehaviour.intensity = intensity;
         var a = this.duration;
+        behaviour = playable.GetBehaviour();
         return playable;
     }
 }

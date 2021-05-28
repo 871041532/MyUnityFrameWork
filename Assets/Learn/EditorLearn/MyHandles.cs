@@ -11,4 +11,5 @@ namespace EditorLearn
         public Quaternion[] nodeRotations = new Quaternion[]{};
         public bool showHandles = true;
     }
+    
 }

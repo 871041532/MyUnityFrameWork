@@ -1,18 +1,20 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
     public class Test:MonoBehaviour
     {
-        [Label("名字")]
+//        [Label("名字")]
+        [LabelText("名字")]
         public string Name = "test";
 
 //        [HideInInspector]
-        [Label("Id")]
+//        [Label("Id")]
         public int id;
         
         [HideInInspector]  // 添加这个标签会隐藏
-        [ProfileDraw]
+//        [ProfileDraw]
          public Profile profile = new Profile();
         
         public List<Profile> profile2 = new List<Profile>();
@@ -40,19 +42,20 @@ using UnityEngine;
     {
         
     }
-
+#if UNITY_EDITOR
     //************************* 内层的绘制
     [CustomPropertyDrawer(typeof(InnerProfileDrawAttribute))]
     public class InnerProfileDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
+            base.OnGUI(position, property, label);
+//            EditorGUI.BeginProperty(position, label, property);
             EditorGUILayout.BeginVertical();
             EditorGUILayout.PropertyField(property.FindPropertyRelative("Name"),new GUIContent("姓名inner："));
-            EditorGUILayout.PropertyField(property.FindPropertyRelative("age"),new GUIContent("性别inner："));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("age"),new GUIContent("年龄"));
             EditorGUILayout.EndVertical();
-            EditorGUI.EndProperty();
+//            EditorGUI.EndProperty();
         }
     }
     
@@ -61,6 +64,7 @@ using UnityEngine;
     {
         
     }
+
 
     [CustomPropertyDrawer(typeof(ProfileDrawAttribute))]
     public class ProfileDrawer : PropertyDrawer
@@ -102,3 +106,4 @@ using UnityEngine;
         }
     }
 
+            #endif
